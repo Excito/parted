@@ -1,9 +1,10 @@
-parted (1.8.0~rc3-2) UNRELEASED; urgency=low
+parted (1.8.1~git1-1) UNRELEASED; urgency=low
 
   * doc-package.dpatch: removed hunk that was merge upstream;
   * debian/copyright: update FSF address;
+  * debian/control.in, debian/rules: bump automake requirement to 1.10;
 
- -- Otavio Salvador <otavio@debian.org>  Wed,  8 Nov 2006 21:18:43 -0200
+ -- Otavio Salvador <otavio@debian.org>  Sun, 26 Nov 2006 21:47:02 -0200
 
 parted (1.8.0~rc3-1) experimental; urgency=low
 

@@ -153,7 +153,7 @@ packaging-files: $(GENFILES)
 
 autotools-update: autotools-update-stamp
 autotools-update-stamp: patch-stamp
-	 ACLOCAL=aclocal-1.8 AUTOMAKE=automake-1.8 autoreconf -f -i
+	 ACLOCAL=aclocal-1.10 AUTOMAKE=automake-1.10 autoreconf -f -i
 	 touch $@
 
 build-deb/config.status: autotools-update-stamp
