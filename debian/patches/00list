@@ -5,7 +5,7 @@ reiserfs-libname
 # Patch susceptible to be merged upstream
 errors-to-stderr
 devfs
-kfreebsd-gnu
+#kfreebsd-gnu
 parted-print-name
 
 # Will also stay debian specific, but depends on some of the above :/
