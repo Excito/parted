@@ -1,11 +1,12 @@
-parted (1.8.1~git1-1) UNRELEASED; urgency=low
+parted (1.8.1~git1-1) experimental; urgency=low
 
+  * New git snapshot
   * doc-package.dpatch: removed hunk that was merge upstream;
   * debian/copyright: update FSF address;
   * debian/control.in, debian/rules: bump automake requirement to 1.10;
   * debian/patches/00list: disabled kfreebsd support by now;
 
- -- Otavio Salvador <otavio@debian.org>  Sun, 26 Nov 2006 22:36:08 -0200
+ -- Otavio Salvador <otavio@debian.org>  Mon, 27 Nov 2006 11:35:20 -0200
 
 parted (1.8.0~rc3-1) experimental; urgency=low
 
