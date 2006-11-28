@@ -2,8 +2,10 @@ parted (1.8.1~git1-2) UNRELEASED; urgency=low
 
   * Add libdevmapper-dev build-dependency;
   * Add --enable-device-mapper to include device mapper support;
+  * Readd part of lvm2.dpatch since current device mapper code isn't
+    probing the LVM partitions;
 
- -- Otavio Salvador <otavio@debian.org>  Tue, 28 Nov 2006 17:15:12 -0200
+ -- Otavio Salvador <otavio@debian.org>  Tue, 28 Nov 2006 20:12:18 -0200
 
 parted (1.8.1~git1-1) experimental; urgency=low
 
