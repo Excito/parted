@@ -170,6 +170,7 @@ endif
 	    --sbindir=/sbin --mandir=\$${prefix}/share/man \
 	    --infodir=\$${prefix}/share/info --enable-shared \
 	    --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+		--enable-device-mapper \
 	    $(CONFFLAGS)
 
 build-udeb/config.status: autotools-update-stamp
@@ -179,8 +180,9 @@ build-udeb/config.status: autotools-update-stamp
 	cd build-udeb && CFLAGS="$(UDEB_CFLAGS)" ../configure --prefix=/usr \
 	    --sbindir=/sbin --libdir=/lib --mandir=\$${prefix}/share/man \
 	    --infodir=\$${prefix}/share/info --enable-shared --disable-static \
-	    --without-readline $(CONFFLAGS) \
-	    --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
+	    --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+	    --without-readline --enable-device-mapper \
+		$(CONFFLAGS)
 
 build-dbg/config.status: autotools-update-stamp
 	dh_testdir
