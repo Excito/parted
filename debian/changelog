@@ -4,8 +4,9 @@ parted (1.8.1~git1-2) UNRELEASED; urgency=low
   * Add --enable-device-mapper to include device mapper support;
   * Readd part of lvm2.dpatch since current device mapper code isn't
     probing the LVM partitions;
+  * Remove parted-print-name.dpatch since it was merge upstream;
 
- -- Otavio Salvador <otavio@debian.org>  Tue, 28 Nov 2006 20:12:18 -0200
+ -- Otavio Salvador <otavio@debian.org>  Tue, 28 Nov 2006 22:28:59 -0200
 
 parted (1.8.1~git1-1) experimental; urgency=low
 

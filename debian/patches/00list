@@ -7,7 +7,6 @@ lvm2
 errors-to-stderr
 devfs
 #kfreebsd-gnu
-parted-print-name
 
 # Will also stay debian specific, but depends on some of the above :/
 sparc-fix-raid
