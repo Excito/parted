@@ -6,6 +6,8 @@ parted (1.8.1-1) UNRELEASED; urgency=low
   * Readd part of lvm2.dpatch since current device mapper code isn't
     probing the LVM partitions;
   * Remove parted-print-name.dpatch since it was merge upstream;
+  * Readd s390 patch and revert DASD support to our previous and stable
+    version;
 
  -- Otavio Salvador <otavio@debian.org>  Tue,  5 Dec 2006 23:26:01 -0200
 
