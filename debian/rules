@@ -342,7 +342,7 @@ binary-common:
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	dh_installchangelogs parted/ChangeLog
+	dh_installchangelogs
 	dh_installexamples
 	dh_installmenu
 	dh_installcron
