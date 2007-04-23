@@ -1,4 +1,4 @@
-parted (1.8.1-1) UNRELEASED; urgency=low
+parted (1.8.7-1) UNRELEASED; urgency=low
 
   * New upstream release.
   * Add libdevmapper-dev build-dependency;
