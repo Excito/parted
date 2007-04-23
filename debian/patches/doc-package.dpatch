@@ -8,17 +8,17 @@
 . `dirname $0`/DPATCH
 
 @DPATCH@
-diff -urNda parted-1.6.12.orig/doc/C/parted.8 parted-1.6.12/doc/C/parted.8
---- parted-1.6.12.orig/doc/C/parted.8	2004-08-31 11:43:35.000000000 +0200
-+++ parted-1.6.12/doc/C/parted.8	2004-08-31 11:45:35.000000000 +0200
-@@ -23,8 +23,8 @@
- .SH DESCRIPTION
- This manual page documents briefly the
- .BR parted
--command.  Complete documentation is distributed with the package in
--GNU Info format; see below.
-+command.  Complete documentation is distributed with the parted-doc Debian
-+package in GNU Info format; see below.
- .PP
- .B parted
- is a disk partitioning and partition resizing program.  It allows you to
+diff --git a/doc/C/parted.8 b/doc/C/parted.8
+index 7040402..5affe32 100644
+--- a/doc/C/parted.8
++++ b/doc/C/parted.8
+@@ -133,7 +133,7 @@ The \fIparted\fP program is fully documented in the
+ .BR info(1) 
+ format
+ .IR "GNU partitioning software"
+-manual.
++manual which is distributed with the parted-doc Debian package.
+ .SH AUTHOR
+ This manual page was written by Timshel Knoll <timshel@debian.org>,
+ for the Debian GNU/Linux system (but may be used by others).
+You have new mail in /var/mail/otavio
