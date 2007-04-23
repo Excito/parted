@@ -13,7 +13,7 @@ diff -urNad parted-1.6.25.1~/libparted/disk_sun.c parted-1.6.25.1/libparted/disk
  	int			is_root;
  	int			is_lvm;
 +	int			is_raid;
- } SunPartitionData;
+ };
  
  typedef struct {
 @@ -342,6 +343,7 @@
