@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999, 2000 Free Software Foundation, Inc.
+    Copyright (C) 1999, 2000, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
+#include <config.h>
 #include "command.h"
 #include "ui.h"
 
@@ -117,9 +118,9 @@ command_get_names (Command** list)
 void
 command_print_summary (Command* cmd)
 {
-	printf ("  ");
+        fputs ("  ", stdout);
 	str_list_print_wrap (cmd->summary, screen_width(), 2, 8);
-	printf ("\n");
+	putchar ('\n');
 }
 
 void
@@ -127,7 +128,7 @@ command_print_help (Command* cmd)
 {
 	command_print_summary (cmd);
 	if (cmd->help) {
-		printf ("\n\t");
+                fputs ("\n\t", stdout);
 		str_list_print_wrap (cmd->help, screen_width(), 8, 8);
 	}
 }

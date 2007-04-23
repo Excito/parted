@@ -1,7 +1,7 @@
 /* -*- Mode: c; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2001, 2005 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2001, 2005, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,9 +20,7 @@
     Contributor:  Ben Collins <bcollins@debian.org>
 */
 
-#include "config.h"
-
-#include <string.h>
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
@@ -45,19 +43,25 @@
 #define WHOLE_DISK_PART		2	/* as in 0, 1, 2 (3rd partition) */
 #define LINUX_SWAP_ID		0x82
 
-typedef struct {
+typedef struct _SunRawPartition     SunRawPartition;
+typedef struct _SunPartitionInfo    SunPartitionInfo;
+typedef struct _SunRawLabel         SunRawLabel;
+typedef struct _SunPartitionData    SunPartitionData;
+typedef struct _SunDiskData         SunDiskData;
+
+struct __attribute__ ((packed)) _SunRawPartition {
 	u_int32_t	start_cylinder; /* where the part starts... */
 	u_int32_t	num_sectors;	/* ...and it's length */
-} __attribute__ ((packed)) SunRawPartition;
+};
 
-typedef struct {
+struct __attribute__ ((packed)) _SunPartitionInfo {
 	u_int8_t	spare1;
 	u_int8_t	id;		/* Partition type */
 	u_int8_t	spare2;
 	u_int8_t	flags;		/* Partition flags */
-} __attribute__ ((packed)) SunPartitionInfo;
+};
 
-typedef struct {
+struct __attribute__ ((packed)) _SunRawLabel {
 	char 		info[128];	/* Informative text string */
 	u_int8_t	spare0[14];
 	SunPartitionInfo infos[SUN_DISK_MAXPARTITIONS];
@@ -75,19 +79,19 @@ typedef struct {
 	SunRawPartition partitions[SUN_DISK_MAXPARTITIONS];
 	u_int16_t	magic;		/* Magic number */
 	u_int16_t	csum;		/* Label xor'd checksum */
-}  __attribute__ ((packed)) SunRawLabel;
+};
 
-typedef struct {
+struct _SunPartitionData {
 	u_int8_t		type;
 	int			is_boot;
 	int			is_root;
 	int			is_lvm;
-} SunPartitionData;
+};
 
-typedef struct {
+struct _SunDiskData {
 	PedSector		length; /* This is based on cyl - alt-cyl */
 	SunRawLabel		raw_label;
-} SunDiskData;
+};
 
 static PedDiskType sun_disk_type;
 
@@ -119,9 +123,7 @@ sun_verify_checksum (SunRawLabel *label)
 static int
 sun_probe (const PedDevice *dev)
 {
-	PedDiskType*	disk_type;
 	SunRawLabel	label;
-	int		i;
 
 	PED_ASSERT (dev != NULL, return 0);
 
@@ -361,7 +363,7 @@ sun_read (PedDisk* disk)
 
 #ifndef DISCOVER_ONLY
 static void
-_probe_and_use_old_info (PedDisk* disk)
+_probe_and_use_old_info (const PedDisk* disk)
 {
 	SunDiskData*		sun_specific;
 	SunRawLabel		old_label;
@@ -376,7 +378,7 @@ _probe_and_use_old_info (PedDisk* disk)
 }
 
 static int
-sun_write (PedDisk* disk)
+sun_write (const PedDisk* disk)
 {
 	SunRawLabel*		label;
 	SunPartitionData*	sun_data;
@@ -484,7 +486,6 @@ sun_partition_new (const PedDisk* disk, PedPartitionType part_type,
 
 	return part;
 
-error_free_sun_data:
 	ped_free (sun_data);
 error_free_part:
 	ped_free (part);
@@ -730,7 +731,7 @@ sun_partition_enumerate (PedPartition* part)
 	/* Ok, now allocate the Whole disk if it isn't already */
 	p = ped_disk_get_partition (part->disk, WHOLE_DISK_PART + 1);
 	if (!p) {
-		int i = ped_exception_throw (
+		int j = ped_exception_throw (
 				PED_EXCEPTION_WARNING,
 				PED_EXCEPTION_IGNORE_CANCEL,
 				_("The Whole Disk partition is the only "
@@ -739,7 +740,7 @@ sun_partition_enumerate (PedPartition* part)
 				  "a real one.  Solaris may not be able to "
 				  "boot without it, and SILO (the sparc boot "
 				  "loader) appreciates it as well."));
-		if (i == PED_EXCEPTION_IGNORE) {
+		if (j == PED_EXCEPTION_IGNORE) {
 			/* bad bad bad...you will suffer your own fate */
 			part->num = WHOLE_DISK_PART + 1;
 			return 1;
@@ -842,12 +843,11 @@ void
 ped_disk_sun_init ()
 {
 	PED_ASSERT (sizeof (SunRawLabel) == 512, return);
-	ped_register_disk_type (&sun_disk_type);
+	ped_disk_type_register (&sun_disk_type);
 }
 
 void
 ped_disk_sun_done ()
 {
-	ped_unregister_disk_type (&sun_disk_type);
+	ped_disk_type_unregister (&sun_disk_type);
 }
-

@@ -1,6 +1,6 @@
 /*
     ext2_mkfs.c -- ext2 fs creator
-    Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
+    Copyright (C) 1999, 2000, 2001, 2007 Free Software Foundation, Inc.
   
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "config.h"
+#include <config.h>
 
 #ifndef DISCOVER_ONLY
 
@@ -255,7 +255,6 @@ static int ext2_mkfs_write_meta(struct ext2_dev_handle *handle,
 
 error_free_zero:
 	ped_free(zero);
-error_free_ib:
 	ped_free(ib);
 error_free_bb:
 	ped_free(bb);

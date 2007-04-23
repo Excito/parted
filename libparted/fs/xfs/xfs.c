@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/endian.h>
@@ -33,8 +33,6 @@
 #include "platform_defs.h"
 #include "xfs_types.h"
 #include "xfs_sb.h"
-
-#include <string.h>
 
 #define XFS_BLOCK_SIZES		((int[2]){512, 0})
 

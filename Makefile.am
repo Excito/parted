@@ -1,30 +1,40 @@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = po libparted parted partprobe include doc debug
+SUBDIRS = po lib libparted parted partprobe include doc debug
 
-EXTRA_DIST = config.rpath                          \
-             ABOUT-NLS                             \
-             AUTHORS                               \
-             BUGS                                  \
-             COPYING                               \
-             THANKS                                \
-             TODO                                  \
-             parted.spec.in                        \
-             parted.m4                             \
-             scripts/data/abi/baseline_symbols.txt \
-             scripts/extract_symvers
+EXTRA_DIST =				\
+  .prev-version				\
+  BUGS					\
+  libparted.pc.in			\
+  parted.spec.in			\
+  parted.spec				\
+  scripts/data/abi/baseline_symbols.txt \
+  scripts/extract_symvers		\
+  Makefile.cfg				\
+  Makefile.maint			\
+  GNUmakefile
 
 aclocaldir=$(datadir)/aclocal
-aclocal_DATA=parted.m4
 
-dist-hook: parted.spec
-	cp parted.spec $(distdir)
+pcdir = $(libdir)/pkgconfig
+pc_DATA = libparted.pc
+
+# This is best not done via configure.ac, because automake's
+# make distcheck target does not like auto-generated files
+# being included in the distributed archive.
+parted.spec: parted.spec.in
+	sed 's/@''PACKAGE@/$(PACKAGE)/;s/@''VERSION@/$(VERSION)/' $< > $@-tmp
+	mv $@-tmp $@
+MAINTAINERCLEANFILES = parted.spec
+
+distcheck-hook:
+	$(MAKE) my-distcheck
 
 ### ABI Checking scripts ###
 
 baseline_file = ${top_srcdir}/scripts/data/abi/baseline_symbols.txt
 extract_symvers = $(top_srcdir)/scripts/extract_symvers
 
-current_symbols.txt: ${extract_symvers} 
+current_symbols.txt: ${extract_symvers}
 	  -@(sh ${extract_symvers} libparted/.libs/libparted.so current_symbols.txt)
 
 baseline_symbols:
@@ -53,3 +63,12 @@ check-abi: baseline_symbols current_symbols.txt
 	@test `wc -l < libparted.abi-diff` -gt 0 \
          && (echo "ABI has changed. Please, update you ABI package version."; exit 1) \
          || exit 0
+
+MOSTLYCLEANDIRS = m4
+
+MAINTAINERCLEANFILES += \
+  ABOUT-NLS     \
+  ChangeLog     \
+  INSTALL       \
+  aclocal.m4    \
+  configure

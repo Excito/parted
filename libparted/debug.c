@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2005 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2005, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include "config.h"
+#include <config.h>
 #include <parted/parted.h>
 #include <parted/debug.h>
 
@@ -94,17 +94,17 @@ int ped_assert ( int cond, const char* cond_text,
 #if HAVE_BACKTRACE
 	/* Print backtrace stack */
 	void *stack[20];
-	size_t size;
-	char **strings;
-	
-	size = backtrace(stack, 20);
+	char **strings, **string;
+        int size = backtrace(stack, 20);
 	strings = backtrace_symbols(stack, size);
 
-	printf(_("Backtrace has %d calls on stack:\n"), size);
-	for (; size > 0; size--, strings++)
-		printf("  %d: %s\n", size, *strings);
+	if (strings) {
+		printf(_("Backtrace has %d calls on stack:\n"), size);
+		for (string = strings; size > 0; size--, string++)
+			printf("  %d: %s\n", size, *string);
 
-	free(strings);
+		free(strings);
+	}
 #endif
 
 	/* Throw the exception */

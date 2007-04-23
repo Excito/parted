@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2006 Free Software Foundation, Inc.
+    Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
@@ -25,7 +25,6 @@
 
 /* POSIX headers */
 #include <sys/stat.h>
-#include <string.h>
 #include <dirent.h>
 #include <limits.h>
 #include <unistd.h>
@@ -397,7 +396,7 @@ beos_read (const PedDevice* dev, void* buffer, PedSector start, PedSector count)
 	PedExceptionOption ex_status;
 	size_t read_length = count * dev->sector_size;
 
-	PED_ASSERT(dev->sector_size % 512 == 0, return 0);
+	PED_ASSERT(dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
 
 	/* First, try to seek */
 	while(1)
@@ -471,7 +470,7 @@ beos_write (PedDevice* dev, const void* buffer, PedSector start,
 	PedExceptionOption      ex_status;
 	size_t                  write_length = count * dev->sector_size;
 
-	PED_ASSERT(dev->sector_size % 512 == 0, return 0);
+	PED_ASSERT(dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
 
 	if (dev->read_only)
 	{

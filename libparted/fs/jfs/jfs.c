@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/endian.h>
@@ -34,8 +34,6 @@
 #else
 #  define _(String) (String)
 #endif /* ENABLE_NLS */
-
-#include <string.h>
 
 #define JFS_BLOCK_SIZES		((int[2]){512, 0})
 

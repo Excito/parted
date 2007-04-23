@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
+    Copyright (C) 1999, 2000, 2001, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,11 +27,10 @@
  * @{
  */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
-#include <string.h>
 
 #if ENABLE_NLS
 #  include <libintl.h>
@@ -484,7 +483,6 @@ ped_file_system_close (PedFileSystem* fs)
 
 error_close_dev:
 	ped_device_close (dev);
-error:
 	return 0;
 }
 

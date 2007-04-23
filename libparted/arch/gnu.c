@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000, 2001, 2005 Free Software Foundation, Inc.
+    Copyright (C) 1999, 2000, 2001, 2005, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,15 +17,12 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#define _GNU_SOURCE 1
-
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
 #include <parted/gnu.h>
 
-#include <string.h>
 #include <errno.h>
 #include <hurd.h>
 #include <hurd/fs.h>
@@ -397,8 +394,8 @@ gnu_refresh_close (PedDevice* dev)
 }
 
 static int
-gnu_read (PedDevice* dev, void* user_buffer,
-	  PedSector device_start, PedSector count)
+gnu_read (const PedDevice* dev, void* user_buffer, PedSector device_start,
+          PedSector count)
 {
 	GNUSpecific*		arch_specific = GNU_SPECIFIC (dev);
 	error_t			err;
@@ -657,7 +654,7 @@ doggy_first_block_write:
 
 	/* We are now left with (strictly) less then a store block to write
 	   to disk.  Thus, we read the block, overlay the buffer and flush.  */
-	PED_ASSERT (count * PED_SECTOR_SIZE
+	PED_ASSERT (count * PED_SECTOR_SIZE_DEFAULT
 			< arch_specific->store->block_size, return 0);
 
 doggy_last_block_read:

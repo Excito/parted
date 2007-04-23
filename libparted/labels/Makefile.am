@@ -1,14 +1,10 @@
 # This file is part of GNU Parted
-# Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
+# Copyright (C) 1999, 2000, 2001, 2007 Free Software Foundation, Inc.
 #
 # This file may be modified and/or distributed without restriction.
 
-LIBS = @INTLLIBS@ @LIBS@
-
 partedincludedir      =	-I$(top_srcdir)/include
 noinst_LTLIBRARIES    =	liblabels.la
-liblabels_la_LDFLAGS  = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
- 			-release $(LT_RELEASE)
 
 liblabels_la_SOURCES  = rdb.c		\
 			bsd.c  		\
@@ -23,11 +19,11 @@ liblabels_la_SOURCES  = rdb.c		\
 			loop.c 		\
 			mac.c  		\
 			pc98.c 		\
-			sun.c			\
+			sun.c		\
 			aix.c
-			
 
-liblabels_la_LIBADD   = @OS_LIBS@
+liblabels_la_LIBADD = $(OS_LIBS) $(INTLLIBS)
 
-INCLUDES = $(partedincludedir) @INTLINCS@
+INCLUDES = $(partedincludedir) $(INTLINCS)
 
+MAINTAINERCLEANFILES = Makefile.in

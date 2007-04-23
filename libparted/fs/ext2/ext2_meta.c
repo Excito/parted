@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "config.h"
+#include <config.h>
 
 #ifndef DISCOVER_ONLY
 
@@ -139,7 +139,7 @@ int ext2_metadata_push(struct ext2_fs *fs, blk_t newsize)
 	fs->itoffset = newitoffset;
 
 	if (fs->opt_verbose)
-		fprintf(stderr, "\n");
+                fputc ('\n', stderr);
 
 	return 1;
 }

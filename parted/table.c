@@ -3,8 +3,7 @@
  */
 /*
     parted - a frontend to libparted
-    Copyright (C) 2006
-    Free Software Foundation, Inc.
+    Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,14 +30,14 @@
 #include <config.h>
 
 #ifdef ENABLE_NLS
-#       define _GNU_SOURCE
 #       include <wchar.h>
         int wcswidth (const wchar_t *s, size_t n);
+#	define L_(str) L##str
 #else
+#	define L_(str) str
 #       ifdef wchar_t
 #               undef wchar_t
 #       endif
-#       define _GNU_SOURCE
 #       include <string.h>
 #       define wchar_t char
 #       define wcslen strlen
@@ -52,13 +51,8 @@
 
 
 static const unsigned int       MAX_WIDTH = 512;
-#ifdef ENABLE_NLS
-static const wchar_t*           DELIMITER = L"  ";
-static const wchar_t*           COLSUFFIX = L"\n";
-#else
-static const wchar_t*           DELIMITER = "  ";
-static const wchar_t*           COLSUFFIX = "\n";
-#endif
+static const wchar_t*           DELIMITER = L_("  ");
+static const wchar_t*           COLSUFFIX = L_("\n");
 
 typedef struct
 {
@@ -147,10 +141,10 @@ void table_add_row (Table* t, wchar_t** row)
         assert(t);
 
         /*unsigned int i;
-        printf("adding row: ");
+        fputs ("adding row: ", stdout);
         for (i = 0; i < t->ncols; ++i)
                 printf("[%s]", row[i]);
-        printf("\n");*/
+        putchar ('\n');*/
 
         t->rows = (wchar_t***)realloc (t->rows, (t->nrows + 1)
                                                 * sizeof(wchar_t***));
@@ -209,12 +203,8 @@ static void table_render_row (Table* t, int rownum, int ncols, wchar_t** s)
                 for (j = 0; j < nspaces; ++j)
                        pad[j] = L' '; 
 
-#ifdef ENABLE_NLS
-                pad[nspaces] = L'\0';
-#else
-                pad[nspaces] = '\0';
-#endif
-                
+                pad[nspaces] = L_('\0');
+
                 wcscat (*s, row[i]);
                 wcscat (*s, pad);
                 if (i + 1 < ncols) 
@@ -235,12 +225,7 @@ static void table_render_rows (Table* t, wchar_t** s)
 {
         unsigned int i;
 
-#ifdef ENABLE_NLS
-        assert (**s == L'\0');
-#else
-        assert (**s == '\0');
-#endif
-        
+        assert (**s == L_('\0'));
         for (i = 0; i < t->nrows; ++i)
                 table_render_row (t, i, t->ncols, s);
 }
@@ -252,14 +237,8 @@ static void table_render_rows (Table* t, wchar_t** s)
 wchar_t* table_render(Table* t)
 {
         wchar_t* s = malloc(sizeof(wchar_t));
-#ifdef ENABLE_NLS
-        *s = L'\0';
-#else
-        *s = '\0';
-#endif
-        
+
+        *s = L_('\0');
         table_render_rows (t, &s);
-        
         return s;
 }
-

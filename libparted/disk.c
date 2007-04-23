@@ -1,6 +1,6 @@
  /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000, 2001, 2002, 2003, 2005
+    Copyright (C) 1999, 2000, 2001, 2002, 2003, 2005, 2007
                   Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -33,7 +33,7 @@
  * @{
  */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
@@ -46,8 +46,6 @@
 #  define _(String) (String)
 #  define N_(String) (String)
 #endif /* ENABLE_NLS */
-
-#include <string.h>
 
 /* UPDATE MODE functions */
 #ifdef DEBUG
@@ -65,7 +63,7 @@ static int _disk_raw_add (PedDisk* disk, PedPartition* part);
 static PedDiskType*	disk_types = NULL;
 
 void
-ped_register_disk_type (PedDiskType* disk_type)
+ped_disk_type_register (PedDiskType* disk_type)
 {
 	PED_ASSERT (disk_type != NULL, return);
 	PED_ASSERT (disk_type->ops != NULL, return);
@@ -76,7 +74,8 @@ ped_register_disk_type (PedDiskType* disk_type)
 	disk_types = (struct _PedDiskType*) disk_type;
 }
 
-void ped_unregister_disk_type (PedDiskType* disk_type)
+void
+ped_disk_type_unregister (PedDiskType* disk_type)
 {
 	PedDiskType*	walk;
 	PedDiskType*	last = NULL;
@@ -92,6 +91,24 @@ void ped_unregister_disk_type (PedDiskType* disk_type)
 		((struct _PedDiskType*) last)->next = disk_type->next;
 	else
 		disk_types = disk_type->next;
+}
+
+/**
+ * Deprecated: use ped_disk_type_regiser.
+ */
+void
+ped_register_disk_type (PedDiskType* disk_type)
+{
+        ped_disk_type_register (disk_type);
+}
+
+/**
+ * Deprecated: use ped_disk_type_unregiser.
+ */
+void
+ped_unregister_disk_type (PedDiskType* disk_type)
+{
+        ped_disk_type_unregister (disk_type);
 }
 
 /**
@@ -121,11 +138,11 @@ ped_disk_type_get (const char* name)
 
 	PED_ASSERT (name != NULL, return NULL);
 
-	while (1) {
-		walk = ped_disk_type_get_next (walk);
-		if (!walk) break;
-		if (strcasecmp (walk->name, name) == 0) break;
-	}
+	for (walk = ped_disk_type_get_next (NULL); walk;
+	     walk = ped_disk_type_get_next (walk))
+			if (strcasecmp (walk->name, name) == 0)
+					break;
+
 	return walk;
 }
 
@@ -145,11 +162,11 @@ ped_disk_probe (PedDevice* dev)
 		return NULL;
 
 	ped_exception_fetch_all ();
-	while (1) {
-		walk = ped_disk_type_get_next (walk);
-		if (!walk) break;
-		if (walk->ops->probe (dev)) break;
-	}
+	for (walk = ped_disk_type_get_next (NULL); walk;
+	     walk = ped_disk_type_get_next (walk))
+			if (walk->ops->probe (dev))
+					break;
+
 	if (ped_exception)
 		ped_exception_catch ();
 	ped_exception_leave_all ();
@@ -374,7 +391,6 @@ _ped_disk_alloc (const PedDevice* dev, const PedDiskType* disk_type)
 	disk->part_list = NULL;
 	return disk;
 
-error_free_disk:
 	ped_free (disk);
 error:
 	return NULL;
@@ -547,7 +563,7 @@ ped_partition_get_path (const PedPartition* part)
  * \return 0 if the check fails, 1 otherwise.
  */
 int
-ped_disk_check (PedDisk* disk)
+ped_disk_check (const PedDisk* disk)
 {
 	PedPartition*	walk;
 
@@ -610,7 +626,7 @@ ped_disk_type_check_feature (const PedDiskType* disk_type,
  * Get the number of primary partitions.
  */
 int
-ped_disk_get_primary_partition_count (PedDisk* disk)
+ped_disk_get_primary_partition_count (const PedDisk* disk)
 {
 	PedPartition*	walk;
 	int		count = 0;
@@ -631,7 +647,7 @@ ped_disk_get_primary_partition_count (PedDisk* disk)
  * Get the highest partition number on \p disk.
  */
 int
-ped_disk_get_last_partition_num (PedDisk* disk)
+ped_disk_get_last_partition_num (const PedDisk* disk)
 {
 	PedPartition*	walk;
 	int		highest = -1;
@@ -1023,7 +1039,7 @@ fail:
 /**
  * Create a new \link _PedPartition PedPartition \endlink on \p disk.
  *
- * \param type One of \p PED_PARTITION_PRIMARY, \p PED_PARTITION_EXTENDED,
+ * \param type One of \p PED_PARTITION_NORMAL, \p PED_PARTITION_EXTENDED,
  *      \p PED_PARTITION_LOGICAL.
  *
  * \note The constructed partition is not added to <tt>disk</tt>'s
@@ -1201,7 +1217,6 @@ ped_partition_is_flag_available (const PedPartition* part,
 int
 ped_partition_set_system (PedPartition* part, const PedFileSystemType* fs_type)
 {
-	PedFileSystem*		fs;
 	const PedDiskType*	disk_type;
 
 	PED_ASSERT (part != NULL, return 0);
@@ -1948,7 +1963,6 @@ ped_disk_set_partition_geom (PedDisk* disk, PedPartition* part,
 
 error_pop_update_mode:
 	_disk_pop_update_mode (disk);
-error:
 	ped_constraint_destroy (overlap_constraint);
 	ped_constraint_destroy (constraints);
 	part->geom = old_geom;
@@ -2214,8 +2228,8 @@ ped_partition_flag_get_by_name (const char* name)
 	return 0;
 }
 
-void
-ped_partition_print (PedPartition* part)
+static void
+ped_partition_print (const PedPartition* part)
 {
 	PED_ASSERT (part != NULL, return);
 
@@ -2237,7 +2251,7 @@ ped_partition_print (PedPartition* part)
  * Prints a summary of disk's partitions.  Useful for debugging.
  */
 void
-ped_disk_print (PedDisk* disk)
+ped_disk_print (const PedDisk* disk)
 {
 	PedPartition*	part;
 
@@ -2249,4 +2263,3 @@ ped_disk_print (PedDisk* disk)
 }
 
 /** @} */
-

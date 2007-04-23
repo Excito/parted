@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2002, 2004 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2002, 2004, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,12 +17,11 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
 #include <parted/endian.h>
-#include <string.h>
 
 #if ENABLE_NLS
 #  include <libintl.h>
@@ -81,7 +80,13 @@
 
 #define MAC_STATUS_BOOTABLE     8       /* partition is bootable */
 
-typedef struct {
+typedef struct _MacRawPartition     MacRawPartition;
+typedef struct _MacRawDisk          MacRawDisk;
+typedef struct _MacDeviceDriver     MacDeviceDriver;
+typedef struct _MacPartitionData    MacPartitionData;
+typedef struct _MacDiskData         MacDiskData;
+
+struct __attribute__ ((packed)) _MacRawPartition {
 	uint16_t	signature;      /* expected to be MAC_PARTITION_MAGIC */
 	uint16_t	res1;
 	uint32_t	map_count;      /* # blocks in partition map */
@@ -102,10 +107,10 @@ typedef struct {
 	char		processor[16];  /* Contains 680x0, x=0,2,3,4; or empty */
 	uint32_t	driver_sig;
 	char		_padding[372];
-} __attribute__ ((packed)) MacRawPartition;
+};
 
 /* Driver descriptor structure, in block 0 */
-typedef struct {
+struct __attribute__ ((packed)) _MacRawDisk {
 	uint16_t	signature;      /* expected to be MAC_DRIVER_MAGIC */
 	uint16_t	block_size;	/* physical sector size */
 	uint32_t	block_count;	/* size of device in blocks */
@@ -113,17 +118,17 @@ typedef struct {
 	uint16_t	dev_id;		/* reserved */
 	uint32_t	data;		/* reserved */
 	uint16_t	driver_count;	/* # of driver descriptor entries */
-	uint8_t		driverlist[488]; /* info about available drivers */
+	uint8_t		driverlist[488];/* info about available drivers */
 	uint16_t	padding[3];	/* pad to 512 bytes */
-} __attribute__ ((packed)) MacRawDisk;
+};
 
-typedef struct {
+struct __attribute__ ((packed)) _MacDeviceDriver {
 	uint32_t	block;		/* startblock in MacRawDisk->block_size units */
 	uint16_t	size;		/* size in 512 byte units */
 	uint16_t	type;		/* operating system type (MacOS = 1) */
-} __attribute__ ((packed)) MacDeviceDriver;
+};
 
-typedef struct {
+struct _MacPartitionData {
 	char		volume_name[33];	/* eg: "Games" */
 	char		system_name[33];	/* eg: "Apple_Unix_SVR2" */
 	char		processor_name[17];
@@ -145,9 +150,9 @@ typedef struct {
 
 	uint32_t	status;
 	uint32_t	driver_sig;
-} MacPartitionData;
+};
 
-typedef struct {
+struct _MacDiskData {
 	int		ghost_size;		/* sectors per "driver" block */
 	int		part_map_entry_count;	/* # entries (incl. ghost) */
 	int		part_map_entry_num;	/* partition map location */
@@ -159,7 +164,7 @@ typedef struct {
 	uint16_t	block_size;		/* physical sector size */
 	uint16_t	driver_count;
 	MacDeviceDriver	driverlist[1 + 60];	/* 488 bytes */
-} MacDiskData;
+};
 
 static PedDiskType mac_disk_type;
 
@@ -252,7 +257,7 @@ error:
 	return 0;
 }
 
-PedDisk*
+static PedDisk*
 mac_alloc (const PedDevice* dev)
 {
 	PedDisk*		disk;
@@ -322,7 +327,6 @@ mac_duplicate (const PedDisk* disk)
 	memcpy (new_mac_data, old_mac_data, sizeof (MacDiskData));
 	return new_disk;
 
-error_free_new_disk:
 	_ped_disk_free (new_disk);
 error:
 	return NULL;
@@ -1138,7 +1142,6 @@ mac_partition_new (
 	}
 	return part;
 
-error_free_mac_data:
 	ped_free (mac_data);
 error_free_part:
 	ped_free (part);
@@ -1212,7 +1215,6 @@ mac_partition_set_system (PedPartition* part, const PedFileSystemType* fs_type)
 static int
 mac_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 {
-	PedFileSystemType*	hfs = ped_file_system_type_get ("hfs");
 	MacPartitionData*	mac_data;
 
 	PED_ASSERT (part != NULL, return 0);
@@ -1570,7 +1572,9 @@ static PedDiskOps mac_disk_ops = {
 	free:			mac_free,
 	read:			mac_read,
 #ifndef DISCOVER_ONLY
-	write:			mac_write,
+        /* FIXME: remove this cast, once mac_write is fixed not to
+           modify its *DISK parameter.  */
+	write:			(int (*) (const PedDisk*)) mac_write,
 #else
 	write:			NULL,
 #endif
@@ -1605,12 +1609,12 @@ ped_disk_mac_init ()
 	PED_ASSERT (sizeof (MacRawPartition) == 512, return);
 	PED_ASSERT (sizeof (MacRawDisk) == 512, return);
 
-	ped_register_disk_type (&mac_disk_type);
+	ped_disk_type_register (&mac_disk_type);
 }
 
 void
 ped_disk_mac_done ()
 {
-	ped_unregister_disk_type (&mac_disk_type);
+	ped_disk_type_unregister (&mac_disk_type);
 }
 

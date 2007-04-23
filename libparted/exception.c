@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000 Free Software Foundation, Inc.
+    Copyright (C) 1999, 2000, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@
  * @{
  */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
@@ -126,9 +126,9 @@ ped_exception_get_option_string (PedExceptionOption ex_opt)
 }
 
 static PedExceptionOption
-default_handler (PedException* ex)
+default_handler (PedException* e)
 {
-	if (ex->type == PED_EXCEPTION_BUG)
+	if (e->type == PED_EXCEPTION_BUG)
 		fprintf (stderr,
 			_("A bug has been detected in GNU Parted.  "
 			"Refer to the web site of parted "
@@ -141,14 +141,14 @@ default_handler (PedException* ex)
 			VERSION);
 	else
 		fprintf (stderr, "%s: ",
-			 ped_exception_get_type_string (ex->type));
-	fprintf (stderr, "%s\n", ex->message);
+			 ped_exception_get_type_string (e->type));
+	fprintf (stderr, "%s\n", e->message);
 
-	switch (ex->options) {
+	switch (e->options) {
 		case PED_EXCEPTION_OK:
 		case PED_EXCEPTION_CANCEL:
 		case PED_EXCEPTION_IGNORE:
-			return ex->options;
+			return e->options;
 
 		default:
 			return PED_EXCEPTION_UNHANDLED;
@@ -231,6 +231,8 @@ ped_exception_throw (PedExceptionType ex_type,
 		     PedExceptionOption ex_opts, const char* message, ...)
 {
 	va_list		arg_list;
+	int result;
+	static int size = 1000;
 
 	if (ex)
 		ped_exception_catch ();
@@ -239,21 +241,28 @@ ped_exception_throw (PedExceptionType ex_type,
 	if (!ex)
 		goto no_memory;
 
-	ex->message = (char*) malloc (8192);
-	if (!ex->message)
-		goto no_memory;
-
 	ex->type = ex_type;
 	ex->options = ex_opts;
 
-	va_start (arg_list, message);
-	vsnprintf (ex->message, 8192, message, arg_list);
-	va_end (arg_list);
+	while (1) {
+			ex->message = (char*) malloc (size);
+			if (!ex->message)
+					goto no_memory;
+
+			va_start (arg_list, message);
+			result = vsnprintf (ex->message, size, message, arg_list);
+			va_end (arg_list);
+
+			if (result > -1 && result < size)
+					break;
+
+			size += 10;
+	}
 
 	return do_throw ();
 
 no_memory:
-	fprintf (stderr, "Out of memory in exception handler!\n");
+	fputs ("Out of memory in exception handler!\n", stderr);
 
 	va_start (arg_list, message);
 	vfprintf (stderr, message, arg_list);

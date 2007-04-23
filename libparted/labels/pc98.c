@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2001 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2001, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,12 +17,11 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
 #include <parted/endian.h>
-#include <string.h>
 
 #if ENABLE_NLS
 #  include <libintl.h>
@@ -114,7 +113,7 @@ typedef struct {
 } PC98PartitionData;
 
 /* this MBR boot code is dummy */
-static char MBR_BOOT_CODE[] = {
+static const char MBR_BOOT_CODE[] = {
 	0xcb,			/* retf */
 	0x00, 0x00, 0x00,	/* */
 	0x49, 0x50, 0x4c, 0x31  /* "IPL1" */
@@ -245,8 +244,6 @@ pc98_clobber (PedDevice* dev)
 static PedDisk*
 pc98_alloc (const PedDevice* dev)
 {
-	PedDisk*	disk;
-
 	PED_ASSERT (dev != NULL, return 0);
 
 	return _ped_disk_alloc (dev, &pc98_disk_type);
@@ -502,7 +499,7 @@ fill_raw_part (PC98RawPartition* raw_part, const PedPartition* part)
 }
 
 static int
-pc98_write (PedDisk* disk)
+pc98_write (const PedDisk* disk)
 {
 	PC98RawTable		table;
 	PedPartition*		part;
@@ -563,7 +560,6 @@ pc98_partition_new (
 	}
 	return part;
 
-error_free_pc98_data:
 	ped_free (pc98_data);
 error_free_part:
 	ped_free (part);
@@ -640,7 +636,6 @@ pc98_partition_set_system (PedPartition* part, const PedFileSystemType* fs_type)
 static int
 pc98_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 {
-	PedDisk*			disk;
 	PC98PartitionData*		pc98_data;
 
 	PED_ASSERT (part != NULL, return 0);
@@ -882,11 +877,11 @@ void
 ped_disk_pc98_init ()
 {
 	PED_ASSERT (sizeof (PC98RawTable) == 512 * 2, return);
-	ped_register_disk_type (&pc98_disk_type);
+	ped_disk_type_register (&pc98_disk_type);
 }
 
 void
 ped_disk_pc98_done ()
 {
-	ped_unregister_disk_type (&pc98_disk_type);
+	ped_disk_type_unregister (&pc98_disk_type);
 }

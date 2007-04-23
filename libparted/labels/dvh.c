@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2001, 2002, 2005 Free Software Foundation, Inc.
+    Copyright (C) 2001, 2002, 2005, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,8 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include <string.h>
-
+#include <config.h>
 #include <parted/parted.h>
 #include <parted/debug.h>
 #include <parted/endian.h>
@@ -121,7 +120,6 @@ dvh_alloc (const PedDevice* dev)
 
 error_destroy_constraint_any:
 	ped_constraint_destroy (constraint_any);
-error_destroy_volume_part:
 	ped_partition_destroy (volume_part);
 error_free_disk_specific:
 	ped_free (disk->disk_specific);
@@ -265,7 +263,7 @@ _parse_boot_file (PedDisk* disk, struct volume_directory* vd)
 	return part;
 }
 
-static int dvh_write (PedDisk* disk);
+static int dvh_write (const PedDisk* disk);
 
 /* YUCK
  *
@@ -275,7 +273,7 @@ static int dvh_write (PedDisk* disk);
  * new partition numbers, and before we write to disk.
  */
 static void
-_flush_stale_flags (PedDisk* disk)
+_flush_stale_flags (const PedDisk* disk)
 {
 	DVHDiskData*		dvh_disk_data = disk->disk_specific;
 
@@ -366,6 +364,9 @@ dvh_read (PedDisk* disk)
 				return 1;
 			case PED_EXCEPTION_FIX:
 				write_back = 1;
+				break;
+			default:
+				break;
 		}
 #endif
 	}
@@ -403,7 +404,6 @@ dvh_read (PedDisk* disk)
 
 error_delete_all:
 	ped_disk_delete_all (disk);
-error:
 	return 0;
 }
 
@@ -437,7 +437,7 @@ _generate_boot_file (PedPartition* part, struct volume_directory* vd)
 }
 
 static int
-dvh_write (PedDisk* disk)
+dvh_write (const PedDisk* disk)
 {
 	DVHDiskData*		dvh_disk_data = disk->disk_specific;
 	struct volume_header	vh;
@@ -688,8 +688,6 @@ static int
 dvh_partition_is_flag_available (const PedPartition* part,
 				  PedPartitionFlag flag)
 {
-	DVHDiskData* dvh_disk_data = part->disk->disk_specific;
-
 	switch (flag) {
 	case PED_PARTITION_ROOT:
 	case PED_PARTITION_SWAP:
@@ -851,7 +849,6 @@ dvh_alloc_metadata (PedDisk* disk)
 	ped_constraint_destroy (constraint_exact);
 	return 1;
 
-error_destroy_constraint:
 	ped_constraint_destroy (constraint_exact);
 error_destroy_part:
 	ped_partition_destroy (part);
@@ -905,12 +902,11 @@ ped_disk_dvh_init ()
 {
 	PED_ASSERT (sizeof (struct volume_header) == 512, return);
 
-	ped_register_disk_type (&dvh_disk_type);
+	ped_disk_type_register (&dvh_disk_type);
 }
 
 void
 ped_disk_dvh_done ()
 {
-	ped_unregister_disk_type (&dvh_disk_type);
+	ped_disk_type_unregister (&dvh_disk_type);
 }
-

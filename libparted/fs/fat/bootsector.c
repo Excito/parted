@@ -1,6 +1,6 @@
 /*
     libparted
-    Copyright (C) 1998, 1999, 2000, 2002, 2004 Free Software Foundation, Inc.
+    Copyright (C) 1998, 1999, 2000, 2002, 2004, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
+#include <config.h>
 #include "fat.h"
 
 #include <stdio.h>
@@ -57,7 +58,8 @@ fat_boot_sector_read (FatBootSector* bs, const PedGeometry *geom)
 		return 0;
 	}
 
-	if (!bs->sector_size || PED_LE16_TO_CPU (bs->sector_size) % 512) {
+	if (!bs->sector_size
+            || PED_LE16_TO_CPU (bs->sector_size) % PED_SECTOR_SIZE_DEFAULT) {
 		ped_exception_throw (PED_EXCEPTION_ERROR, PED_EXCEPTION_CANCEL,
 			_("File system has an invalid sector size for a FAT "
 			  "file system."));
@@ -126,7 +128,6 @@ int
 fat_boot_sector_analyse (FatBootSector* bs, PedFileSystem* fs)
 {
 	FatSpecific*		fs_info = FAT_SPECIFIC (fs);
-	PedExceptionOption	ex_status;
 	int			fat_entry_size;
 
 	PED_ASSERT (bs != NULL, return 0);
@@ -186,6 +187,9 @@ fat_boot_sector_analyse (FatBootSector* bs, PedFileSystem* fs)
 
 		case PED_EXCEPTION_IGNORE:
 			break;
+
+                default:
+                        break;
 		}
 	}
 

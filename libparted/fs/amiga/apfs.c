@@ -1,6 +1,6 @@
 /*
     apfs.c -- parted support for apfs file systems
-    Copyright (C) 1998-2000 Free Software Foundation, Inc.
+    Copyright (C) 1998-2000, 2007 Free Software Foundation, Inc.
   
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,10 +17,8 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "config.h"
+#include <config.h>
 
-#include <stdlib.h>
-#include <string.h>
 #include <parted/parted.h>
 #include <parted/debug.h>
 #include <parted/endian.h>
@@ -45,7 +43,6 @@ static PedGeometry*
 _generic_apfs_probe (PedGeometry* geom, uint32_t kind)
 {
 	uint32_t *block;
-	int32_t i, sum;
 	PedSector root;
 	struct PartitionBlock * part;
 	uint32_t blocksize = 1, reserved = 2, prealloc = 0;

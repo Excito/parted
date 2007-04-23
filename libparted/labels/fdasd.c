@@ -16,6 +16,7 @@
  *           
  */
 
+#include <config.h>
 #include <parted/vtoc.h>
 #include <parted/fdasd.h>
 
@@ -28,7 +29,8 @@
 #  define _(String) (String)
 #endif /* ENABLE_NLS */
 
-#define GETARG(x) {int k=strlen(optarg);x=malloc(k);strncpy(x,optarg,k);}
+/* S390 */
+#if defined (__s390__) || defined (__s390x__)
 
 static int
 getpos (fdasd_anchor_t *anc, int dsn)
@@ -56,42 +58,6 @@ setpos (fdasd_anchor_t *anc, int dsn, int pos)
 {
 	PDEBUG
 	anc->partno[dsn] = pos;
-}
-
-static void
-fdasd_check_volser (char *s, int devno)
-{
-	PDEBUG
-	int i, j;
-
-	for (i = 0; i < 6; i++) {
-		if ((s[i] < 0x20) || (s[i] > 0x7a)
-		    || ((s[i] >= 0x21) && (s[i] <= 0x22))
-		    || /* !"         */ ((s[i] >= 0x26) && (s[i] <= 0x2f))
-		    || /* &'()*+,-./ */ ((s[i] >= 0x3a) && (s[i] <= 0x3f))
-		    || /* :;<=>?     */ ((s[i] >= 0x5b) && (s[i] <= 0x60)))
-			/* \]^_´     */ s[i] = ' ';
-		s[i] = toupper (s[i]);
-	}
-
-	s[6] = 0x00;
-
-	for (i = 0; i < 6; i++) {
-		if (s[i] == ' ')
-			for (j = i; j < 6; j++)
-				if (s[j] != ' ') {
-					s[i] = s[j];
-					s[j] = ' ';
-					break;
-				}
-	}
-
-	if (s[0] == ' ') {
-		printf ("Usage error, switching to default.\n");
-		sprintf (s, "0X%04x", devno);
-		for (i = 0; i < 6; i++)
-			s[i] = toupper (s[i]);
-	}
 }
 
 void
@@ -205,24 +171,6 @@ cchhb2blk (cchhb_t *p, struct fdasd_hd_geometry *geo)
 	                        + p->hh * geo->sectors + p->b);
 }
 
-static char *fdasd_partition_type (char *str) 
-{
-	PDEBUG
-
-	if (strncmp("NATIVE", str, 6) == 0)
-		strcpy(str, "Linux native");
-	else if (strncmp("NEW   ", str, 6) == 0)
-		strcpy(str, "Linux native");
-	else if (strncmp("SWAP  ", str, 6) == 0)
-		strcpy(str, "Linux swap");
-	else if (strncmp("RAID  ", str, 6) == 0)
-		strcpy(str, "Linux Raid");
-	else
-		strcpy(str, "unknown");
-
-	return str;
-}
-
 /*
  * initializes the anchor structure and allocates some
  * memory for the labels
@@ -322,21 +270,6 @@ fdasd_initialize_anchor (fdasd_anchor_t * anc)
 		
 		q = p;
 	}
-}
-
-/*
- * call IOCTL to re-read the partition table
- */
-static void
-fdasd_reread_partition_table (fdasd_anchor_t * anc, int fd)
-{
-	PDEBUG
-	char str[LINE_LENGTH];
-	int f;
-
-	if (ioctl (fd, BLKRRPART, NULL) != 0)
-		fdasd_error (anc, unable_to_ioctl, "Error while rereading "
-       			"partition table.\nPlease reboot!");
 }
 
 /*
@@ -591,37 +524,6 @@ fdasd_recreate_vtoc (fdasd_anchor_t *anc)
 		setpos(anc, i, -1);
 
 	anc->vtoc_changed++;
-}
-
-/*
- * changes the volume serial
- */
-static void
-fdasd_change_volser (fdasd_anchor_t *anc, char *line_ptr) 
-{
-	PDEBUG
-	char str[10];
-
-	if (strcmp(line_ptr, "") != 0) {
-		int i;
-
-		/* fill with blanks if necessary and remove the linebreak */
-		i = strlen(line_ptr);
-		if (i <= 6)
-			strncpy(line_ptr + i - 1, "      ", 6);
-
-		strncpy(str, line_ptr, 6);
-
-		for (i=0; i<6; i++) str[i] = toupper(str[i]);
-		str[6] = 0x00;
-
-		fdasd_check_volser (str, anc->devno);
-        vtoc_volume_label_set_volser(anc->vlabel, str);
-
-       	vtoc_set_cchhb(&anc->vlabel->vtoc, 0x0000, 0x0001, 0x01);
-       	anc->vlabel_changed++;
-       	anc->vtoc_changed++;
-	}
 }
 
 /*
@@ -937,7 +839,6 @@ fdasd_get_partition_data (fdasd_anchor_t *anc, extent_t *part_extent,
 	unsigned int limit, cc, hh;
 	cchh_t llimit, ulimit;
 	partition_info_t *q;
-	char mesg[48];
 	u_int8_t b1, b2;
 	u_int16_t c, h;
 	unsigned int start = *start_ptr, stop = *stop_ptr;
@@ -1149,5 +1050,7 @@ fdasd_add_partition (fdasd_anchor_t *anc, unsigned int start,
 	PDEBUG;
 	return p;
 }
+
+#endif /* S390 */
 
 /* vim:set tabstop=4 shiftwidth=4 softtabstop=4: */

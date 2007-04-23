@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "config.h"
+#include <config.h>
 
 #ifndef DISCOVER_ONLY
 
@@ -248,7 +248,7 @@ void ext2_bcache_dump(struct ext2_fs *fs)
 {
 	int i;
 
-	fprintf(stderr, "buffer cache dump:\n");
+	fputs ("buffer cache dump:\n", stderr);
 
 	for (i=0;i<(1<<ext2_hash_bits);i++)
 		if (fs->bc->hash[i] != NULL)
@@ -265,7 +265,7 @@ void ext2_bcache_dump(struct ext2_fs *fs)
 				a = a->next;
 			} while (a != b);
 
-			fprintf(stderr, "\n");
+			fputc ('\n', stderr);
 		}
 }
 

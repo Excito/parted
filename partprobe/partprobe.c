@@ -1,6 +1,6 @@
 /*
     partprobe - informs the OS kernel of partition layout
-    Copyright (C) 2001, 2002 Free Software Foundation, Inc.
+    Copyright (C) 2001, 2002, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,16 +21,51 @@
  *
  * 	 CFLAGS=-Os ./configure --disable-nls --disable-shared --disable-debug
  * 	 	    --enable-discover-only
- * 
+ *
  * And strip(1) afterwards!
  */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 
 #include <stdio.h>
 #include <string.h>
+#include <getopt.h>
+
+#include "closeout.h"
+#include "configmake.h"
+#include "version-etc.h"
+
+#include <locale.h>
+#include "gettext.h"
+#if ! ENABLE_NLS
+# undef textdomain
+# define textdomain(Domainname) /* empty */
+# undef bindtextdomain
+# define bindtextdomain(Domainname, Dirname) /* empty */
+#endif
+
+#undef _
+#define _(msgid) gettext (msgid)
+
+#define AUTHORS \
+  "<http://parted.alioth.debian.org/cgi-bin/trac.cgi/browser/AUTHORS>"
+
+/* The official name of this program (e.g., no `g' prefix).  */
+#define PROGRAM_NAME "partprobe"
+
+static struct option const long_options[] =
+  {
+    {"no-update", no_argument, NULL, 'd'},
+    {"summary", no_argument, NULL, 's'},
+    {"help", no_argument, NULL, 'h'},
+    {"version", no_argument, NULL, 'v'},
+    {NULL, 0, NULL, 0}
+  };
+
+
+char *program_name;
 
 /* initialized to 0 according to the language lawyers */
 static int	opt_no_probe;
@@ -95,67 +130,81 @@ error:
 	return 0;
 }
 
-static void
-help ()
+void
+usage (int status)
 {
-	printf ("usage:  partprobe [-d] [-h] [-s] [-v] [DEVICES...]\n\n"
-		"-d	don't update the kernel\n"
-		"-s	print a summary of contents\n"
-		"-v	version info\n");
-}
-
-static void
-version ()
-{
-	printf ("partprobe (" PACKAGE VERSION ")\n");
+  if (status != EXIT_SUCCESS)
+    fprintf (stderr, _("Try `%s --help' for more information.\n"),
+	     program_name);
+  else
+    {
+      printf (_("Usage: %s [OPTION] [DEVICE]...\n"), PROGRAM_NAME);
+      fputs (_("\
+Inform the OS of partition table changes.\n\
+\n\
+  -d, --no-update  don't update the kernel\n\
+  -s, --summary    print a summary of contents\n\
+  -h, --help       display this help and exit\n\
+  -v, --version    output version information and exit\n\
+"), stdout);
+      fputs (_("\
+\n\
+With no DEVICE, probe all partitions.\n\
+"), stdout);
+      printf (_("\nReport bugs to <%s>.\n"), PACKAGE_BUGREPORT);
+    }
+  exit (status);
 }
 
 int
 main (int argc, char* argv[])
 {
-	int		dev_passed = 0;
-	int		i;
-	PedDevice*	dev;
-	int		status = 1;
+	int		status = 0;
 
-	for (i = 1; i < argc; i++) {
-		if (argv[i][0] != '-') {
-			dev_passed = 1;
-			continue;
-		}
-		switch (argv[i][1]) {
-			case '?':
+	program_name = argv[0];
+	atexit (close_stdout);
+
+	int c;
+	while ((c = getopt_long (argc, argv, "dhsv", long_options, NULL)) != -1)
+		switch (c) {
+			case 'd':
+				opt_no_probe = 1;
+				break;
+
+			case 's':
+				opt_summary = 1;
+				break;
+
 			case 'h':
-				help();
-				return 0;
-
-			case 'd': opt_no_probe = 1; break;
-			case 's': opt_summary = 1; break;
+				usage (EXIT_SUCCESS);
+				break;
 
 			case 'v':
-				version();
-				return 0;
-		}
-	}
+				version_etc (stdout, PROGRAM_NAME, PACKAGE_NAME,
+				             VERSION, AUTHORS, (char *) NULL);
+				exit (EXIT_SUCCESS);
+				break;
 
-	if (dev_passed) {
-		for (i = 1; i < argc; i++) {
-			if (argv[i][0] == '-')
-				continue;
+			default:
+				usage (EXIT_FAILURE);
+                }
 
-			dev = ped_device_get (argv[i]);
-			if (dev)
-				status &= process_dev (dev);
-			else
-				status = 0;
+        int n_dev = argc - optind;
+	if (n_dev != 0) {
+		int i;
+		for (i = optind; i < argc; i++) {
+			PedDevice *dev = ped_device_get (argv[i]);
+			if (dev == NULL || process_dev (dev) == 0)
+				status = 1;
 		}
 	} else {
 		ped_device_probe_all ();
+		PedDevice *dev;
 		for (dev = ped_device_get_next (NULL); dev;
 		     dev = ped_device_get_next (dev))
-			status &= process_dev (dev);
+			if (process_dev (dev) == 0)
+				status = 1;
 	}
 
-	return !status;
+	return status;
 }
-

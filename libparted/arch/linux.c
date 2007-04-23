@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999 - 2005 Free Software Foundation, Inc.
+    Copyright (C) 1999 - 2005, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,13 +17,9 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-/* we need this for O_DIRECT on Linux, it's in the glibc headers */
-/* ... and for posix_memalign()                                  */
-#define _GNU_SOURCE
-
 #define PROC_DEVICES_BUFSIZ 16384
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
@@ -33,10 +29,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <libgen.h>
-#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <syscall.h>
 #include <unistd.h>
 #include <dirent.h>
@@ -71,9 +64,6 @@
 /* from <linux/hdreg.h> */
 #define HDIO_GETGEO             0x0301  /* get device geometry */
 #define HDIO_GET_IDENTITY       0x030d  /* get IDE identification info */
-
-#include <parted/vtoc.h>
-#include <parted/fdasd.h>
 
 #if defined(O_DIRECT) && (!defined(__s390__) || !defined(__s390x__))
 #define RD_MODE (O_RDONLY | O_DIRECT)
@@ -354,7 +344,6 @@ _is_dm_major (int major)
         char* line;
         char* end;
         int bd = 0;
-        int rc = 0;
         char c;
 
         fd = open ("/proc/devices", O_RDONLY);
@@ -431,7 +420,6 @@ _device_probe_type (PedDevice* dev)
         struct stat             dev_stat;
         int                     dev_major;
         int                     dev_minor;
-        PedExceptionOption      ex_status;
 
         if (!_device_stat (dev, &dev_stat))
                 return 0;
@@ -576,7 +564,7 @@ _device_get_length (PedDevice* dev)
 
 
         PED_ASSERT (dev->open_count > 0, return 0);
-        PED_ASSERT (dev->sector_size % 512 == 0, return 0);
+        PED_ASSERT (dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
 
         if (_kernel_has_blkgetsize64()) {
                 if (ioctl(arch_specific->fd, BLKGETSIZE64, &bytes) == 0) {
@@ -687,6 +675,10 @@ init_ide (PedDevice* dev)
                                 ped_exception_catch ();
                         case PED_EXCEPTION_IGNORE:
                                 dev->model = strdup(_("Generic IDE"));
+                                break;
+                        default:
+                                PED_ASSERT (0, (void) 0);
+                                break;
                 }
         } else {
                 /* hdi.model is not guaranteed to be NULL terminated */
@@ -719,7 +711,10 @@ init_ide (PedDevice* dev)
                                 case PED_EXCEPTION_UNHANDLED:
                                         ped_exception_catch ();
                                 case PED_EXCEPTION_IGNORE:
-                                        ;
+                                        break;
+                                default:
+                                        PED_ASSERT (0, (void) 0);
+                                        break;
                         }
                 }
                 
@@ -755,7 +750,9 @@ read_device_sysfs_file (PedDevice *dev, const char *file)
         if ((f = fopen (name_buf, "r")) == NULL)
                 return NULL;
 
-        fgets (buf, 255, f);
+        if (fgets (buf, 255, f) == NULL)
+                return NULL;
+
         fclose (f);
         return strip_name (buf);
 }
@@ -957,10 +954,7 @@ static int
 init_dasd (PedDevice* dev, char* model_name)
 {
         struct stat             dev_stat;
-        PedExceptionOption      ex_status;
-        dasd_information_t      dasd_info;
         struct hd_geometry      geo;
-        int f, blksize = 0;
         char *errstr = 0;
 
         if (!_device_stat (dev, &dev_stat))
@@ -1002,7 +996,6 @@ init_dasd (PedDevice* dev, char* model_name)
         ped_device_close (dev);
         return 1;
 
-except:
         ped_exception_throw ( PED_EXCEPTION_ERROR,
                               PED_EXCEPTION_IGNORE_CANCEL,
                               errstr );
@@ -1047,7 +1040,10 @@ init_generic (PedDevice* dev, char* model_name)
                         case PED_EXCEPTION_UNHANDLED:
                                 ped_exception_catch ();
                         case PED_EXCEPTION_IGNORE:
-                                ; // just workaround for gcc 3.0
+                                break;
+                        default:
+                                PED_ASSERT (0, (void) 0);
+                                break;
                 }
 
                 /* what should we stick in here? */
@@ -1353,7 +1349,7 @@ _device_seek (const PedDevice* dev, PedSector sector)
 {
         LinuxSpecific*  arch_specific;
         
-        PED_ASSERT (dev->sector_size % 512 == 0, return 0);
+        PED_ASSERT (dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
         PED_ASSERT (dev != NULL, return 0);
         PED_ASSERT (!dev->external_mode, return 0);
         
@@ -1411,10 +1407,9 @@ linux_read (const PedDevice* dev, void* buffer, PedSector start,
         LinuxSpecific*          arch_specific = LINUX_SPECIFIC (dev);
         int                     status;
         PedExceptionOption      ex_status;
-        size_t                  read_length = count * dev->sector_size;
         void*                   diobuf;
 
-        PED_ASSERT (dev->sector_size % 512 == 0, return 0);
+        PED_ASSERT (dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
 
         if (_get_linux_version() < KERNEL_VERSION (2,6,0)) {
                 /* Kludge.  This is necessary to read/write the last
@@ -1424,7 +1419,7 @@ linux_read (const PedDevice* dev, void* buffer, PedSector start,
                     && start + count - 1 == dev->length - 1)
                         return ped_device_read (dev, buffer, start, count - 1)
                                 && _read_lastoddsector (
-                                        dev, buffer + (count-1) * 512);
+                                        dev, (char *) buffer + (count-1) * 512);
         }
         while (1) {
                 if (_device_seek (dev, start))
@@ -1447,12 +1442,14 @@ linux_read (const PedDevice* dev, void* buffer, PedSector start,
                                 ped_exception_catch ();
                         case PED_EXCEPTION_CANCEL:
                                 return 0;
+                        default:
+                                PED_ASSERT (0, (void) 0);
+                                break;
                 }
         }
 
-
-        if (posix_memalign(&diobuf, PED_SECTOR_SIZE_DEFAULT,
-                           count * PED_SECTOR_SIZE_DEFAULT) != 0)
+        size_t read_length = count * dev->sector_size;
+        if (posix_memalign (&diobuf, dev->sector_size, read_length) != 0)
                 return 0;
 
         while (1) {
@@ -1462,7 +1459,7 @@ linux_read (const PedDevice* dev, void* buffer, PedSector start,
                 if (status == count * dev->sector_size) break;
                 if (status > 0) {
                         read_length -= status;
-                        buffer += status;
+                        buffer = (char *) buffer + status;
                         continue;
                 }
 
@@ -1486,6 +1483,9 @@ linux_read (const PedDevice* dev, void* buffer, PedSector start,
                         case PED_EXCEPTION_CANCEL:
                                 free(diobuf);
                                 return 0;
+                        default:
+                                PED_ASSERT (0, (void) 0);
+                                break;
                 }
         }
         free(diobuf);
@@ -1537,7 +1537,7 @@ linux_write (PedDevice* dev, const void* buffer, PedSector start,
         void*                   diobuf;
         void*                   diobuf_start;
 
-        PED_ASSERT(dev->sector_size % 512 == 0, return 0);
+        PED_ASSERT(dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
 
         if (dev->read_only) {
                 if (ped_exception_throw (
@@ -1559,7 +1559,7 @@ linux_write (PedDevice* dev, const void* buffer, PedSector start,
                     && start + count - 1 == dev->length - 1)
                         return ped_device_write (dev, buffer, start, count - 1)
                                 && _write_lastoddsector (
-                                        dev, buffer + (count-1) * 512);
+                                        dev, (char*) buffer + (count-1) * 512);
         }
         while (1) {
                 if (_device_seek (dev, start))
@@ -1581,6 +1581,9 @@ linux_write (PedDevice* dev, const void* buffer, PedSector start,
                                 ped_exception_catch ();
                         case PED_EXCEPTION_CANCEL:
                                 return 0;
+                        default:
+                                PED_ASSERT (0, (void) 0);
+                                break;
                 }
         }
 
@@ -1599,7 +1602,7 @@ linux_write (PedDevice* dev, const void* buffer, PedSector start,
                 if (status == count * dev->sector_size) break;
                 if (status > 0) {
                         write_length -= status;
-                        diobuf += status;
+                        diobuf = (char *) diobuf + status;
                         continue;
                 }
 
@@ -1622,6 +1625,9 @@ linux_write (PedDevice* dev, const void* buffer, PedSector start,
                         case PED_EXCEPTION_CANCEL:
                                 free(diobuf_start);
                                 return 0;
+                        default:
+                                PED_ASSERT (0, (void) 0);
+                                break;
                 }
         }
         free(diobuf_start);
@@ -1689,6 +1695,9 @@ _do_fsync (PedDevice* dev)
                                 ped_exception_catch ();
                         case PED_EXCEPTION_CANCEL:
                                 return 0;
+                        default:
+                                PED_ASSERT (0, (void) 0);
+                                break;
                 }
         } 
         return 1;
@@ -1774,8 +1783,11 @@ _probe_proc_partitions ()
         if (!proc_part_file)
                 return 0;
 
-        fgets (buf, 256, proc_part_file);
-        fgets (buf, 256, proc_part_file);
+        if (fgets (buf, 256, proc_part_file) == NULL)
+                return 0;
+
+        if (fgets (buf, 256, proc_part_file) == NULL)
+                return 0;
 
         while (fgets (buf, 512, proc_part_file)
                && sscanf (buf, "%d %d %d %255s", &major, &minor, &size,
@@ -2036,7 +2048,8 @@ _blkpg_add_partition (PedDisk* disk, PedPartition* part)
         char*                   dev_name;
 
         PED_ASSERT(disk != NULL, return 0);
-        PED_ASSERT(disk->dev->sector_size % 512 == 0, return 0);
+        PED_ASSERT(disk->dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0,
+                   return 0);
 
         if (ped_disk_type_check_feature (disk->type,
                                          PED_DISK_TYPE_PARTITION_NAME))
@@ -2129,28 +2142,6 @@ _disk_sync_part_table (PedDisk* disk)
 
 #ifdef ENABLE_DEVICE_MAPPER
 static int
-_dm_remove_map(int major, int minor)
-{
-        struct dm_task  *task = NULL;
-        int             rc;
-
-        task = dm_task_create(DM_DEVICE_REMOVE);
-        if (!task)
-                return 1;
-
-        dm_task_set_major (task, major);
-        dm_task_set_minor (task, minor);
-
-        rc = dm_task_run(task);
-        dm_task_update_nodes();
-        dm_task_destroy(task);
-        if (rc < 0)
-                return 1;
-
-        return 0;
-}
-
-static int
 _dm_remove_map_name(char *name)
 {
         struct dm_task  *task = NULL;
@@ -2223,7 +2214,6 @@ _dm_remove_parts (PedDevice* dev)
         struct dm_info*         info = alloca(sizeof *info);
         struct dm_names*        names = NULL;
         unsigned int            next = 0;
-        int                     i;
         int                     rc;
 
         if (!_device_stat (dev, &dev_stat))
@@ -2301,9 +2291,10 @@ _dm_add_partition (PedDisk* disk, PedPartition* part)
         if (!_device_stat (disk->dev, &dev_stat))
                 goto err;
 
-        asprintf (&params, "%d:%d %lu", major (dev_stat.st_rdev),
-                        minor (dev_stat.st_rdev),
-                        part->geom.start);
+        if (asprintf (&params, "%d:%d %lld", major (dev_stat.st_rdev),
+                      minor (dev_stat.st_rdev), part->geom.start) == -1)
+                goto err;
+
         if (!params)
                 goto err;
 

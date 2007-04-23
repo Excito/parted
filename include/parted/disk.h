@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+    Copyright (C) 1999, 2000, 2001, 2002, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,33 +27,22 @@
 #ifndef PED_DISK_H_INCLUDED
 #define PED_DISK_H_INCLUDED
 
-typedef struct _PedDisk                 PedDisk;
-typedef struct _PedPartition            PedPartition;
-typedef const struct _PedDiskOps        PedDiskOps;
-typedef struct _PedDiskType             PedDiskType;
-typedef const struct _PedDiskArchOps    PedDiskArchOps;
-
-#include <parted/device.h>
-#include <parted/filesys.h>
-#include <parted/natmath.h>
-#include <parted/geom.h>
-
 /**
  * Partition types
  */
-typedef enum {
+enum _PedPartitionType {
         PED_PARTITION_NORMAL            = 0x00,
         PED_PARTITION_LOGICAL           = 0x01,
         PED_PARTITION_EXTENDED          = 0x02,
         PED_PARTITION_FREESPACE         = 0x04,
         PED_PARTITION_METADATA          = 0x08,
         PED_PARTITION_PROTECTED         = 0x10
-} PedPartitionType;
+};
 
 /**
  * Partition flags.
  */
-typedef enum {
+enum _PedPartitionFlag {
         PED_PARTITION_BOOT=1,
         PED_PARTITION_ROOT=2,
         PED_PARTITION_SWAP=3,
@@ -65,16 +54,36 @@ typedef enum {
         PED_PARTITION_PALO=9,
         PED_PARTITION_PREP=10,
         PED_PARTITION_MSFT_RESERVED=11
-} PedPartitionFlag;
+};
 #define PED_PARTITION_FIRST_FLAG        PED_PARTITION_BOOT
 #define PED_PARTITION_LAST_FLAG         PED_PARTITION_MSFT_RESERVED
 
-typedef enum {
+enum _PedDiskTypeFeature {
         PED_DISK_TYPE_EXTENDED=1,       /**< supports extended partitions */
         PED_DISK_TYPE_PARTITION_NAME=2  /**< supports partition names */
-} PedDiskTypeFeature;
+};
 #define PED_DISK_TYPE_FIRST_FEATURE    PED_DISK_TYPE_EXTENDED
 #define PED_DISK_TYPE_LAST_FEATURE     PED_DISK_TYPE_PARTITION_NAME
+
+struct _PedDisk;
+struct _PedPartition;
+struct _PedDiskOps;
+struct _PedDiskType;
+struct _PedDiskArchOps;
+
+typedef enum _PedPartitionType          PedPartitionType;
+typedef enum _PedPartitionFlag          PedPartitionFlag;
+typedef enum _PedDiskTypeFeature        PedDiskTypeFeature;
+typedef struct _PedDisk                 PedDisk;
+typedef struct _PedPartition            PedPartition;
+typedef const struct _PedDiskOps        PedDiskOps;
+typedef struct _PedDiskType             PedDiskType;
+typedef const struct _PedDiskArchOps    PedDiskArchOps;
+
+#include <parted/device.h>
+#include <parted/filesys.h>
+#include <parted/natmath.h>
+#include <parted/geom.h>
 
 /** @} */
 
@@ -168,7 +177,7 @@ struct _PedDiskOps {
         PedDisk* (*duplicate) (const PedDisk* disk);
         void (*free) (PedDisk* disk);
         int (*read) (PedDisk* disk);
-        int (*write) (PedDisk* disk);
+        int (*write) (const PedDisk* disk);
         /** \todo add label guessing op here */
         
         /* partition operations */
@@ -222,8 +231,21 @@ struct _PedDiskArchOps {
         int (*disk_commit) (PedDisk* disk);
 };
 
+extern void ped_disk_type_register (PedDiskType* type);
+extern void ped_disk_type_unregister (PedDiskType* type);
+
+/**
+ * Deprecated: use ped_disk_type_register.
+ */
+__attribute__ ((deprecated))
 extern void ped_register_disk_type (PedDiskType* type);
+
+/**
+ * Deprecated: use ped_disk_type_unregister.
+ */
+__attribute__ ((deprecated))
 extern void ped_unregister_disk_type (PedDiskType* type);
+
 extern PedDiskType* ped_disk_type_get_next (PedDiskType* type);
 extern PedDiskType* ped_disk_type_get (const char* name);
 extern int ped_disk_type_check_feature (const PedDiskType* disk_type,
@@ -241,11 +263,11 @@ extern void ped_disk_destroy (PedDisk* disk);
 extern int ped_disk_commit (PedDisk* disk);
 extern int ped_disk_commit_to_dev (PedDisk* disk);
 extern int ped_disk_commit_to_os (PedDisk* disk);
-extern int ped_disk_check (PedDisk* disk);
-extern void ped_disk_print (PedDisk* disk);
+extern int ped_disk_check (const PedDisk* disk);
+extern void ped_disk_print (const PedDisk* disk);
 
-extern int ped_disk_get_primary_partition_count (PedDisk* disk);
-extern int ped_disk_get_last_partition_num (PedDisk* disk);
+extern int ped_disk_get_primary_partition_count (const PedDisk* disk);
+extern int ped_disk_get_last_partition_num (const PedDisk* disk);
 extern int ped_disk_get_max_primary_partition_count (const PedDisk* disk);
 
 /** @} */

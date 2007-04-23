@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/endian.h>
@@ -31,7 +31,6 @@
 #endif /* ENABLE_NLS */
 
 #include <unistd.h>
-#include <string.h>
 
 #include "bfs.h"
 

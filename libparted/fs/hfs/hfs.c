@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2003, 2004, 2005 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2003, 2004, 2005, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,10 +22,8 @@
    Report bug to <bug-parted@gnu.org>
 */
 
-#include "config.h"
+#include <config.h>
 
-#include <stdlib.h>
-#include <string.h>
 #include <parted/parted.h>
 #include <parted/endian.h>
 #include <parted/debug.h>
@@ -54,6 +52,9 @@ unsigned hfsp_block_count;
 #include "file.h"
 #include "reloc.h"
 #include "advfs.h"
+
+static PedFileSystemType hfs_type;
+static PedFileSystemType hfsplus_type;
 
 
 /* ----- HFS ----- */
@@ -571,8 +572,6 @@ hpo:	return NULL;
 static PedConstraint* 
 hfsplus_get_resize_constraint (const PedFileSystem *fs)
 {
-	HfsPPrivateFSData* 	priv_data = (HfsPPrivateFSData*)
-						fs->type_specific;
 	PedDevice*	dev = fs->geom->dev;
 	PedAlignment	start_align;
 	PedGeometry	start_sector;
@@ -773,7 +772,7 @@ hfsplus_wrapper_update (PedFileSystem* fs)
 	HfsNodeDescriptor*	node_desc = (HfsNodeDescriptor*) node;
 	HfsExtentKey*		ret_key;
 	HfsExtDescriptor*	ret_data;
-	unsigned int		i, j;
+	unsigned int		i;
 	HfsPPrivateFSData* 	priv_data = (HfsPPrivateFSData*)
 						fs->type_specific;
 	HfsPrivateFSData* 	hfs_priv_data = (HfsPrivateFSData*)
@@ -1038,8 +1037,8 @@ hfs_extract_file(const char* filename, HfsPrivateFile* hfs_file)
 			goto err_close;
 	}
 
-	fclose(fout);
-	return 1;
+	return (fclose(fout) == 0 ? 1 : 0);
+
 err_close:
 	fclose(fout);
 	return 0;
@@ -1071,8 +1070,8 @@ hfs_extract_bitmap(const char* filename, PedFileSystem* fs)
 			goto err_close;
 	}
 
-	fclose(fout);
-	return 1;
+	return (fclose(fout) == 0 ? 1 : 0);
+
 err_close:
 	fclose(fout);
 	return 0;
@@ -1091,8 +1090,8 @@ hfs_extract_mdb (const char* filename, PedFileSystem* fs)
 	if (!fwrite(extract_buffer, PED_SECTOR_SIZE_DEFAULT, 1, fout))
 		goto err_close;
 
-	fclose(fout);
-	return 1;
+	return (fclose(fout) == 0 ? 1 : 0);
+
 err_close:
 	fclose(fout);
 	return 0;
@@ -1143,8 +1142,8 @@ hfsplus_extract_file(const char* filename, HfsPPrivateFile* hfsp_file)
 			goto err_close;
 	}
 
-	fclose(fout);
-	return 1;
+	return (fclose(fout) == 0 ? 1 : 0);
+
 err_close:
 	fclose(fout);
 	return 0;
@@ -1167,8 +1166,8 @@ hfsplus_extract_vh (const char* filename, PedFileSystem* fs)
 	if (!fwrite(extract_buffer, PED_SECTOR_SIZE_DEFAULT, 1, fout))
 		goto err_close;
 
-	fclose(fout);
-	return 1;
+	return (fclose(fout) == 0 ? 1 : 0);
+
 err_close:
 	fclose(fout);
 	return 0;

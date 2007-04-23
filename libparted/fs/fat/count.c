@@ -1,6 +1,6 @@
 /*
     libparted
-    Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+    Copyright (C) 1998, 1999, 2000, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 
 */
 
+#include <config.h>
 #include "fat.h"
 #include "traverse.h"
 
@@ -98,6 +99,7 @@ is_movable_system_file (char* file_name)
     prints out the sequence of clusters for a given file chain, beginning
     at start_cluster.
 */
+#ifdef PED_VERBOSE
 static void
 print_chain (PedFileSystem* fs, FatCluster start)
 {
@@ -110,12 +112,13 @@ print_chain (PedFileSystem* fs, FatCluster start)
 	     clst = fat_table_get (fs_info->fat, clst)) {
 		printf ("  %d", (int) clst);
 		if (++this_row == 7) {
-			printf ("\n");
+                        putchar ('\n');
 			this_row = 0;
 		}
 	}
-	printf ("\n");
+	putchar ('\n');
 }
+#endif /* PED_VERBOSE */
 
 static PedSector
 remainder_round_up (PedSector a, PedSector b)
@@ -229,7 +232,6 @@ flag_traverse_dir (FatTraverseInfo* trav_info) {
 	char*			file_name_start;
 	FatCluster		first_cluster;
 	PedSector		size;
-	PedExceptionOption	ex_status;
 
 	PED_ASSERT (trav_info != NULL, return 0);
 
@@ -257,6 +259,7 @@ flag_traverse_dir (FatTraverseInfo* trav_info) {
 #if 0
 		if (fat_dir_entry_is_system_file (this_entry)
 		    && !is_movable_system_file (file_name)) {
+                        PedExceptionOption ex_status;
 			ex_status = ped_exception_throw (
 				PED_EXCEPTION_WARNING,
 				PED_EXCEPTION_IGNORE_CANCEL,
@@ -303,7 +306,6 @@ _mark_bad_clusters (PedFileSystem* fs)
 {
 	FatSpecific*	fs_info = FAT_SPECIFIC (fs);
 	FatCluster	cluster;
-	FatFragment	frag;
 
 	for (cluster = 2; cluster < fs_info->cluster_count + 2; cluster++) {
 		if (fat_table_is_bad (fs_info->fat, cluster))

@@ -1,7 +1,7 @@
 /* -*- Mode: c; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2001 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2001, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,9 +20,7 @@
     Contributor:  Matt Wilson <msw@redhat.com>
 */
 
-#include "config.h"
-
-#include <string.h>
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
@@ -149,7 +147,6 @@ bsd_probe (const PedDevice *dev)
 {
 	char		boot[512];
 	BSDRawLabel	*label;
-	int		i;
 
 	PED_ASSERT (dev != NULL, return 0);
 
@@ -177,7 +174,7 @@ bsd_alloc (const PedDevice* dev)
 	BSDDiskData*	bsd_specific;
 	BSDRawLabel*	label;
 
-	PED_ASSERT(dev->sector_size % 512 == 0, return 0);
+	PED_ASSERT(dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
 
 	disk = _ped_disk_alloc ((PedDevice*)dev, &bsd_disk_type);
 	if (!disk)
@@ -308,7 +305,7 @@ error:
 }
 
 static void
-_probe_and_add_boot_code (PedDisk* disk)
+_probe_and_add_boot_code (const PedDisk* disk)
 {
 	BSDDiskData*		bsd_specific;
 	BSDRawLabel*		old_label;
@@ -326,7 +323,7 @@ _probe_and_add_boot_code (PedDisk* disk)
 
 #ifndef DISCOVER_ONLY
 static int
-bsd_write (PedDisk* disk)
+bsd_write (const PedDisk* disk)
 {
 	BSDDiskData*		bsd_specific;
 	BSDRawLabel*		label;
@@ -398,7 +395,6 @@ bsd_partition_new (const PedDisk* disk, PedPartitionType part_type,
 	}
 	return part;
 
-error_free_bsd_data:
 	ped_free (bsd_data);
 error_free_part:
 	ped_free (part);
@@ -607,11 +603,11 @@ ped_disk_bsd_init ()
 	PED_ASSERT (sizeof (BSDRawPartition) == 16, return);
 	PED_ASSERT (sizeof (BSDRawLabel) == 276, return);
 
-	ped_register_disk_type (&bsd_disk_type);
+	ped_disk_type_register (&bsd_disk_type);
 }
 
 void
 ped_disk_bsd_done ()
 {
-	ped_unregister_disk_type (&bsd_disk_type);
+	ped_disk_type_unregister (&bsd_disk_type);
 }

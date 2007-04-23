@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "config.h"
+#include <config.h>
 
 #ifndef DISCOVER_ONLY
 
@@ -34,7 +34,7 @@ static int ext2_add_group(struct ext2_fs *fs, blk_t groupsize)
 	int   sparse;
 
 	if (fs->opt_verbose)
-		fprintf(stderr, "ext2_add_group\n");
+                fputs ("ext2_add_group\n", stderr);
 
 	if (!ped_realloc ((void*) &fs->gd,
 			  (fs->numgroups+1) * sizeof(struct ext2_group_desc)
@@ -47,9 +47,8 @@ static int ext2_add_group(struct ext2_fs *fs, blk_t groupsize)
 		    EXT2_SUPER_FIRST_DATA_BLOCK(fs->sb)
 		    + fs->numgroups * EXT2_SUPER_BLOCKS_PER_GROUP(fs->sb))
 		{
-			fprintf(stderr,
-				"ext2_add_group: last (existing) group "
-				"isn't complete!\n");
+                        fputs ("ext2_add_group: last (existing) group "
+                               "isn't complete!\n", stderr);
 
 			return 0;
 		}
@@ -205,7 +204,7 @@ static int ext2_del_group(struct ext2_fs *fs)
 	int   sparse;
 
 	if (fs->opt_verbose)
-		fprintf(stderr, "ext2_del_group\n");
+                fputs ("ext2_del_group\n", stderr);
 
 	group = fs->numgroups - 1;
 	sparse = ext2_is_group_sparse(fs, group);
@@ -240,9 +239,8 @@ static int ext2_del_group(struct ext2_fs *fs)
 		if (EXT2_GROUP_FREE_INODES_COUNT(fs->gd[group]) !=
 		    EXT2_SUPER_INODES_PER_GROUP(fs->sb))
 		{
-			fprintf(stderr,
-				"ext2_del_group: this should not "
-				"happen anymore!\n");
+                        fputs ("ext2_del_group: this should not "
+                               "happen anymore!\n", stderr);
 
 			return 0;
 		}
@@ -333,7 +331,7 @@ static int ext2_grow_group(struct ext2_fs *fs, blk_t newsize)
 	blk_t i;
 
 	if (fs->opt_verbose)
-		fprintf(stderr, "ext2_grow_group\n");
+                fputs ("ext2_grow_group\n", stderr);
 
 	group = fs->numgroups - 1;
 	groupoff = group * EXT2_SUPER_BLOCKS_PER_GROUP(fs->sb)
@@ -344,15 +342,15 @@ static int ext2_grow_group(struct ext2_fs *fs, blk_t newsize)
 	{
 		if (newsize < gblocks)
 		{
-			fprintf(stderr,
-				"ext2_grow_group: called to shrink group!\n");
+                        fputs ("ext2_grow_group: called to shrink group!\n",
+                               stderr);
 
 			return 0;
 		}
 
 		if (gblocks == newsize)
 		{
-			fprintf(stderr, "ext2_grow_group: nothing to do!\n");
+                        fputs ("ext2_grow_group: nothing to do!\n", stderr);
 			return 0;
 		}
 	}
@@ -379,7 +377,7 @@ static int ext2_shrink_group(struct ext2_fs *fs, blk_t newsize)
 	blk_t i;
 
 	if (fs->opt_verbose)
-		fprintf(stderr, "ext2_shrink_group\n");
+                fputs ("ext2_shrink_group\n", stderr);
 
 	group = fs->numgroups - 1;
 
@@ -404,16 +402,16 @@ static int ext2_shrink_group(struct ext2_fs *fs, blk_t newsize)
 
 		if (newsize > gblocks)
 		{
-			fprintf(stderr,
-				"ext2_shrink_group: called to grow group!\n");
+                        fputs ("ext2_shrink_group: called to grow group!\n",
+                               stderr);
 
 			return 0;
 		}
 
 		if (gblocks == newsize)
 		{
-			fprintf(stderr,
-				"ext2_shrink_group: nothing to do!\n");
+                        fputs ("ext2_shrink_group: nothing to do!\n",
+                               stderr);
 
 			return 0;
 		}
@@ -462,7 +460,7 @@ static int ext2_grow_fs(struct ext2_fs *fs, blk_t newsize, PedTimer* timer)
 	blk_t origsize = EXT2_SUPER_BLOCKS_COUNT(fs->sb);
 
 	if (fs->opt_verbose)
-		fprintf(stderr, "ext2_grow_fs\n");
+                fputs ("ext2_grow_fs\n", stderr);
 
 	if (!ext2_block_relocate(fs, newsize))
 		return 0;
@@ -518,7 +516,7 @@ static int ext2_shrink_fs(struct ext2_fs *fs, blk_t newsize,
 	blk_t sizelast;
 
 	if (fs->opt_verbose)
-		fprintf(stderr, "ext2_shrink_fs\n");
+                fputs ("ext2_shrink_fs\n", stderr);
 
 	newgroups = ped_div_round_up (newsize
                                 - EXT2_SUPER_FIRST_DATA_BLOCK(fs->sb),
@@ -687,15 +685,22 @@ int ext2_resize_fs(struct ext2_fs *fs, blk_t newsize, PedTimer* timer)
 		fs->metadirty |= EXT2_META_SB;
 	}
 
-	if (!ext2_determine_itoffset(fs)) {
-		ped_exception_throw (PED_EXCEPTION_NO_FEATURE, PED_EXCEPTION_OK,
-			_("GNU Parted cannot resize this file system, please use "
-			  "'resize2fs'."));
-		return 0;
-	}
+	if (!ext2_determine_itoffset(fs) && ped_exception_throw (
+                        PED_EXCEPTION_WARNING,
+                        PED_EXCEPTION_OK_CANCEL,
+                        _("A resize operation on this file system will "
+                          "use EXPERIMENTAL code\n"
+                          "that MAY CORRUPT it (although no one has "
+                          "reported any such damage yet).\n"
+                          "You should at least backup your data first, "
+                          "and run 'e2fsck -f' afterwards."))
+                == PED_EXCEPTION_CANCEL)
+        {
+	        return 0;
+        }
 
 	if (fs->opt_verbose)
-		fprintf(stderr, "ext2_resize_fs\n");
+                fputs ("ext2_resize_fs\n", stderr);
 
 	residue = (newsize - EXT2_SUPER_FIRST_DATA_BLOCK(fs->sb))
 		   % EXT2_SUPER_BLOCKS_PER_GROUP(fs->sb);

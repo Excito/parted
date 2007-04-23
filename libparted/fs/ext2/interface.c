@@ -21,10 +21,8 @@
  * merged 1.1.11 changes (by Andrew)
  */
 
-#include "config.h"
+#include <config.h>
 
-#include <stdlib.h>
-#include <string.h>
 #include <parted/parted.h>
 #include "ext2.h"
 #include "parted_io.h"

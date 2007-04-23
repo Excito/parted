@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999, 2000, 2001, 2002, 2003, 2005, 2006
+    Copyright (C) 1999, 2000, 2001, 2002, 2003, 2005, 2006, 2007
     Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -18,10 +18,20 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include "../config.h"
+#include <config.h>
+
+#include "closeout.h"
+#include "configmake.h"
+#include "version-etc.h"
 #include "command.h"
 #include "ui.h"
 #include "table.h"
+
+#define AUTHORS \
+  "<http://parted.alioth.debian.org/cgi-bin/trac.cgi/browser/AUTHORS>"
+
+/* The official name of this program (e.g., no `g' prefix).  */
+#define PROGRAM_NAME "parted"
 
 #define N_(String) String
 #if ENABLE_NLS
@@ -45,7 +55,6 @@
 #include <mcheck.h>
 #endif
 
-#ifdef HAVE_GETOPT_H
 #include <getopt.h>
 
 /* minimum amount of free space to leave, or maximum amount to gobble up */
@@ -65,24 +74,27 @@ typedef struct {
 static struct option    options[] = {
         /* name, has-arg, string-return-val, char-return-val */
         {"help",        0, NULL, 'h'},
-        {"interactive", 0, NULL, 'i'},
         {"list",        0, NULL, 'l'},
+        {"machine",     0, NULL, 'm'},
         {"script",      0, NULL, 's'},
         {"version",     0, NULL, 'v'},
         {NULL,          0, NULL, 0}
 };
-#endif
 
 static char*    options_help [][2] = {
         {"help",        N_("displays this help message")},
-        {"interactive", N_("where necessary, prompts for user intervention")},
-        {"list",        N_("lists partition tables of all detected devices")},
+        {"list",        N_("lists partition layout on all block devices")},
+        {"machine",     N_("displays machine parseable output")},
         {"script",      N_("never prompts for user intervention")},
         {"version",     N_("displays the version")},
         {NULL,          NULL}
 };
 
-int     opt_script_mode;
+char *program_name;
+
+int     opt_script_mode = 0;
+int     opt_machine_mode = 0;
+int     disk_is_modified = 0;
 int     is_toggle_mode = 0;
 
 static char* number_msg = N_(
@@ -104,7 +116,6 @@ static char* name_msg =         N_("NAME is any word you want\n");
 static char* resize_msg_start = N_("The partition must have one of the "
                                    "following FS-TYPEs: ");
 
-static char* version_msg = N_("GNU Parted Version information:\n");
 static char* copyright_msg = N_(
 "Copyright (C) 1998 - 2006 Free Software Foundation, Inc.\n"
 "This program is free software, covered by the GNU General Public License.\n"
@@ -123,10 +134,10 @@ static char* mkpart_fs_type_msg;
 static char* resize_fs_type_msg;
 
 static Command* commands [256] = {NULL};
-static PedTimer* timer;
+static PedTimer* g_timer;
 static TimerContext timer_context;
 
-static int _print_all (int cli);
+static int _print_list ();
 static void _done (PedDevice* dev);
 
 static void
@@ -154,8 +165,8 @@ _timer_handler (PedTimer* timer, void* context)
                         printf ("%s... ", timer->state_name);
                 printf (_("%0.f%%\t(time left %.2d:%.2d)"),
                         100.0 * timer->frac,
-                        tcontext->predicted_time_left / 60,
-                        tcontext->predicted_time_left % 60);
+                        (int) (tcontext->predicted_time_left / 60),
+                        (int) (tcontext->predicted_time_left % 60));
 
                 fflush (stdout);
         }
@@ -429,7 +440,6 @@ do_check (PedDevice** dev)
         PedDisk*        disk;
         PedFileSystem*  fs;
         PedPartition*   part = NULL;
-        int             part_num;
 
         disk = ped_disk_new (*dev);
         if (!disk)
@@ -446,7 +456,7 @@ do_check (PedDevice** dev)
         fs = ped_file_system_open (&part->geom);
         if (!fs)
                 goto error_destroy_disk;
-        if (!ped_file_system_check (fs, timer))
+        if (!ped_file_system_check (fs, g_timer))
                 goto error_close_fs;
         ped_file_system_close (fs);
         ped_disk_destroy (disk);
@@ -465,7 +475,6 @@ do_cp (PedDevice** dev)
 {
         PedDisk*                src_disk;
         PedDisk*                dst_disk;
-        PedDevice*              src_device;
         PedPartition*           src = NULL;
         PedPartition*           dst = NULL;
         PedFileSystem*          src_fs;
@@ -503,7 +512,7 @@ do_cp (PedDevice** dev)
         src_fs = ped_file_system_open (&src->geom);
         if (!src_fs)
                 goto error_destroy_disk;
-        dst_fs = ped_file_system_copy (src_fs, &dst->geom, timer);
+        dst_fs = ped_file_system_copy (src_fs, &dst->geom, g_timer);
         if (!dst_fs)
                 goto error_close_src_fs;
         dst_fs_type = dst_fs->type;     /* may be different to src_fs->type */
@@ -518,6 +527,10 @@ do_cp (PedDevice** dev)
         if (src_disk != dst_disk)
                 ped_disk_destroy (src_disk);
         ped_disk_destroy (dst_disk);
+
+        if ((*dev)->type != PED_DEVICE_FILE)
+                disk_is_modified = 1;
+
         return 1;
 
 error_close_src_fs:
@@ -578,12 +591,13 @@ do_mklabel (PedDevice** dev)
         if (!disk) ped_exception_catch ();
         ped_exception_leave_all ();
 
-	if (!_disk_warn_loss (disk))
-                goto error_destroy_disk;
-
         if (disk) {
                 if (!_disk_warn_busy (disk))
                         goto error_destroy_disk;
+
+                if (!_disk_warn_loss (disk))
+                        goto error_destroy_disk;
+
                 ped_disk_destroy (disk);
         }
 
@@ -597,6 +611,10 @@ do_mklabel (PedDevice** dev)
         if (!ped_disk_commit (disk))
                 goto error_destroy_disk;
         ped_disk_destroy (disk);
+
+        if ((*dev)->type != PED_DEVICE_FILE)
+                disk_is_modified = 1;
+
         return 1;
 
 error_destroy_disk:
@@ -627,7 +645,7 @@ do_mkfs (PedDevice** dev)
         if (!command_line_get_fs_type (_("File system?"), &type))
                 goto error_destroy_disk;
 
-        fs = ped_file_system_create (&part->geom, type, timer);
+        fs = ped_file_system_create (&part->geom, type, g_timer);
         if (!fs)
                 goto error_destroy_disk;
         ped_file_system_close (fs);
@@ -639,6 +657,10 @@ do_mkfs (PedDevice** dev)
         if (!ped_disk_commit (disk))
                 goto error_destroy_disk;
         ped_disk_destroy (disk);
+
+        if ((*dev)->type != PED_DEVICE_FILE)
+                disk_is_modified = 1;
+
         return 1;
 
 error_destroy_disk:
@@ -786,16 +808,17 @@ do_mkpart (PedDevice** dev)
         if (end_sol != NULL)
                 ped_free (end_sol);
 
+        if ((*dev)->type != PED_DEVICE_FILE)
+                disk_is_modified = 1;
+
         return 1;
 
 error_remove_part:
         ped_disk_remove_partition (disk, part);
-error_destroy_all_constraints:
         ped_constraint_destroy (final_constraint);
 error_destroy_simple_constraints:
         ped_constraint_destroy (user_constraint);
         ped_constraint_destroy (dev_constraint);
-error_destroy_part:
         ped_partition_destroy (part);
 error_destroy_disk:
         ped_disk_destroy (disk);
@@ -926,7 +949,7 @@ do_mkpartfs (PedDevice** dev)
                 ped_partition_set_flag (part, PED_PARTITION_LBA, 1);
 
         /* fs creation */
-        fs = ped_file_system_create (&part->geom, fs_type, timer);
+        fs = ped_file_system_create (&part->geom, fs_type, g_timer);
         if (!fs) 
                 goto error_destroy_disk;
         ped_file_system_close (fs);
@@ -958,16 +981,17 @@ do_mkpartfs (PedDevice** dev)
         if (end_sol != NULL)
                 ped_free (end_sol);
 
+        if ((*dev)->type != PED_DEVICE_FILE)
+                disk_is_modified = 1;
+
         return 1;
 
 error_remove_part:
         ped_disk_remove_partition (disk, part);
-error_destroy_all_constraints:
         ped_constraint_destroy (final_constraint);
 error_destroy_simple_constraints:
         ped_constraint_destroy (user_constraint);
         ped_constraint_destroy (dev_constraint);
-error_destroy_part:
         ped_partition_destroy (part);
 error_destroy_disk:
         ped_disk_destroy (disk);
@@ -1046,7 +1070,7 @@ do_move (PedDevice** dev)
         }
 
         /* do the move */
-        fs_copy = ped_file_system_copy (fs, &part->geom, timer);
+        fs_copy = ped_file_system_copy (fs, &part->geom, g_timer);
         if (!fs_copy)
                 goto error_close_fs;
         ped_file_system_close (fs_copy);
@@ -1058,6 +1082,10 @@ do_move (PedDevice** dev)
                 ped_geometry_destroy (range_start);
         if (range_end != NULL)
                 ped_geometry_destroy (range_end);
+
+        if ((*dev)->type != PED_DEVICE_FILE)
+                disk_is_modified = 1;
+
         return 1;
 
 error_destroy_constraint:
@@ -1180,28 +1208,28 @@ partition_print (PedPartition* part)
         if (!fs)
                 return 1;
 
-        printf ("\n");
+        putchar ('\n');
 
         flags = partition_print_flags (part);
      
         printf (_("Minor: %d\n"), part->num);
         printf (_("Flags: %s\n"), flags);
         printf (_("File System: %s\n"), fs->type->name);
-        printf (_("Size:         "));
+        fputs (_("Size:         "), stdout);
         print_sector_compact_and_percent (part->geom.length, part->geom.dev);
 
         resize_constraint = ped_file_system_get_resize_constraint (fs);
         if (resize_constraint) {
-                printf (_("Minimum size: "));
+                fputs (_("Minimum size: "), stdout);
                 print_sector_compact_and_percent (resize_constraint->min_size,
                         part->geom.dev);
-                printf (_("Maximum size: "));
+                fputs (_("Maximum size: "), stdout);
                 print_sector_compact_and_percent (resize_constraint->max_size,
                         part->geom.dev);
                 ped_constraint_destroy (resize_constraint);
         }
 
-        printf ("\n");
+        putchar ('\n');
 
         ped_free (flags);
         ped_file_system_close (fs);
@@ -1213,14 +1241,14 @@ static int
 do_print (PedDevice** dev)
 {
         PedDisk*        disk;
-        PedPartition*   part;
         Table*          table;
         StrList*        row;
         int             has_extended;
         int             has_name;
-        int             has_num_arg = 0;
+        int             has_devices_arg = 0;
         int             has_free_arg = 0;
-        int             has_all_arg = 0;
+        int             has_list_arg = 0;
+        int             has_num_arg = 0;
         char*           transport[13] = {"unknown", "scsi", "ide", "dac960",
                                          "cpqarray", "file", "ataraid", "i2o",
                                          "ubd", "dasd", "viodasd", "sx8", "dm"};
@@ -1238,23 +1266,57 @@ do_print (PedDevice** dev)
 
         peek_word = command_line_peek_word ();
         if (peek_word) {
-                has_num_arg = isdigit (peek_word[0]);
-
-                if (strncmp (peek_word, "free", 4) == 0) {
+                if (strncmp (peek_word, "devices", 7) == 0) {
+                        command_line_pop_word();
+                        has_devices_arg = 1;
+                }
+                else if (strncmp (peek_word, "free", 4) == 0) {
                         command_line_pop_word ();
                         has_free_arg = 1;
                 } 
-
-                if (strncmp (peek_word, "all", 3) == 0) {
+                else if (strncmp (peek_word, "list", 4) == 0 ||
+                         strncmp (peek_word, "all", 3) == 0) {
                         command_line_pop_word();
-                        has_all_arg = 1;
+                        has_list_arg = 1;
                 }
+                else
+                        has_num_arg = isdigit(peek_word[0]);
 
                 ped_free (peek_word);
-
         }
 
-        if (has_num_arg) {
+        if (has_devices_arg) {
+                char*           dev_name;
+                PedDevice*      current_dev = NULL;
+
+                ped_device_probe_all();
+
+                while ((current_dev = ped_device_get_next(current_dev))) {
+                        end = ped_unit_format_byte (current_dev,
+                                             current_dev->length
+                                             * current_dev->sector_size);
+                        printf ("%s (%s)\n", current_dev->path, end);
+                        ped_free (end);
+                }    
+
+                dev_name = strdup ((*dev)->path);
+                ped_device_free_all ();
+
+                *dev = ped_device_get (dev_name);
+                if (!*dev)
+		        return 0;
+                if (!ped_device_open (*dev))
+                        return 0;
+
+                ped_free (dev_name);
+
+                return 1;
+        }
+
+        else if (has_list_arg) 
+                return _print_list ();
+
+        else if (has_num_arg) {
                 PedPartition*   part = NULL;
                 int             status = 0;
                 if (command_line_get_partition ("", disk, &part))
@@ -1263,17 +1325,32 @@ do_print (PedDevice** dev)
                 return status;
         }
 
-        if (has_all_arg) 
-                return _print_all (0);
-
         start = ped_unit_format (*dev, 0);
         end = ped_unit_format_byte (*dev, (*dev)->length * (*dev)->sector_size
                                           - 1 );
-        printf ("\n");
-        printf (_("Model: %s (%s)\n"), (*dev)->model, transport[(*dev)->type]);
-        printf (_("Disk %s: %s\n"), (*dev)->path, end);
-        printf (_("Sector size (logical/physical): %lldB/%lldB\n"),
-                        (*dev)->sector_size, (*dev)->phys_sector_size);
+        
+        if (opt_machine_mode) {
+            switch (ped_unit_get_default ()) {
+                case PED_UNIT_CHS:      puts ("CHS;");
+                                        break;
+                case PED_UNIT_CYLINDER: puts ("CYL;");
+                                        break;
+                default:                puts ("BYT;");
+                                        break;
+
+            }
+            printf ("%s:%s:%s:%lld:%lld:%s:%s;\n",
+                    (*dev)->path, end, transport[(*dev)->type],
+                    (*dev)->sector_size, (*dev)->phys_sector_size,
+                    disk->type->name, (*dev)->model);
+        } else {
+            printf (_("Model: %s (%s)\n"), 
+                    (*dev)->model, transport[(*dev)->type]);
+            printf (_("Disk %s: %s\n"), (*dev)->path, end);
+            printf (_("Sector size (logical/physical): %lldB/%lldB\n"),
+                    (*dev)->sector_size, (*dev)->phys_sector_size);
+        }
+
         ped_free (start);
         ped_free (end);
 
@@ -1283,15 +1360,23 @@ do_print (PedDevice** dev)
                 char* cyl_size = ped_unit_format_custom (*dev,
                                         chs->heads * chs->sectors,
                                         PED_UNIT_KILOBYTE);
-                printf (_("BIOS cylinder,head,sector geometry: %d,%d,%d.  "
-                          "Each cylinder is %s.\n"),
-                        chs->cylinders, chs->heads, chs->sectors, cyl_size);
+                
+                if (opt_machine_mode) {
+                    printf ("%d:%d:%d:%s;\n",
+                            chs->cylinders, chs->heads, chs->sectors, cyl_size);
+                } else {
+                    printf (_("BIOS cylinder,head,sector geometry: %d,%d,%d.  "
+                              "Each cylinder is %s.\n"),
+                            chs->cylinders, chs->heads, chs->sectors, cyl_size);
+                }
+
                 ped_free (cyl_size);
         }
 
-        printf (_("Partition Table: %s\n"), disk->type->name);
-
-        printf ("\n");
+        if (!opt_machine_mode) {
+            printf (_("Partition Table: %s\n"), disk->type->name);
+            putchar ('\n');
+        }
         
         has_extended = ped_disk_type_check_feature (disk->type,
                                          PED_DISK_TYPE_EXTENDED);
@@ -1299,108 +1384,156 @@ do_print (PedDevice** dev)
                                          PED_DISK_TYPE_PARTITION_NAME);
 
         
-        if (ped_unit_get_default() == PED_UNIT_CHS) {
-                row = str_list_create (_("Number"), _("Start"),
-                                           _("End"), NULL);
+        PedPartition* part;
+        if (!opt_machine_mode) {
+
+            if (ped_unit_get_default() == PED_UNIT_CHS) {
+                    row = str_list_create (_("Number"), _("Start"),
+                                               _("End"), NULL);
+            } else {
+                    row = str_list_create (_("Number"), _("Start"),
+                                               _("End"), _("Size"), NULL);
+            }
+
+            if (has_extended)
+                    str_list_append (row, _("Type"));
+
+            str_list_append (row, _("File system"));
+
+            if (has_name)
+                    str_list_append (row, _("Name"));
+
+            str_list_append (row, _("Flags"));
+
+
+            table = table_new (str_list_length(row));
+
+            table_add_row_from_strlist (table, row);
+
+
+            for (part = ped_disk_next_partition (disk, NULL); part;
+                 part = ped_disk_next_partition (disk, part)) {
+
+                    if ((!has_free_arg && !ped_partition_is_active(part)) ||
+                        part->type & PED_PARTITION_METADATA)
+                            continue;
+
+                    tmp = ped_malloc (4);
+
+                    if (part->num >= 0)
+                            sprintf (tmp, "%2d ", part->num);
+                    else
+                            sprintf (tmp, "%2s ", "");
+
+                    row = str_list_create (tmp, NULL);
+
+                    start = ped_unit_format (*dev, part->geom.start);
+                    end = ped_unit_format_byte (
+                            *dev,
+                            (part->geom.end + 1) * (*dev)->sector_size - 1);
+                    size = ped_unit_format (*dev, part->geom.length);
+                    if (ped_unit_get_default() == PED_UNIT_CHS) {
+                            str_list_append (row, start);
+                            str_list_append (row, end);
+                    } else {
+                            str_list_append (row, start);
+                            str_list_append (row, end);
+                            str_list_append (row, size);
+                    }
+
+                    if (!(part->type & PED_PARTITION_FREESPACE)) {
+                            if (has_extended) {
+                                name = 
+                                    _(ped_partition_type_get_name (part->type));
+                                str_list_append (row, name);
+                            }
+
+                            str_list_append (row, part->fs_type ?
+                                             part->fs_type->name : "");
+
+                            if (has_name) {
+                                    name = _(ped_partition_get_name (part));
+                                    str_list_append (row, name);
+                            }
+
+                            str_list_append (row, partition_print_flags (part));
+                    } else {
+                            if (has_extended)
+                                    str_list_append (row, "");
+                            str_list_append (row, _("Free Space"));
+                            if (has_name)
+                                    str_list_append (row, "");
+                            str_list_append (row, "");
+                    }
+
+                    //PED_ASSERT (row.cols == caption.cols)
+                    table_add_row_from_strlist (table, row);
+            }
+
+            table_rendered = table_render (table); 
+#ifdef ENABLE_NLS
+            printf("%ls\n", table_rendered);
+#else
+            printf("%s\n", table_rendered);
+#endif
+            ped_free (table_rendered);
+            table_destroy (table);
+
         } else {
-                row = str_list_create (_("Number"), _("Start"),
-                                           _("End"), _("Size"), NULL);
-        }
-
-        if (has_extended)
-                str_list_append (row, _("Type"));
-
-        str_list_append (row, _("File system"));
-
-        if (has_name)
-                str_list_append (row, _("Name"));
-
-        str_list_append (row, _("Flags"));
-
-
-        table = table_new (str_list_length(row));
-
-        table_add_row_from_strlist (table, row);
-
-
-        for (part = ped_disk_next_partition (disk, NULL); part;
-             part = ped_disk_next_partition (disk, part)) {
+    
+            for (part = ped_disk_next_partition (disk, NULL); part;
+                 part = ped_disk_next_partition (disk, part)) {
 
                 if ((!has_free_arg && !ped_partition_is_active(part)) ||
-                    part->type & PED_PARTITION_METADATA)
-                        continue;
-
-                tmp = ped_malloc (4);
-
+                        part->type & PED_PARTITION_METADATA)
+                            continue; 
+                
                 if (part->num >= 0)
-                        sprintf (tmp, "%2d ", part->num);
+                    printf ("%d:", part->num);
                 else
-                        sprintf (tmp, "%2s ", "");
+                    fputs ("1:", stdout);
 
-                row = str_list_create (tmp, NULL);
+                printf ("%s:", ped_unit_format (*dev, part->geom.start));
+                printf ("%s:", ped_unit_format_byte (
+                                *dev,
+                                (part->geom.end + 1) * 
+                                (*dev)->sector_size - 1));
 
-                start = ped_unit_format (*dev, part->geom.start);
-                end = ped_unit_format_byte (
-                        *dev, (part->geom.end + 1) * (*dev)->sector_size - 1);
-                size = ped_unit_format (*dev, part->geom.length);
-                if (ped_unit_get_default() == PED_UNIT_CHS) {
-                        str_list_append (row, start);
-                        str_list_append (row, end);
-                } else {
-                        str_list_append (row, start);
-                        str_list_append (row, end);
-                        str_list_append (row, size);
-                }
-
+                if (ped_unit_get_default() != PED_UNIT_CHS)
+                    printf ("%s:", ped_unit_format (*dev,
+                                                    part->geom.length));
+                    
                 if (!(part->type & PED_PARTITION_FREESPACE)) {
-                        if (has_extended) {
-                                name = _(ped_partition_type_get_name (part->type));
-                                str_list_append (row, name);
-                        }
 
-                        str_list_append (row, part->fs_type ?
-                                         part->fs_type->name : "");
+                    if (part->fs_type)
+                        printf ("%s:", part->fs_type->name);
+                    else
+                        putchar (':');
 
-                        if (has_name) {
-                                name = _(ped_partition_get_name (part));
-                                str_list_append (row, name);
-                        }
+                    if (has_name) 
+                        printf ("%s:", _(ped_partition_get_name (part)));
+                    else
+                        putchar (':');
 
-                        str_list_append (row, partition_print_flags (part));
+                    printf ("%s;\n", partition_print_flags (part));
+
                 } else {
-                        if (has_extended)
-                                str_list_append (row, "");
-                        str_list_append (row, _("Free Space"));
-                        if (has_name)
-                                str_list_append (row, "");
-                        str_list_append (row, "");
+                    puts ("free;");
                 }
-
-                //PED_ASSERT (row.cols == caption.cols)
-                table_add_row_from_strlist (table, row);
+            }
         }
 
-        table_rendered = table_render (table); 
-#ifdef ENABLE_NLS
-        printf("%ls\n", table_rendered);
-#else
-        printf("%s\n", table_rendered);
-#endif
-        ped_free (table_rendered);
-
-        table_destroy (table);
         ped_disk_destroy (disk);
 
         return 1;
 
-error_destroy_disk:
         ped_disk_destroy (disk);
 error:
         return 0;
 }
 
 static int
-_print_all (int cli)
+_print_list ()
 {
         PedDevice *current_dev = NULL;
 
@@ -1408,11 +1541,8 @@ _print_all (int cli)
 
         while ((current_dev = ped_device_get_next(current_dev))) {
                 do_print (&current_dev);
-                printf ("\n");
+                putchar ('\n');
         }    
-
-        if(cli)
-                exit(0);
 
         return 1;
 }
@@ -1488,6 +1618,7 @@ _rescue_add_partition (PedPartition* part)
         switch (ex_opt) {
                 case PED_EXCEPTION_CANCEL: return -1;
                 case PED_EXCEPTION_NO: return 0;
+                default: break;
         }
 
         ped_partition_set_system (part, fs_type);
@@ -1514,10 +1645,10 @@ _rescue_pass (PedDisk* disk, PedGeometry* start_range, PedGeometry* end_range)
 
         ped_geometry_init (&entire_dev, disk->dev, 0, disk->dev->length);
 
-        ped_timer_reset (timer);
-        ped_timer_set_state_name (timer, _("searching for file systems"));
+        ped_timer_reset (g_timer);
+        ped_timer_set_state_name (g_timer, _("searching for file systems"));
         for (start = start_range->start; start <= start_range->end; start++) {
-                ped_timer_update (timer, 1.0 * (start - start_range->start)
+                ped_timer_update (g_timer, 1.0 * (start - start_range->start)
                                          / start_range->length);
 
                 ped_geometry_init (&start_geom_exact, disk->dev, start, 1);
@@ -1553,17 +1684,14 @@ _rescue_pass (PedDisk* disk, PedGeometry* start_range, PedGeometry* end_range)
                 ped_partition_destroy (part);
                 ped_constraint_done (&constraint);
         }
-        ped_timer_update (timer, 1.0);
+        ped_timer_update (g_timer, 1.0);
 
         return 1;
 
 error_remove_partition:
         ped_disk_remove_partition (disk, part);
-error_partition_destroy:
         ped_partition_destroy (part);
-error_constraint_done:
         ped_constraint_done (&constraint);
-error:
         return 0;
 }
 
@@ -1599,6 +1727,10 @@ do_rescue (PedDevice** dev)
                 goto error_destroy_disk;
 
         ped_disk_destroy (disk);
+
+        if ((*dev)->type != PED_DEVICE_FILE)
+                disk_is_modified = 1;
+
         return 1;
 
 error_destroy_disk:
@@ -1659,7 +1791,7 @@ do_resize (PedDevice** dev)
                 if (!ped_disk_set_partition_geom (disk, part, constraint,
                                                   new_geom.start, new_geom.end))
                         goto error_close_fs;
-                if (!ped_file_system_resize (fs, &part->geom, timer))
+                if (!ped_file_system_resize (fs, &part->geom, g_timer))
                         goto error_close_fs;
                 /* may have changed... eg fat16 -> fat32 */
                 ped_partition_set_system (part, fs->type);
@@ -1673,6 +1805,10 @@ do_resize (PedDevice** dev)
                 ped_geometry_destroy (range_start);
         if (range_end != NULL)
                 ped_geometry_destroy (range_end);
+
+        if ((*dev)->type != PED_DEVICE_FILE)
+                disk_is_modified = 1;
+
         return 1;
 
 error_close_fs:
@@ -1707,6 +1843,10 @@ do_rm (PedDevice** dev)
         ped_disk_delete_partition (disk, part);
         ped_disk_commit (disk);
         ped_disk_destroy (disk);
+
+        if ((*dev)->type != PED_DEVICE_FILE)
+                disk_is_modified = 1;
+
         return 1;
 
 error_destroy_disk:
@@ -1759,6 +1899,10 @@ do_set (PedDevice** dev)
     	if (!ped_disk_commit (disk))
 	        	goto error_destroy_disk;
     	ped_disk_destroy (disk);
+
+        if ((*dev)->type != PED_DEVICE_FILE)
+                disk_is_modified = 1;
+
 	    return 1;
 
 error_destroy_disk:
@@ -1953,7 +2097,7 @@ NULL),
                 str_list_create_unique ("help", _("help"), NULL),
                 do_help,
                 str_list_create (
-_("help [COMMAND]                           prints general help, or help "
+_("help [COMMAND]                           print general help, or help "
   "on COMMAND"),
 NULL),
                 NULL, 1));
@@ -1986,7 +2130,7 @@ NULL),
                                  _(mkpart_fs_type_msg),
                                  _(start_end_msg),
                                  "\n",
-_("mkpart makes a partition without creating a new file system on the "
+_("'mkpart' makes a partition without creating a new file system on the "
   "partition.  FS-TYPE may be specified to set an appropriate partition ID.\n"),
 NULL), 1));
 
@@ -1995,7 +2139,7 @@ NULL), 1));
                 do_mkpartfs,
                 str_list_create (
 _("mkpartfs PART-TYPE FS-TYPE START END     make a partition with a "
-"file system"),
+  "file system"),
 NULL),
         str_list_create (_(part_type_msg), _(start_end_msg), NULL), 1));
 
@@ -2019,15 +2163,19 @@ command_register (commands, command_create (
         str_list_create_unique ("print", _("print"), NULL),
         do_print,
         str_list_create (
-_("print [free|NUMBER|all]                  display the partition table, "
-  "a partition, or all devices"),
+_("print [devices|free|list,all|NUMBER]     display the partition table, "
+  "available devices, free space, all found partitions, or a particular "
+  "partition"),
 NULL),
         str_list_create (
-_("Without arguments, print displays the entire partition table. With 'free'\n"
-"argument, information about free space will be displayed otherwise if a\n"
-"partition number is given, then more detailed information is displayed\n"
-"about that partition. If the 'all' argument is passed instead, partition\n"
-"information for all devices will be displayed.\n"),
+_("Without arguments, 'print' displays the entire partition table. However "
+  "with the following arguments it performs various other actions.\n"),
+_("  devices   : display all active block devices\n"),
+_("  free      : display information about free unpartitioned space on the "
+  "current block device\n"),
+_("  list, all : display the partition tables of all active block devices\n"),
+_("  NUMBER    : display more detailed information about this particular "
+  "partition\n"),
 NULL), 1));
 
 command_register (commands, command_create (
@@ -2104,11 +2252,11 @@ command_register (commands, command_create (
         str_list_create_unique ("version", _("version"), NULL),
         do_version,
         str_list_create (
-_("version                                  displays the current version "
-"of GNU Parted and copyright information"),
+_("version                                  display the version number "
+"and copyright information of GNU Parted"),
 NULL),
         str_list_create (
-_("version displays copyright and version information corressponding to this "
+_("'version' displays copyright and version information corresponding to this "
 "copy of GNU Parted\n"),
 NULL), 1));
 
@@ -2139,41 +2287,57 @@ textdomain(PACKAGE);
 void
 _version ()
 {
-printf (prog_name);
-exit (0);
+  version_etc (stdout, PROGRAM_NAME, PACKAGE_NAME, VERSION, AUTHORS,
+               (char *) NULL);
 }
 
 static int
 _parse_options (int* argc_ptr, char*** argv_ptr)
 {
-int     opt;
+int     opt, help = 0, list = 0, version = 0, wrong = 0;
 
 while (1)
 {
-#ifdef HAVE_GETOPT_H
-        opt = getopt_long (*argc_ptr, *argv_ptr, "hilsv",
+        opt = getopt_long (*argc_ptr, *argv_ptr, "hilmsv",
                            options, NULL);
-#else
-        opt = getopt (*argc_ptr, *argv_ptr, "hilsv");
-#endif
         if (opt == -1)
                 break;
 
         switch (opt) {
-                case 'h': help_msg (); break;
-                case 'i': opt_script_mode = 0; break;
-                case 'l': _print_all(1); break;
+                case 'h': help = 1; break;
+                case 'l': list = 1; break;
+                case 'm': opt_machine_mode = 1; break;
                 case 's': opt_script_mode = 1; break;
-                case 'v': _version (); break;
+                case 'v': version = 1; break;
+                default:  wrong = 1; break;
         }
+}
+
+if (wrong == 1) {
+        fprintf (stderr,
+                 _("Usage: %s [-hlmsv] [DEVICE [COMMAND [PARAMETERS]]...]\n"),
+                 program_name);
+        return 0;
+}
+
+if (version == 1) {
+        _version ();
+        exit (EXIT_SUCCESS);
+}
+
+if (help == 1) {
+        help_msg ();
+        exit (EXIT_SUCCESS);
+}
+
+if (list == 1) {
+        _print_list ();
+        exit (EXIT_SUCCESS);
 }
 
 *argc_ptr -= optind;
 *argv_ptr += optind;
 return 1;
-
-error:
-return 0;
 }
 
 static PedDevice*
@@ -2228,8 +2392,8 @@ if (!_parse_options (argc_ptr, argv_ptr))
 
 #ifdef HAVE_GETUID
         if (getuid() != 0) {
-            printf(_("WARNING: You are not superuser.  Watch out for "
-                     "permissions.\n"));
+            puts (_("WARNING: You are not superuser.  Watch out for "
+                    "permissions."));
         }
 #endif
 
@@ -2237,8 +2401,8 @@ dev = _choose_device (argc_ptr, argv_ptr);
 if (!dev)
         goto error_done_commands;
 
-timer = ped_timer_new (_timer_handler, &timer_context);
-if (!timer)
+g_timer = ped_timer_new (_timer_handler, &timer_context);
+if (!g_timer)
         goto error_done_commands;
 timer_context.last_update = 0;
 
@@ -2247,7 +2411,6 @@ return dev;
 error_done_commands:
 _done_commands ();
 _done_messages ();
-error_done_ui:
 done_ui ();
 error:
 return NULL;
@@ -2264,16 +2427,15 @@ if (dev->boot_dirty && dev->type != PED_DEVICE_FILE) {
           "rebooting.  Read section 4 of the Parted User "
           "documentation for more information."));
 }
-if (dev->type != PED_DEVICE_FILE && !opt_script_mode) {
+if (!opt_script_mode && !opt_machine_mode && disk_is_modified) {
         ped_exception_throw (
                 PED_EXCEPTION_INFORMATION, PED_EXCEPTION_OK,
-                _("Don't forget to update /etc/fstab, if "
-                  "necessary.\n"));
+                _("You may need to update /etc/fstab.\n"));
 }
 
 ped_device_close (dev);
 
-ped_timer_destroy (timer);
+ped_timer_destroy (g_timer);
 _done_commands ();
 _done_messages ();
 done_ui();
@@ -2284,6 +2446,9 @@ main (int argc, char** argv)
 {
         PedDevice*      dev;
         int             status;
+
+        program_name = argv[0];
+        atexit (close_stdout);
 
         dev = _init (&argc, &argv);
         if (!dev)

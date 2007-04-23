@@ -17,7 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/debug.h>
 
@@ -513,7 +513,7 @@ str_list_print_wrap (const StrList* list, int line_length, int offset,
 			if (walk->next || *str)
 				printf ("\n%s", spaces);
 			else if (line_break)
-				printf ("\n");
+				putchar ('\n');
 		}
 
 		print_wchar (str, 0);

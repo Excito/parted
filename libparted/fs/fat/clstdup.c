@@ -1,6 +1,6 @@
 /*
     libparted
-    Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+    Copyright (C) 1998, 1999, 2000, 2001, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
+#include <config.h>
 #include <string.h>
 
 #include "fat.h"
@@ -396,7 +397,6 @@ count_frags_to_dup (FatOpContext* ctx)
 int
 fat_duplicate_clusters (FatOpContext* ctx, PedTimer* timer)
 {
-	FatSpecific*	old_fs_info = FAT_SPECIFIC (ctx->old_fs);
 	FatFragment	total_frags_to_dup;
 
 	init_remap (ctx);

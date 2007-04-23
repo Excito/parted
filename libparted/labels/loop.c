@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000 Free Software Foundation, Inc.
+    Copyright (C) 1999, 2000, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,12 +17,11 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include "config.h"
+#include <config.h>
 
 #include <parted/parted.h>
 #include <parted/debug.h>
 #include <parted/endian.h>
-#include <string.h>
 
 #if ENABLE_NLS
 #  include <libintl.h>
@@ -96,8 +95,6 @@ loop_clobber (PedDevice* dev)
 static PedDisk*
 loop_alloc (const PedDevice* dev)
 {
-	PedDisk*		disk;
-
 	PED_ASSERT (dev != NULL, return 0);
 
 	if (dev->length < 256)
@@ -168,7 +165,7 @@ error:
 
 #ifndef DISCOVER_ONLY
 static int
-loop_write (PedDisk* disk)
+loop_write (const PedDisk* disk)
 {
 	char		buf [512];
 
@@ -327,12 +324,11 @@ static PedDiskType loop_disk_type = {
 void
 ped_disk_loop_init ()
 {
-	ped_register_disk_type (&loop_disk_type);
+	ped_disk_type_register (&loop_disk_type);
 }
 
 void
 ped_disk_loop_done ()
 {
-	ped_unregister_disk_type (&loop_disk_type);
+	ped_disk_type_unregister (&loop_disk_type);
 }
-

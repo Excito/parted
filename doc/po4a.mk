@@ -36,7 +36,7 @@ dist_man_MANS =
 # Override the automake's install-man target.
 # And set dist_man_MANS according to the pages that could be generated
 # when this target is called.
-install-man: dist_man_MANS = $(wildcard *.[1-9])
+install-man: dist_man_MANS = pt_BR-parted.8
 install-man: install-man1 install-man5 install-man8
 
 # For each .po, try to generate the man page
@@ -58,6 +58,7 @@ updatepo:
 	tmpdir=`pwd`; \
 	cd $(srcdir); \
 	for po in *.$(lang).po; do \
+	  case "$$po" in '*'*) continue;; esac; \
 	  pot=../C/po/$${po%$(lang).po}pot; \
 	  echo "$(MSGMERGE) $$po $$pot -o $${po%po}new.po"; \
 	  if $(MSGMERGE) $$po $$pot -o $$tmpdir/$${po%po}new.po; then \
@@ -80,11 +81,11 @@ updatepo:
 
 dist-hook: updatepo
 
-# Build the pages with an addendum
-%: $(srcdir)/%.$(lang).po $(srcdir)/../C/% $(srcdir)/%.$(lang).po.addendum
-	po4a-translate -f man -m $(srcdir)/../C/$@ -p $< -l $@ -a $(srcdir)/$@.$(lang).po.addendum $(po4a_translate_options)
-
-# Build the pages without addendum
-%: $(srcdir)/%.$(lang).po $(srcdir)/../C/%
-	po4a-translate -f man -m $(srcdir)/../C/$@ -p $< -l $@ $(po4a_translate_options)
-
+# Build the pages
+partprobe.8:
+	for locale in pt_BR ; do \
+		po4a-translate -f man -m $(srcdir)/../C/$@ -p $@.$$locale.po -l $@ $(po4a_translate_options) ; \
+		if [ -f $(srcdir)/$@.$$locale.po.addendum ]; then \
+			po4a-translate -f man -m $(srcdir)/../C/$@ -p $@.$$locale.po -l $@ -a $(srcdir)/$@.$$locale.po.addendum $(po4a_translate_options) ; \
+		fi ; \
+	done

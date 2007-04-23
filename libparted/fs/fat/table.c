@@ -1,6 +1,6 @@
 /*
     libparted
-    Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+    Copyright (C) 1998, 1999, 2000, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,8 +17,7 @@
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 */
 
-#include <string.h>
-
+#include <config.h>
 #include <parted/endian.h>
 #include "fat.h"
 
@@ -209,6 +208,10 @@ static int
 _test_code_bad (const FatTable* ft, FatCluster code)
 {
 	switch (ft->fat_type) {
+                case FAT_TYPE_FAT12:
+                if (code == 0xff7) return 1;
+                break;
+
 		case FAT_TYPE_FAT16:
 		if (code == 0xfff7) return 1;
 		break;
@@ -221,15 +224,13 @@ _test_code_bad (const FatTable* ft, FatCluster code)
 }
 
 static int
-_test_code_active (const FatTable* ft, FatCluster code)
-{
-	return code && !_test_code_bad (ft, code);
-}
-
-static int
 _test_code_eof (const FatTable* ft, FatCluster code)
 {
 	switch (ft->fat_type) {
+                case FAT_TYPE_FAT12:
+                if (code >= 0xff7) return 1;
+                break;
+
 		case FAT_TYPE_FAT16:
 		if (code >= 0xfff7) return 1;
 		break;
@@ -274,6 +275,10 @@ fat_table_set (FatTable* ft, FatCluster cluster, FatCluster value)
 	_update_stats (ft, cluster, value);
 
 	switch (ft->fat_type) {
+                case FAT_TYPE_FAT12:
+                PED_ASSERT (0, (void) 0);
+                break;
+
 		case FAT_TYPE_FAT16:
 		((unsigned short *) ft->table) [cluster]
 			= PED_CPU_TO_LE16 (value);
@@ -300,6 +305,10 @@ fat_table_get (const FatTable* ft, FatCluster cluster)
 	}
 
 	switch (ft->fat_type) {
+                case FAT_TYPE_FAT12:
+                PED_ASSERT (0, (void) 0);
+                break;
+
 		case FAT_TYPE_FAT16:
 		return PED_LE16_TO_CPU
 			(((unsigned short *) ft->table) [cluster]);
@@ -406,6 +415,10 @@ fat_table_set_eof (FatTable* ft, FatCluster cluster)
 {
 
 	switch (ft->fat_type) {
+                case FAT_TYPE_FAT12:
+                PED_ASSERT (0, (void) 0);
+                break;
+
 		case FAT_TYPE_FAT16:
 		return fat_table_set (ft, cluster, 0xfff8);
         
@@ -426,6 +439,9 @@ fat_table_set_bad (FatTable* ft, FatCluster cluster)
 		ft->bad_cluster_count++;
 
 	switch (ft->fat_type) {
+                case FAT_TYPE_FAT12:
+		return fat_table_set (ft, cluster, 0xff7);
+
 		case FAT_TYPE_FAT16:
 		return fat_table_set (ft, cluster, 0xfff7);
         
