@@ -1,20 +1,19 @@
 parted (1.8.7-1) UNRELEASED; urgency=low
 
   * New upstream release.
-    - debian/patches/doc-package.dpatch: redone from scratch;
-    - debian/patches/s390.dpatch: dropped, equivalent code merged upstream;
-    - debian/patches/errors-to-stderr.dpatch: likewise.
-    - debian/patches/devfs.dpatch: rediff.
-    - debian/patches/sparc-fix-raid.dpatch: likewise.
-    - debian/rules: call bootstrap when generating packaging files.
-    
-  * Add libdevmapper-dev build-dependency;
-  * Add --enable-device-mapper to include device mapper support;
-  * Readd part of lvm2.dpatch since current device mapper code isn't
-    probing the LVM partitions;
-  * Remove parted-print-name.dpatch since it was merge upstream;
-  * Readd s390 patch and revert DASD support to our previous and stable
-    version;
+  * debian/patches/doc-package.dpatch: redone from scratch;
+  * debian/patches/s390.dpatch: dropped, equivalent code merged upstream;
+  * debian/patches/parted-print-name.dpatch: likewise.
+  * debian/patches/errors-to-stderr.dpatch: likewise.
+  * debian/patches/devfs.dpatch: rediff.
+  * debian/patches/sparc-fix-raid.dpatch: likewise.
+  * debian/patches/lvm2.dpatch: readd the missing parts for the LVM
+    partitions probing;
+  * debian/rules:
+    - call bootstrap when generating packaging files.
+    - configure called with --enable-device-mapper to include
+      device-mapper support in;
+  * debian/control: add libdevmapper-dev build-dependency;
 
  -- Otavio Salvador <otavio@debian.org>  Tue,  5 Dec 2006 23:26:01 -0200
 
