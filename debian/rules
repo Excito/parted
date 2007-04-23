@@ -150,7 +150,6 @@ echo-vars:
 	@echo "SUBSTLIST:	$(SUBSTLIST)"
 
 packaging-files: $(GENFILES)
-	sh bootstrap
 
 autotools-update: autotools-update-stamp
 autotools-update-stamp: patch-stamp
