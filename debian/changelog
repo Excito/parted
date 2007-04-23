@@ -4,6 +4,7 @@ parted (1.8.7-1) UNRELEASED; urgency=low
     - debian/patches/doc-package.dpatch: redone from scratch;
     - debian/patches/s390.dpatch: dropped, equivalent code merged upstream;
     - debian/patches/errors-to-stderr.dpatch: likewise.
+    - debian/patches/devfs.dpatch: rediff.
     
   * Add libdevmapper-dev build-dependency;
   * Add --enable-device-mapper to include device mapper support;
