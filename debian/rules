@@ -213,6 +213,7 @@ build-udeb/build-stamp: build-udeb/config.status
 	dh_testdir
 
 #	 Only build binaries
+	$(MAKE) -C build-udeb/lib
 	$(MAKE) -C build-udeb/libparted
 	$(MAKE) -C build-udeb/parted
 
@@ -226,6 +227,7 @@ build-dbg/build-stamp: build-dbg/config.status
 #	 Don't need to build headers or doco rubbish, just the library ...
 #	 Note: this assumes that the library source code is in the
 #	 libparted directory, change this if it isn't ...
+	$(MAKE) -C build-dbg/lib
 	$(MAKE) -C build-dbg/libparted
 
 	touch $@
