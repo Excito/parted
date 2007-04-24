@@ -12,6 +12,8 @@ parted (1.8.7-1) UNRELEASED; urgency=low
   * debian/rules:
     - configure called with --enable-device-mapper to include
       device-mapper support in;
+    - use bootstrap instead of autoreconf to bootstrap the source after
+      apply the patches;
   * debian/control: add libdevmapper-dev build-dependency;
 
  -- Otavio Salvador <otavio@debian.org>  Tue,  5 Dec 2006 23:26:01 -0200

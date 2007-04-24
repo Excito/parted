@@ -153,8 +153,8 @@ packaging-files: $(GENFILES)
 
 autotools-update: autotools-update-stamp
 autotools-update-stamp: patch-stamp
-	 ACLOCAL=aclocal-1.10 AUTOMAKE=automake-1.10 autoreconf -f -i
-	 touch $@
+	sh bootstrap --skip-po
+	touch $@
 
 build-deb/config.status: autotools-update-stamp
 	dh_testdir
