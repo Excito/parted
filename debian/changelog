@@ -4,6 +4,7 @@ parted (1.8.7-1) UNRELEASED; urgency=low
   
   [ Xavier Oswald ]
   * debian/README.Debian updated
+  * debian/parted-doc.docs updated
 
   [ Otavio Salvador ]
   * debian/patches/doc-package.dpatch: redone from scratch;
