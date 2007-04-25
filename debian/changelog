@@ -1,6 +1,11 @@
 parted (1.8.7-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  
+  [ Xavier Oswald ]
+  * debian/README.Debian updated
+
+  [ Otavio Salvador ]
   * debian/patches/doc-package.dpatch: redone from scratch;
   * debian/patches/s390.dpatch: dropped, equivalent code merged upstream;
   * debian/patches/parted-print-name.dpatch: likewise.
