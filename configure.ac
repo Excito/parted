@@ -5,7 +5,7 @@ dnl
 dnl This file may be modified and/or distributed without restriction.
 
 AC_PREREQ(2.61)
-AC_INIT([GNU parted],[1.8.5],[bug-parted@gnu.org])
+AC_INIT([GNU parted],[1.8.7],[bug-parted@gnu.org])
 
 AC_CONFIG_SRCDIR(include/parted/parted.h)
 
@@ -24,7 +24,7 @@ dnl function signatures changed),
 dnl set PED_BINARY_AGE _and_ PED_INTERFACE_AGE to 0.
 PED_MAJOR_VERSION=1
 PED_MINOR_VERSION=8
-PED_MICRO_VERSION=5
+PED_MICRO_VERSION=7
 PED_INTERFACE_AGE=0
 PED_BINARY_AGE=0
 PED_VERSION_SUFFIX=
@@ -436,6 +436,15 @@ AC_CHECK_HEADER([execinfo.h], [
 	])
 ])
 
+dnl Checks for #defines.
+AC_COMPILE_IFELSE([
+	AC_LANG_PROGRAM([[
+	#if defined __s390__ || defined __s390x__
+	#  message s390 defined
+	#endif
+	]])], [compile_for_s390="no"], [compile_for_s390="yes"])
+AM_CONDITIONAL([COMPILE_FOR_S390], [test "$compile_for_s390" = "yes"])
+
 dnl check for "check", unit testing library/header
 PKG_CHECK_MODULES([CHECK], [check >= 0.9.3], have_check=yes, have_check=no)
 if test "$have_scintilla" != "yes"; then
@@ -508,6 +517,7 @@ doc/pt_BR/Makefile
 debug/Makefile
 debug/clearfat/Makefile
 debug/test/Makefile
+tests/Makefile
 po/Makefile.in
 ])
 

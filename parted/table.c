@@ -47,6 +47,7 @@
         size_t strnlen (const char *, size_t);
 #endif
 
+#include "xalloc.h"
 #include "strlist.h"
 
 
@@ -184,21 +185,21 @@ static void table_render_row (Table* t, int rownum, int ncols, wchar_t** s)
 
         assert(t);
         assert(s != NULL);
-        
+
         for (i = 0; i < ncols; ++i)
                 len += t->widths[i] + wcslen(DELIMITER);
 
         len += wcslen(COLSUFFIX);
 
         newsize = (wcslen(*s) + len + 1) * sizeof(wchar_t);
-        *s = realloc (*s, newsize);
+        *s = xrealloc (*s, newsize);
 
         for (i = 0; i < ncols; ++i)
         {
                 int j;
                 int nspaces = max(t->widths[i] - wcswidth(row[i], MAX_WIDTH),
                                   0);
-                wchar_t* pad = malloc ( (nspaces + 1) * sizeof(wchar_t) );
+                wchar_t* pad = xmalloc ((nspaces + 1) * sizeof(wchar_t));
 
                 for (j = 0; j < nspaces; ++j)
                        pad[j] = L' '; 
@@ -211,6 +212,7 @@ static void table_render_row (Table* t, int rownum, int ncols, wchar_t** s)
                         wcscat (*s, DELIMITER);
 
                 free (pad);
+                pad = NULL;
         }
 
         wcscat (*s, COLSUFFIX);

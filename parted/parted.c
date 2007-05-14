@@ -50,6 +50,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <limits.h>
 
 #ifdef ENABLE_MTRACE
 #include <mcheck.h>
@@ -65,6 +66,13 @@ static int MEGABYTE_SECTORS (PedDevice* dev)
         return PED_MEGABYTE_SIZE / dev->sector_size;
 }
 
+/* For long options that have no equivalent short option, use a
+   non-character as a pseudo short option, starting with CHAR_MAX + 1.  */
+enum
+{
+  PRETEND_INPUT_TTY = CHAR_MAX + 1,
+};
+
 
 typedef struct {
         time_t  last_update;
@@ -78,6 +86,7 @@ static struct option    options[] = {
         {"machine",     0, NULL, 'm'},
         {"script",      0, NULL, 's'},
         {"version",     0, NULL, 'v'},
+        {"-pretend-input-tty", 0, NULL, PRETEND_INPUT_TTY},
         {NULL,          0, NULL, 0}
 };
 
@@ -93,6 +102,7 @@ static char*    options_help [][2] = {
 char *program_name;
 
 int     opt_script_mode = 0;
+int     pretend_input_tty = 0;
 int     opt_machine_mode = 0;
 int     disk_is_modified = 0;
 int     is_toggle_mode = 0;
@@ -592,11 +602,12 @@ do_mklabel (PedDevice** dev)
         ped_exception_leave_all ();
 
         if (disk) {
-                if (!_disk_warn_busy (disk))
-                        goto error_destroy_disk;
-
-                if (!_disk_warn_loss (disk))
-                        goto error_destroy_disk;
+                if (!opt_script_mode) {
+                        if (!_disk_warn_busy (disk))
+                                goto error_destroy_disk;
+                        if (!_disk_warn_loss (disk))
+                                goto error_destroy_disk;
+                }
 
                 ped_disk_destroy (disk);
         }
@@ -635,7 +646,7 @@ do_mkfs (PedDevice** dev)
         if (!disk)
                 goto error;
 
-        if  (!_partition_warn_loss())
+        if  (!opt_script_mode && !_partition_warn_loss())
                 goto error_destroy_disk;
 
         if (!command_line_get_partition (_("Partition number?"), disk, &part))
@@ -943,6 +954,7 @@ do_mkpartfs (PedDevice** dev)
                 }
         }
         ped_exception_catch();
+        ped_exception_leave_all();
 
         /* set LBA flag automatically if available */
         if (ped_partition_is_flag_available (part, PED_PARTITION_LBA))
@@ -1240,6 +1252,7 @@ partition_print (PedPartition* part)
 static int
 do_print (PedDevice** dev)
 {
+        PedUnit         default_unit;
         PedDisk*        disk;
         Table*          table;
         StrList*        row;
@@ -1326,11 +1339,13 @@ do_print (PedDevice** dev)
         }
 
         start = ped_unit_format (*dev, 0);
+        default_unit = ped_unit_get_default ();
         end = ped_unit_format_byte (*dev, (*dev)->length * (*dev)->sector_size
-                                          - 1 );
-        
+                                    - (default_unit == PED_UNIT_CHS ||
+                                       default_unit == PED_UNIT_CYLINDER));
+
         if (opt_machine_mode) {
-            switch (ped_unit_get_default ()) {
+            switch (default_unit) {
                 case PED_UNIT_CHS:      puts ("CHS;");
                                         break;
                 case PED_UNIT_CYLINDER: puts ("CYL;");
@@ -1443,8 +1458,7 @@ do_print (PedDevice** dev)
 
                     if (!(part->type & PED_PARTITION_FREESPACE)) {
                             if (has_extended) {
-                                name = 
-                                    _(ped_partition_type_get_name (part->type));
+                                name = ped_partition_type_get_name (part->type);
                                 str_list_append (row, name);
                             }
 
@@ -1452,7 +1466,7 @@ do_print (PedDevice** dev)
                                              part->fs_type->name : "");
 
                             if (has_name) {
-                                    name = _(ped_partition_get_name (part));
+                                    name = ped_partition_get_name (part);
                                     str_list_append (row, name);
                             }
 
@@ -2309,6 +2323,9 @@ while (1)
                 case 'm': opt_machine_mode = 1; break;
                 case 's': opt_script_mode = 1; break;
                 case 'v': version = 1; break;
+                case PRETEND_INPUT_TTY:
+                  pretend_input_tty = 1;
+                  break;
                 default:  wrong = 1; break;
         }
 }
@@ -2391,7 +2408,7 @@ if (!_parse_options (argc_ptr, argv_ptr))
         goto error_done_commands;
 
 #ifdef HAVE_GETUID
-        if (getuid() != 0) {
+        if (getuid() != 0 && !opt_script_mode) {
             puts (_("WARNING: You are not superuser.  Watch out for "
                     "permissions."));
         }
