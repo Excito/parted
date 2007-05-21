@@ -26,6 +26,8 @@ parted (1.8.7-1) UNRELEASED; urgency=low
     timeout;
   * debian/control: Cleanup udeb dependencies. Thanks to Frans Pop
     <elendil@planet.nl> by the patch. (Closes: #419609)
+  * debian/libparted-dev.files: stop to provide parted.m4 but provides
+    pkgconfig, instead;
 
  -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 21 May 2007 20:25:47 -0300
 
