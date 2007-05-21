@@ -45,7 +45,6 @@ Architecture: any
 Section: debian-installer
 Priority: extra
 Depends: ${shlibs:Depends}
-Provides: parted
 Description: The GNU Parted disk partition resizing program
  GNU Parted is a program that allows you to create, destroy,
  resize, move and copy hard disk partitions. This is useful
@@ -106,7 +105,6 @@ Architecture: any
 Section: debian-installer
 Priority: extra
 Depends: ${shlibs:Depends}
-Provides: libparted@SHAREDLIBPKGVER@
 Description: The GNU Parted disk partitioning shared library
  GNU Parted is a program that allows you to create, destroy,
  resize, move and copy hard disk partitions. This is useful

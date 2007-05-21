@@ -24,8 +24,10 @@ parted (1.8.7-1) UNRELEASED; urgency=low
   * debian/control: add libdevmapper-dev build-dependency;
   * debian/watch: use the GNU ftp since the HTTP address was giving
     timeout;
+  * debian/control: Cleanup udeb dependencies. Thanks to Frans Pop
+    <elendil@planet.nl> by the patch. (Closes: #419609)
 
- -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 21 May 2007 15:55:38 -0300
+ -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 21 May 2007 20:25:47 -0300
 
 parted (1.8.1~git1-1) experimental; urgency=low
 
