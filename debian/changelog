@@ -23,8 +23,10 @@ parted (1.8.7-1) UNRELEASED; urgency=low
     - build gnulib when building udeb and debugging packages otherwise
       they'd fail;
   * debian/control: add libdevmapper-dev build-dependency;
+  * debian/watch: use the GNU ftp since the HTTP address was giving
+    timeout;
 
- -- Otavio Salvador <otavio@debian.org>  Tue,  5 Dec 2006 23:26:01 -0200
+ -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 21 May 2007 15:55:38 -0300
 
 parted (1.8.1~git1-1) experimental; urgency=low
 
