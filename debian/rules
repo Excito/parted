@@ -354,8 +354,7 @@ binary-common:
 	dh_link
 	dh_compress
 	dh_fixperms
-	dh_makeshlibs -V'libparted$(SHAREDLIBPKGVER) (>= $(DEPVER))' \
-		--add-udeb=$(shell dh_listpackages | grep -E '^libparted$(LIBPKGVER)-udeb$$')
+	dh_makeshlibs -V'libparted$(SHAREDLIBPKGVER) (>= $(DEPVER))'
 	dh_shlibdeps -Llibparted$(SHAREDLIBPKGVER) \
 		-l/debian/libparted$(SHAREDLIBPKGVER)/lib
 	dh_installdeb
