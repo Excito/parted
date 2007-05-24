@@ -21,7 +21,9 @@ parted (1.8.7-1) UNRELEASED; urgency=low
     - build gnulib when building udeb and debugging packages otherwise
       they'd fail;
     - change soname version;
-  * debian/control: add libdevmapper-dev build-dependency;
+  * debian/control:
+    - add libdevmapper-dev as build-dependency;
+    - add check as build-dependency;
   * debian/watch: use the GNU ftp since the HTTP address was giving
     timeout;
   * debian/control: Cleanup udeb dependencies. Thanks to Frans Pop
