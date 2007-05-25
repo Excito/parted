@@ -24,7 +24,7 @@ parted (1.8.7-1) UNRELEASED; urgency=low
     - change soname version;
   * debian/control:
     - add libdevmapper-dev as build-dependency;
-    - add check as build-dependency;
+    - add pkg-config as build-dependency;
     - cleanup udeb dependencies. Thanks to Frans Pop <elendil@planet.nl>
       by the patch; (Closes: #419609)
   * debian/watch: use the GNU ftp since the HTTP address was giving
