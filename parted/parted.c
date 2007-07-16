@@ -51,6 +51,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <limits.h>
+#include "xalloc.h"
 
 #ifdef ENABLE_MTRACE
 #include <mcheck.h>
@@ -653,7 +654,7 @@ do_mkfs (PedDevice** dev)
                 goto error_destroy_disk;
         if (!_partition_warn_busy (part))
                 goto error_destroy_disk;
-        if (!command_line_get_fs_type (_("File system?"), &type))
+        if (!command_line_get_fs_type (_("File system type?"), &type))
                 goto error_destroy_disk;
 
         fs = ped_file_system_create (&part->geom, type, g_timer);
@@ -1258,7 +1259,6 @@ do_print (PedDevice** dev)
         PedUnit         default_unit;
         PedDisk*        disk;
         Table*          table;
-        StrList*        row;
         int             has_extended;
         int             has_name;
         int             has_devices_arg = 0;
@@ -1315,7 +1315,7 @@ do_print (PedDevice** dev)
                         ped_free (end);
                 }    
 
-                dev_name = strdup ((*dev)->path);
+                dev_name = xstrdup ((*dev)->path);
                 ped_device_free_all ();
 
                 *dev = ped_device_get (dev_name);
@@ -1404,30 +1404,30 @@ do_print (PedDevice** dev)
         
         PedPartition* part;
         if (!opt_machine_mode) {
+            StrList *row1;
 
             if (ped_unit_get_default() == PED_UNIT_CHS) {
-                    row = str_list_create (_("Number"), _("Start"),
+                    row1 = str_list_create (_("Number"), _("Start"),
                                                _("End"), NULL);
             } else {
-                    row = str_list_create (_("Number"), _("Start"),
+                    row1 = str_list_create (_("Number"), _("Start"),
                                                _("End"), _("Size"), NULL);
             }
 
             if (has_extended)
-                    str_list_append (row, _("Type"));
+                    str_list_append (row1, _("Type"));
 
-            str_list_append (row, _("File system"));
+            str_list_append (row1, _("File system"));
 
             if (has_name)
-                    str_list_append (row, _("Name"));
+                    str_list_append (row1, _("Name"));
 
-            str_list_append (row, _("Flags"));
+            str_list_append (row1, _("Flags"));
 
 
-            table = table_new (str_list_length(row));
+            table = table_new (str_list_length(row1));
 
-            table_add_row_from_strlist (table, row);
-
+            table_add_row_from_strlist (table, row1);
 
             for (part = ped_disk_next_partition (disk, NULL); part;
                  part = ped_disk_next_partition (disk, part)) {
@@ -1443,7 +1443,7 @@ do_print (PedDevice** dev)
                     else
                             sprintf (tmp, "%2s ", "");
 
-                    row = str_list_create (tmp, NULL);
+                    StrList *row = str_list_create (tmp, NULL);
 
                     start = ped_unit_format (*dev, part->geom.start);
                     end = ped_unit_format_byte (
@@ -1485,6 +1485,7 @@ do_print (PedDevice** dev)
 
                     //PED_ASSERT (row.cols == caption.cols)
                     table_add_row_from_strlist (table, row);
+                    str_list_destroy (row);
             }
 
             table_rendered = table_render (table); 
@@ -1495,6 +1496,7 @@ do_print (PedDevice** dev)
 #endif
             ped_free (table_rendered);
             table_destroy (table);
+            str_list_destroy (row1);
 
         } else {
     

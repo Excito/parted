@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
+    Copyright (C) 1999, 2000, 2001, 2007 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include "xalloc.h"
 
 #ifdef ENABLE_NLS
 
@@ -97,7 +98,7 @@ wchar_strdup (const wchar_t* str)
 #ifdef ENABLE_NLS
 	return wcsdup (str);
 #else
-	return strdup (str);
+	return xstrdup (str);
 #endif
 }
 
@@ -136,7 +137,7 @@ error:
 static wchar_t*
 gettext_to_wchar (const char* str)
 {
-	return strdup (str);
+	return xstrdup (str);
 }
 
 #endif /* !ENABLE_NLS */
@@ -187,7 +188,7 @@ wchar_to_str (const wchar_t* str, size_t count)
 {
 	char*		result;
 
-	result = strdup (str);
+	result = xstrdup (str);
 	if (count && count < strlen (result))
 		result [count] = 0;
 	return result;
@@ -208,7 +209,7 @@ str_list_alloc ()
 {
 	StrList*	list;
 
-	list = (StrList*) malloc (sizeof (StrList));
+	list = xmalloc (sizeof (StrList));
 	list->next = NULL;
 
 	return list;
@@ -360,7 +361,7 @@ str_list_convert (const StrList* list)
 	const StrList*	walk;
 	int		pos = 0;
 	int		length = 1;
-	char*		str = strdup ("");
+	char*		str = xstrdup ("");
 
 	for (walk = list; walk; walk = walk->next) {
 		if (walk->str) {
@@ -388,20 +389,6 @@ str_list_print (const StrList* list)
 		if (walk->str)
 			print_wchar (walk->str, 0);
 	}
-}
-
-static char*
-get_spaces (int space_count)
-{
-	char*	str;
-	int	i;
-
-	str = malloc (space_count + 1);
-	for (i = 0; i < space_count; i++)
-		str [i] = ' ';
-	str [i] = 0;
-
-	return str;
 }
 
 static int
@@ -459,13 +446,11 @@ str_list_print_wrap (const StrList* list, int line_length, int offset,
 	int		cut_right;
 	int		cut_left;
 	int		line_left;
-	char*		spaces;
 	int		search_result;
 	int		line_break;
 
 	PED_ASSERT (line_length - indent > 10, return);
 
-	spaces = get_spaces (indent);
 	line_left = line_length - offset;
 
 	for (walk=list; walk; walk=walk->next) {
@@ -511,7 +496,7 @@ str_list_print_wrap (const StrList* list, int line_length, int offset,
 			line_left = line_length - indent;
 
 			if (walk->next || *str)
-				printf ("\n%s", spaces);
+				printf ("\n%*s", indent, "");
 			else if (line_break)
 				putchar ('\n');
 		}
@@ -519,8 +504,6 @@ str_list_print_wrap (const StrList* list, int line_length, int offset,
 		print_wchar (str, 0);
 		line_left -= wchar_strlen (str);
 	}
-
-	free (spaces);
 }
 
 static int
@@ -602,4 +585,3 @@ str_list_length (const StrList* list)
 
 	return length;
 }
-

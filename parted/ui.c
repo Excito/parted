@@ -32,6 +32,7 @@
 #include "command.h"
 #include "strlist.h"
 #include "ui.h"
+#include "error.h"
 
 #define N_(String) String
 #if ENABLE_NLS
@@ -562,9 +563,15 @@ _readline (const char* prompt, const StrList* possibilities)
                 fputs (prompt, stdout);
                 fflush (stdout);
                 line = (char*) malloc (256);
-                if (fgets (line, 256, stdin) && strcmp (line, "") != 0)
+                if (fgets (line, 256, stdin) && strcmp (line, "") != 0) {
+#ifndef HAVE_LIBREADLINE
+                        /* Echo the input line, to be consistent with
+                           how readline-5.2 works.  */
+                        fputs (line, stdout);
+                        fflush (stdout);
+#endif
                         line [strlen (line) - 1] = 0;    /* kill trailing CR */
-                else {
+                } else {
                         free (line);
                         line = NULL;
                 }
@@ -866,11 +873,15 @@ command_line_get_word (const char* prompt, const char* def,
                                 return result;
 
                         result_node = str_list_match (possibilities, result);
+                        if (result_node == NULL)
+                                error (0, 0, _("invalid token: %s"), result);
                         free (result);
                         if (result_node)
                                 return str_list_convert_node (result_node);
 
                         command_line_flush ();
+                        if (opt_script_mode)
+                                return NULL;
                 }
 
                 command_line_prompt_words (prompt, def, possibilities,
