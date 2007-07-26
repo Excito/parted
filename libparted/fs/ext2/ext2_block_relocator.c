@@ -1,10 +1,10 @@
 /*
     ext2_block_relocator.c -- ext2 block relocator
-    Copyright (C) 1998-2000 Free Software Foundation, Inc.
-  
+    Copyright (C) 1998-2000, 2007 Free Software Foundation, Inc.
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation; either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -13,8 +13,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <config.h>
@@ -797,17 +796,21 @@ static int ext2_block_relocate_grow(struct ext2_fs *fs, struct ext2_block_reloca
 
 			for (j=0;j<diff;j++)
 			{
+				blk_t block;
 				blk_t k;
 
 				k = EXT2_GROUP_INODE_TABLE(fs->gd[i])
                                         + fs->inodeblocks + j;
-				if (bh->data[k>>3] & _bitmap[k&7])
+				block = k % EXT2_SUPER_BLOCKS_PER_GROUP(fs->sb);
+				if (bh->data[block>>3] & _bitmap[block&7]) {
+					k += EXT2_SUPER_FIRST_DATA_BLOCK(fs->sb);
 					if (!ext2_block_relocator_mark(fs,
-							    state, start + k))
+							    state, k))
 					{
 						ext2_brelse(bh, 0);
 						return 0;
 					}
+				}
 			}
 		}
 
