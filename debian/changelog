@@ -32,6 +32,7 @@ parted (1.8.7-1) UNRELEASED; urgency=low
   * debian/libparted-dev.files: stop to provide parted.m4 but provides
     pkgconfig, instead;
   * debian/parted-doc.docs: drop COPYING;
+  * debian/copyright: updated since parted is now licensed on GPL3;
 
  -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 21 May 2007 20:25:47 -0300
 
