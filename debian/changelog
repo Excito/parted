@@ -33,6 +33,7 @@ parted (1.8.7-1) UNRELEASED; urgency=low
     pkgconfig, instead;
   * debian/parted-doc.docs: drop COPYING;
   * debian/copyright: updated since parted is now licensed on GPL3;
+  * debian/rules: change package names to follow soname;
 
  -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 21 May 2007 20:25:47 -0300
 
