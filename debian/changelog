@@ -4,6 +4,9 @@ parted (1.8.7.git.2007.07.30-2) experimental; urgency=low
   * debian/rules:
      - add “-fgnu89-inline” to “CFLAGS” and “UDEB_CFLAGS” to fix FTBFS
        (Closes: #442308).
+  * debian/control.in:
+     - make the packages binNMU-safe by using binary:Version and
+       source:Version instead of Source-Version.
 
  -- Cyril Brulebois <cyril.brulebois@enst-bretagne.fr>  Mon, 01 Oct 2007 18:14:11 +0200
 

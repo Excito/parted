@@ -66,7 +66,7 @@ Package: libparted@SHAREDLIBPKGVER@
 Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
-Suggests: parted | nparted, libparted@LIBPKGVER@-dev, libparted@LIBPKGVER@-i18n (= ${Source-Version})
+Suggests: parted | nparted, libparted@LIBPKGVER@-dev, libparted@LIBPKGVER@-i18n (= ${source:Version})
 Conflicts: parted (<< 1.4.13+14pre1), libparted0, libparted1, libparted2
 Replaces: libparted0, libparted1, libparted2, libparted1.4 (<< 1.4.24-2)
 Provides: libparted
@@ -174,8 +174,8 @@ Description: The GNU Parted disk partitioning library i18n support
 Package: libparted@LIBPKGVER@-dev
 Architecture: any
 Section: libdevel
-Depends: libc6-dev, libparted@SHAREDLIBPKGVER@ (= ${Source-Version})
-Suggests: parted@BINPKGVER@ (= ${Source-Version}), parted-doc
+Depends: libc6-dev, libparted@SHAREDLIBPKGVER@ (= ${binary:Version})
+Suggests: parted@BINPKGVER@ (= ${binary:Version}), parted-doc
 Conflicts: libparted-dev, parted (<< 1.2.11)
 Replaces: libparted-dev, libparted0-dev, libparted2-dev
 Provides: libparted-dev
@@ -213,7 +213,7 @@ Package: libparted@LIBPKGVER@-dbg
 Architecture: any
 Section: libdevel
 Priority: extra
-Depends: libparted@SHAREDLIBPKGVER@ (= ${Source-Version}), libparted@LIBPKGVER@-dev (= ${Source-Version})
+Depends: libparted@SHAREDLIBPKGVER@ (= ${binary:Version}), libparted@LIBPKGVER@-dev (= ${binary:Version})
 Conflicts: libparted-dbg
 Replaces: libparted-dbg
 Provides: libparted-dbg
