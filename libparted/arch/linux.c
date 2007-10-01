@@ -253,6 +253,7 @@ struct blkdev_ioctl_param {
 #define VIODASD_MAJOR           112
 #define SX8_MAJOR1              160
 #define SX8_MAJOR2              161
+#define XVD_MAJOR               202
 
 #define SCSI_BLK_MAJOR(M) (                                             \
                 (M) == SCSI_DISK0_MAJOR                                 \
@@ -389,6 +390,39 @@ next:
         close(fd);
         return 0;
 }
+
+static int
+_probe_dm_devices ()
+{
+       DIR*            mapper_dir;
+       struct dirent*  dent;
+       char            buf [512];      /* readdir(3) claims d_name[256] */
+       struct stat     st;
+
+       mapper_dir = opendir ("/dev/mapper");
+       if (!mapper_dir)
+               return 0;
+
+       /* Search the /dev/mapper directory for devices w/ the same major
+        * number that was returned from _probe_lvm_major().
+        */
+       while ((dent = readdir (mapper_dir))) {
+               if (strcmp (dent->d_name, ".")  == 0 ||
+                   strcmp (dent->d_name, "..") == 0)
+                       continue;
+
+               snprintf (buf, sizeof (buf), "/dev/mapper/%s", dent->d_name);
+
+               if (stat (buf, &st) != 0)
+                       continue;
+
+               if (_is_dm_major(major(st.st_rdev)))
+                       _ped_device_probe (buf);
+       }
+       closedir (mapper_dir);
+
+       return 1;
+}
 #endif
 
 static int
@@ -455,6 +489,8 @@ _device_probe_type (PedDevice* dev)
         } else if (_is_dm_major(dev_major)) {
                 dev->type = PED_DEVICE_DM;
 #endif
+        } else if (dev_major == XVD_MAJOR && (dev_minor % 0x10 == 0)) {
+                dev->type = PED_DEVICE_XVD;
         } else {
                 dev->type = PED_DEVICE_UNKNOWN;
         }
@@ -1157,6 +1193,11 @@ linux_new (const char* path)
                 break;
 #endif
 
+        case PED_DEVICE_XVD:
+                if (!init_generic (dev, _("Xen Virtual Block Device")))
+                        goto error_free_arch_specific;
+                break;
+
         case PED_DEVICE_UNKNOWN:
                 if (!init_generic (dev, _("Unknown")))
                         goto error_free_arch_specific;
@@ -1405,8 +1446,9 @@ linux_read (const PedDevice* dev, void* buffer, PedSector start,
 {
         LinuxSpecific*          arch_specific = LINUX_SPECIFIC (dev);
         PedExceptionOption      ex_status;
-        void*                   diobuf;
+        void*                   diobuf = NULL;
 
+        PED_ASSERT (dev != NULL, return 0);
         PED_ASSERT (dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
 
         if (_get_linux_version() < KERNEL_VERSION (2,6,0)) {
@@ -1487,7 +1529,9 @@ linux_read (const PedDevice* dev, void* buffer, PedSector start,
                                 break;
                 }
         }
-        free(diobuf);
+
+        if (diobuf)
+                free(diobuf);
 
         return 1;
 }
@@ -1895,11 +1939,19 @@ linux_probe_all ()
          */
         _probe_standard_devices ();
 
- 	/* /sys/block is more reliable and consistent; fall back to using
- 	 * /proc/partitions if the former is unavailable, however.
- 	 */
- 	if (!_probe_sys_block ())
- 		_probe_proc_partitions ();
+#ifdef ENABLE_DEVICE_MAPPER
+        /* device-mapper devices aren't listed in /proc/partitions; or, if
+         * they are, they're listed as dm-X.  So, instead of relying on that,
+         * we do our own checks.
+         */
+        _probe_dm_devices ();
+#endif
+
+        /* /sys/block is more reliable and consistent; fall back to using
+         * /proc/partitions if the former is unavailable, however.
+         */
+        if (!_probe_sys_block ())
+                _probe_proc_partitions ();
 }
 
 static char*

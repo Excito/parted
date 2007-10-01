@@ -189,6 +189,7 @@ ped_device_get (const char* path)
 	ped_free (normal_path);
 	if (!walk)
 		return NULL;
+
 	_device_register (walk);
 	return walk;
 }

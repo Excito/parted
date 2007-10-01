@@ -180,7 +180,7 @@ for EXT in gz bz2; do
 			echo "-> skipping upload of $f"
 			continue
 		fi
-		curl --upload-file $PWD/$f $FTPURL
+		curl -# -T $PWD/$f $FTPURL
 		sleep 1
 		if [ $? -eq 0 ]; then
 			echo "-> successfully uploaded $f."
