@@ -114,6 +114,10 @@ ifeq (gnu, $(DEB_BUILD_GNU_SYSTEM))
   CONFFLAGS += --disable-Werror
 endif
 
+# Workaround/fix bug #442308
+CFLAGS += -fgnu89-inline
+UDEB_CFLAGS += -fgnu89-inline
+
 # This builds a substitution list for sed based on the SUBSTS variable
 # and the variables whose names SUBSTS contains ...
 SUBSTLIST = $(foreach subst, $(SUBSTS), s/@$(subst)@/$($(subst))/g;)
