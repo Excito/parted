@@ -26,6 +26,7 @@
 #ifndef PED_DEVICE_H_INCLUDED
 #define PED_DEVICE_H_INCLUDED
 
+#include <parted/constraint.h>
 #include <parted/timer.h>
 
 /** We can address 2^63 sectors */
@@ -45,9 +46,7 @@ typedef enum {
         PED_DEVICE_DASD         = 9,
         PED_DEVICE_VIODASD      = 10,
         PED_DEVICE_SX8          = 11,
-#ifdef ENABLE_DEVICE_MAPPER
         PED_DEVICE_DM           = 12,
-#endif
         PED_DEVICE_XVD          = 13
 } PedDeviceType;
 
