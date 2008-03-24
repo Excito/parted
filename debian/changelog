@@ -1,4 +1,4 @@
-parted (1.8.8.git.2008.03.24-1) UNRELEASED; urgency=low
+parted (1.8.8.git.2008.03.24-1) experimental; urgency=low
 
   [ Cyril Brulebois ]
   * debian/rules:
@@ -15,7 +15,7 @@ parted (1.8.8.git.2008.03.24-1) UNRELEASED; urgency=low
   * Package Patches:
     - lvm2.dpatch: droped, equivalent code merged upstream;
 
- -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 24 Mar 2008 19:58:53 -0300
+ -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 24 Mar 2008 20:37:45 -0300
 
 parted (1.8.7.git.2007.07.30-1) experimental; urgency=low
 
