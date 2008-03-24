@@ -1,4 +1,4 @@
-parted (1.8.8-1) UNRELEASED; urgency=low
+parted (1.8.8.git.2008.03.24-1) UNRELEASED; urgency=low
 
   [ Cyril Brulebois ]
   * debian/rules:
@@ -1517,5 +1517,3 @@ parted (1.0pre4-1) unstable; urgency=low
   * Initial Release.
 
  -- Timshel Knoll <timshel@pobox.com>  Fri,  5 Nov 1999 18:11:28 +1100
-
-
