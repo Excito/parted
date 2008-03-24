@@ -11,6 +11,7 @@ parted (1.8.8.git.2008.03.24-1) UNRELEASED; urgency=low
   [ Otavio Salvador ]
   * Really duplicate disks instead of readd each partition so it preserves
     the ordering and like (Closes: #294520).
+  * Point to GPL-3 instead of including it since it is now available.
   * Package Patches:
     - lvm2.dpatch: droped, equivalent code merged upstream;
 
