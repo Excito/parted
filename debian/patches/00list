@@ -1,7 +1,6 @@
 # Debian specific patches
 doc-package
 reiserfs-libname
-lvm2
 
 # Patch susceptible to be merged upstream
 devfs
