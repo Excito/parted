@@ -30,7 +30,7 @@ DEBPKGVER = $(shell dpkg-parsechangelog | sed -n -e '/^Version: /{s///;p;q;}')
 # end if there isn't already one, otherwise increment the letter that is
 # already there.
 # When incrementing this, also set DEPVER to the current package version.
-LIBPKGVER = -1.8
+LIBPKGVER = 1.8
 
 # Append the LIBPKGVER to non-lib package names? This is useful when building
 # packages of the development versions of parted (eg. to build a parted1.5
