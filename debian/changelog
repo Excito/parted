@@ -1,3 +1,16 @@
+parted (1.8.8.git.2008.03.24-2) experimental; urgency=low
+
+  [ Bastian Blank ]
+  * Fix syntax error.
+  * Use host_cpu for s390 check.
+
+  [ Jim Meyering ]
+  * Fix a typo: s/to defragmenting/to defragment/, Remove trailing
+    blanks.
+  * Don't write into line[-1] when line starts with a NUL byte.
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Wed, 09 Apr 2008 19:12:54 -0300
+
 parted (1.8.8.git.2008.03.24-1) experimental; urgency=low
 
   [ Cyril Brulebois ]
