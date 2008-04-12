@@ -6,7 +6,8 @@ TESTS = \
   t1500-small-ext2.sh \
   t2000-mkfs.sh \
   t3000-constraints.sh \
-  t3100-resize-ext2-partion.sh
+  t3100-resize-ext2-partion.sh \
+  t5000-tags.sh
 
 EXTRA_DIST = \
   $(TESTS) test-lib.sh mkdtemp
