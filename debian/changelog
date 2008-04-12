@@ -1,3 +1,17 @@
+parted (1.8.8.git.2008.03.24-3) experimental; urgency=low
+
+  [ Otavio Salvador ]
+  * Bump version to 1.8.9 since it broke ABI interface
+  * Ensure that autoreconf uses automake 1.10
+  * Add debian/libparted-i18n.files and debian/libparted-dev.files
+    removed by mistake
+  * Change soname and dependency requirements due ABI change
+
+  [ Robert Millan ]
+  * Add support for GRUB / BIOS partition in GPT.
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Sat, 12 Apr 2008 16:18:46 -0300
+
 parted (1.8.8.git.2008.03.24-2) experimental; urgency=low
 
   [ Bastian Blank ]
