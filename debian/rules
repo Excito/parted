@@ -157,7 +157,7 @@ packaging-files: $(GENFILES)
 
 autotools-update: autotools-update-stamp
 autotools-update-stamp: patch-stamp
-	autoreconf
+	AUTOMAKE=automake-1.10 autoreconf
 	touch $@
 
 build-deb/config.status: autotools-update-stamp
