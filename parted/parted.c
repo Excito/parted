@@ -1486,6 +1486,7 @@ do_print (PedDevice** dev)
                     //PED_ASSERT (row.cols == caption.cols)
                     table_add_row_from_strlist (table, row);
                     str_list_destroy (row);
+                    ped_free (tmp);
             }
 
             table_rendered = table_render (table); 
