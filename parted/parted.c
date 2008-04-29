@@ -1274,6 +1274,7 @@ do_print (PedDevice** dev)
         char*           size;
         const char*     name;
         char*           tmp;
+        char*           flags;
         wchar_t*        table_rendered;
 
         disk = ped_disk_new (*dev);
@@ -1473,7 +1474,9 @@ do_print (PedDevice** dev)
                                     str_list_append (row, name);
                             }
 
-                            str_list_append (row, partition_print_flags (part));
+                            flags = partition_print_flags (part);
+                            str_list_append (row, flags);
+                            ped_free (flags);
                     } else {
                             if (has_extended)
                                     str_list_append (row, "");
