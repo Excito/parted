@@ -1,3 +1,21 @@
+parted (1.8.8.git.2008.03.24-4) experimental; urgency=low
+
+  [ Otavio Salvador ]
+  * properly test for __s390__ and __s390x__ macros to disable O_DIRECT
+    on that
+
+  [ Matt Davis ]
+  * Corrected a few memory leaks from unallocated ped_unit_format calls.
+  * Corrected memory leak when displaying partition flags.
+  * Corrected a small memory leak when displaying partition information
+
+  [ Otavio Salvador ]
+  * do not loop in case message exception has no message
+  * fix memory leak in exception handler
+  * Ensure that autoreconf uses aclocal 1.0
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Tue, 06 May 2008 14:35:08 -0300
+
 parted (1.8.8.git.2008.03.24-3) experimental; urgency=low
 
   [ Otavio Salvador ]
