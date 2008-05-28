@@ -1,3 +1,9 @@
+parted (1.8.8.git.2008.03.24-5) experimental; urgency=low
+
+  * Disable LVM support for dasd labels
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Tue, 27 May 2008 21:52:48 -0300
+
 parted (1.8.8.git.2008.03.24-4) experimental; urgency=low
 
   [ Otavio Salvador ]
