@@ -689,7 +689,7 @@ dasd_partition_is_flag_available (const PedPartition* part,
 		case PED_PARTITION_RAID:
 			return 1;
 		case PED_PARTITION_LVM:
-			return 1;
+			return 0; /* disable LVM support */
 		default:
 			return 0;
 	}
