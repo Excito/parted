@@ -1,3 +1,22 @@
+parted (1.8.8.git.2008.03.24-6) experimental; urgency=low
+
+  [ Otavio Salvador ]
+  * Give the parted udeb a menu item number. This allows it to be
+    selected manually in anna. Update the udeb description for
+    consistency and remove the long description to save space. Thanks to
+    Frans Pop <elendil@planet.nl> (closes: #466826).
+
+  [ Jim Meyering ]
+  * test for improved DOS-partition-table recognition
+
+  [ Colin Watson ]
+  * bug fix: improve DOS partition table recognition
+
+  [ Jim Meyering ]
+  * avoid const-related compiler warnings
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Tue, 03 Jun 2008 19:25:27 -0300
+
 parted (1.8.8.git.2008.03.24-5) experimental; urgency=low
 
   * Disable LVM support for dasd labels
