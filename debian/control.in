@@ -44,23 +44,9 @@ XC-Package-Type: udeb
 Architecture: any
 Section: debian-installer
 Priority: extra
+XB-Installer-Menu-Item: 99999
 Depends: ${shlibs:Depends}
-Description: The GNU Parted disk partition resizing program
- GNU Parted is a program that allows you to create, destroy,
- resize, move and copy hard disk partitions. This is useful
- for creating space for new operating systems, reorganising
- disk usage, and copying data to new hard disks. This package
- contains the Parted binary and manual page.
- .
- This package is similar to the "big" parted package, but has
- less cosmetical features resulting in smaller binary. Intended 
- to be used in debian-installer.     
- .
- .
- The nature of this software means that any bugs could cause
- massive data loss. While there are no known bugs at the moment,
- they could exist, so please back up all important files before
- running it, and do so at your own risk.
+Description: Manually partition a hard drive (parted)
 
 Package: libparted@SHAREDLIBPKGVER@
 Architecture: any
