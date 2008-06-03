@@ -986,7 +986,7 @@ error:
 }
 
 static int
-init_dasd (PedDevice* dev, char* model_name)
+init_dasd (PedDevice* dev, const char* model_name)
 {
         struct stat             dev_stat;
         struct hd_geometry      geo;
@@ -1042,7 +1042,7 @@ error:
 }
 
 static int
-init_generic (PedDevice* dev, char* model_name)
+init_generic (PedDevice* dev, const char* model_name)
 {
         struct stat             dev_stat;
         PedExceptionOption      ex_status;
