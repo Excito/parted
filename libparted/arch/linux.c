@@ -2015,6 +2015,7 @@ _device_get_part_path (PedDevice* dev, int num)
         int             path_len = strlen (dev->path);
         int             result_len = path_len + 16;
         char*           result;
+        LinuxSpecific*  arch_specific = LINUX_SPECIFIC (dev);
 
         result = (char*) ped_malloc (result_len);
         if (!result)
@@ -2027,6 +2028,13 @@ _device_get_part_path (PedDevice* dev, int num)
                 /* replace /disc with /path%d */
                 strcpy (result, dev->path);
                 snprintf (result + path_len - 5, 16, "/part%d", num);
+#ifdef ENABLE_DEVICE_MAPPER
+        } else if (dev->type == PED_DEVICE_DM && arch_specific->dmtype &&
+                   strcmp(arch_specific->dmtype, "multipath") == 0) {
+                /* This is what multipath-tools upstream and Debian uses, it's
+                 * a pure userpace (udev) decision! */
+                snprintf (result, result_len, "%s-part%d", dev->path, num);
+#endif
         } else if (dev->type == PED_DEVICE_DAC960
                         || dev->type == PED_DEVICE_CPQARRAY
                         || dev->type == PED_DEVICE_ATARAID
