@@ -1,3 +1,9 @@
+parted (1.8.8.git.2008.03.24-7) unstable; urgency=low
+
+  * Upload to unstable
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Sat, 21 Jun 2008 15:58:02 -0300
+
 parted (1.8.8.git.2008.03.24-6) experimental; urgency=low
 
   [ Otavio Salvador ]
