@@ -181,7 +181,7 @@ build-udeb/config.status: autotools-update-stamp
 	dh_testdir
 	[ -d build-udeb ] || mkdir build-udeb
 
-	cd build-udeb && CFLAGS="$(UDEB_CFLAGS)" ../configure --prefix=/usr \
+	cd build-udeb && CFLAGS="$(UDEB_CFLAGS)" ac_cv_header_execinfo_h=no ../configure --prefix=/usr \
 	    --sbindir=/sbin --libdir=/lib --mandir=\$${prefix}/share/man \
 	    --infodir=\$${prefix}/share/info --enable-shared --disable-static \
 	    --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \

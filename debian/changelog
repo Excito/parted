@@ -1,3 +1,9 @@
+parted (1.8.8.git.2008.03.24-8) unstable; urgency=low
+
+  * Disable backtrace when building the udeb packages (closes: #488374).
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 28 Jul 2008 21:09:10 -0300
+
 parted (1.8.8.git.2008.03.24-7) unstable; urgency=low
 
   * Upload to unstable
