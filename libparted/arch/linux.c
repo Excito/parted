@@ -301,6 +301,44 @@ _is_sx8_major (int major)
 
 #ifdef ENABLE_DEVICE_MAPPER
 static int
+_dm_maptype (PedDevice* dev)
+{
+        LinuxSpecific*  arch_specific = LINUX_SPECIFIC (dev);
+        struct dm_task *dmt;
+        void *next = NULL;
+        uint64_t start, length;
+        char *target_type = NULL;
+        char *params;
+        int r = -1;
+        const char* dev_dir = getenv ("DM_DEV_DIR");
+
+        if (dev_dir && *dev_dir && !dm_set_dev_dir(dev_dir))
+                return r;
+
+        if (!(dmt = dm_task_create(DM_DEVICE_TABLE)))
+                return r;
+
+        if (!dm_task_set_name(dmt, dev->path))
+                goto bad;
+
+        dm_task_no_open_count(dmt);
+
+        if (!dm_task_run(dmt))
+                goto bad;
+
+        next = dm_get_next_target(dmt, next, &start, &length,
+                                  &target_type, &params);
+
+        arch_specific->dmtype = strdup(target_type);
+        if (arch_specific->dmtype == NULL)
+                goto bad;
+        r = 0;
+bad:
+        dm_task_destroy(dmt);
+        return r;
+}
+
+static int
 readFD (int fd, char **buf)
 {
         char* p;
@@ -488,6 +526,12 @@ _device_probe_type (PedDevice* dev)
 #ifdef ENABLE_DEVICE_MAPPER
         } else if (_is_dm_major(dev_major)) {
                 dev->type = PED_DEVICE_DM;
+                if (_dm_maptype(dev)) {
+                        LinuxSpecific*  arch_specific = LINUX_SPECIFIC (dev);
+
+                        arch_specific = LINUX_SPECIFIC (dev);
+                        arch_specific->dmtype = strdup("unknown");
+		}
 #endif
         } else if (dev_major == XVD_MAJOR && (dev_minor % 0x10 == 0)) {
                 dev->type = PED_DEVICE_XVD;
@@ -1105,6 +1149,8 @@ static PedDevice*
 linux_new (const char* path)
 {
         PedDevice*      dev;
+        char* type;
+        LinuxSpecific*  arch_specific;
 
         PED_ASSERT (path != NULL, return NULL);
 
@@ -1120,6 +1166,8 @@ linux_new (const char* path)
                 = (LinuxSpecific*) ped_malloc (sizeof (LinuxSpecific));
         if (!dev->arch_specific)
                 goto error_free_path;
+        arch_specific = LINUX_SPECIFIC (dev);
+        arch_specific->dmtype = NULL;
 
         dev->open_count = 0;
         dev->read_only = 0;
@@ -1188,7 +1236,11 @@ linux_new (const char* path)
 
 #ifdef ENABLE_DEVICE_MAPPER
         case PED_DEVICE_DM:
-                if (!init_generic (dev, _("Linux device-mapper")))
+                if (arch_specific->dmtype == NULL
+                      || asprintf(&type, _("Linux device-mapper (%s)"),
+                                  arch_specific->dmtype) == -1)
+                        goto error_free_arch_specific;
+                if (!init_generic (dev, type))
                         goto error_free_arch_specific;
                 break;
 #endif
@@ -1227,6 +1279,9 @@ linux_destroy (PedDevice* dev)
         ped_free (dev->arch_specific);
         ped_free (dev->path);
         ped_free (dev->model);
+#ifdef ENABLE_DEVICE_MAPPER
+        ped_free (((LinuxSpecific*)dev->arch_specific)->dmtype);
+#endif
         ped_free (dev);
 }
 
