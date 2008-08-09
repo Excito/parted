@@ -1,3 +1,14 @@
+parted (1.8.8.git.2008.03.24-9) unstable; urgency=low
+
+  [ Otavio Salvador ]
+  * Bump package soname
+
+  [ Guido Günther ]
+  * Return the correct partition names for multipath devices
+  * linux device-mapper map type detection (closes: #440675)
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Sat, 09 Aug 2008 18:51:31 -0300
+
 parted (1.8.8.git.2008.03.24-8) unstable; urgency=low
 
   * Disable backtrace when building the udeb packages (closes: #488374).
