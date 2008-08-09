@@ -39,11 +39,11 @@ LIBPKGVER = 1.8
 
 # The first version of the package to build with the current LIBPKGVER
 # This should be changed to the current version when LIBPKGVER is changed ...
-DEPVER = 1.8.8.git.2008.03.24-3
+DEPVER = 1.8.8.git.2008.03.24-9
 
 # This is the library's soname. The build will fail if this is wrong, since
 # if the soname has changed we need to update stuff ...
-LIBSONAME = 9
+LIBSONAME = 10
 
 # This is for the version for the shared library
 SHAREDLIBPKGVER = $(LIBPKGVER)-$(LIBSONAME)
