@@ -1,3 +1,12 @@
+parted (1.8.8.git.2008.03.24-10) unstable; urgency=low
+
+  * Merge from Ubuntu: debian/patches/parted-dmraid.dpatch: Patch to educate
+    libparted about dmraid arrays, which use device mapper. Libparted was
+    naming new partition nodes incorrectly, and not setting the UUIDs for
+    dmraid device nodes. (Closes: #497110)
+
+ -- Giuseppe Iuculano <giuseppe@iuculano.it>  Sat, 06 Sep 2008 15:02:11 +0200
+
 parted (1.8.8.git.2008.03.24-9) unstable; urgency=low
 
   [ Otavio Salvador ]
