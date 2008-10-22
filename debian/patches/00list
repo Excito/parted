@@ -6,6 +6,7 @@ reiserfs-libname
 devfs
 #kfreebsd-gnu
 parted-dmraid
+unpartitioned-disks
 
 # Will also stay debian specific, but depends on some of the above :/
 sparc-fix-raid
