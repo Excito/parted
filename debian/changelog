@@ -1,3 +1,10 @@
+parted (1.8.8.git.2008.03.24-11) unstable; urgency=low
+
+  * Add patch to avoid using partition names for loop devices. Thanks to
+    Colin Watson <cjwatson@ubuntu.com> for the patch. Closes: #502618
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Wed, 22 Oct 2008 10:13:52 -0200
+
 parted (1.8.8.git.2008.03.24-10) unstable; urgency=low
 
   * Merge from Ubuntu: debian/patches/parted-dmraid.dpatch: Patch to educate
