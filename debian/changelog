@@ -1,3 +1,11 @@
+parted (1.8.8.git.2008.03.24-11.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Preserve hidden partitions in DOS-format partition tables if they are not
+    explicitly replaced. Closes: #491797125
+
+ -- Ben Hutchings <ben@decadent.org.uk>  Mon, 24 Nov 2008 01:28:08 +0000
+
 parted (1.8.8.git.2008.03.24-11) unstable; urgency=low
 
   * Add patch to avoid using partition names for loop devices. Thanks to
