@@ -155,12 +155,7 @@ echo-vars:
 
 packaging-files: $(GENFILES)
 
-autotools-update: autotools-update-stamp
-autotools-update-stamp: patch-stamp
-	AUTOMAKE=automake-1.10 ACLOCAL=aclocal-1.10 autoreconf
-	touch $@
-
-build-deb/config.status: autotools-update-stamp
+build-deb/config.status:
 	dh_testdir
 	[ -d build-deb ] || mkdir build-deb
 
@@ -177,7 +172,7 @@ endif
 		--enable-device-mapper \
 	    $(CONFFLAGS)
 
-build-udeb/config.status: autotools-update-stamp
+build-udeb/config.status:
 	dh_testdir
 	[ -d build-udeb ] || mkdir build-udeb
 
@@ -188,7 +183,7 @@ build-udeb/config.status: autotools-update-stamp
 	    --without-readline --enable-device-mapper \
 		$(CONFFLAGS)
 
-build-dbg/config.status: autotools-update-stamp
+build-dbg/config.status:
 	dh_testdir
 	[ -d build-dbg ] || mkdir build-dbg
 
@@ -242,8 +237,6 @@ clean: unpatch packaging-files
 
 #	 Add here commands to clean up after the build process
 	rm -rf build-deb build-udeb build-dbg
-
-	rm -f autotools-update-stamp
 
 #	 Remove all debian/libparted*.* except for libparted.*,
 #	 libparted-dev.* and libparted$(LIBPKGVER)*
@@ -395,6 +388,6 @@ binary: binary-arch binary-indep
 .PHONY: install install-udeb install-dbg
 .PHONY: clean binary-indep binary-arch binary
 .PHONY: binary-%-dbg binary-%-udeb binary-%
-.PHONY: packaging-files autotools
+.PHONY: packaging-files
 
 include /usr/share/dpatch/dpatch.make
