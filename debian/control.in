@@ -3,7 +3,7 @@ Section: admin
 Priority: optional
 Maintainer: Parted Maintainer Team <parted-maintainers@lists.alioth.debian.org>
 Uploaders: Sven Luther <luther@debian.org>, Otavio Salvador <otavio@debian.org>, Bastian Blank <waldi@debian.org>, Xavier Oswald <x.oswald@free.fr>
-Standards-Version: 3.7.2
+Standards-Version: 3.8.1
 Build-Depends:
  debhelper (>= 5.0.22),
  dpatch,
