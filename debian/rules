@@ -202,8 +202,10 @@ build-deb/build-stamp: build-deb/config.status
 
 	$(MAKE) -C build-deb
 
-#	By now just use ABI detection on i386 machines. (enable in 1.7.1)
-	if [ $(DEB_BUILD_ARCH) = "i386" ]; then $(MAKE) -C build-deb check-abi; fi
+#	By now just use ABI detection on amd64 machines.
+	if [ $(DEB_BUILD_ARCH) = "amd64" ]; then \
+		$(MAKE) -C build-deb check-abi; \
+	fi
 
 	touch $@
 
