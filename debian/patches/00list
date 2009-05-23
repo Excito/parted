@@ -5,7 +5,6 @@ reiserfs-libname
 # Patch susceptible to be merged upstream
 devfs
 #kfreebsd-gnu
-parted-dmraid
 unpartitioned-disks
 preserve-hidden-parts
 
