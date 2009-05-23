@@ -7,6 +7,7 @@ devfs
 #kfreebsd-gnu
 unpartitioned-disks
 preserve-hidden-parts
+update-ext4-code
 
 # Patch which may be obsolet.
 #amiga-raid-lvm_fix
