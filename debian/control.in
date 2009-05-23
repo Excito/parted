@@ -4,7 +4,19 @@ Priority: optional
 Maintainer: Parted Maintainer Team <parted-maintainers@lists.alioth.debian.org>
 Uploaders: Sven Luther <luther@debian.org>, Otavio Salvador <otavio@debian.org>, Bastian Blank <waldi@debian.org>, Xavier Oswald <x.oswald@free.fr>
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 5.0.22), dpatch, libncurses-dev | libncurses5-dev, libreadline5-dev | libreadline-dev, libdevmapper-dev, uuid-dev, gettext, texinfo (>= 4.2), debianutils (>= 1.13.1), autoconf, automake1.10, libtool, libgeom-dev [kfreebsd-i386 kfreebsd-amd64], cvs, po4a, pkg-config
+Build-Depends:
+ debhelper (>= 5.0.22),
+ dpatch,
+ libncurses-dev | libncurses5-dev,
+ libreadline5-dev | libreadline-dev,
+ libdevmapper-dev,
+ uuid-dev,
+ gettext,
+ texinfo (>= 4.2),
+ debianutils (>= 1.13.1),
+ libgeom-dev [kfreebsd-i386 kfreebsd-amd64],
+ po4a,
+ pkg-config
 
 Package: parted@BINPKGVER@
 Architecture: any
