@@ -1,0 +1,21 @@
+# Debian specific patches
+doc-package
+reiserfs-libname
+
+# Patch susceptible to be merged upstream
+devfs
+#kfreebsd-gnu
+parted-dmraid
+unpartitioned-disks
+preserve-hidden-parts
+
+# Will also stay debian specific, but depends on some of the above :/
+sparc-fix-raid
+
+# Patch which may be obsolet.
+#amiga-raid-lvm_fix
+
+#########################
+# ABI checking symbols update
+########################
+baseline-symbols-update
