@@ -1,3 +1,26 @@
+parted (1.8.8.git.2009.05.23-1) experimental; urgency=low
+
+  [ Otavio Salvador ]
+  * New upstream snapshot:
+    - Update build scripts. Closes: #525193
+    - Fix FTBFS with GCC 4.4. Closes: #505346
+    - Add ext4 support. Closes: #511224
+  * Import packaging files
+  * Clean up build-depends. Closes: #482408
+  * Set version as 1.8.8.1.147-f9f5-dirty
+  * debian/patches/parted-dmraid.dpatch: droped
+  * debian/patches/sparc-fix-raid.dpatch: droped
+  * debian/rules: do not call autotools during build
+  * Bump Standards-Version to 3.8.1; no changes required
+  * Bump library soname
+  * Check ABI symbols when compiling in amd64
+  * Fix check-abi build target
+
+  [ Colin Watson ]
+  * debian/patches/update-ext4-code.dpatch: add to improve ext4 support.
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Sat, 23 May 2009 20:42:05 -0300
+
 parted (1.8.8.git.2008.03.24-11.1) unstable; urgency=low
 
   * Non-maintainer upload.
