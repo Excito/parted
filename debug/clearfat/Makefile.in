@@ -92,8 +92,8 @@ am_clearfat_OBJECTS = clearfat.$(OBJEXT)
 clearfat_OBJECTS = $(am_clearfat_OBJECTS)
 am__DEPENDENCIES_1 =
 clearfat_DEPENDENCIES = $(top_builddir)/libparted/libparted.la \
-	$(top_builddir)/lib/libparted.la $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -536,7 +536,6 @@ top_srcdir = @top_srcdir@
 clearfat_SOURCES = clearfat.c
 clearfat_LDADD = \
   $(top_builddir)/libparted/libparted.la \
-  $(top_builddir)/lib/libparted.la \
   $(INTLLIBS) $(LIBS) \
   $(PARTED_LIBS)
 

@@ -1,3 +1,89 @@
+2009-06-03  Jim Meyering  <meyering@redhat.com>
+
+	build: require automake-1.11 via bootstrap.conf, too
+	* bootstrap.conf (buildreq): s/1.10c/1.11/
+
+	doc: sync README-hacking from coreutils
+	* README-hacking: update
+
+	build: rename internal library: lib/libparted -> lib/libgnulib
+	* bootstrap.conf (gnulib_name): Define gnulib_name=libgnulib.
+	* libparted/Makefile.am (libparted_la_LIBADD): Update sole use.
+
+	libparted: link with gnulib
+	* libparted/Makefile.am (libparted_la_LIBADD): Add
+	$(top_builddir)/lib/libparted.la to the list.
+	* partprobe/Makefile.am (partprobe_LDADD): Remove now-unneeded
+	$(top_builddir)/lib/libparted.la.
+	* libparted/tests/Makefile.am (LDADD): Remove now-unneeded
+	$(top_builddir)/lib/libparted.la.
+	* debug/clearfat/Makefile.am (clearfat_LDADD): Likewise.
+	* parted/Makefile.am (parted_LDADD): Likewise.
+	Otavio Salvador reported that linking with the resulting shared
+	library produced an unresolved reference to last_component.
+
+2009-05-26  Jim Meyering  <meyering@redhat.com>
+
+	tests: adjust t4100-msdos-starting-sector.sh
+	* tests/t4100-msdos-starting-sector.sh: Use parted's -m option
+	when printing, and adjust expected output to match.
+	Filter out "Disk...:" part to avoid false-positive failures due
+	to mount-point- related differences.
+
+2009-05-26  Joel Granados Moreno  <jgranado@redhat.com>
+
+	Add test for msdos starting sector.
+	* tests/t4100-msdos-starting-sector.sh : Make sure we are consistent
+	  when displaying starting sector for msdos lables.
+
+2009-05-26  Joel Andres Granados  <jgranado@redhat.com>
+
+	Make sure we always create msdos metadata parts.
+	Given a disk with no partition, parted did not create metadata
+	partitions for an msdos label.  This led to inconsistencies when
+	reporting free space partition ranges.  This patch addresses this issue.
+
+	* libparted/labels/dos.c (get_last_part): Remove function.
+	* libparted/labels/dos.c (get_start_first_nonfree_part): New function.
+	* libparted/labels/dos.c (get_end_last_nonfree_part): New function.
+	* libparted/lables/dos.c (add_startend_metadata): Add code that
+	handles disks no partitions.  Add check that prevents the metadata
+	partitions from being greater than the device length.  Add check
+	that prevents metadata partitions from overlapping in small devs.
+
+2009-05-26  Joel Granados Moreno  <jgranado@redhat.com>
+
+	Improve readability in linux.c
+	* libparted/arch/linux.c : Gather all the _is_major functions together.
+	change the name of readFD to _read_fd since its not used anywhere
+	else. Also rename the "_is_major_type" function to
+	"_major_type_in_device" as it better expresses what we do in said
+	function.
+
+	Correctly name virtio devices.
+	* include/parted/device.h (PedDeviceType): Add a new PED_DEVICE_VIRTBLK
+	type to the list.
+	* libparted/arch/linux.c (_is_dm_major): Modify this function so it
+	calls the new _is_major_type function with type "device-mapper".
+	* libparted/arch/linux.c (_is_major_type): Searches a major number
+	inside /proc/devices based on a "type" string.
+	* libparted/arch/linux.c (_is_virtblk_major): New function.  Calls
+	_is_major_type with type "virtblk".
+	* libparted/arch/linux.c (_device_probe_type): Add a new
+	PED_DEVICE_VIRTBLK case to the probe possibilities.
+	* libparted/arch/linux.c (linux_new): Add a new PED_DEVICE_VIRTBLK case
+	to the possible device types.
+	* parted/parted.c (do_print): add the "virtblk" string to the transport
+	array.
+
+2009-05-23  Otavio Salvador  <otavio@ossystems.com.br>
+
+	Makefile.am: fail if ABI has changed
+
+	configure.ac: fix PED_MINOR_VERSION sed expression
+
+	add build-aux to .gitignore
+
 2009-05-15  Joel Granados Moreno  <jgranado@redhat.com>
 
 	build: enable device mapper support by default

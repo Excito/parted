@@ -601,6 +601,7 @@ TESTS = \
   t4000-sun-raid-type.sh \
   t4100-msdos-partition-limits.sh \
   t4100-dvh-partition-limits.sh \
+  t4100-msdos-starting-sector.sh \
   t4200-partprobe.sh \
   t5000-tags.sh \
   t6000-dm.sh \
@@ -848,6 +849,8 @@ t4100-msdos-partition-limits.sh.log: t4100-msdos-partition-limits.sh
 	@p='t4100-msdos-partition-limits.sh'; $(am__check_pre) $(LOG_COMPILE) "$$tst" $(am__check_post)
 t4100-dvh-partition-limits.sh.log: t4100-dvh-partition-limits.sh
 	@p='t4100-dvh-partition-limits.sh'; $(am__check_pre) $(LOG_COMPILE) "$$tst" $(am__check_post)
+t4100-msdos-starting-sector.sh.log: t4100-msdos-starting-sector.sh
+	@p='t4100-msdos-starting-sector.sh'; $(am__check_pre) $(LOG_COMPILE) "$$tst" $(am__check_post)
 t4200-partprobe.sh.log: t4200-partprobe.sh
 	@p='t4200-partprobe.sh'; $(am__check_pre) $(LOG_COMPILE) "$$tst" $(am__check_post)
 t5000-tags.sh.log: t5000-tags.sh

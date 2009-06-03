@@ -16,7 +16,7 @@
 @SET_MAKE@
 
 # This file is part of GNU Parted
-# Copyright (C) 1999, 2000, 2001, 2007 Free Software Foundation, Inc.
+# Copyright (C) 1999, 2000, 2001, 2007, 2009 Free Software Foundation, Inc.
 #
 # This file may be modified and/or distributed without restriction.
 
@@ -115,10 +115,10 @@ am__base_list = \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libparted_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+libparted_la_DEPENDENCIES = fs/libfs.la labels/liblabels.la \
+	$(top_builddir)/lib/libgnulib.la $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) fs/libfs.la \
-	labels/liblabels.la
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_libparted_la_OBJECTS = debug.lo architecture.lo device.lo \
 	exception.lo filesys.lo libparted.lo timer.lo unit.lo disk.lo \
 	geom.lo constraint.lo natmath.lo $(OS).lo
@@ -631,13 +631,15 @@ EXTRA_libparted_la_SOURCES = arch/linux.c		\
 				arch/gnu.c \
 				arch/beos.c
 
-libparted_la_LIBADD = $(OS_LIBS)		\
-			$(DL_LIBS)		\
-			$(DM_LIBS)		\
-			$(SELINUX_LIBS)		\
-			$(INTLLIBS)		\
-			fs/libfs.la		\
-			labels/liblabels.la
+libparted_la_LIBADD = \
+  fs/libfs.la		\
+  labels/liblabels.la	\
+  $(top_builddir)/lib/libgnulib.la \
+  $(OS_LIBS)		\
+  $(DL_LIBS)		\
+  $(DM_LIBS)		\
+  $(SELINUX_LIBS)	\
+  $(INTLLIBS)
 
 EXTRA_DIST = mbr.s
 INCLUDES = $(partedincludedir) $(INTLINCS)

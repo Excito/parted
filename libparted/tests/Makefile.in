@@ -16,7 +16,7 @@
 @SET_MAKE@
 
 # This file is part of GNU Parted
-# Copyright (C) 1999-2001, 2007-2008 Free Software Foundation, Inc.
+# Copyright (C) 1999-2001, 2007-2009 Free Software Foundation, Inc.
 #
 # This file may be modified and/or distributed without restriction.
 
@@ -99,7 +99,7 @@ disk_OBJECTS = $(am_disk_OBJECTS)
 disk_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
 disk_DEPENDENCIES = $(top_builddir)/libparted/libparted.la \
-	$(top_builddir)/lib/libparted.la $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -107,7 +107,7 @@ am_label_OBJECTS = common.$(OBJEXT) label.$(OBJEXT)
 label_OBJECTS = $(am_label_OBJECTS)
 label_LDADD = $(LDADD)
 label_DEPENDENCIES = $(top_builddir)/libparted/libparted.la \
-	$(top_builddir)/lib/libparted.la $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/lib
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__depfiles_maybe = depfiles
@@ -633,7 +633,6 @@ TESTS = t1000-label.sh t2000-disk.sh
 EXTRA_DIST = $(TESTS)
 LDADD = \
   $(top_builddir)/libparted/libparted.la \
-  $(top_builddir)/lib/libparted.la \
   $(CHECK_LIBS)
 
 AM_CPPFLAGS = \
