@@ -95,8 +95,8 @@ am_parted_OBJECTS = parted-command.$(OBJEXT) parted-parted.$(OBJEXT) \
 parted_OBJECTS = $(am_parted_OBJECTS)
 am__DEPENDENCIES_1 =
 parted_DEPENDENCIES = $(top_builddir)/libparted/libparted.la \
-	$(top_builddir)/lib/libparted.la $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -555,7 +555,6 @@ parted_SOURCES = command.c	\
 parted_CFLAGS = -DBUILDINFO=
 parted_LDADD = \
   $(top_builddir)/libparted/libparted.la \
-  $(top_builddir)/lib/libparted.la \
   $(INTLLIBS) $(LIBS) \
   $(PARTED_LIBS)
 

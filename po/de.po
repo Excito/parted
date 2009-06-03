@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parted-1.8.8\n"
 "Report-Msgid-Bugs-To: bug-parted@gnu.org\n"
-"POT-Creation-Date: 2009-05-23 14:19-0300\n"
+"POT-Creation-Date: 2009-06-03 18:50-0300\n"
 "PO-Revision-Date: 2007-08-15 12:16+0200\n"
 "Last-Translator: Martin Ereth <martin.ereth@arcor.de>\n"
 "Language-Team: German <translation-team-de@lists.sourceforge.net>\n"
@@ -378,44 +378,44 @@ msgid "Disk Image"
 msgstr "Speicherabbild"
 
 #: libparted/arch/beos.c:346 libparted/arch/gnu.c:276
-#: libparted/arch/linux.c:1426
+#: libparted/arch/linux.c:1445
 #, c-format
 msgid "Error opening %s: %s"
 msgstr "Fehler beim Öffnen von %s: %s"
 
 #: libparted/arch/beos.c:357 libparted/arch/gnu.c:286
-#: libparted/arch/linux.c:1437
+#: libparted/arch/linux.c:1456
 #, c-format
 msgid "Unable to open %s read-write (%s).  %s has been opened read-only."
 msgstr "Kann %s nicht zum Schreiben öffnen (%s). %s wurde nur lesbar geöffnet."
 
-#: libparted/arch/beos.c:419 libparted/arch/linux.c:1585
+#: libparted/arch/beos.c:419 libparted/arch/linux.c:1604
 #, c-format
 msgid "%s during seek for read on %s"
 msgstr "%s, während %s zum Lesen positioniert wurde"
 
 #: libparted/arch/beos.c:452 libparted/arch/gnu.c:464 libparted/arch/gnu.c:563
-#: libparted/arch/gnu.c:691 libparted/arch/linux.c:1545
-#: libparted/arch/linux.c:1624
+#: libparted/arch/gnu.c:691 libparted/arch/linux.c:1564
+#: libparted/arch/linux.c:1643
 #, c-format
 msgid "%s during read on %s"
 msgstr "%s, während von %s gelesen wurde"
 
 #: libparted/arch/beos.c:488 libparted/arch/gnu.c:524
-#: libparted/arch/linux.c:1700
+#: libparted/arch/linux.c:1719
 #, c-format
 msgid "Can't write to %s, because it is opened read-only."
 msgstr ""
 "Auf %s kann nicht geschrieben werden, weil es nur-lesend geöffnet wurde."
 
-#: libparted/arch/beos.c:504 libparted/arch/linux.c:1724
+#: libparted/arch/beos.c:504 libparted/arch/linux.c:1743
 #, c-format
 msgid "%s during seek for write on %s"
 msgstr "%s, während %s zum Schreiben positioniert wurde"
 
 #: libparted/arch/beos.c:541 libparted/arch/gnu.c:600 libparted/arch/gnu.c:645
-#: libparted/arch/gnu.c:722 libparted/arch/linux.c:1673
-#: libparted/arch/linux.c:1766 libparted/arch/linux.c:1838
+#: libparted/arch/gnu.c:722 libparted/arch/linux.c:1692
+#: libparted/arch/linux.c:1785 libparted/arch/linux.c:1857
 #, c-format
 msgid "%s during write on %s"
 msgstr "%s, während auf %s geschrieben wurde"
@@ -546,17 +546,17 @@ msgid "%s trying to sync %s to disk"
 msgstr "%s beim Versuch, %s auf die Platte zu speichern (sync)"
 
 # cformat removed for testing
-#: libparted/arch/linux.c:502
+#: libparted/arch/linux.c:515
 #, c-format
 msgid "Could not stat device %s - %s."
 msgstr "Ruf von stat für Gerät %s schlug fehl - %s."
 
-#: libparted/arch/linux.c:556
+#: libparted/arch/linux.c:569
 #, fuzzy, c-format
 msgid "Unable to determine the dm type of %s."
 msgstr "Die Größe von %s kann nicht festgestellt werden (%s)."
 
-#: libparted/arch/linux.c:628
+#: libparted/arch/linux.c:643
 #, c-format
 msgid ""
 "Could not determine sector size for %s: %s.\n"
@@ -565,7 +565,7 @@ msgstr ""
 "Die Sektorgröße von %s konnte nicht ermittelt werden: %s.\n"
 "Es wird die Standardsektorgröße verwendet (%lld)."
 
-#: libparted/arch/linux.c:644
+#: libparted/arch/linux.c:659
 #, c-format
 msgid ""
 "Device %s has a logical sector size of %lld.  Not all parts of GNU Parted "
@@ -575,21 +575,21 @@ msgstr ""
 "GNU Parted unterstützen dies im Moment und der funktionierende Code ist HOCH "
 "EXPERIMENTELL.\n"
 
-#: libparted/arch/linux.c:684
+#: libparted/arch/linux.c:699
 #, c-format
 msgid "Unable to determine the size of %s (%s)."
 msgstr "Die Größe von %s kann nicht festgestellt werden (%s)."
 
-#: libparted/arch/linux.c:773
+#: libparted/arch/linux.c:788
 #, c-format
 msgid "Could not get identity of device %s - %s"
 msgstr "Die Identität von Gerät %s konnte nicht ermittelt werden - %s"
 
-#: libparted/arch/linux.c:782
+#: libparted/arch/linux.c:797
 msgid "Generic IDE"
 msgstr "Standard IDE"
 
-#: libparted/arch/linux.c:803
+#: libparted/arch/linux.c:818
 #, c-format
 msgid ""
 "Device %s has multiple (%d) logical sectors per physical sector.\n"
@@ -602,12 +602,12 @@ msgstr ""
 "Plattenkennungen/Dateisystem-Kombinationen, z.B.: GPT und ext2/3.\n"
 "Bitte besuchen Sie die Webseite für aktuelle Informationen."
 
-#: libparted/arch/linux.c:978
+#: libparted/arch/linux.c:993
 #, c-format
 msgid "Error initialising SCSI device %s - %s"
 msgstr "Fehler in der Initialisierung von SCSI-Gerät %s - %s"
 
-#: libparted/arch/linux.c:1033
+#: libparted/arch/linux.c:1048
 #, c-format
 msgid ""
 "The device %s has zero length, and can't possibly store a file system or "
@@ -617,7 +617,7 @@ msgstr ""
 "Partitionstabelle speichern. Vielleicht haben Sie das falsche Gerät "
 "ausgewählt?"
 
-#: libparted/arch/linux.c:1137
+#: libparted/arch/linux.c:1152
 #, c-format
 msgid ""
 "Unable to determine geometry of file/device %s.  You should not use Parted "
@@ -626,60 +626,65 @@ msgstr ""
 "Geometrie von Datei/Gerät %s konnte nicht ermittelt werden. Sie sollten "
 "Parted nicht verwenden, wenn sie nicht WIRKLICH wissen, was Sie tun!"
 
-#: libparted/arch/linux.c:1197
+#: libparted/arch/linux.c:1212
 msgid "Generic SD/MMC Storage Card"
 msgstr ""
 
-#: libparted/arch/linux.c:1246
+#: libparted/arch/linux.c:1261
 msgid "DAC960 RAID controller"
 msgstr "DAC960 RAID controller"
 
-#: libparted/arch/linux.c:1251
+#: libparted/arch/linux.c:1266
 msgid "Promise SX8 SATA Device"
 msgstr "Promise SX8 SATA Device"
 
-#: libparted/arch/linux.c:1256
+#: libparted/arch/linux.c:1271
 msgid "IBM S390 DASD drive"
 msgstr "IBM S390 DASD drive"
 
-#: libparted/arch/linux.c:1261
+#: libparted/arch/linux.c:1276
 msgid "IBM iSeries Virtual DASD"
 msgstr "IBM iSeries Virtual DASD"
 
-#: libparted/arch/linux.c:1266
+#: libparted/arch/linux.c:1281
 msgid "Compaq Smart Array"
 msgstr "Compaq Smart Array"
 
-#: libparted/arch/linux.c:1271
+#: libparted/arch/linux.c:1286
 msgid "ATARAID Controller"
 msgstr "ATARAID Controller"
 
-#: libparted/arch/linux.c:1276
+#: libparted/arch/linux.c:1291
 msgid "I2O Controller"
 msgstr "I20 controller"
 
-#: libparted/arch/linux.c:1281
+#: libparted/arch/linux.c:1296
 msgid "User-Mode Linux UBD"
 msgstr "User-Mode Linux UBD"
 
-#: libparted/arch/linux.c:1294
+#: libparted/arch/linux.c:1309
 #, fuzzy, c-format
 msgid "Linux device-mapper (%s)"
 msgstr "Linux device-mapper"
 
-#: libparted/arch/linux.c:1305
+#: libparted/arch/linux.c:1320
 msgid "Xen Virtual Block Device"
 msgstr "Xen Virtuelles Blockorientiertes Gerät"
 
-#: libparted/arch/linux.c:1310
+#: libparted/arch/linux.c:1325
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: libparted/arch/linux.c:1322
+#: libparted/arch/linux.c:1334
+#, fuzzy
+msgid "Virtio Block Device"
+msgstr "Xen Virtuelles Blockorientiertes Gerät"
+
+#: libparted/arch/linux.c:1341
 msgid "ped_device_new()  Unsupported device type"
 msgstr "ped_device_new()  Nicht unterstützter Gerätetyp"
 
-#: libparted/arch/linux.c:2243
+#: libparted/arch/linux.c:2262
 #, c-format
 msgid ""
 "Error informing the kernel about modifications to partition %s -- %s.  This "
@@ -691,7 +696,7 @@ msgstr ""
 "sehen wird. Sie sollten daher die Partition nicht einhängen oder sonst "
 "irgendwie benutzen, bis Sie den Rechner neu gestartet haben."
 
-#: libparted/arch/linux.c:2478
+#: libparted/arch/linux.c:2497
 #, c-format
 msgid ""
 "parted was unable to re-read the partition table on %s (%s).  This means "
@@ -701,7 +706,7 @@ msgstr ""
 "bedeutet, dass Linux bis zum Neustart nichts über Ihrer Modifikationen "
 "weiss. "
 
-#: libparted/arch/linux.c:2587
+#: libparted/arch/linux.c:2606
 #, c-format
 msgid ""
 "The kernel was unable to re-read the partition table on %s (%s).  This means "

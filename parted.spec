@@ -12,7 +12,7 @@
 
 Summary:   The GNU disk partition manipulation program
 Name:      parted
-Version:   1.8.8.1.147-f9f5-dirty
+Version:   1.8.8.1.159-1e0e
 Release:   1
 Source:    ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.bz2
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)

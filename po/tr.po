@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parted-1.8.8\n"
 "Report-Msgid-Bugs-To: bug-parted@gnu.org\n"
-"POT-Creation-Date: 2009-05-23 14:19-0300\n"
+"POT-Creation-Date: 2009-06-03 18:50-0300\n"
 "PO-Revision-Date: 2007-10-21 20:38-0500\n"
 "Last-Translator: Eyüp Hakan Duran <hakan_duran@hotmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
@@ -376,44 +376,44 @@ msgid "Disk Image"
 msgstr "Disk Görüntüsü"
 
 #: libparted/arch/beos.c:346 libparted/arch/gnu.c:276
-#: libparted/arch/linux.c:1426
+#: libparted/arch/linux.c:1445
 #, c-format
 msgid "Error opening %s: %s"
 msgstr "%1$s açarken hata: %2$s"
 
 #: libparted/arch/beos.c:357 libparted/arch/gnu.c:286
-#: libparted/arch/linux.c:1437
+#: libparted/arch/linux.c:1456
 #, c-format
 msgid "Unable to open %s read-write (%s).  %s has been opened read-only."
 msgstr ""
 "%1$s oku-yaz þeklinde açýlamýyor (%2$s).  %3$s salt-okunur olarak açýldý."
 
-#: libparted/arch/beos.c:419 libparted/arch/linux.c:1585
+#: libparted/arch/beos.c:419 libparted/arch/linux.c:1604
 #, c-format
 msgid "%s during seek for read on %s"
 msgstr "%2$s'te okuma için arama sýrasýnda %1$s"
 
 #: libparted/arch/beos.c:452 libparted/arch/gnu.c:464 libparted/arch/gnu.c:563
-#: libparted/arch/gnu.c:691 libparted/arch/linux.c:1545
-#: libparted/arch/linux.c:1624
+#: libparted/arch/gnu.c:691 libparted/arch/linux.c:1564
+#: libparted/arch/linux.c:1643
 #, c-format
 msgid "%s during read on %s"
 msgstr "%2$s'i okuma sýrasýnda %1$s"
 
 #: libparted/arch/beos.c:488 libparted/arch/gnu.c:524
-#: libparted/arch/linux.c:1700
+#: libparted/arch/linux.c:1719
 #, c-format
 msgid "Can't write to %s, because it is opened read-only."
 msgstr "%s'e yazýlamýyor, çünkü salt-okunur olarak açýlmýþ."
 
-#: libparted/arch/beos.c:504 libparted/arch/linux.c:1724
+#: libparted/arch/beos.c:504 libparted/arch/linux.c:1743
 #, c-format
 msgid "%s during seek for write on %s"
 msgstr "%2$s'e yazma için arama sýrasýnda %1$s"
 
 #: libparted/arch/beos.c:541 libparted/arch/gnu.c:600 libparted/arch/gnu.c:645
-#: libparted/arch/gnu.c:722 libparted/arch/linux.c:1673
-#: libparted/arch/linux.c:1766 libparted/arch/linux.c:1838
+#: libparted/arch/gnu.c:722 libparted/arch/linux.c:1692
+#: libparted/arch/linux.c:1785 libparted/arch/linux.c:1857
 #, c-format
 msgid "%s during write on %s"
 msgstr "%2$s'e yazma sýrasýnda %1$s"
@@ -543,17 +543,17 @@ msgstr ""
 msgid "%s trying to sync %s to disk"
 msgstr "%1$s %2$s diske eþzamanlanmaya çalýþýlýyor"
 
-#: libparted/arch/linux.c:502
+#: libparted/arch/linux.c:515
 #, c-format
 msgid "Could not stat device %s - %s."
 msgstr "Dosya durum bilgisi alýnamayan aygýt %s - %s."
 
-#: libparted/arch/linux.c:556
+#: libparted/arch/linux.c:569
 #, fuzzy, c-format
 msgid "Unable to determine the dm type of %s."
 msgstr "%1$s (%2$s)'in boyutu belirlenemedi"
 
-#: libparted/arch/linux.c:628
+#: libparted/arch/linux.c:643
 #, c-format
 msgid ""
 "Could not determine sector size for %s: %s.\n"
@@ -562,7 +562,7 @@ msgstr ""
 "%1$s: %2$s için sektör boyutu belirlenemiyor.\n"
 "Öntanýmlý sektör boyutu (%3$lld) kullanýlacak."
 
-#: libparted/arch/linux.c:644
+#: libparted/arch/linux.c:659
 #, c-format
 msgid ""
 "Device %s has a logical sector size of %lld.  Not all parts of GNU Parted "
@@ -571,21 +571,21 @@ msgstr ""
 "%s aygýtýnýn mantýksal sektör boyutu %lld'dir. GNU parted'in tüm bölümleri "
 "bunu henüz desteklememekte olup çalýþan kod OLDUKÇA DENEYSELDÝR.\n"
 
-#: libparted/arch/linux.c:684
+#: libparted/arch/linux.c:699
 #, c-format
 msgid "Unable to determine the size of %s (%s)."
 msgstr "%1$s (%2$s)'in boyutu belirlenemedi"
 
-#: libparted/arch/linux.c:773
+#: libparted/arch/linux.c:788
 #, c-format
 msgid "Could not get identity of device %s - %s"
 msgstr "%s - %s aygýtýnýn kimliði alýnamadý "
 
-#: libparted/arch/linux.c:782
+#: libparted/arch/linux.c:797
 msgid "Generic IDE"
 msgstr "Genel IDE"
 
-#: libparted/arch/linux.c:803
+#: libparted/arch/linux.c:818
 #, c-format
 msgid ""
 "Device %s has multiple (%d) logical sectors per physical sector.\n"
@@ -598,12 +598,12 @@ msgstr ""
 "kombinasyonlarý için destekliyor, örneðin GPT ve ext2/3.\n"
 "Lütfen güncel bilgi için web sitesine baþvurun."
 
-#: libparted/arch/linux.c:978
+#: libparted/arch/linux.c:993
 #, c-format
 msgid "Error initialising SCSI device %s - %s"
 msgstr "%s - %s SCSI aygýtýný ilklendirmede hata"
 
-#: libparted/arch/linux.c:1033
+#: libparted/arch/linux.c:1048
 #, c-format
 msgid ""
 "The device %s has zero length, and can't possibly store a file system or "
@@ -612,7 +612,7 @@ msgstr ""
 "%s aygýtý sýfýr-uzunlukta ve muhtemelen bir dosya sistemi ya da bölümleme "
 "tablosu depolayamýyor.  Yanlýþ aygýtý seçmiþ olmayasýnýz?"
 
-#: libparted/arch/linux.c:1137
+#: libparted/arch/linux.c:1152
 #, c-format
 msgid ""
 "Unable to determine geometry of file/device %s.  You should not use Parted "
@@ -621,60 +621,65 @@ msgstr ""
 "%s Dosya/aygýtýnýn geometrisi belirlenemedi.  CÝDDEN ne yaptýðýnýzý "
 "bilmiyorsanýz Parted kullanmamalýsýnýz!"
 
-#: libparted/arch/linux.c:1197
+#: libparted/arch/linux.c:1212
 msgid "Generic SD/MMC Storage Card"
 msgstr ""
 
-#: libparted/arch/linux.c:1246
+#: libparted/arch/linux.c:1261
 msgid "DAC960 RAID controller"
 msgstr "DAC960 RAID denetleyici"
 
-#: libparted/arch/linux.c:1251
+#: libparted/arch/linux.c:1266
 msgid "Promise SX8 SATA Device"
 msgstr "Promise SX8 SATA Aygýtý"
 
-#: libparted/arch/linux.c:1256
+#: libparted/arch/linux.c:1271
 msgid "IBM S390 DASD drive"
 msgstr "IBM S390 DASD sürücüsü"
 
-#: libparted/arch/linux.c:1261
+#: libparted/arch/linux.c:1276
 msgid "IBM iSeries Virtual DASD"
 msgstr "IBM iSeries Virtual DASD"
 
-#: libparted/arch/linux.c:1266
+#: libparted/arch/linux.c:1281
 msgid "Compaq Smart Array"
 msgstr "Compaq Akýllý Dizi"
 
-#: libparted/arch/linux.c:1271
+#: libparted/arch/linux.c:1286
 msgid "ATARAID Controller"
 msgstr "ATARAID Denetleyici"
 
-#: libparted/arch/linux.c:1276
+#: libparted/arch/linux.c:1291
 msgid "I2O Controller"
 msgstr "I20 Denetleyici"
 
-#: libparted/arch/linux.c:1281
+#: libparted/arch/linux.c:1296
 msgid "User-Mode Linux UBD"
 msgstr "Kullanýcý Kipi Linux UBD"
 
-#: libparted/arch/linux.c:1294
+#: libparted/arch/linux.c:1309
 #, fuzzy, c-format
 msgid "Linux device-mapper (%s)"
 msgstr "Linux aygýt-eþlemleyicisi"
 
-#: libparted/arch/linux.c:1305
+#: libparted/arch/linux.c:1320
 msgid "Xen Virtual Block Device"
 msgstr "Xen Sanal Blok Aygýtý"
 
-#: libparted/arch/linux.c:1310
+#: libparted/arch/linux.c:1325
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: libparted/arch/linux.c:1322
+#: libparted/arch/linux.c:1334
+#, fuzzy
+msgid "Virtio Block Device"
+msgstr "Xen Sanal Blok Aygýtý"
+
+#: libparted/arch/linux.c:1341
 msgid "ped_device_new()  Unsupported device type"
 msgstr "ped_device_new()  Desteklenmeyen aygýt türü"
 
-#: libparted/arch/linux.c:2243
+#: libparted/arch/linux.c:2262
 #, c-format
 msgid ""
 "Error informing the kernel about modifications to partition %s -- %s.  This "
@@ -686,7 +691,7 @@ msgstr ""
 "deðiþiklikleri Linux'un bilmemesi demek - dolayýsýyla yeniden açmadan "
 "herhangi bir þekilde baðlamamalý ya da kullanmamalýsýnýz."
 
-#: libparted/arch/linux.c:2478
+#: libparted/arch/linux.c:2497
 #, c-format
 msgid ""
 "parted was unable to re-read the partition table on %s (%s).  This means "
@@ -696,7 +701,7 @@ msgstr ""
 "Bu, siz (bilgisayarý) yeniden açana dek yaptýðýnýz deðiþiklikleri Linux'un "
 "bilmemesi demek. "
 
-#: libparted/arch/linux.c:2587
+#: libparted/arch/linux.c:2606
 #, c-format
 msgid ""
 "The kernel was unable to re-read the partition table on %s (%s).  This means "
