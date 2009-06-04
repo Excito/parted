@@ -1,3 +1,13 @@
+parted (1.8.8.git.2009.06.03-1) unstable; urgency=low
+
+  [ Otavio Salvador ]
+  * New upstream snapshot
+  * debian/control: add Vcs-{Git,Browser} fields
+  * Bump soname due the properly linkage to gnulib
+  * Do not install README-hacking
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Wed, 03 Jun 2009 21:36:33 -0300
+
 parted (1.8.8.git.2009.05.23-1) experimental; urgency=low
 
   [ Otavio Salvador ]
