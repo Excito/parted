@@ -30,9 +30,11 @@ libparted_la_SOURCES  = debug.c			\
 			cs/constraint.c		\
 			cs/natmath.c		\
 			arch/blkpg.h		\
-			arch/$(OS).c
+			arch/$(OS).c		\
+			arch/$(OS).h
 
 EXTRA_libparted_la_SOURCES    = arch/linux.c		\
+				arch/linux.h	\
 				arch/gnu.c \
 				arch/beos.c
 
