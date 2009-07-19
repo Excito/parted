@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parted-1.8.8\n"
 "Report-Msgid-Bugs-To: bug-parted@gnu.org\n"
-"POT-Creation-Date: 2009-06-03 18:50-0300\n"
+"POT-Creation-Date: 2009-07-19 12:52-0300\n"
 "PO-Revision-Date: 2007-10-21 20:38-0500\n"
 "Last-Translator: Eyüp Hakan Duran <hakan_duran@hotmail.com>\n"
 "Language-Team: Turkish <gnu-tr-u12a@lists.sourceforge.net>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: lib/closeout.c:112 libparted/labels/fdasd.c:105
+#: lib/closeout.c:112 libparted/labels/fdasd.c:106
 msgid "write error"
 msgstr "yazma hatasý"
 
@@ -105,75 +105,75 @@ msgstr "`"
 msgid "'"
 msgstr "'"
 
-#: lib/regcomp.c:132
+#: lib/regcomp.c:134
 msgid "Success"
 msgstr "Baþarýlý"
 
-#: lib/regcomp.c:135
+#: lib/regcomp.c:137
 msgid "No match"
 msgstr "Eþleþme yok"
 
-#: lib/regcomp.c:138
+#: lib/regcomp.c:140
 msgid "Invalid regular expression"
 msgstr "Geçersiz düzenli ifade"
 
-#: lib/regcomp.c:141
+#: lib/regcomp.c:143
 msgid "Invalid collation character"
 msgstr "Geçersiz harmanlama karakteri"
 
-#: lib/regcomp.c:144
+#: lib/regcomp.c:146
 msgid "Invalid character class name"
 msgstr "Geçersiz karakter sýnýfý ismi"
 
-#: lib/regcomp.c:147
+#: lib/regcomp.c:149
 msgid "Trailing backslash"
 msgstr "Ýzleyen tersbölü"
 
-#: lib/regcomp.c:150
+#: lib/regcomp.c:152
 msgid "Invalid back reference"
 msgstr "Geçersiz geriye baþvuru"
 
-#: lib/regcomp.c:153
+#: lib/regcomp.c:155
 msgid "Unmatched [ or [^"
 msgstr "[ ya da [^ eþleþmiyor"
 
-#: lib/regcomp.c:156
+#: lib/regcomp.c:158
 msgid "Unmatched ( or \\("
 msgstr "( ya da \\( eþleþmiyor"
 
-#: lib/regcomp.c:159
+#: lib/regcomp.c:161
 msgid "Unmatched \\{"
 msgstr "\\{ eþleþmiyor"
 
-#: lib/regcomp.c:162
+#: lib/regcomp.c:164
 msgid "Invalid content of \\{\\}"
 msgstr "\\{\\} in içeriði geçersiz"
 
-#: lib/regcomp.c:165
+#: lib/regcomp.c:167
 msgid "Invalid range end"
 msgstr "Geçersiz kapsam sonu"
 
-#: lib/regcomp.c:168
+#: lib/regcomp.c:170
 msgid "Memory exhausted"
 msgstr "Bellek tükendi"
 
-#: lib/regcomp.c:171
+#: lib/regcomp.c:173
 msgid "Invalid preceding regular expression"
 msgstr "Geçersiz önceki düzenli ifade"
 
-#: lib/regcomp.c:174
+#: lib/regcomp.c:176
 msgid "Premature end of regular expression"
 msgstr "Düzenli ifadenin sonu eksik"
 
-#: lib/regcomp.c:177
+#: lib/regcomp.c:179
 msgid "Regular expression too big"
 msgstr "Düzenli ifade çok büyük"
 
-#: lib/regcomp.c:180
+#: lib/regcomp.c:182
 msgid "Unmatched ) or \\)"
 msgstr ") ya da  \\) eþleþmiyor"
 
-#: lib/regcomp.c:701
+#: lib/regcomp.c:703
 msgid "No previous regular expression"
 msgstr "Daha önce düzenli ifade yok"
 
@@ -197,14 +197,24 @@ msgstr "^[eE]"
 msgid "^[nN]"
 msgstr "^[hH]"
 
+#: lib/version-etc.c:68
+#, c-format
+msgid "Packaged by %s (%s)\n"
+msgstr ""
+
+#: lib/version-etc.c:71
+#, c-format
+msgid "Packaged by %s\n"
+msgstr ""
+
 #. TRANSLATORS: Translate "(C)" to the copyright symbol
 #. (C-in-a-circle), if this symbol is available in the user's
 #. locale.  Otherwise, do not translate "(C)"; leave it as-is.
-#: lib/version-etc.c:65
+#: lib/version-etc.c:78
 msgid "(C)"
 msgstr "(C)"
 
-#: lib/version-etc.c:67
+#: lib/version-etc.c:80
 #, fuzzy
 msgid ""
 "\n"
@@ -222,19 +232,19 @@ msgstr ""
 "\n"
 
 #. TRANSLATORS: %s denotes an author name.
-#: lib/version-etc.c:83
+#: lib/version-etc.c:96
 #, c-format
 msgid "Written by %s.\n"
 msgstr "%s tarafýndan yazýldý.\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
-#: lib/version-etc.c:87
+#: lib/version-etc.c:100
 #, c-format
 msgid "Written by %s and %s.\n"
 msgstr "%s ve %s tarafýndan yazýldý.\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
-#: lib/version-etc.c:91
+#: lib/version-etc.c:104
 #, c-format
 msgid "Written by %s, %s, and %s.\n"
 msgstr "%s, %s ve %s taraýndan yazýldý.\n"
@@ -242,7 +252,7 @@ msgstr "%s, %s ve %s taraýndan yazýldý.\n"
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:97
+#: lib/version-etc.c:111
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -254,7 +264,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:103
+#: lib/version-etc.c:118
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -266,7 +276,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:109
+#: lib/version-etc.c:125
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -278,7 +288,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:116
+#: lib/version-etc.c:133
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -290,7 +300,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:123
+#: lib/version-etc.c:141
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -304,7 +314,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:131
+#: lib/version-etc.c:150
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -318,7 +328,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:141
+#: lib/version-etc.c:161
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -333,7 +343,7 @@ msgstr ""
 #. for this package.  Please add _another line_ saying
 #. "Report translation bugs to <...>\n" with the address for translation
 #. bugs (typically your translation team's web or email address).
-#: lib/version-etc.c:181 debug/clearfat/clearfat.c:76
+#: lib/version-etc.c:239 debug/clearfat/clearfat.c:76
 #: partprobe/partprobe.c:154
 #, c-format
 msgid ""
@@ -343,12 +353,19 @@ msgstr ""
 "\n"
 "Yazýlým hatalarýný <%s>'e bildirin.\n"
 
-#: lib/version-etc.c:182
+#: lib/version-etc.c:241
+#, fuzzy, c-format
+msgid "Report %s bugs to <%s>.\n"
+msgstr ""
+"\n"
+"Yazýlým hatalarýný <%s>'e bildirin.\n"
+
+#: lib/version-etc.c:244
 #, c-format
 msgid "%s home page: <http://www.gnu.org/software/%s/>.\n"
 msgstr ""
 
-#: lib/version-etc.c:184
+#: lib/version-etc.c:246
 msgid "General help using GNU software: <http://www.gnu.org/gethelp/>.\n"
 msgstr ""
 
@@ -376,44 +393,44 @@ msgid "Disk Image"
 msgstr "Disk Görüntüsü"
 
 #: libparted/arch/beos.c:346 libparted/arch/gnu.c:276
-#: libparted/arch/linux.c:1445
+#: libparted/arch/linux.c:1428
 #, c-format
 msgid "Error opening %s: %s"
 msgstr "%1$s açarken hata: %2$s"
 
 #: libparted/arch/beos.c:357 libparted/arch/gnu.c:286
-#: libparted/arch/linux.c:1456
+#: libparted/arch/linux.c:1439
 #, c-format
 msgid "Unable to open %s read-write (%s).  %s has been opened read-only."
 msgstr ""
 "%1$s oku-yaz þeklinde açýlamýyor (%2$s).  %3$s salt-okunur olarak açýldý."
 
-#: libparted/arch/beos.c:419 libparted/arch/linux.c:1604
+#: libparted/arch/beos.c:419 libparted/arch/linux.c:1587
 #, c-format
 msgid "%s during seek for read on %s"
 msgstr "%2$s'te okuma için arama sýrasýnda %1$s"
 
 #: libparted/arch/beos.c:452 libparted/arch/gnu.c:464 libparted/arch/gnu.c:563
-#: libparted/arch/gnu.c:691 libparted/arch/linux.c:1564
-#: libparted/arch/linux.c:1643
+#: libparted/arch/gnu.c:691 libparted/arch/linux.c:1547
+#: libparted/arch/linux.c:1626
 #, c-format
 msgid "%s during read on %s"
 msgstr "%2$s'i okuma sýrasýnda %1$s"
 
 #: libparted/arch/beos.c:488 libparted/arch/gnu.c:524
-#: libparted/arch/linux.c:1719
+#: libparted/arch/linux.c:1702
 #, c-format
 msgid "Can't write to %s, because it is opened read-only."
 msgstr "%s'e yazýlamýyor, çünkü salt-okunur olarak açýlmýþ."
 
-#: libparted/arch/beos.c:504 libparted/arch/linux.c:1743
+#: libparted/arch/beos.c:504 libparted/arch/linux.c:1726
 #, c-format
 msgid "%s during seek for write on %s"
 msgstr "%2$s'e yazma için arama sýrasýnda %1$s"
 
 #: libparted/arch/beos.c:541 libparted/arch/gnu.c:600 libparted/arch/gnu.c:645
-#: libparted/arch/gnu.c:722 libparted/arch/linux.c:1692
-#: libparted/arch/linux.c:1785 libparted/arch/linux.c:1857
+#: libparted/arch/gnu.c:722 libparted/arch/linux.c:1675
+#: libparted/arch/linux.c:1768 libparted/arch/linux.c:1840
 #, c-format
 msgid "%s during write on %s"
 msgstr "%2$s'e yazma sýrasýnda %1$s"
@@ -530,7 +547,7 @@ msgstr ""
 "deðiþiklikleri Hurd bilmiyor anlamýna gelir.  %3$s ile ilgili hiçbir þey "
 "yapmadan önce bilgisayarýnýzý yeniden açmalýsýnýz."
 
-#: libparted/arch/gnu.c:395 parted/parted.c:2464
+#: libparted/arch/gnu.c:395 parted/parted.c:2495
 msgid ""
 "You should reinstall your boot loader before rebooting.  Read section 4 of "
 "the Parted User documentation for more information."
@@ -543,17 +560,17 @@ msgstr ""
 msgid "%s trying to sync %s to disk"
 msgstr "%1$s %2$s diske eþzamanlanmaya çalýþýlýyor"
 
-#: libparted/arch/linux.c:515
+#: libparted/arch/linux.c:498
 #, c-format
 msgid "Could not stat device %s - %s."
 msgstr "Dosya durum bilgisi alýnamayan aygýt %s - %s."
 
-#: libparted/arch/linux.c:569
+#: libparted/arch/linux.c:552
 #, fuzzy, c-format
 msgid "Unable to determine the dm type of %s."
 msgstr "%1$s (%2$s)'in boyutu belirlenemedi"
 
-#: libparted/arch/linux.c:643
+#: libparted/arch/linux.c:626
 #, c-format
 msgid ""
 "Could not determine sector size for %s: %s.\n"
@@ -562,7 +579,7 @@ msgstr ""
 "%1$s: %2$s için sektör boyutu belirlenemiyor.\n"
 "Öntanýmlý sektör boyutu (%3$lld) kullanýlacak."
 
-#: libparted/arch/linux.c:659
+#: libparted/arch/linux.c:642
 #, c-format
 msgid ""
 "Device %s has a logical sector size of %lld.  Not all parts of GNU Parted "
@@ -571,21 +588,21 @@ msgstr ""
 "%s aygýtýnýn mantýksal sektör boyutu %lld'dir. GNU parted'in tüm bölümleri "
 "bunu henüz desteklememekte olup çalýþan kod OLDUKÇA DENEYSELDÝR.\n"
 
-#: libparted/arch/linux.c:699
+#: libparted/arch/linux.c:682
 #, c-format
 msgid "Unable to determine the size of %s (%s)."
 msgstr "%1$s (%2$s)'in boyutu belirlenemedi"
 
-#: libparted/arch/linux.c:788
+#: libparted/arch/linux.c:771
 #, c-format
 msgid "Could not get identity of device %s - %s"
 msgstr "%s - %s aygýtýnýn kimliði alýnamadý "
 
-#: libparted/arch/linux.c:797
+#: libparted/arch/linux.c:780
 msgid "Generic IDE"
 msgstr "Genel IDE"
 
-#: libparted/arch/linux.c:818
+#: libparted/arch/linux.c:801
 #, c-format
 msgid ""
 "Device %s has multiple (%d) logical sectors per physical sector.\n"
@@ -598,12 +615,12 @@ msgstr ""
 "kombinasyonlarý için destekliyor, örneðin GPT ve ext2/3.\n"
 "Lütfen güncel bilgi için web sitesine baþvurun."
 
-#: libparted/arch/linux.c:993
+#: libparted/arch/linux.c:976
 #, c-format
 msgid "Error initialising SCSI device %s - %s"
 msgstr "%s - %s SCSI aygýtýný ilklendirmede hata"
 
-#: libparted/arch/linux.c:1048
+#: libparted/arch/linux.c:1031
 #, c-format
 msgid ""
 "The device %s has zero length, and can't possibly store a file system or "
@@ -612,7 +629,7 @@ msgstr ""
 "%s aygýtý sýfýr-uzunlukta ve muhtemelen bir dosya sistemi ya da bölümleme "
 "tablosu depolayamýyor.  Yanlýþ aygýtý seçmiþ olmayasýnýz?"
 
-#: libparted/arch/linux.c:1152
+#: libparted/arch/linux.c:1135
 #, c-format
 msgid ""
 "Unable to determine geometry of file/device %s.  You should not use Parted "
@@ -621,65 +638,65 @@ msgstr ""
 "%s Dosya/aygýtýnýn geometrisi belirlenemedi.  CÝDDEN ne yaptýðýnýzý "
 "bilmiyorsanýz Parted kullanmamalýsýnýz!"
 
-#: libparted/arch/linux.c:1212
+#: libparted/arch/linux.c:1195
 msgid "Generic SD/MMC Storage Card"
 msgstr ""
 
-#: libparted/arch/linux.c:1261
+#: libparted/arch/linux.c:1244
 msgid "DAC960 RAID controller"
 msgstr "DAC960 RAID denetleyici"
 
-#: libparted/arch/linux.c:1266
+#: libparted/arch/linux.c:1249
 msgid "Promise SX8 SATA Device"
 msgstr "Promise SX8 SATA Aygýtý"
 
-#: libparted/arch/linux.c:1271
+#: libparted/arch/linux.c:1254
 msgid "IBM S390 DASD drive"
 msgstr "IBM S390 DASD sürücüsü"
 
-#: libparted/arch/linux.c:1276
+#: libparted/arch/linux.c:1259
 msgid "IBM iSeries Virtual DASD"
 msgstr "IBM iSeries Virtual DASD"
 
-#: libparted/arch/linux.c:1281
+#: libparted/arch/linux.c:1264
 msgid "Compaq Smart Array"
 msgstr "Compaq Akýllý Dizi"
 
-#: libparted/arch/linux.c:1286
+#: libparted/arch/linux.c:1269
 msgid "ATARAID Controller"
 msgstr "ATARAID Denetleyici"
 
-#: libparted/arch/linux.c:1291
+#: libparted/arch/linux.c:1274
 msgid "I2O Controller"
 msgstr "I20 Denetleyici"
 
-#: libparted/arch/linux.c:1296
+#: libparted/arch/linux.c:1279
 msgid "User-Mode Linux UBD"
 msgstr "Kullanýcý Kipi Linux UBD"
 
-#: libparted/arch/linux.c:1309
+#: libparted/arch/linux.c:1292
 #, fuzzy, c-format
 msgid "Linux device-mapper (%s)"
 msgstr "Linux aygýt-eþlemleyicisi"
 
-#: libparted/arch/linux.c:1320
+#: libparted/arch/linux.c:1303
 msgid "Xen Virtual Block Device"
 msgstr "Xen Sanal Blok Aygýtý"
 
-#: libparted/arch/linux.c:1325
+#: libparted/arch/linux.c:1308
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-#: libparted/arch/linux.c:1334
+#: libparted/arch/linux.c:1317
 #, fuzzy
 msgid "Virtio Block Device"
 msgstr "Xen Sanal Blok Aygýtý"
 
-#: libparted/arch/linux.c:1341
+#: libparted/arch/linux.c:1324
 msgid "ped_device_new()  Unsupported device type"
 msgstr "ped_device_new()  Desteklenmeyen aygýt türü"
 
-#: libparted/arch/linux.c:2262
+#: libparted/arch/linux.c:2246
 #, c-format
 msgid ""
 "Error informing the kernel about modifications to partition %s -- %s.  This "
@@ -691,7 +708,7 @@ msgstr ""
 "deðiþiklikleri Linux'un bilmemesi demek - dolayýsýyla yeniden açmadan "
 "herhangi bir þekilde baðlamamalý ya da kullanmamalýsýnýz."
 
-#: libparted/arch/linux.c:2497
+#: libparted/arch/linux.c:2481
 #, c-format
 msgid ""
 "parted was unable to re-read the partition table on %s (%s).  This means "
@@ -701,7 +718,7 @@ msgstr ""
 "Bu, siz (bilgisayarý) yeniden açana dek yaptýðýnýz deðiþiklikleri Linux'un "
 "bilmemesi demek. "
 
-#: libparted/arch/linux.c:2606
+#: libparted/arch/linux.c:2590
 #, c-format
 msgid ""
 "The kernel was unable to re-read the partition table on %s (%s).  This means "
@@ -728,7 +745,7 @@ msgstr ""
 "%3$s üzerindeki disk bölümünün dýþýnda yeralan %1$ld-%2$ld sektörlere "
 "yazmaya çalýþýlýyor."
 
-#: libparted/cs/geom.c:405 libparted/fs/linux_swap/linux_swap.c:474
+#: libparted/cs/geom.c:405 libparted/fs/linux_swap/linux_swap.c:482
 msgid "checking for bad blocks"
 msgstr "hatalý blok aranýyor"
 
@@ -956,42 +973,42 @@ msgstr ""
 "software/parted/parted.html!  Lütfen bug-parted@gnu.org'a sürüm (%s) ve "
 "aþaðýdaki mesajý içeren bir yazýlým hatasý raporu gönderin:  "
 
-#: libparted/filesys.c:382
+#: libparted/filesys.c:456
 msgid "Could not detect file system."
 msgstr "Dosya sistemi saptanamýyor."
 
-#: libparted/filesys.c:393
+#: libparted/filesys.c:467
 msgid "The file system is bigger than its volume!"
 msgstr "Dosya sistemi oylumundan daha büyük!"
 
-#: libparted/filesys.c:401
+#: libparted/filesys.c:475
 #, c-format
 msgid "Support for opening %s file systems is not implemented yet."
 msgstr "%s dosya sistemlerini açmak için destek henüz saðlanmamýþtýr."
 
-#: libparted/filesys.c:443
+#: libparted/filesys.c:517
 #, c-format
 msgid "Support for creating %s file systems is not implemented yet."
 msgstr "%s dosya sistemlerini oluþturmak için destek henüz saðlanmamýþtýr."
 
-#: libparted/filesys.c:503
+#: libparted/filesys.c:577
 #, c-format
 msgid "Support for checking %s file systems is not implemented yet."
 msgstr "%s dosya sistemlerini kontrol etmek için destek henüz saðlanmamýþtýr."
 
-#: libparted/filesys.c:569
+#: libparted/filesys.c:643
 msgid "raw block copying"
 msgstr "ham blok kopyalama"
 
-#: libparted/filesys.c:580
+#: libparted/filesys.c:654
 msgid "growing file system"
 msgstr "büyüyen dosya sistemi"
 
-#: libparted/filesys.c:620
+#: libparted/filesys.c:694
 msgid "Can't copy onto an overlapping partition."
 msgstr "Çakýþan disk bölümlerinin üzerine kopyalanamýyor."
 
-#: libparted/filesys.c:642
+#: libparted/filesys.c:716
 #, c-format
 msgid ""
 "Direct support for copying file systems is not yet implemented for %s.  "
@@ -1006,12 +1023,12 @@ msgstr ""
 "Dolayýsýyla, ya kopyalamaya çalýþtýðýnýz disk bölümünü küçültün, ya da daha "
 "büyük bir disk bölümüne kopyalayýn."
 
-#: libparted/filesys.c:656
+#: libparted/filesys.c:730
 #, c-format
 msgid "Support for copying %s file systems is not implemented yet."
 msgstr "%s dosya sistemlerini kopyalamak için destek henüz saðlanmamýþtýr."
 
-#: libparted/filesys.c:694
+#: libparted/filesys.c:768
 #, c-format
 msgid "Support for resizing %s file systems is not implemented yet."
 msgstr ""
@@ -1131,7 +1148,7 @@ msgstr "AIX disk etiketlerinde bayrak kurma desteði henüz saðlanmamýþtýr."
 
 #: libparted/labels/bsd.c:578 libparted/labels/dasd.c:774
 #: libparted/labels/dos.c:2010 libparted/labels/dvh.c:771
-#: libparted/labels/gpt.c:1549 libparted/labels/loop.c:249
+#: libparted/labels/gpt.c:1576 libparted/labels/loop.c:249
 #: libparted/labels/mac.c:1412 libparted/labels/pc98.c:759
 #: libparted/labels/rdb.c:1059 libparted/labels/sun.c:743
 msgid "Unable to satisfy all constraints on the partition."
@@ -1205,83 +1222,83 @@ msgstr ""
 msgid "Too many primary partitions"
 msgstr "Çok fazla birincil disk bölümü"
 
-#: libparted/labels/fdasd.c:96
+#: libparted/labels/fdasd.c:97
 msgid "open error"
 msgstr "açma hatasý"
 
-#: libparted/labels/fdasd.c:99
+#: libparted/labels/fdasd.c:100
 msgid "seek error"
 msgstr "arama hatasý"
 
-#: libparted/labels/fdasd.c:102
+#: libparted/labels/fdasd.c:103
 msgid "read error"
 msgstr "okuma hatasý"
 
-#: libparted/labels/fdasd.c:108
+#: libparted/labels/fdasd.c:109
 msgid "ioctl() error"
 msgstr "ioctl() hatasý"
 
-#: libparted/labels/fdasd.c:112
+#: libparted/labels/fdasd.c:113
 msgid "API version mismatch"
 msgstr "API sürüm uyuþmazlýðý"
 
-#: libparted/labels/fdasd.c:116
+#: libparted/labels/fdasd.c:117
 msgid "Unsupported disk type"
 msgstr "Desteklenmeyen disk türü"
 
-#: libparted/labels/fdasd.c:120
+#: libparted/labels/fdasd.c:121
 msgid "Unsupported disk format"
 msgstr "Desteklenmeyen disk biçemi"
 
-#: libparted/labels/fdasd.c:124
+#: libparted/labels/fdasd.c:125
 msgid "Disk is in use"
 msgstr "Disk kullanýmda"
 
-#: libparted/labels/fdasd.c:128
+#: libparted/labels/fdasd.c:129
 msgid "Syntax error in config file"
 msgstr "Config dosyasýnda sözdizim hatasý"
 
-#: libparted/labels/fdasd.c:132
+#: libparted/labels/fdasd.c:133
 msgid "Volume label is corrupted"
 msgstr "Oylum etiketi bozuk"
 
-#: libparted/labels/fdasd.c:136
+#: libparted/labels/fdasd.c:137
 msgid "A data set name is corrupted"
 msgstr "Bir veri küme adý bozuk"
 
-#: libparted/labels/fdasd.c:140
+#: libparted/labels/fdasd.c:141
 msgid "Memory allocation failed"
 msgstr "Bellek tahsisi baþarýsýz"
 
-#: libparted/labels/fdasd.c:144
+#: libparted/labels/fdasd.c:145
 msgid "Device verification failed"
 msgstr "Aygýt doðrulamasý baþarýsýz"
 
-#: libparted/labels/fdasd.c:145
+#: libparted/labels/fdasd.c:146
 msgid "The specified device is not a valid DASD device"
 msgstr "Belirtilen aygýt geçerli bir DASD aygýtý deðil"
 
-#: libparted/labels/fdasd.c:148 libparted/labels/vtoc.c:179
+#: libparted/labels/fdasd.c:149 libparted/labels/vtoc.c:179
 msgid "Fatal error"
 msgstr "Ölümcül hata"
 
-#: libparted/labels/fdasd.c:224
+#: libparted/labels/fdasd.c:225
 msgid "No room for volume label."
 msgstr "Oylum etiketi için yer yok"
 
-#: libparted/labels/fdasd.c:232
+#: libparted/labels/fdasd.c:233
 msgid "No room for partition info."
 msgstr "Disk bölümü bilgisi için yer yok"
 
-#: libparted/labels/fdasd.c:702
+#: libparted/labels/fdasd.c:703
 msgid "Invalid VTOC."
 msgstr "Geçersiz VTOC."
 
-#: libparted/labels/fdasd.c:757
+#: libparted/labels/fdasd.c:758
 msgid "Could not retrieve API version."
 msgstr "API sürümü belirlenemiyor."
 
-#: libparted/labels/fdasd.c:760
+#: libparted/labels/fdasd.c:761
 #, c-format
 msgid ""
 "The current API version '%d' doesn't match dasd driver API version '%d'!"
@@ -1303,7 +1320,7 @@ msgstr "Disk bilgisi alýnamýyor."
 msgid "This is not an ECKD disk!  This disk type is not supported!"
 msgstr "Bu bir ECKD diski deðil!  Bu disk türü desteklenmiyor!"
 
-#: libparted/labels/gpt.c:458
+#: libparted/labels/gpt.c:459
 #, c-format
 msgid ""
 "%s contains GPT signatures, indicating that it has a GPT table.  However, it "
@@ -1318,7 +1335,7 @@ msgstr ""
 "Ya da belki siz GPT tablosunu sildiniz ve þimdi bir msdos disk bölümleme "
 "tablosu kullanmaktasýnýz.  Bu bir GPT disk bölümleme tablosu mu?"
 
-#: libparted/labels/gpt.c:655
+#: libparted/labels/gpt.c:664
 #, c-format
 msgid ""
 "The format of the GPT partition table is version %x, which is newer than "
@@ -1327,7 +1344,7 @@ msgstr ""
 "GPT disk bölümleme tablosu biçemi sürüm %x olup, Parted'ýn "
 "tanýyabileceðinden daha yenidir.  Lütfen bize bildirin!  bug-parted@gnu.org"
 
-#: libparted/labels/gpt.c:705
+#: libparted/labels/gpt.c:714
 #, c-format
 msgid ""
 "Not all of the space available to %s appears to be used, you can fix the GPT "
@@ -1338,7 +1355,7 @@ msgstr ""
 "ayarlayýp tüm mevcut boþluðu (%llu ek blok) kullanabilir ya da mevcut ayarla "
 "devam edebilirsiniz?"
 
-#: libparted/labels/gpt.c:841
+#: libparted/labels/gpt.c:850
 msgid ""
 "The backup GPT table is not at the end of the disk, as it should be.  This "
 "might mean that another operating system believes the disk is smaller.  Fix, "
@@ -1348,7 +1365,7 @@ msgstr ""
 "baþka iþletim sisteminin diski olduðundan küçük sanmasý anlamýna gelebilir.  "
 "Yedeði sona taþýyarak (ve eski yedeði silerek) onarýnýz?"
 
-#: libparted/labels/gpt.c:886
+#: libparted/labels/gpt.c:895
 msgid ""
 "The primary GPT table is corrupt, but the backup appears OK, so that will be "
 "used."
@@ -1356,7 +1373,7 @@ msgstr ""
 "Birincil GPT tablosu bozuk, ama yedek tamam görünüyor, dolayýsýyla yedek "
 "kullanýlacak."
 
-#: libparted/labels/gpt.c:894
+#: libparted/labels/gpt.c:903
 msgid ""
 "Both the primary and backup GPT tables are corrupt.  Try making a fresh "
 "table, and using Parted's rescue feature to recover partitions."
@@ -2130,22 +2147,22 @@ msgstr "fat_table_get: %ld kümesi dosya sisteminin dýþýnda"
 msgid "fat_table_alloc_cluster: no free clusters"
 msgstr "fat_table_alloc_cluster: boþ küme yok"
 
-#: libparted/fs/linux_swap/linux_swap.c:274
+#: libparted/fs/linux_swap/linux_swap.c:282
 #, fuzzy, c-format
 msgid "Unrecognised old style linux swap signature '%10s'."
 msgstr "Tanýnmayan linux takas imzasý '%10s'."
 
-#: libparted/fs/linux_swap/linux_swap.c:317
+#: libparted/fs/linux_swap/linux_swap.c:325
 #, fuzzy, c-format
 msgid "Unrecognised new style linux swap signature '%10s'."
 msgstr "Tanýnmayan linux takas imzasý '%10s'."
 
-#: libparted/fs/linux_swap/linux_swap.c:357
+#: libparted/fs/linux_swap/linux_swap.c:365
 #, fuzzy, c-format
 msgid "Unrecognised swsusp linux swap signature '%9s'."
 msgstr "Tanýnmayan linux takas imzasý '%10s'."
 
-#: libparted/fs/linux_swap/linux_swap.c:433
+#: libparted/fs/linux_swap/linux_swap.c:441
 msgid "Too many bad pages."
 msgstr "Çok sayýda bozuk sayfa."
 
@@ -2575,7 +2592,7 @@ msgstr "Ek disk bölümleri kopyalanamýyor."
 msgid "Destination partition number?"
 msgstr "Hedef disk bölümü numarasý?"
 
-#: parted/parted.c:614
+#: parted/parted.c:605
 msgid "New disk label type?"
 msgstr "Yeni disk etiketi türü?"
 
@@ -2749,21 +2766,21 @@ msgstr "Yeni durum?"
 msgid "Unit?"
 msgstr "Birim?"
 
-#: parted/parted.c:2114
+#: parted/parted.c:2145
 msgid "check"
 msgstr "check"
 
-#: parted/parted.c:2117
+#: parted/parted.c:2148
 msgid ""
 "check NUMBER                             do a simple check on the file system"
 msgstr ""
 "check NUMBER                  dosya sistemi üzerinde basit bir kontrol yap"
 
-#: parted/parted.c:2123
+#: parted/parted.c:2154
 msgid "cp"
 msgstr "cp"
 
-#: parted/parted.c:2126
+#: parted/parted.c:2157
 msgid ""
 "cp [FROM-DEVICE] FROM-NUMBER TO-NUMBER   copy file system to another "
 "partition"
@@ -2771,11 +2788,11 @@ msgstr ""
 "cp [FROM-DEVICE] FROM-NUMBER TO-NUMBER   dosya sistemini bir baþka disk "
 "bölümüne kopyala"
 
-#: parted/parted.c:2132
+#: parted/parted.c:2163
 msgid "help"
 msgstr "help"
 
-#: parted/parted.c:2135
+#: parted/parted.c:2166
 msgid ""
 "help [COMMAND]                           print general help, or help on "
 "COMMAND"
@@ -2783,15 +2800,15 @@ msgstr ""
 "help [COMMAND]                           genel yardýmý ya da KOMUT yardýmýný "
 "yazdýrýr"
 
-#: parted/parted.c:2141
+#: parted/parted.c:2172
 msgid "mklabel"
 msgstr "mklabel"
 
-#: parted/parted.c:2141
+#: parted/parted.c:2172
 msgid "mktable"
 msgstr "mktable"
 
-#: parted/parted.c:2144
+#: parted/parted.c:2175
 msgid ""
 "mklabel,mktable LABEL-TYPE               create a new disklabel (partition "
 "table)"
@@ -2799,11 +2816,11 @@ msgstr ""
 "mklabel,mktable LABEL-TYPE             yeni bir disk etiketi (disk bölümü "
 "tablosu) oluþtur"
 
-#: parted/parted.c:2150
+#: parted/parted.c:2181
 msgid "mkfs"
 msgstr "mkfs"
 
-#: parted/parted.c:2153
+#: parted/parted.c:2184
 msgid ""
 "mkfs NUMBER FS-TYPE                      make a FS-TYPE file system on "
 "partititon NUMBER"
@@ -2811,15 +2828,15 @@ msgstr ""
 "mkfs NUMBER FS-TYPE             NUMBER disk bölümü üzerinde FS-TYPE dosya "
 "sistemini yap"
 
-#: parted/parted.c:2159
+#: parted/parted.c:2190
 msgid "mkpart"
 msgstr "mkpart"
 
-#: parted/parted.c:2162
+#: parted/parted.c:2193
 msgid "mkpart PART-TYPE [FS-TYPE] START END     make a partition"
 msgstr "mkpart PART-TYPE [FS-TYPE] START END          bir disk bölümü yap"
 
-#: parted/parted.c:2168
+#: parted/parted.c:2199
 msgid ""
 "'mkpart' makes a partition without creating a new file system on the "
 "partition.  FS-TYPE may be specified to set an appropriate partition ID.\n"
@@ -2829,39 +2846,39 @@ msgstr ""
 "belirtilebilir.\n"
 "\n"
 
-#: parted/parted.c:2173
+#: parted/parted.c:2204
 msgid "mkpartfs"
 msgstr "mkpartfs"
 
-#: parted/parted.c:2176
+#: parted/parted.c:2207
 msgid ""
 "mkpartfs PART-TYPE FS-TYPE START END     make a partition with a file system"
 msgstr ""
 "mkpartfs PART-TYPE FS-TYPE START END      dosya sistemi olan bir disk bölümü "
 "yap"
 
-#: parted/parted.c:2182
+#: parted/parted.c:2213
 msgid "move"
 msgstr "move"
 
-#: parted/parted.c:2185
+#: parted/parted.c:2216
 msgid "move NUMBER START END                    move partition NUMBER"
 msgstr "move NUMBER START END           NUMBER. disk bölümünü taþý"
 
-#: parted/parted.c:2190
+#: parted/parted.c:2221
 msgid "name"
 msgstr "name"
 
-#: parted/parted.c:2193
+#: parted/parted.c:2224
 msgid "name NUMBER NAME                         name partition NUMBER as NAME"
 msgstr ""
 "name NUMBER NAME                     NUMBER. disk bölümünü NAME'le adlandýr"
 
-#: parted/parted.c:2198
+#: parted/parted.c:2229
 msgid "print"
 msgstr "print"
 
-#: parted/parted.c:2201
+#: parted/parted.c:2232
 msgid ""
 "print [devices|free|list,all|NUMBER]     display the partition table, "
 "available devices, free space, all found partitions, or a particular "
@@ -2870,7 +2887,7 @@ msgstr ""
 "print [aygýtlar|boþluk|liste,tümü|NUMARA]     bölümleme tablosu, mevcut "
 "aygýtlar, boþluk, tüm bulunan bölümler ya da belli bir bölümü gösterir"
 
-#: parted/parted.c:2206
+#: parted/parted.c:2237
 msgid ""
 "Without arguments, 'print' displays the entire partition table. However with "
 "the following arguments it performs various other actions.\n"
@@ -2878,11 +2895,11 @@ msgstr ""
 "Argümansýz olduðunda print tüm bölümleme tablosunnu gösterir. Aþaðýdaki "
 "argümanlarla kullanýldýðýnda diðer çeþitli eylemleri uygular.\n"
 
-#: parted/parted.c:2208
+#: parted/parted.c:2239
 msgid "  devices   : display all active block devices\n"
 msgstr "  devices   : tüm aktif blok aygýtlarý gösterir\n"
 
-#: parted/parted.c:2209
+#: parted/parted.c:2240
 msgid ""
 "  free      : display information about free unpartitioned space on the "
 "current block device\n"
@@ -2890,32 +2907,32 @@ msgstr ""
 "  free      : mevcut blok aygýt üzerindeki boþ bölümlenmemiþ alan bilgisini "
 "gösterir\n"
 
-#: parted/parted.c:2211
+#: parted/parted.c:2242
 msgid ""
 "  list, all : display the partition tables of all active block devices\n"
 msgstr ""
 "  list, all : tüm aktif blok aygýtlarýn bölümleme tablolarýný gösterir\n"
 
-#: parted/parted.c:2212
+#: parted/parted.c:2243
 msgid ""
 "  NUMBER    : display more detailed information about this particular "
 "partition\n"
 msgstr ""
 "  NUMBER    : bu belirtilmiþ bölüm hakkýnda daha ayrýntýlý bilgi gösterir\n"
 
-#: parted/parted.c:2217
+#: parted/parted.c:2248
 msgid "quit"
 msgstr "quit"
 
-#: parted/parted.c:2220
+#: parted/parted.c:2251
 msgid "quit                                     exit program"
 msgstr "quit                                     programdan çýk"
 
-#: parted/parted.c:2225
+#: parted/parted.c:2256
 msgid "rescue"
 msgstr "rescue"
 
-#: parted/parted.c:2228
+#: parted/parted.c:2259
 msgid ""
 "rescue START END                         rescue a lost partition near START "
 "and END"
@@ -2923,11 +2940,11 @@ msgstr ""
 "rescue START END                 START ve END arasýndaki kayýp disk "
 "bölümlerini kurtar"
 
-#: parted/parted.c:2234
+#: parted/parted.c:2265
 msgid "resize"
 msgstr "resize"
 
-#: parted/parted.c:2237
+#: parted/parted.c:2268
 msgid ""
 "resize NUMBER START END                  resize partition NUMBER and its "
 "file system"
@@ -2935,38 +2952,38 @@ msgstr ""
 "resize NUMBER START END          NUMBER. disk bölümünü ve üzerindeki dosya "
 "sistemini yeniden boyutlandýr"
 
-#: parted/parted.c:2245
+#: parted/parted.c:2276
 msgid "rm"
 msgstr "rm"
 
-#: parted/parted.c:2248
+#: parted/parted.c:2279
 msgid "rm NUMBER                                delete partition NUMBER"
 msgstr "rm NUMBER                        NUMBER. disk bölümünü sil"
 
-#: parted/parted.c:2253
+#: parted/parted.c:2284
 msgid "select"
 msgstr "select"
 
-#: parted/parted.c:2256
+#: parted/parted.c:2287
 msgid "select DEVICE                            choose the device to edit"
 msgstr "select DEVICE                  düzenlenecek aygýtý seç"
 
-#: parted/parted.c:2261
+#: parted/parted.c:2292
 msgid "set"
 msgstr "set"
 
-#: parted/parted.c:2264
+#: parted/parted.c:2295
 msgid ""
 "set NUMBER FLAG STATE                    change the FLAG on partition NUMBER"
 msgstr ""
 "set NUMBER FLAG STATE             NUMBER. disk bölümü üzerindeki bayraðý "
 "deðiþtir"
 
-#: parted/parted.c:2270
+#: parted/parted.c:2301
 msgid "toggle"
 msgstr "seçmece / deðiþtir"
 
-#: parted/parted.c:2273
+#: parted/parted.c:2304
 msgid ""
 "toggle [NUMBER [FLAG]]                   toggle the state of FLAG on "
 "partition NUMBER"
@@ -2974,19 +2991,19 @@ msgstr ""
 "toggle [NUMBER [FLAG]                       NUMBER. disk bölümü üzerindeki "
 "BAYRAK durumunu deðiþtir"
 
-#: parted/parted.c:2279
+#: parted/parted.c:2310
 msgid "unit"
 msgstr "birim"
 
-#: parted/parted.c:2282
+#: parted/parted.c:2313
 msgid "unit UNIT                                set the default unit to UNIT"
 msgstr "birim UNIT                        öntanýmlý birimi UNIT'e ayarla"
 
-#: parted/parted.c:2287
+#: parted/parted.c:2318
 msgid "version"
 msgstr "sürüm"
 
-#: parted/parted.c:2290
+#: parted/parted.c:2321
 msgid ""
 "version                                  display the version number and "
 "copyright information of GNU Parted"
@@ -2994,7 +3011,7 @@ msgstr ""
 "version                               GNU Parted'in sürüm numarasýný ve "
 "telif hakký bilgisini görüntüler"
 
-#: parted/parted.c:2294
+#: parted/parted.c:2325
 msgid ""
 "'version' displays copyright and version information corresponding to this "
 "copy of GNU Parted\n"
@@ -3002,20 +3019,20 @@ msgstr ""
 "sürüm, GNU Parted'in bu kopyasýnýn telif hakký ve sürüm bilgisini "
 "görüntüler\n"
 
-#: parted/parted.c:2356
+#: parted/parted.c:2387
 #, c-format
 msgid "Usage: %s [-hlmsv] [DEVICE [COMMAND [PARAMETERS]]...]\n"
 msgstr "Kullaným: %s [-hlmsv] [AYGIT [KOMUT [PARAMETRELER]]   ]\n"
 
-#: parted/parted.c:2400
+#: parted/parted.c:2431
 msgid "No device found"
 msgstr "Aygýt bulunamadý"
 
-#: parted/parted.c:2433
+#: parted/parted.c:2464
 msgid "WARNING: You are not superuser.  Watch out for permissions."
 msgstr "UYARI: Süper kullanýcý deðilsiniz.  Ýzinlere dikkat edin."
 
-#: parted/parted.c:2471
+#: parted/parted.c:2502
 msgid "You may need to update /etc/fstab.\n"
 msgstr "/etc/fstab'i güncellemeniz gerekebilir.\n"
 
@@ -3315,20 +3332,20 @@ msgstr "açýk"
 msgid "off"
 msgstr "kapalý"
 
-#: parted/ui.c:1447
+#: parted/ui.c:1456
 msgid "OPTIONs:"
 msgstr "SEÇENEKler:"
 
-#: parted/ui.c:1452
+#: parted/ui.c:1461
 msgid "COMMANDs:"
 msgstr "KOMUTlar:"
 
-#: parted/ui.c:1461
+#: parted/ui.c:1470
 #, c-format
 msgid "Using %s\n"
 msgstr "%s kullanýlýyor\n"
 
-#: parted/ui.c:1535
+#: parted/ui.c:1544
 msgid "This command does not make sense in non-interactive mode.\n"
 msgstr "Bu komut etkileþimsiz kipte anlamsýz.\n"
 

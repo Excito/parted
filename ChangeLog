@@ -1,3 +1,176 @@
+2009-07-19  Otavio Salvador  <otavio@ossystems.com.br>
+
+	Avoid compilation failure on s390
+	To export LinuxSpecific stuff for labels, in this case fdasd, we now
+	provide arch/linux.h. This aids in avoiding code duplication.
+
+	* configure.ac: add BUILD_LINUX conditional.
+	* libparted/Makefile.am: conditionally use linux.h.
+	* libparted/arch/linux.c: move LinuxSpecific stuff to linux.h.
+	* libparted/arch/linux.h: New file.
+	* libparted/labels/Makefile.am: include from libparted as well.
+	* libparted/labels/dasd.c: use arch/linux.h and use dev->path for
+	  error message.
+	* libparted/labels/fdasd.c: include linux.h and drop an unused
+	  variable.
+
+2009-07-16  Jim Meyering  <meyering@redhat.com>
+
+	build: avoid configure-time syntax error
+	Running ./configure on a system without devmapper devel libraries
+	would provoke this:
+	./configure: line 264: return: but: numeric argument required
+	./configure: line 24783: --enable-device-mapper: command not found
+	* configure.ac: Add quotes to most AC_MSG_ERROR uses, both around
+	the argument, and (when needed) around the macro use itself.
+
+2009-07-11  Jim Meyering  <meyering@redhat.com>
+
+	ui: avoid NULL dereference on realloc failure
+	* parted/strlist.c (gettext_to_wchar) [ENABLE_NLS]: Use xrealloc,
+	so we never return NULL, which could then be dereferenced.
+
+2009-07-10  Colin Watson  <cjwatson@ubuntu.com>
+
+	Rationalise linux-swap fs names, and add a "linux-swap" alias
+	* libparted/filesys.c (ped_file_system_alias_register,
+	ped_file_system_alias_unregister, ped_file_system_alias_get_next): New
+	functions.
+	(ped_file_system_type_get): Walk aliases as well.
+	* include/parted/filesys.h (struct _PedFileSystemAlias): New structure.
+	(ped_file_system_alias_register, ped_file_system_alias_unregister,
+	ped_file_system_alias_get_next): Add prototypes.
+	* parted/parted.c (_init_messages): Walk file system aliases as well as
+	types.
+	* parted/ui.c (init_fs_type_str): Likewise.
+	* libparted/fs/linux_swap/linux_swap.c (_swap_v1_type, _swap_v1_open,
+	_swap_v1_probe, _swap_v1_clobber, _swap_v1_ops): Rename to _swap_v0_type
+	etc. to match version number used in mkswap. Update all users.
+	(_swap_v2_type, _swap_v2_open, _swap_v2_probe, _swap_v2_clobber,
+	_swap_v2_ops): Rename to _swap_v1_type etc. to match version number used
+	in mkswap. Update all users.
+	(_swap_v0_type): Rename type from "linux-swap(old)" to "linux-swap(v0)".
+	(_swap_v1_type): Rename type from "linux-swap(new)" to "linux-swap(v1)".
+	(ped_file_system_linux_swap_init, ped_file_system_linux_swap_done):
+	Register/unregister a "linux-swap" alias for "linux-swap(v1)", and
+	deprecated aliases "linux-swap(old)" and "linux-swap(new)".
+	* libparted/labels/misc.h (is_linux_swap): Update comment.
+	* tests/t2100-mkswap.sh: Refer to "linux-swap(v1)" rather than
+	"linux-swap(new)". Test creation via the new alias.
+
+2009-07-09  Jim Meyering  <meyering@redhat.com>
+
+	tests: disable the taint-distcheck rule
+	* dist-check.mk (taint-distcheck): Disable rule, since it
+	would trigger a bug in libtool-generated scripts.
+
+	tests: better quoting to avoid failure with poorly-named src directory
+	* libparted/tests/Makefile.am (init.sh): Quote, in case
+	$(abs_top_srcdir) contains e.g., spaces.
+	* tests/Makefile.am (init.sh): Likewise.
+	* libparted/tests/t2000-disk.sh: Better quoting here, too.
+	* libparted/tests/t1000-label.sh: Likewise.
+	Reported by Joel Granados
+
+	build: update from gnulib
+	* gnulib: Update submodule to latest.
+	* cfg.mk (local-checks-to-skip): Add sc_require_test_exit_idiom.
+	This skips a new-from-gnulib test that doesn't apply here.
+
+2009-06-17  Joel Granados Moreno  <jgranado@redhat.com>
+
+	tests: ensure that we preserve the first 446 byts of a GPT pmbr
+	* tests/t0202-gpt-pmbr.sh: Ensure that the first 446 bytes are
+	unchanged after creating a GPT partition.
+
+	gpt: preserve first 446 bytes of the PMBR (protective MBR)
+	* libparted/label/gpt.c (_write_pmbr): Make sure we read and preserve
+	the first 446 bytes of the device when we are creating the PMBR.
+
+2009-06-17  Jim Meyering  <meyering@redhat.com>
+
+	build: update from gnulib
+	* gnulib: Update submodule to latest.
+
+	build: require autoconf-2.63 and automake-1.11
+	* configure.ac (AC_PREREQ): Require 2.63, not 2.61.
+	(AM_INIT_AUTOMAKE): Require 1.11, not 1.10c.
+
+2009-06-16  Colin Watson  <cjwatson@ubuntu.com>
+
+	linux-swap: generate UUIDs for fresh swap spaces
+	* libparted/fs/linux_swap/linux_swap.c: Generate a UUID when creating a
+	fresh swap space.
+	* tests/t2100-mkswap.sh: Test that two fresh swap spaces get different
+	UUIDs, and that 'check' preserves the swap UUID.
+
+2009-06-11  Joel Granados Moreno  <jgranado@redhat.com>
+
+	tests: simplify t6001-dm-ignoremd.sh
+	* tests/t6001-dm-ignoremd.sh (md_dev_create_): Use functions in
+	test-util.sh for mdadm commands.  Move mddev_ to the top of the
+	file.  Remove unneeded comment.
+
+	tests: add mdadm specific functions
+	* tests/test-lib.sh (require_mdadm_): New function.
+	(mdadm_create_linear_device_): New function.
+
+2009-06-10  Joel Granados Moreno  <jgranado@redhat.com>
+
+	doc: improve mkpart description
+	* doc/parted.texi: Make sure that part-type is portrayed as an
+	optional argument.  Mention the "special behavior" that mkpart has
+	with specific disk label types.
+
+	parted-ui: ensure cmd-line buffer is empty before ped_exception_throw
+	When ped_exception_throw requires input from the user and there are
+	leftover strings in the command line, there is an "invalid token" error
+	from parted.  This happens because the ped_exception expects some input
+	that is, most likely, different from the leftover string(s).  To address
+	this, one must make sure that all the argument strings are parsed before
+	invoking any exception that requires input.
+
+	* parted/parted.c (do_mklabel): Call command_line_get_disk_type call
+	before the disk checks (_disk_warn_loss will call ped_exception_throw).
+	* tests/t0000-basic.sh: Adjust, now that the output need not include
+	the error message.
+
+	tests: verify that "md" devices are not listed
+	* tests/t6001-dm-ignored.sh: New test file.
+	* tests/Makefile.am (TESTS): Add it.
+
+	linux: skip "md" devices when probing
+	* libparted/arch/linux.c (_skip_entry) : Add "md" to the entries
+	array so all devices of type "/dev/md#" get ignored.
+
+	fat: support 64KB clusters for FAT16
+	* libparted/fs/fat/calc.c (fat_max_cluster_size): A 64KB cluster
+	size (128 sectors) for FAT16 is not common but is possible.  Allow
+	the use of 128-sector clusters instead of outputting an error.
+
+	Fixes this:
+	    http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/207
+	Additional info here:
+	    http://lists.alioth.debian.org/\
+	      pipermail/parted-devel/2009-June/002882.html
+
+2009-06-10  Matthew S. Harris  <mharris312@gmail.com>
+
+	gpt: fix gpt_read to read all of the partition entries correctly
+	* libparted/labels/gpt.c (gpt_read): Use the SizeOfPartitionEntry
+	field value when reading the partition entries rather than assuming
+	that the entries are the same size as our struct.
+	(gpt_read): When reading the partition
+	entries, round up, not down, the number of sectors to read.
+	(_header_is_valid): Check that the SizeOfPartitionEntry is sane.
+	With minor adjustments by Joel Granados Moreno.
+
+2009-06-10  Joel Granados Moreno  <jgranado@redhat.com>
+
+	Tweak distcheck.
+	* dist-check.mk (install-transform-check): The binaries will be located
+	in /sbin instead of /bin.
+
 2009-06-03  Jim Meyering  <meyering@redhat.com>
 
 	build: require automake-1.11 via bootstrap.conf, too

@@ -73,6 +73,8 @@ AC_SUBST([LTALLOCA])
   gl_EXITFAIL
   gl_FUNC_FPENDING
   gl_GETOPT
+  gl_FUNC_GETPAGESIZE
+  gl_UNISTD_MODULE_INDICATOR([getpagesize])
   dnl you must add AM_GNU_GETTEXT([external]) or similar to configure.ac.
   AM_GNU_GETTEXT_VERSION([0.17])
   AC_SUBST([LIBINTL])
@@ -102,6 +104,8 @@ AC_SUBST([LTALLOCA])
   gl_WCHAR_MODULE_INDICATOR([mbrtowc])
   gl_FUNC_MBSINIT
   gl_WCHAR_MODULE_INDICATOR([mbsinit])
+  gl_FUNC_MEMCHR
+  gl_STRING_MODULE_INDICATOR([memchr])
   gl_MULTIARCH
   gl_QUOTEARG
   AC_FUNC_REALLOC
@@ -125,6 +129,7 @@ AC_SUBST([LTALLOCA])
   gl_FUNC_STRNLEN
   gl_STRING_MODULE_INDICATOR([strnlen])
   gl_UNISTD_H
+  gl_VERSION_ETC
   gl_WCHAR_H
   gl_FUNC_WCRTOMB
   gl_WCHAR_MODULE_INDICATOR([wcrtomb])
@@ -321,6 +326,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/getopt.in.h
   lib/getopt1.c
   lib/getopt_int.h
+  lib/getpagesize.c
   lib/gettext.h
   lib/intprops.h
   lib/inttypes.in.h
@@ -331,6 +337,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/malloc.c
   lib/mbrtowc.c
   lib/mbsinit.c
+  lib/memchr.c
+  lib/memchr.valgrind
   lib/progname.c
   lib/progname.h
   lib/quotearg.c
@@ -394,6 +402,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/extensions.m4
   m4/fpending.m4
   m4/getopt.m4
+  m4/getpagesize.m4
   m4/gettext.m4
   m4/glibc2.m4
   m4/glibc21.m4
@@ -426,6 +435,8 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/mbrtowc.m4
   m4/mbsinit.m4
   m4/mbstate_t.m4
+  m4/memchr.m4
+  m4/mmap-anon.m4
   m4/multiarch.m4
   m4/nls.m4
   m4/po.m4
@@ -451,6 +462,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/threadlib.m4
   m4/uintmax_t.m4
   m4/unistd_h.m4
+  m4/version-etc.m4
   m4/visibility.m4
   m4/wchar.m4
   m4/wchar_t.m4
@@ -482,6 +494,7 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-mbrtowc4.sh
   tests/test-mbsinit.c
   tests/test-mbsinit.sh
+  tests/test-memchr.c
   tests/test-quotearg.c
   tests/test-quotearg.sh
   tests/test-stdbool.c
@@ -492,6 +505,8 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-unistd.c
   tests/test-vc-list-files-cvs.sh
   tests/test-vc-list-files-git.sh
+  tests/test-version-etc.c
+  tests/test-version-etc.sh
   tests/test-wchar.c
   tests/test-wcrtomb.c
   tests/test-wcrtomb.sh
@@ -499,6 +514,7 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-xstrtol.c
   tests/test-xstrtol.sh
   tests/test-xstrtoul.c
+  tests/zerosize-ptr.h
   tests=lib/malloca.c
   tests=lib/malloca.h
   tests=lib/malloca.valgrind
