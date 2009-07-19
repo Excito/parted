@@ -326,6 +326,9 @@ FUNC:ped_exception_leave_all
 FUNC:ped_exception_rethrow
 FUNC:ped_exception_set_handler
 FUNC:ped_exception_throw
+FUNC:ped_file_system_alias_get_next
+FUNC:ped_file_system_alias_register
+FUNC:ped_file_system_alias_unregister
 FUNC:ped_file_system_amiga_done
 FUNC:ped_file_system_amiga_init
 FUNC:ped_file_system_check
@@ -457,6 +460,8 @@ FUNC:set_quoting_flags
 FUNC:set_quoting_style
 FUNC:strip_trailing_slashes
 FUNC:version_etc
+FUNC:version_etc_ar
+FUNC:version_etc_arn
 FUNC:version_etc_va
 FUNC:x2realloc
 FUNC:xalloc_die
