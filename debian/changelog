@@ -1,3 +1,16 @@
+parted (1.8.8.git.2009.07.19-1) unstable; urgency=low
+
+  * New upstream snapshot.
+
+  [ Max Vozeler ]
+  * Restore dependency on the patch-stamp target. (closes: #534248)
+
+  [ Otavio Salvador ]
+  * Drop baseline-symbols patch.
+  * Update symbols - no soname bump required.
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Sun, 19 Jul 2009 13:11:09 -0300
+
 parted (1.8.8.git.2009.06.03-2) unstable; urgency=low
 
   * libparted: move LinuxSpecific stuff to a private linux.h header
