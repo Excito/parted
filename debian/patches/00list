@@ -5,6 +5,7 @@ reiserfs-libname
 # Patch susceptible to be merged upstream
 devfs
 #kfreebsd-gnu
+unpartitioned-disks
 preserve-hidden-parts
 update-ext4-code
 
