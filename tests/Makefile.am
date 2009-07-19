@@ -3,6 +3,7 @@ TESTS = \
   t0100-print.sh \
   t0200-gpt.sh \
   t0201-gpt.sh \
+  t0202-gpt-pmbr.sh \
   t1000-mkpartfs.sh \
   t1100-busy-label.sh \
   t1500-small-ext2.sh \
@@ -19,6 +20,7 @@ TESTS = \
   t4200-partprobe.sh \
   t5000-tags.sh \
   t6000-dm.sh \
+  t6001-dm-ignoremd.sh \
   t7000-scripting.sh \
   t8000-loop.sh
 
@@ -33,9 +35,9 @@ CLEANFILES = init.sh
 all: init.sh
 init.sh: Makefile.in
 	rm -f $@-t $@
-	echo 'PARTED_USABLE_TEST_DIR=$(PARTED_USABLE_TEST_DIR)' > $@-t
-	echo 'abs_top_srcdir=$(abs_top_srcdir)' >> $@-t
-	echo 'PATH=$(parted_dir)$(sep)$(pp_dir)$(sep)$$PATH' >> $@-t
+	echo 'PARTED_USABLE_TEST_DIR="$(PARTED_USABLE_TEST_DIR)"' > $@-t
+	echo 'abs_top_srcdir="$(abs_top_srcdir)"' >> $@-t
+	echo 'PATH="$(parted_dir)$(sep)$(pp_dir)$(sep)$$PATH"' >> $@-t
 	echo 'export PATH' >> $@-t
 	chmod a-w $@-t
 	mv $@-t $@

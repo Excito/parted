@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999-2003, 2005-2008 Free Software Foundation, Inc.
+    Copyright (C) 1999-2003, 2005-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -595,12 +595,15 @@ static int
 do_mklabel (PedDevice** dev)
 {
         PedDisk*                disk;
-        const PedDiskType*      type = ped_disk_probe (*dev);
+        const PedDiskType*      type = NULL;
 
         ped_exception_fetch_all ();
         disk = ped_disk_new (*dev);
         if (!disk) ped_exception_catch ();
         ped_exception_leave_all ();
+
+        if (!command_line_get_disk_type (_("New disk label type?"), &type))
+                goto error;
 
         if (disk) {
                 if (!_disk_warn_busy (disk))
@@ -610,9 +613,6 @@ do_mklabel (PedDevice** dev)
 
                 ped_disk_destroy (disk);
         }
-
-        if (!command_line_get_disk_type (_("New disk label type?"), &type))
-                goto error;
 
         disk = ped_disk_new_fresh (*dev, type);
         if (!disk)
@@ -1983,6 +1983,7 @@ _init_messages ()
         StrList*                list;
         int                     first;
         PedFileSystemType*      fs_type;
+        PedFileSystemAlias*     fs_alias;
         PedDiskType*            disk_type;
         PedPartitionFlag        part_flag;
         PedUnit                 unit;
@@ -2039,7 +2040,7 @@ _init_messages ()
         label_type_msg = str_list_convert (list);
         str_list_destroy (list);
 
-/* mkfs - file system types */
+/* mkfs - file system types and aliases */
         list = str_list_create (_(fs_type_msg_start), NULL);
 
         first = 1;
@@ -2054,12 +2055,23 @@ _init_messages ()
                         str_list_append (list, ", ");
                 str_list_append (list, fs_type->name);
         }
+        for (fs_alias = ped_file_system_alias_get_next (NULL);
+             fs_alias; fs_alias = ped_file_system_alias_get_next (fs_alias)) {
+                if (fs_alias->fs_type->ops->create == NULL)
+                        continue;
+
+                if (first)
+                        first = 0;
+                else
+                        str_list_append (list, ", ");
+                str_list_append (list, fs_alias->alias);
+        }
         str_list_append (list, "\n");
 
         mkfs_fs_type_msg = str_list_convert (list);
         str_list_destroy (list);
 
-/* mkpart - file system types */
+/* mkpart - file system types and aliases */
         list = str_list_create (_(fs_type_msg_start), NULL);
 
         first = 1;
@@ -2071,12 +2083,20 @@ _init_messages ()
                         str_list_append (list, ", ");
                 str_list_append (list, fs_type->name);
         }
+        for (fs_alias = ped_file_system_alias_get_next (NULL);
+             fs_alias; fs_alias = ped_file_system_alias_get_next (fs_alias)) {
+                if (first)
+                        first = 0;
+                else
+                        str_list_append (list, ", ");
+                str_list_append (list, fs_alias->alias);
+        }
         str_list_append (list, "\n");
 
         mkpart_fs_type_msg = str_list_convert (list);
         str_list_destroy (list);
 
-/* resize - file system types */
+/* resize - file system types and aliases */
         list = str_list_create (_(resize_msg_start), NULL);
 
         first = 1;
@@ -2090,6 +2110,17 @@ _init_messages ()
                 else
                         str_list_append (list, ", ");
                 str_list_append (list, fs_type->name);
+        }
+        for (fs_alias = ped_file_system_alias_get_next (NULL);
+             fs_alias; fs_alias = ped_file_system_alias_get_next (fs_alias)) {
+                if (fs_alias->fs_type->ops->resize == NULL)
+                        continue;
+
+                if (first)
+                        first = 0;
+                else
+                        str_list_append (list, ", ");
+                str_list_append (list, fs_alias->alias);
         }
         str_list_append (list, "\n");
 
