@@ -11,8 +11,3 @@ update-ext4-code
 
 # Patch which may be obsolet.
 #amiga-raid-lvm_fix
-
-#########################
-# ABI checking symbols update
-########################
-baseline-symbols-update
