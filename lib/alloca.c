@@ -1,3 +1,5 @@
+/* -*- buffer-read-only: t -*- vi: set ro: */
+/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* alloca.c -- allocate automatically reclaimed memory
    (Mostly) portable public-domain implementation -- D A Gwyn
 
@@ -486,4 +488,4 @@ i00afunc (long address)
 #  endif /* CRAY */
 
 # endif /* no alloca */
-#endif /* not GCC version 2 */
+#endif /* not GCC version 3 */

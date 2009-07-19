@@ -26,7 +26,7 @@ This document describes the use of GNU Parted, a program for creating,
 destroying, resizing, checking and copying hard drive partitions, and
 the file systems on them.
 
-  This document applies roughly to version *1.8.8.1.159-1e0e* of GNU
+  This document applies roughly to version *1.8.8.1.180-6b96* of GNU
 Parted.
 
   The original version was written by Andrew Clausen in text format.
@@ -588,7 +588,7 @@ File: parted.info,  Node: mkpart,  Next: mkpartfs,  Prev: mkfs,  Up: Command exp
 2.4.6 mkpart
 ------------
 
- -- Command: mkpart PART-TYPE [FS-TYPE] START END
+ -- Command: mkpart [PART-TYPE FS-TYPE NAME] START END
      Creates a new partition, _without_ creating a new file system on
      that partition.  This is useful for creating partitions for file
      systems (or LVM, etc.) that Parted doesn't support.  You may
@@ -598,10 +598,12 @@ File: parted.info,  Node: mkpart,  Next: mkpartfs,  Prev: mkfs,  Up: Command exp
      are the offset from the beginning of the disk, that is, the
      "distance" from the start of the disk.
 
-     PART-TYPE is one of: primary, extended, logical.  Extended and
-     logical are only used for msdos and dvh disk labels.
+     PART-TYPE is one of `primary', `extended' or `logical', and may be
+     specified only with `msdos' or `dvh' partition tables.  A NAME
+     must be specified for a `gpt' partition table.  Neither PART-TYPE
+     nor NAME may be used with a `sun' partition table.
 
-     FS-TYPE must be on of these supported file systems:
+     FS-TYPE must be one of these supported file systems:
         * ext2
 
         * fat16, fat32
@@ -1581,21 +1583,21 @@ Node: mklabel16745
 Ref: mklabel-Footnote-117626
 Node: mkfs17755
 Node: mkpart18251
-Node: mkpartfs19514
-Node: move20660
-Node: name21541
-Node: print21917
-Node: quit22806
-Node: rescue23301
-Node: resize24826
-Node: rm26036
-Node: select26933
-Node: set27402
-Node: unit29443
-Node: Related information32991
-Node: Copying This Manual33814
-Node: GNU Free Documentation License34058
-Node: History53935
-Node: Index54732
+Node: mkpartfs19661
+Node: move20807
+Node: name21688
+Node: print22064
+Node: quit22953
+Node: rescue23448
+Node: resize24973
+Node: rm26183
+Node: select27080
+Node: set27549
+Node: unit29590
+Node: Related information33138
+Node: Copying This Manual33961
+Node: GNU Free Documentation License34205
+Node: History54082
+Node: Index54879
 
 End Tag Table
