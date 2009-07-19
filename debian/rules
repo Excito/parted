@@ -155,7 +155,7 @@ echo-vars:
 
 packaging-files: $(GENFILES)
 
-build-deb/config.status:
+build-deb/config.status: patch-stamp
 	dh_testdir
 	[ -d build-deb ] || mkdir build-deb
 
@@ -172,7 +172,7 @@ endif
 		--enable-device-mapper \
 	    $(CONFFLAGS)
 
-build-udeb/config.status:
+build-udeb/config.status: patch-stamp
 	dh_testdir
 	[ -d build-udeb ] || mkdir build-udeb
 
@@ -183,7 +183,7 @@ build-udeb/config.status:
 	    --without-readline --enable-device-mapper \
 		$(CONFFLAGS)
 
-build-dbg/config.status:
+build-dbg/config.status: patch-stamp
 	dh_testdir
 	[ -d build-dbg ] || mkdir build-dbg
 
