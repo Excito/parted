@@ -8,6 +8,7 @@ devfs
 unpartitioned-disks
 preserve-hidden-parts
 update-ext4-code
+unblacklist-md
 
 # Patch which may be obsolet.
 #amiga-raid-lvm_fix

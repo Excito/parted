@@ -1,0 +1,20 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## unblacklist-md.dpatch by Colin Watson <cjwatson@ubuntu.com>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: Revert commit f94e08bdb4ba0fa1b9fd35509e04c2d9ee84ff80, which broke
+## DP: RAID configuration in d-i and isn't necessary given our
+## DP: unpartitioned-disks patch.
+
+@DPATCH@
+diff -urNad parted~/libparted/arch/linux.c parted/libparted/arch/linux.c
+--- parted~/libparted/arch/linux.c	2009-07-24 13:08:51.000000000 +0100
++++ parted/libparted/arch/linux.c	2009-07-24 13:09:47.000000000 +0100
+@@ -1978,7 +1978,6 @@
+ 		{ ".",		sizeof (".") - 1	},
+ 		{ "..",		sizeof ("..") - 1	},
+ 		{ "dm-",	sizeof ("dm-") - 1	},
+-		{ "md",		sizeof ("md") - 1	},
+ 		{ "loop",	sizeof ("loop") - 1	},
+ 		{ "ram",	sizeof ("ram") - 1	},
+ 		{ 0, 0 },
