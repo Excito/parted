@@ -1,6 +1,10 @@
 parted (1.8.8.git.2009.07.19-3) UNRELEASED; urgency=low
 
+  [ Otavio Salvador ]
   * control.in: use debug for libparted-dbg.
+
+  [ Colin Watson ]
+  * control.in: Move libparted@LIBPKGVER@-i18n to section localization.
 
  -- Otavio Salvador <otavio@ossystems.com.br>  Fri, 24 Jul 2009 13:35:48 -0300
 

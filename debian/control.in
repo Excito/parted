@@ -137,7 +137,7 @@ Description: The GNU Parted disk partitioning shared library
 
 Package: libparted@LIBPKGVER@-i18n
 Architecture: all
-Section: libs
+Section: localization
 Depends: libparted@SHAREDLIBPKGVER@
 Replaces: libparted0, libparted1, libparted2, libparted1.4 (<< 1.4.24-2), libparted1.6 (<< 1.5+1.6.0-pre3-2), libparted1.4-i18n, parted (<< 1.4.13+14pre1)
 Conflicts: libparted-i18n
