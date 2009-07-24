@@ -211,7 +211,7 @@ Description: The GNU Parted disk partitioning library development files
 
 Package: libparted@LIBPKGVER@-dbg
 Architecture: any
-Section: libdevel
+Section: debug
 Priority: extra
 Depends: libparted@SHAREDLIBPKGVER@ (= ${binary:Version}), libparted@LIBPKGVER@-dev (= ${binary:Version})
 Conflicts: libparted-dbg
