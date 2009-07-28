@@ -11,7 +11,7 @@ Build-Depends:
  dpatch,
  libncurses-dev | libncurses5-dev,
  libreadline5-dev | libreadline-dev,
- libdevmapper-dev,
+ libdevmapper-dev [!kfreebsd-i386 !kfreebsd-amd64],
  uuid-dev,
  gettext,
  texinfo (>= 4.2),
