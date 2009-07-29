@@ -73,6 +73,10 @@ ifeq (, $(DEB_BUILD_ARCH))
 DEB_BUILD_ARCH = $(shell dpkg-architecture -qDEB_BUILD_ARCH)
 endif
 
+ifeq (, $(DEB_BUILD_ARCH_OS))
+DEB_BUILD_ARCH_OS = $(shell dpkg-architecture -qDEB_BUILD_ARCH_OS)
+endif
+
 ifeq (, $(DEB_BUILD_GNU_TYPE))
 DEB_BUILD_GNU_TYPE = $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 endif
@@ -117,6 +121,13 @@ endif
 # Workaround/fix bug #442308
 CFLAGS += -fgnu89-inline
 UDEB_CFLAGS += -fgnu89-inline
+
+# Enable device-mapper only on Linux
+ifeq (linux, $(DEB_BUILD_ARCH_OS))
+  CONFDEVMAPPER = --enable-device-mapper
+else
+  CONFDEVMAPPER = --disable-device-mapper
+endif
 
 # This builds a substitution list for sed based on the SUBSTS variable
 # and the variables whose names SUBSTS contains ...
@@ -169,7 +180,7 @@ endif
 	    --sbindir=/sbin --mandir=\$${prefix}/share/man \
 	    --infodir=\$${prefix}/share/info --enable-shared \
 	    --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
-		--enable-device-mapper \
+		$(CONFDEVMAPPER) \
 	    $(CONFFLAGS)
 
 build-udeb/config.status: patch-stamp
@@ -180,7 +191,7 @@ build-udeb/config.status: patch-stamp
 	    --sbindir=/sbin --libdir=/lib --mandir=\$${prefix}/share/man \
 	    --infodir=\$${prefix}/share/info --enable-shared --disable-static \
 	    --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
-	    --without-readline --enable-device-mapper \
+	    --without-readline $(CONFDEVMAPPER) \
 		$(CONFFLAGS)
 
 build-dbg/config.status: patch-stamp
@@ -190,7 +201,8 @@ build-dbg/config.status: patch-stamp
 #	 Add here commands to configure the package.
 	cd build-dbg && CFLAGS="-g $(CFLAGS)" ../configure --prefix=/usr \
 	    --enable-mtrace --disable-shared $(CONFFLAGS) \
-	    --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE)
+	    --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) \
+	    $(CONFDEVMAPPER)
 
 	touch $@
 
