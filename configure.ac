@@ -28,15 +28,9 @@ dnl set PED_BINARY_AGE _and_ PED_INTERFACE_AGE to 0.
 
 # Derive these numbers from $PACKAGE_VERSION, which is set
 # when autoconf creates configure (see AC_INIT, above).
-PED_MAJOR_VERSION=`echo "$PACKAGE_VERSION"|sed 's/\..*//'`
-PED_MINOR_VERSION=`echo "$PACKAGE_VERSION"|sed 's/^[[0-9]][[0-9]]*\.//;s/\..*//'`
-case $PACKAGE_VERSION in
-  *.*.*.*.*)
-    PED_MICRO_VERSION=`echo "$PACKAGE_VERSION" \
-      | sed 's/^[^.]*\.[^.]*\.//;s/\..*//'`
-    ;;
-  *) PED_MICRO_VERSION=0;;
-esac
+PED_MAJOR_VERSION=1
+PED_MINOR_VERSION=8
+PED_MICRO_VERSION=12
 
 PED_INTERFACE_AGE=0
 PED_BINARY_AGE=0
