@@ -46,8 +46,8 @@ AC_SUBST([LT_CURRENT])
 AC_SUBST([LT_REVISION])
 AC_SUBST([LT_AGE])
 
-AM_INIT_AUTOMAKE([1.11 dist-xz color-tests parallel-tests])
-AM_SILENT_RULES([yes]) # make --enable-silent-rules the default.
+AM_INIT_AUTOMAKE([1.10])
+AM_MAINTAINER_MODE
 
 AC_CANONICAL_HOST
 case "$host_os" in
