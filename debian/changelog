@@ -1,4 +1,4 @@
-parted (1.8.8.git.2009.07.19-3) UNRELEASED; urgency=low
+parted (1.8.8.git.2009.07.19-3) unstable; urgency=low
 
   [ Otavio Salvador ]
   * control.in: use debug for libparted-dbg.
@@ -14,7 +14,7 @@ parted (1.8.8.git.2009.07.19-3) UNRELEASED; urgency=low
   * Do not dynamicaly update soname.
   * Change building system to use automake 1.10.
 
- -- Otavio Salvador <otavio@ossystems.com.br>  Fri, 24 Jul 2009 13:35:48 -0300
+ -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 10 Aug 2009 22:22:37 -0300
 
 parted (1.8.8.git.2009.07.19-2) unstable; urgency=low
 
