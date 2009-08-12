@@ -1,8 +1,13 @@
-parted (1.8.8.git.2009.07.19-4) UNRELEASED; urgency=low
+parted (1.8.8.git.2009.07.19-4) unstable; urgency=low
 
+  [ Otavio Salvador ]
   * Fix FTBFS in s390 due a missing prototype in dasd label.
 
- -- Otavio Salvador <otavio@nano.lab.ossystems.com.br>  Wed, 12 Aug 2009 10:25:42 -0300
+  [ Aurelien Jarno ]
+  * Add FreeBSD architecture support files
+  * Regenerate configure and Makefile.in
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Wed, 12 Aug 2009 18:07:22 -0300
 
 parted (1.8.8.git.2009.07.19-3) unstable; urgency=low
 
