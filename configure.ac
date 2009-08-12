@@ -54,7 +54,9 @@ case "$host_os" in
 	linux*) OS=linux ;;
 	gnu*)	OS=gnu ;;
 	beos*)	OS=beos ;;
-	*)	AC_MSG_ERROR([Unknown or unsupported OS "$host_os".  Only "linux", "gnu" and "beos" are supported in this version of GNU Parted.]) ;;
+	*freebsd*)
+		OS=freebsd ;;
+	*)	AC_MSG_ERROR([Unknown or unsupported OS "$host_os".  Only "linux", "gnu", "beos" and "freebsd" are supported in this version of GNU Parted.]) ;;
 esac
 AC_SUBST([OS])
 
