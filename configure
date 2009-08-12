@@ -3577,6 +3577,8 @@ case "$host_os" in
 	linux*) OS=linux ;;
 	gnu*)	OS=gnu ;;
 	beos*)	OS=beos ;;
+	*freebsd*)
+		OS=freebsd ;;
 	*)	as_fn_error "Unknown or unsupported OS \"$host_os\".  Only \"linux\", \"gnu\" and \"beos\" are supported in this version of GNU Parted." "$LINENO" 5 ;;
 esac
 
