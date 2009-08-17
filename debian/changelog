@@ -23,7 +23,6 @@ parted (1.8.8.git.2009.07.19-3) unstable; urgency=low
 
   [ Otavio Salvador ]
   * Do not dynamicaly update soname.
-  * Change building system to use automake 1.10.
 
  -- Otavio Salvador <otavio@ossystems.com.br>  Mon, 10 Aug 2009 22:22:37 -0300
 
