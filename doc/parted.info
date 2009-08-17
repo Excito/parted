@@ -1,4 +1,5 @@
-This is parted.info, produced by makeinfo version 4.13 from parted.texi.
+This is ../../doc/parted.info, produced by makeinfo version 4.13 from
+../../doc/parted.texi.
 
 This file documents the use of GNU Parted, a program for creating,
 resizing, checking and copy partitions and file systems on them.
@@ -26,7 +27,7 @@ This document describes the use of GNU Parted, a program for creating,
 destroying, resizing, checking and copying hard drive partitions, and
 the file systems on them.
 
-  This document applies roughly to version *1.8.8.1.180-6b96* of GNU
+  This document applies roughly to version *UNKNOWN-dirty* of GNU
 Parted.
 
   The original version was written by Andrew Clausen in text format.
@@ -1563,41 +1564,41 @@ Index
 
 
 Tag Table:
-Node: Top758
-Node: Introduction1656
-Node: Overview2226
-Node: Software Required4271
-Node: Supported Platforms5630
-Node: License6346
-Node: Compiling6977
-Node: Static binaries8622
-Node: Using Parted10457
-Node: Partitioning10876
-Node: Running Parted11332
-Node: Invoking Parted14275
-Node: Command explanations14891
-Node: check15261
-Node: cp15540
-Node: help16471
-Node: mklabel16745
-Ref: mklabel-Footnote-117626
-Node: mkfs17755
-Node: mkpart18251
-Node: mkpartfs19661
-Node: move20807
-Node: name21688
-Node: print22064
-Node: quit22953
-Node: rescue23448
-Node: resize24973
-Node: rm26183
-Node: select27080
-Node: set27549
-Node: unit29590
-Node: Related information33138
-Node: Copying This Manual33961
-Node: GNU Free Documentation License34205
-Node: History54082
-Node: Index54879
+Node: Top778
+Node: Introduction1673
+Node: Overview2243
+Node: Software Required4288
+Node: Supported Platforms5647
+Node: License6363
+Node: Compiling6994
+Node: Static binaries8639
+Node: Using Parted10474
+Node: Partitioning10893
+Node: Running Parted11349
+Node: Invoking Parted14292
+Node: Command explanations14908
+Node: check15278
+Node: cp15557
+Node: help16488
+Node: mklabel16762
+Ref: mklabel-Footnote-117643
+Node: mkfs17772
+Node: mkpart18268
+Node: mkpartfs19678
+Node: move20824
+Node: name21705
+Node: print22081
+Node: quit22970
+Node: rescue23465
+Node: resize24990
+Node: rm26200
+Node: select27097
+Node: set27566
+Node: unit29607
+Node: Related information33155
+Node: Copying This Manual33978
+Node: GNU Free Documentation License34222
+Node: History54099
+Node: Index54896
 
 End Tag Table
