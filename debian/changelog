@@ -1,8 +1,8 @@
-parted (1.8.8.git.2009.07.19-5) UNRELEASED; urgency=low
+parted (1.8.8.git.2009.07.19-5) unstable; urgency=low
 
   * Update building system with automake 1.11
 
- -- Otavio Salvador <otavio@ossystems.com.br>  Sun, 16 Aug 2009 23:27:46 -0300
+ -- Otavio Salvador <otavio@ossystems.com.br>  Tue, 18 Aug 2009 19:16:28 -0300
 
 parted (1.8.8.git.2009.07.19-4) unstable; urgency=low
 
