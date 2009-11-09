@@ -81,6 +81,10 @@ ifeq (, $(DEB_BUILD_GNU_TYPE))
 DEB_BUILD_GNU_TYPE = $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 endif
 
+ifeq (, $(DEB_HOST_ARCH))
+DEB_HOST_ARCH = $(shell dpkg-architecture -qDEB_HOST_ARCH)
+endif
+
 ifeq (, $(DEB_HOST_GNU_TYPE))
 DEB_HOST_GNU_TYPE = $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 endif
@@ -116,6 +120,12 @@ ifeq (s390, $(DEB_BUILD_ARCH))
 endif
 ifeq (gnu, $(DEB_BUILD_GNU_SYSTEM))
   CONFFLAGS += --disable-Werror
+endif
+
+# Cell partition tables get misdetected for pc98; we don't need pc98 support
+# on powerpc
+ifeq (powerpc, $(DEB_HOST_ARCH))
+  CONFFLAGS += --disable-pc98
 endif
 
 # Workaround/fix bug #442308
