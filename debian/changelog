@@ -1,6 +1,6 @@
 parted (1.8.8.git.2009.07.19-6) UNRELEASED; urgency=low
 
-  * control.in: bump prefered soname for libreadline.
+  * control.in: bump prefered soname for libreadline (closes: #553824).
 
  -- Otavio Salvador <otavio@debian.org>  Mon, 14 Sep 2009 13:54:18 -0300
 
