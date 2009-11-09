@@ -1,6 +1,11 @@
 parted (1.8.8.git.2009.07.19-6) UNRELEASED; urgency=low
 
+  [ Otavio Salvador ]
   * control.in: bump prefered soname for libreadline (closes: #553824).
+
+  [ Colin Watson ]
+  * control.in: Remove copy-and-paste error from libparted1.8-i18n
+    description (closes: #497626).
 
  -- Otavio Salvador <otavio@debian.org>  Mon, 14 Sep 2009 13:54:18 -0300
 

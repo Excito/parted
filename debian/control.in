@@ -146,8 +146,7 @@ Description: The GNU Parted disk partitioning library i18n support
  GNU Parted is a program that allows you to create, destroy,
  resize, move and copy hard disk partitions. This is useful
  for creating space for new operating systems, reorganising
- disk usage, and copying data to new hard disks. This package
- contains the Parted binary and manual page.
+ disk usage, and copying data to new hard disks.
  .
  This package contains the i18n message catalogs for
  libparted and parted.
