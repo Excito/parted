@@ -6,6 +6,9 @@ parted (1.8.8.git.2009.07.19-6) UNRELEASED; urgency=low
   [ Colin Watson ]
   * control.in: Remove copy-and-paste error from libparted1.8-i18n
     description (closes: #497626).
+  * copyright: Document parted.info's licence, namely GFDL 1.1 with no
+    invariant sections, front-cover texts, or back-cover texts (closes:
+    #500201).
 
  -- Otavio Salvador <otavio@debian.org>  Mon, 14 Sep 2009 13:54:18 -0300
 
