@@ -2,12 +2,12 @@ Source: parted@BINPKGVER@
 Section: admin
 Priority: optional
 Maintainer: Parted Maintainer Team <parted-maintainers@lists.alioth.debian.org>
-Uploaders: Sven Luther <luther@debian.org>, Otavio Salvador <otavio@debian.org>, Bastian Blank <waldi@debian.org>, Xavier Oswald <x.oswald@free.fr>, Colin Watson <cjwatson@debian.org>
-Standards-Version: 3.8.1
+Uploaders: Sven Luther <luther@debian.org>, Otavio Salvador <otavio@debian.org>, Bastian Blank <waldi@debian.org>, Xavier Oswald <xoswald@debian.org>, Colin Watson <cjwatson@debian.org>
+Standards-Version: 3.8.3
 Vcs-Git: git://git.debian.org/git/parted/debian/parted.git
 Vcs-Browser: http://git.debian.org/?p=parted/debian/parted.git
 Build-Depends:
- debhelper (>= 5.0.22),
+ debhelper (>= 7),
  dpatch,
  libncurses-dev | libncurses5-dev,
  libreadline-dev | libreadline6-dev,

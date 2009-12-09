@@ -13,6 +13,13 @@ parted (1.8.8.git.2009.07.19-6) UNRELEASED; urgency=low
     support on powerpc (closes: #487833).
   * control.in: Don't build-depend on libdevmapper-dev on hurd-i386.
 
+  [ Xavier Oswald ]
+  * debian/control.in: 
+    - Change my mail adress
+    - Bump Standards-Version to 3.8.3
+    - Update Build-Depends on debhelper 7
+  * debian/compat: update version to 7
+
  -- Otavio Salvador <otavio@debian.org>  Mon, 14 Sep 2009 13:54:18 -0300
 
 parted (1.8.8.git.2009.07.19-5) unstable; urgency=low
