@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
+    Copyright (C) 1999-2002, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,20 @@
 
 #ifndef PED_DISK_H_INCLUDED
 #define PED_DISK_H_INCLUDED
+
+/**
+ * Disk flags
+ */
+enum _PedDiskFlag {
+        /* This flag (which defaults to true) controls if disk types for
+           which cylinder alignment is optional do cylinder alignment when a
+           new partition gets added.
+           This flag is available for msdos and sun disklabels (for sun labels
+           it only controls the aligning of the end of the partition) */
+        PED_DISK_CYLINDER_ALIGNMENT=1,
+};
+#define PED_DISK_FIRST_FLAG             PED_DISK_CYLINDER_ALIGNMENT
+#define PED_DISK_LAST_FLAG              PED_DISK_CYLINDER_ALIGNMENT
 
 /**
  * Partition types
@@ -53,10 +67,11 @@ enum _PedPartitionFlag {
         PED_PARTITION_PALO=9,
         PED_PARTITION_PREP=10,
         PED_PARTITION_MSFT_RESERVED=11,
-        PED_PARTITION_BIOS_GRUB=12
+        PED_PARTITION_BIOS_GRUB=12,
+        PED_PARTITION_APPLE_TV_RECOVERY=13
 };
 #define PED_PARTITION_FIRST_FLAG        PED_PARTITION_BOOT
-#define PED_PARTITION_LAST_FLAG         PED_PARTITION_BIOS_GRUB
+#define PED_PARTITION_LAST_FLAG         PED_PARTITION_APPLE_TV_RECOVERY
 
 enum _PedDiskTypeFeature {
         PED_DISK_TYPE_EXTENDED=1,       /**< supports extended partitions */
@@ -71,6 +86,7 @@ struct _PedDiskOps;
 struct _PedDiskType;
 struct _PedDiskArchOps;
 
+typedef enum _PedDiskFlag               PedDiskFlag;
 typedef enum _PedPartitionType          PedPartitionType;
 typedef enum _PedPartitionFlag          PedPartitionFlag;
 typedef enum _PedDiskTypeFeature        PedDiskTypeFeature;
@@ -179,6 +195,16 @@ struct _PedDiskOps {
         void (*free) (PedDisk* disk);
         int (*read) (PedDisk* disk);
         int (*write) (const PedDisk* disk);
+        int (*disk_set_flag) (
+                PedDisk *disk,
+                PedDiskFlag flag,
+                int state);
+        int (*disk_get_flag) (
+                const PedDisk *disk,
+                PedDiskFlag flag);
+        int (*disk_is_flag_available) (
+                const PedDisk *disk,
+                PedDiskFlag flag);
         /** \todo add label guessing op here */
 
         /* partition operations */
@@ -207,12 +233,16 @@ struct _PedDiskOps {
         int (*partition_align) (PedPartition* part,
                                 const PedConstraint* constraint);
         int (*partition_enumerate) (PedPartition* part);
+        bool (*partition_check) (const PedPartition* part);
 
         /* other */
         int (*alloc_metadata) (PedDisk* disk);
         int (*get_max_primary_partition_count) (const PedDisk* disk);
         bool (*get_max_supported_partition_count) (const PedDisk* disk,
                                                    int* supported);
+        PedAlignment *(*get_partition_alignment)(const PedDisk *disk);
+        PedSector (*max_length) (void);
+        PedSector (*max_start_sector) (void);
 };
 
 struct _PedDiskType {
@@ -237,15 +267,13 @@ struct _PedDiskArchOps {
 extern void ped_disk_type_register (PedDiskType* type);
 extern void ped_disk_type_unregister (PedDiskType* type);
 
-extern PedDiskType* ped_disk_type_get_next (PedDiskType* type);
+extern PedDiskType* ped_disk_type_get_next (PedDiskType const *type);
 extern PedDiskType* ped_disk_type_get (const char* name);
 extern int ped_disk_type_check_feature (const PedDiskType* disk_type,
                                         PedDiskTypeFeature feature);
 
 extern PedDiskType* ped_disk_probe (PedDevice* dev);
 extern int ped_disk_clobber (PedDevice* dev);
-extern int ped_disk_clobber_exclude (PedDevice* dev,
-                                     const PedDiskType* exclude);
 extern PedDisk* ped_disk_new (PedDevice* dev);
 extern PedDisk* ped_disk_new_fresh (PedDevice* dev,
                                     const PedDiskType* disk_type);
@@ -262,6 +290,15 @@ extern int ped_disk_get_last_partition_num (const PedDisk* disk);
 extern int ped_disk_get_max_primary_partition_count (const PedDisk* disk);
 extern bool ped_disk_get_max_supported_partition_count(const PedDisk* disk,
                                                        int* supported);
+extern PedAlignment *ped_disk_get_partition_alignment(const PedDisk *disk);
+
+extern int ped_disk_set_flag(PedDisk *disk, PedDiskFlag flag, int state);
+extern int ped_disk_get_flag(const PedDisk *disk, PedDiskFlag flag);
+extern int ped_disk_is_flag_available(const PedDisk *disk, PedDiskFlag flag);
+
+extern const char *ped_disk_flag_get_name(PedDiskFlag flag);
+extern PedDiskFlag ped_disk_flag_get_by_name(const char *name);
+extern PedDiskFlag ped_disk_flag_next(PedDiskFlag flag);
 
 /** @} */
 
@@ -324,6 +361,9 @@ extern PedPartition* ped_disk_get_partition_by_sector (const PedDisk* disk,
                                                        PedSector sect);
 extern PedPartition* ped_disk_extended_partition (const PedDisk* disk);
 
+extern PedSector ped_disk_max_partition_length (const PedDisk *disk);
+extern PedSector ped_disk_max_partition_start_sector (const PedDisk *disk);
+
 /* internal functions */
 extern PedDisk* _ped_disk_alloc (const PedDevice* dev, const PedDiskType* type);
 extern void _ped_disk_free (PedDisk* disk);
@@ -351,4 +391,3 @@ extern int _ped_partition_attempt_align (
 #endif /* PED_DISK_H_INCLUDED */
 
 /** @} */
-

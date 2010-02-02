@@ -8,12 +8,14 @@
 #include "common.h"
 #include "progname.h"
 
+#define STREQ(a, b) (strcmp (a, b) == 0)
+
 static char* temporary_disk;
 
 static void
 create_disk (void)
 {
-        temporary_disk = _create_disk (20);
+        temporary_disk = _create_disk (80 * 1024 * 1024);
         fail_if (temporary_disk == NULL, "Failed to create temporary disk");
 }
 
@@ -36,6 +38,8 @@ START_TEST (test_create_label)
 
         for (type = ped_disk_type_get_next (NULL); type;
              type = ped_disk_type_get_next (type)) {
+          fprintf (stderr, "create label: %s\n", type->name); fflush (stderr);
+
                 if (!_implemented_disk_label (type->name))
                         continue;
 
@@ -59,6 +63,7 @@ START_TEST (test_probe_label)
 
         for (type = ped_disk_type_get_next (NULL); type;
              type = ped_disk_type_get_next (type)) {
+          fprintf (stderr, "PROBE label: %s\n", type->name); fflush (stderr);
                 if (!_implemented_disk_label (type->name))
                         continue;
 
@@ -70,9 +75,10 @@ START_TEST (test_probe_label)
                 fail_if (!probed,
                          "Failed to probe the just created label of type: %s",
                          type->name);
-                fail_if (strcmp (probed->name, type->name) != 0,
-                         "Probe returned label of type: %s as type: %s",
-                         type->name, probed->name);
+                if (probed && !STREQ (probed->name, type->name))
+                        fail_if (1,
+                                 "Probe returned label of type: %s as type: %s",
+                                 type->name, probed->name);
         }
         ped_device_destroy (dev);
 }
@@ -90,6 +96,7 @@ START_TEST (test_read_label)
 
         for (type = ped_disk_type_get_next (NULL); type;
              type = ped_disk_type_get_next (type)) {
+          fprintf (stderr, "read label: %s\n", type->name); fflush (stderr);
                 if (!_implemented_disk_label (type->name))
                         continue;
 
@@ -101,9 +108,10 @@ START_TEST (test_read_label)
                 fail_if (!disk,
                          "Failed to read the just created label of type: %s",
                          type->name);
-                fail_if (strcmp (disk->type->name, type->name) != 0,
-                         "Read returned label of type: %s as type: %s",
-                         type->name, disk->type->name);
+                if (disk && !STREQ (disk->type->name, type->name))
+                        fail_if (1,
+                                 "Read returned label of type: %s as type: %s",
+                                 type->name, disk->type->name);
 
                 ped_disk_destroy (disk);
         }
@@ -119,23 +127,17 @@ START_TEST (test_clone_label)
                 return;
 
         PedDiskType* type;
-        PedDisk* clone;
-        PedDisk* disk;
 
         for (type = ped_disk_type_get_next (NULL); type;
              type = ped_disk_type_get_next (type)) {
+          fprintf (stderr, "clone label: %s\n", type->name); fflush (stderr);
                 if (!_implemented_disk_label (type->name))
                         continue;
 
-                /* FIXME: skip this test temporarily, while we wait
-                   for someone to find the cycles to fix the bug.  */
-                if (strcmp (type->name, "dvh") == 0)
-                        continue;
-
-                disk = _create_disk_label (dev, type);
+                PedDisk* disk = _create_disk_label (dev, type);
 
                 /* Try to clone the disk label. */
-                clone = ped_disk_duplicate (disk);
+                PedDisk* clone = ped_disk_duplicate (disk);
                 fail_if (!clone,
                          "Failed to clone the just created label of type: %s",
                          type->name);

@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2004, 2005, 2007 Free Software Foundation, Inc.
+    Copyright (C) 2004-2005, 2007, 2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -76,7 +76,6 @@ hfsplus_btree_search (HfsPPrivateFile* b_tree_file, HfsPPrivateGenericKey* key,
 	uint8_t			node_1[PED_SECTOR_SIZE_DEFAULT];
 	uint8_t*		node;
 	HfsPHeaderRecord*	header;
-	HfsPNodeDescriptor*	desc = (HfsPNodeDescriptor*) node_1;
 	HfsPPrivateGenericKey*	record_key = NULL;
 	unsigned int		node_number, record_number, size, bsize;
 	int			i;
@@ -96,7 +95,7 @@ hfsplus_btree_search (HfsPPrivateFile* b_tree_file, HfsPPrivateGenericKey* key,
 	node = (uint8_t*) ped_malloc (bsize);
 	if (!node)
 		return 0;
-	desc = (HfsPNodeDescriptor*) node;
+	HfsPNodeDescriptor *desc = (HfsPNodeDescriptor*) node;
 
 	/* Read the root node */
 	if (!hfsplus_file_read (b_tree_file, node,
@@ -275,7 +274,6 @@ hfsplus_get_empty_end (const PedFileSystem *fs)
 	HfsPPrivateFSData* 	priv_data = (HfsPPrivateFSData*)
 						    fs->type_specific;
 	HfsPVolumeHeader* 	vh = priv_data->vh;
-	HfsPPrivateLinkExtent*	link;
 	unsigned int		block, last_bad, end_free_blocks;
 
 	/* find the next block to the last bad block of the volume */
@@ -287,12 +285,13 @@ hfsplus_get_empty_end (const PedFileSystem *fs)
 		return 0;
 	}
 
+	HfsPPrivateLinkExtent*	l;
 	last_bad = 0;
-	for (link = priv_data->bad_blocks_xtent_list; link; link = link->next) {
-		if ((unsigned int) PED_BE32_TO_CPU (link->extent.start_block)
-		    + PED_BE32_TO_CPU (link->extent.block_count) > last_bad)
-			last_bad = PED_BE32_TO_CPU (link->extent.start_block)
-			           + PED_BE32_TO_CPU (link->extent.block_count);
+	for (l = priv_data->bad_blocks_xtent_list; l; l = l->next) {
+		if ((unsigned int) PED_BE32_TO_CPU (l->extent.start_block)
+		    + PED_BE32_TO_CPU (l->extent.block_count) > last_bad)
+			last_bad = PED_BE32_TO_CPU (l->extent.start_block)
+			           + PED_BE32_TO_CPU (l->extent.block_count);
 	}
 
 	/* Count the free blocks from last_bad to the end of the volume */

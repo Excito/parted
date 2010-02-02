@@ -1,10 +1,11 @@
 # libparted
-# Copyright (C) 1999-2001, 2006-2007, 2009  Free Software Foundation, Inc.
+# Copyright (C) 1999-2001, 2006-2009 Free Software Foundation, Inc.
 # This file may be modified and/or copied without restriction.
 
 # list of files containing translatable strings
 
 # lib
+lib/argmatch.c
 lib/closeout.c
 lib/error.c
 lib/getopt.c
@@ -38,6 +39,7 @@ libparted/labels/gpt.c
 libparted/labels/loop.c
 libparted/labels/mac.c
 libparted/labels/pc98.c
+libparted/labels/pt-tools.c
 libparted/labels/rdb.c
 libparted/labels/sun.c
 libparted/labels/vtoc.c

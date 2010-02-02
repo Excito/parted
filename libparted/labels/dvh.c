@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2001, 2002, 2005, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 2001-2002, 2005, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -20,8 +20,10 @@
 #include <parted/parted.h>
 #include <parted/debug.h>
 #include <parted/endian.h>
+#include <stdbool.h>
 
 #include "dvh.h"
+#include "pt-tools.h"
 
 #if ENABLE_NLS
 #  include <libintl.h>
@@ -58,28 +60,45 @@ typedef struct _DVHPartData {
 
 static PedDiskType dvh_disk_type;
 
+/* FIXME: factor out this function: copied from aix.c, with changes to
+   the description, and an added sector number argument.
+   Read sector, SECTOR_NUM (which has length DEV->sector_size) into malloc'd
+   storage.  If the read fails, free the memory and return zero without
+   modifying *BUF.  Otherwise, set *BUF to the new buffer and return 1.  */
+static int
+read_sector (const PedDevice *dev, PedSector sector_num, char **buf)
+{
+	char *b = ped_malloc (dev->sector_size);
+	PED_ASSERT (b != NULL, return 0);
+	if (!ped_device_read (dev, b, sector_num, 1)) {
+		free (b);
+		return 0;
+	}
+	*buf = b;
+	return 1;
+}
+
 static int
 dvh_probe (const PedDevice *dev)
 {
-	struct volume_header	vh;
+	struct volume_header *vh;
 
-        if (dev->sector_size != 512)
-                return 0;
-
-	if (!ped_device_read (dev, &vh, 0, 1))
+	char *label;
+	if (!read_sector (dev, 0, &label))
 		return 0;
 
-	return PED_BE32_TO_CPU (vh.vh_magic) == VHMAGIC;
+	vh = (struct volume_header *) label;
+
+        bool found = PED_BE32_TO_CPU (vh->vh_magic) == VHMAGIC;
+	free (label);
+	return found;
 }
 
 #ifndef DISCOVER_ONLY
 static int
 dvh_clobber (PedDevice* dev)
 {
-	char	zeros[512];
-
-	memset (zeros, 0, 512);
-	return ped_device_write (dev, zeros, 0, 1);
+	return ptt_clear_sectors (dev, 0, 1);
 }
 #endif /* !DISCOVER_ONLY */
 
@@ -137,7 +156,7 @@ dvh_duplicate (const PedDisk* disk)
 
 	PED_ASSERT (old_dvh_disk_data != NULL, goto error);
 
-	new_disk = _ped_disk_alloc (disk->dev, &dvh_disk_type);
+	new_disk = ped_disk_new_fresh (disk->dev, &dvh_disk_type);
 	if (!new_disk)
 		goto error;
 
@@ -302,8 +321,11 @@ dvh_read (PedDisk* disk)
 
 	ped_disk_delete_all (disk);
 
-	if (!ped_device_read (disk->dev, &vh, 0, 1))
+	char *s0;
+	if (!read_sector (disk->dev, 0, &s0))
 		return 0;
+	memcpy (&vh, s0, sizeof vh);
+	free (s0);
 
 	if (_checksum ((uint32_t*) &vh, sizeof (struct volume_header))) {
 		if (ped_exception_throw (
@@ -324,7 +346,6 @@ dvh_read (PedDisk* disk)
 	/* normal partitions */
 	for (i = 0; i < NPARTAB; i++) {
 		PedPartition* part;
-		PedConstraint* constraint_exact;
 
 		if (!vh.vh_pt[i].pt_nblks)
 			continue;
@@ -344,12 +365,14 @@ dvh_read (PedDisk* disk)
 		if (PED_BE16_TO_CPU (vh.vh_swappt) == i)
 			ped_partition_set_flag (part, PED_PARTITION_SWAP, 1);
 
-		constraint_exact = ped_constraint_exact (&part->geom);
-		if (!ped_disk_add_partition(disk, part, constraint_exact)) {
+		PedConstraint *constraint_exact
+		  = ped_constraint_exact (&part->geom);
+		bool ok = ped_disk_add_partition (disk, part, constraint_exact);
+		ped_constraint_destroy (constraint_exact);
+		if (!ok) {
 			ped_partition_destroy (part);
 			goto error_delete_all;
 		}
-		ped_constraint_destroy (constraint_exact);
 	}
 
 	if (!ped_disk_extended_partition (disk)) {
@@ -373,7 +396,6 @@ dvh_read (PedDisk* disk)
 	/* boot partitions */
 	for (i = 0; i < NVDIR; i++) {
 		PedPartition* part;
-		PedConstraint* constraint_exact;
 
 		if (!vh.vh_vd[i].vd_nbytes)
 			continue;
@@ -388,12 +410,14 @@ dvh_read (PedDisk* disk)
 		if (!strcmp (boot_name, ped_partition_get_name (part)))
 			ped_partition_set_flag (part, PED_PARTITION_BOOT, 1);
 
-		constraint_exact = ped_constraint_exact (&part->geom);
-		if (!ped_disk_add_partition(disk, part, constraint_exact)) {
+		PedConstraint *constraint_exact
+		  = ped_constraint_exact (&part->geom);
+		bool ok = ped_disk_add_partition (disk, part, constraint_exact);
+		ped_constraint_destroy (constraint_exact);
+		if (!ok) {
 			ped_partition_destroy (part);
 			goto error_delete_all;
 		}
-		ped_constraint_destroy (constraint_exact);
 	}
 #ifndef DISCOVER_ONLY
 	if (write_back)
@@ -493,8 +517,8 @@ dvh_write (const PedDisk* disk)
 	vh.vh_csum = PED_CPU_TO_BE32 (_checksum ((uint32_t*) &vh,
 			       	      sizeof (struct volume_header)));
 
-	return ped_device_write (disk->dev, &vh, 0, 1)
-	       && ped_device_sync (disk->dev);
+        return (ptt_write_sector (disk, &vh, sizeof vh)
+                && ped_device_sync (disk->dev));
 }
 #endif /* !DISCOVER_ONLY */
 
@@ -835,7 +859,6 @@ dvh_alloc_metadata (PedDisk* disk)
 {
 	PedPartition* part;
 	PedPartition* extended_part;
-	PedConstraint* constraint_exact;
 	PedPartitionType metadata_type;
 	PED_ASSERT(disk != NULL, return 0);
 
@@ -852,51 +875,28 @@ dvh_alloc_metadata (PedDisk* disk)
 	if (!part)
 		goto error;
 
-	constraint_exact = ped_constraint_exact (&part->geom);
-	if (!ped_disk_add_partition (disk, part, constraint_exact))
-		goto error_destroy_part;
+	PedConstraint *constraint_exact
+	  = ped_constraint_exact (&part->geom);
+	bool ok = ped_disk_add_partition (disk, part, constraint_exact);
 	ped_constraint_destroy (constraint_exact);
-	return 1;
+	if (ok)
+		return 1;
 
-	ped_constraint_destroy (constraint_exact);
-error_destroy_part:
 	ped_partition_destroy (part);
 error:
 	return 0;
 }
 
-static PedDiskOps dvh_disk_ops = {
-	probe:			dvh_probe,
-#ifndef DISCOVER_ONLY
-	clobber:		dvh_clobber,
-#else
-	clobber:		NULL,
-#endif
-	alloc:			dvh_alloc,
-	duplicate:		dvh_duplicate,
-	free:			dvh_free,
-	read:			dvh_read,
-#ifndef DISCOVER_ONLY
-	write:			dvh_write,
-#else
-	write:			NULL,
-#endif
+#include "pt-common.h"
+PT_define_limit_functions (dvh)
 
-	partition_new:		dvh_partition_new,
-	partition_duplicate:	dvh_partition_duplicate,
-	partition_destroy:	dvh_partition_destroy,
-	partition_set_system:	dvh_partition_set_system,
-	partition_set_flag:	dvh_partition_set_flag,
-	partition_get_flag:	dvh_partition_get_flag,
-	partition_is_flag_available:	dvh_partition_is_flag_available,
+static PedDiskOps dvh_disk_ops = {
+	clobber:		NULL_IF_DISCOVER_ONLY (dvh_clobber),
+	write:			NULL_IF_DISCOVER_ONLY (dvh_write),
+
 	partition_set_name:	dvh_partition_set_name,
 	partition_get_name:	dvh_partition_get_name,
-	partition_align:	dvh_partition_align,
-	partition_enumerate:	dvh_partition_enumerate,
-
-	alloc_metadata:		dvh_alloc_metadata,
-	get_max_primary_partition_count: dvh_get_max_primary_partition_count,
-	get_max_supported_partition_count: dvh_get_max_supported_partition_count
+	PT_op_function_initializers (dvh)
 };
 
 static PedDiskType dvh_disk_type = {

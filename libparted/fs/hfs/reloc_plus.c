@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2004, 2005, 2007 Free Software Foundation, Inc.
+    Copyright (C) 2004-2005, 2007, 2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ hfsplus_effect_move_extent (PedFileSystem *fs, unsigned int *ptr_fblock,
 	PED_ASSERT (hfsp_block != NULL, return -1);
 	PED_ASSERT (*ptr_to_fblock <= *ptr_fblock, return -1);
 	/* quiet GCC */
-	next_to_fblock = start = stop = 0;
+	start = stop = 0;
 
 /*
 	Try to fit the extent AT or _BEFORE_ the wanted place,
@@ -478,7 +478,6 @@ hfsplus_cache_from_catalog(HfsCPrivateCache* cache, PedFileSystem* fs,
 	uint8_t			node_1[PED_SECTOR_SIZE_DEFAULT];
 	uint8_t*		node;
 	HfsPHeaderRecord*	header;
-	HfsPNodeDescriptor*	desc = (HfsPNodeDescriptor*) node_1;
 	HfsPCatalogKey*		catalog_key;
 	HfsPCatalog*		catalog_data;
 	HfsPExtDescriptor*	extent;
@@ -507,7 +506,7 @@ hfsplus_cache_from_catalog(HfsCPrivateCache* cache, PedFileSystem* fs,
 
 	node = (uint8_t*) ped_malloc(bsize);
 	if (!node) return 0;
-	desc = (HfsPNodeDescriptor*) node;
+	HfsPNodeDescriptor *desc = (HfsPNodeDescriptor*) node;
 
 	for (; leaf_node; leaf_node = PED_BE32_TO_CPU (desc->next)) {
 		if (!hfsplus_file_read (priv_data->catalog_file, node,
@@ -605,7 +604,6 @@ hfsplus_cache_from_extent(HfsCPrivateCache* cache, PedFileSystem* fs,
 	uint8_t			node_1[PED_SECTOR_SIZE_DEFAULT];
 	uint8_t*		node;
 	HfsPHeaderRecord*	header;
-	HfsPNodeDescriptor*	desc = (HfsPNodeDescriptor*) node_1;
 	HfsPExtentKey*		extent_key;
 	HfsPExtDescriptor*	extent;
 	unsigned int		leaf_node, record_number;
@@ -630,7 +628,7 @@ hfsplus_cache_from_extent(HfsCPrivateCache* cache, PedFileSystem* fs,
 
 	node = (uint8_t*) ped_malloc (bsize);
 	if (!node) return -1;
-	desc = (HfsPNodeDescriptor*) node;
+	HfsPNodeDescriptor *desc = (HfsPNodeDescriptor*) node;
 
 	for (; leaf_node; leaf_node = PED_BE32_TO_CPU (desc->next)) {
 		if (!hfsplus_file_read (priv_data->extents_file, node,
@@ -720,7 +718,6 @@ hfsplus_cache_from_attributes(HfsCPrivateCache* cache, PedFileSystem* fs,
 	uint8_t			node_1[PED_SECTOR_SIZE_DEFAULT];
 	uint8_t*		node;
 	HfsPHeaderRecord*	header;
-	HfsPNodeDescriptor*	desc = (HfsPNodeDescriptor*) node_1;
 	HfsPPrivateGenericKey*	generic_key;
 	HfsPForkDataAttr*	fork_ext_data;
 	HfsPExtDescriptor*	extent;
@@ -742,7 +739,7 @@ hfsplus_cache_from_attributes(HfsCPrivateCache* cache, PedFileSystem* fs,
 
 	node = (uint8_t*) ped_malloc(bsize);
 	if (!node) return 0;
-	desc = (HfsPNodeDescriptor*) node;
+	HfsPNodeDescriptor *desc = (HfsPNodeDescriptor*) node;
 
 	for (; leaf_node; leaf_node = PED_BE32_TO_CPU (desc->next)) {
 		if (!hfsplus_file_read (priv_data->attributes_file, node,

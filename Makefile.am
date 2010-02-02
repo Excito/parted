@@ -62,10 +62,10 @@ new-abi-baseline:
 # 'check-abi' to test for changes against that file.
 check-abi: baseline_symbols current_symbols.txt
 	@diff -u ${baseline_file} ./current_symbols.txt 2>&1 \
-         | tee libparted.abi-diff
+	 | tee libparted.abi-diff
 	@test `wc -l < libparted.abi-diff` -eq 0 && exit 0 \
-         || echo "ABI has changed. Please, update you ABI package version." \
-         && exit 1
+	 || echo "ABI has changed. Please, update you ABI package version." \
+	 && exit 1
 
 MOSTLYCLEANDIRS = m4
 
@@ -76,13 +76,24 @@ MAINTAINERCLEANFILES += \
   aclocal.m4    \
   configure
 
+.PHONY: ss-1024 ss-2048 ss-4096
+ss-1024 ss-2048 ss-4096:
+	PARTED_SECTOR_SIZE=$(ss-,,$@) $(MAKE) check-recursive
+
+# Run the regression test suite with different settings,
+# to ensure it works with simulated partition sizes > 512.
+.PHONY: check-other-sector_sizes
+check-other-sector_sizes:
+	$(MAKE) ss-1024
+	$(MAKE) ss-2048
+	$(MAKE) ss-4096
+
+check: check-other-sector_sizes
+
 # Arrange so that .tarball-version appears only in the distribution
 # tarball, and never in a checked-out repository.
-# The perl substitution is to change some key uses of "rm" to "/bin/rm".
-# See the rm_subst comment for details.
 dist-hook: gen-ChangeLog
 	echo $(VERSION) > $(distdir)/.tarball-version
-	perl -pi -e '$(rm_subst)' $(distdir)/src/Makefile.in
 
 gen_start_date = 2000-01-01
 .PHONY: gen-ChangeLog

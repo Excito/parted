@@ -19,6 +19,7 @@
 #include <config.h>
 #include <stdbool.h>
 
+#include "argmatch.h"
 #include "closeout.h"
 #include "configmake.h"
 #include "version-etc.h"
@@ -74,6 +75,31 @@ enum
   PRETEND_INPUT_TTY = CHAR_MAX + 1,
 };
 
+enum
+{
+        ALIGNMENT_NONE = 2,
+        ALIGNMENT_CYLINDER,
+        ALIGNMENT_MINIMAL,
+        ALIGNMENT_OPTIMAL
+};
+
+static char const *const align_args[] =
+{
+  "none",
+  "cylinder",
+  "minimal",
+  "optimal",
+  NULL
+};
+
+static int const align_types[] =
+{
+  ALIGNMENT_NONE,
+  ALIGNMENT_CYLINDER,
+  ALIGNMENT_MINIMAL,
+  ALIGNMENT_OPTIMAL
+};
+ARGMATCH_VERIFY (align_args, align_types);
 
 typedef struct {
         time_t  last_update;
@@ -87,6 +113,7 @@ static struct option const options[] = {
         {"machine",     0, NULL, 'm'},
         {"script",      0, NULL, 's'},
         {"version",     0, NULL, 'v'},
+        {"align",       required_argument, NULL, 'a'},
         {"-pretend-input-tty", 0, NULL, PRETEND_INPUT_TTY},
         {NULL,          0, NULL, 0}
 };
@@ -97,6 +124,7 @@ static const char *const options_help [][2] = {
         {"machine",     N_("displays machine parseable output")},
         {"script",      N_("never prompts for user intervention")},
         {"version",     N_("displays the version")},
+        {"align=[none|cyl|min|opt]", N_("alignment for new partitions")},
         {NULL,          NULL}
 };
 
@@ -105,6 +133,7 @@ int     pretend_input_tty = 0;
 int     opt_machine_mode = 0;
 int     disk_is_modified = 0;
 int     is_toggle_mode = 0;
+int     alignment = ALIGNMENT_CYLINDER;
 
 static const char* number_msg = N_(
 "NUMBER is the partition number used by Linux.  On MS-DOS disk labels, the "
@@ -113,6 +142,7 @@ static const char* number_msg = N_(
 static const char* label_type_msg_start = N_("LABEL-TYPE is one of: ");
 static const char* flag_msg_start =   N_("FLAG is one of: ");
 static const char* unit_msg_start =   N_("UNIT is one of: ");
+static const char* min_or_opt_msg = N_("desired alignment: minimum or optimal");
 static const char* part_type_msg =    N_("PART-TYPE is one of: primary, logical, "
                                    "extended\n");
 static const char* fs_type_msg_start = N_("FS-TYPE is one of: ");
@@ -346,7 +376,6 @@ snap_to_boundaries (PedGeometry* new_geom, PedGeometry* old_geom,
         EMoves          start_allow, end_allow, start_want, end_want;
         int             adjacent;
 
-        start_want = end_want = MOVE_NO;
         start_allow = end_allow = MOVE_STILL | MOVE_UP | MOVE_DOWN;
 
         start_part = ped_disk_get_partition_by_sector (disk, start);
@@ -445,9 +474,26 @@ help_on (char* topic)
         command_print_help (cmd);
 }
 
+/* Issue a warning about upcoming removal of FS support.  */
+static void
+issue_fs_op_warning (char const *op)
+{
+  if (getenv ("PARTED_SUPPRESS_FILE_SYSTEM_MANIPULATION_WARNING"))
+    return;
+  fprintf (stderr,
+ _("WARNING: you are attempting to use %s to operate on (%s) a file system.\n"
+   "%s's file system manipulation code is not as robust as what you'll find in\n"
+   "dedicated, file-system-specific packages like e2fsprogs.  We recommend\n"
+   "you use %s only to manipulate partition tables, whenever possible.\n"
+   "Support for performing most operations on most types of file systems\n"
+   "will be removed in an upcoming release.\n"),
+   program_name, op, program_name, program_name);
+}
+
 static int
 do_check (PedDevice** dev)
 {
+        issue_fs_op_warning ("check");
         PedDisk*        disk;
         PedFileSystem*  fs;
         PedPartition*   part = NULL;
@@ -484,6 +530,7 @@ error:
 static int
 do_cp (PedDevice** dev)
 {
+        issue_fs_op_warning ("cp");
         PedDisk*                src_disk;
         PedDisk*                dst_disk;
         PedPartition*           src = NULL;
@@ -569,7 +616,7 @@ print_options_help ()
         int             i;
 
         for (i=0; options_help [i][0]; i++) {
-                printf ("  -%c, --%-23.23s %s\n",
+                printf ("  -%c, --%-25.25s %s\n",
                         options_help [i][0][0],
                         options_help [i][0],
                         _(options_help [i][1]));
@@ -636,6 +683,7 @@ error:
 static int
 do_mkfs (PedDevice** dev)
 {
+        issue_fs_op_warning ("mkfs");
         PedDisk*                disk;
         PedPartition*           part = NULL;
         const PedFileSystemType* type = ped_file_system_type_get ("ext2");
@@ -700,6 +748,11 @@ do_mkpart (PedDevice** dev)
         if (!disk)
                 goto error;
 
+        if (ped_disk_is_flag_available(disk, PED_DISK_CYLINDER_ALIGNMENT))
+                if (!ped_disk_set_flag(disk, PED_DISK_CYLINDER_ALIGNMENT,
+                                       alignment == ALIGNMENT_CYLINDER))
+                        goto error_destroy_disk;
+
         if (!ped_disk_type_check_feature (disk->type, PED_DISK_TYPE_EXTENDED)) {
                 part_type = PED_PARTITION_NORMAL;
         } else {
@@ -752,7 +805,14 @@ do_mkpart (PedDevice** dev)
                         range_end);
         PED_ASSERT (user_constraint != NULL, return 0);
 
-        dev_constraint = ped_device_get_constraint (*dev);
+        if (alignment == ALIGNMENT_OPTIMAL)
+                dev_constraint =
+                        ped_device_get_optimal_aligned_constraint(*dev);
+        else if (alignment == ALIGNMENT_MINIMAL)
+                dev_constraint =
+                        ped_device_get_minimal_aligned_constraint(*dev);
+        else
+                dev_constraint = ped_device_get_constraint(*dev);
         PED_ASSERT (dev_constraint != NULL, return 0);
 
         final_constraint = ped_constraint_intersect (user_constraint,
@@ -769,8 +829,11 @@ do_mkpart (PedDevice** dev)
         if (!added_ok) {
                 ped_exception_leave_all();
 
-                if (ped_disk_add_partition (disk, part,
-                                        ped_constraint_any (*dev))) {
+                PedConstraint *constraint_any = ped_constraint_any (*dev);
+                bool added_ok = ped_disk_add_partition (disk, part,
+                                                        constraint_any);
+                ped_constraint_destroy (constraint_any);
+                if (added_ok) {
                         start_usr = ped_unit_format (*dev, start);
                         end_usr   = ped_unit_format (*dev, end);
                         start_sol = ped_unit_format (*dev, part->geom.start);
@@ -815,6 +878,8 @@ do_mkpart (PedDevice** dev)
         /* set minor attributes */
         if (part_name)
                 PED_ASSERT (ped_partition_set_name (part, part_name), return 0);
+        free (part_name);  /* avoid double-free upon failure */
+        part_name = NULL;
         if (!ped_partition_set_system (part, fs_type))
                 goto error_destroy_disk;
         if (ped_partition_is_flag_available (part, PED_PARTITION_LBA))
@@ -846,6 +911,7 @@ error_remove_part:
 error_destroy_simple_constraints:
         ped_partition_destroy (part);
 error_destroy_disk:
+        free (part_name);
         ped_disk_destroy (disk);
 error:
         if (range_start != NULL)
@@ -864,6 +930,7 @@ error:
 static int
 do_mkpartfs (PedDevice** dev)
 {
+        issue_fs_op_warning ("mkpartfs");
         PedDisk*            disk;
         PedPartition*       part;
         PedPartitionType    part_type;
@@ -987,6 +1054,8 @@ do_mkpartfs (PedDevice** dev)
                 goto error_destroy_disk;
         ped_file_system_close (fs);
 
+        if (part_name)
+                PED_ASSERT (ped_partition_set_name (part, part_name), return 0);
         if (!ped_partition_set_system (part, fs_type))
                 goto error_destroy_disk;
 
@@ -1035,6 +1104,7 @@ error:
 static int
 do_move (PedDevice** dev)
 {
+        issue_fs_op_warning ("move");
         PedDisk*        disk;
         PedPartition*   part = NULL;
         PedFileSystem*  fs;
@@ -1175,18 +1245,16 @@ partition_print_flags (PedPartition* part)
                                 first_flag = 0;
                         else {
                                 _res = res;
-                                ped_realloc (&_res, strlen (res)
-                                                           + 1 + 2);
+                                ped_realloc (&_res, strlen (res) + 1 + 2);
                                 res = _res;
                                 strncat (res, ", ", 2);
                         }
 
                         name = _(ped_partition_flag_get_name (flag));
                         _res = res;
-                        ped_realloc (&_res, strlen (res) + 1
-                                                   + strlen (name));
+                        ped_realloc (&_res, strlen (res) + 1 + strlen (name));
                         res = _res;
-                        strncat (res, name, 21);
+                        strcat(res, name);
                 }
         }
 
@@ -1288,16 +1356,19 @@ do_print (PedDevice** dev)
         peek_word = command_line_peek_word ();
         if (peek_word) {
                 if (strncmp (peek_word, "devices", 7) == 0) {
-                        command_line_pop_word();
+                        char *w = command_line_pop_word();
+                        free (w);
                         has_devices_arg = 1;
                 }
                 else if (strncmp (peek_word, "free", 4) == 0) {
-                        command_line_pop_word ();
+                        char *w = command_line_pop_word ();
+                        free (w);
                         has_free_arg = 1;
                 }
                 else if (strncmp (peek_word, "list", 4) == 0 ||
                          strncmp (peek_word, "all", 3) == 0) {
-                        command_line_pop_word();
+                        char *w = command_line_pop_word();
+                        free (w);
                         has_list_arg = 1;
                 }
                 else
@@ -1550,7 +1621,9 @@ do_print (PedDevice** dev)
                     else
                         putchar (':');
 
-                    printf ("%s;\n", partition_print_flags (part));
+                    char *flags = partition_print_flags (part);
+                    printf ("%s;\n", flags);
+                    free (flags);
 
                 } else {
                     puts ("free;");
@@ -1586,7 +1659,7 @@ static int
 do_quit (PedDevice** dev)
 {
         _done (*dev);
-        exit (0);
+        exit (EXIT_SUCCESS);
 }
 
 static PedPartitionType
@@ -1777,6 +1850,7 @@ error:
 static int
 do_resize (PedDevice** dev)
 {
+        issue_fs_op_warning ("resize");
         PedDisk                 *disk;
         PedPartition            *part = NULL;
         PedFileSystem           *fs;
@@ -1904,6 +1978,49 @@ do_select (PedDevice** dev)
         *dev = new_dev;
         print_using_dev (*dev);
         return 1;
+}
+
+/* Return true if partition PART is consistent with DISK's selected
+   offset and alignment requirements.  Also return true if there is
+   insufficient kernel support to determine DISK's alignment requirements.
+   Otherwise, return false.  A_TYPE selects whether to check for minimal
+   or optimal alignment requirements.  */
+static bool
+partition_align_check (PedDisk const *disk, PedPartition const *part,
+		       enum AlignmentType a_type)
+{
+  PED_ASSERT (part->disk == disk, return false);
+  PedDevice const *dev = disk->dev;
+
+  PedAlignment *pa = (a_type == PA_MINIMUM
+		      ? ped_device_get_minimum_alignment (dev)
+		      : ped_device_get_optimum_alignment (dev));
+  if (pa == NULL)
+    return true;
+
+  PED_ASSERT (pa->grain_size != 0, return false);
+  bool ok = (part->geom.start % pa->grain_size == pa->offset);
+  free (pa);
+  return ok;
+}
+
+static int
+do_align_check (PedDevice **dev)
+{
+  PedDisk *disk = ped_disk_new (*dev);
+  if (!disk)
+    return 0;
+
+  enum AlignmentType align_type;
+  PedPartition *part = NULL;
+  bool aligned =
+    (command_line_get_align_type (_("alignment type(min/opt)"), &align_type)
+     && command_line_get_partition (_("Partition number?"), disk, &part)
+     && partition_align_check (disk, part, align_type));
+
+  ped_disk_destroy (disk);
+
+  return aligned ? 1 : 0;
 }
 
 static int
@@ -2141,6 +2258,18 @@ _done_messages ()
 static void
 _init_commands ()
 {
+  command_register (commands,
+    command_create ( str_list_create_unique ("align-check",
+					     _("align-check"), NULL),
+		     do_align_check,
+		     str_list_create (
+				      _("align-check TYPE N"
+					"                        "
+					"check partition N for"
+					" TYPE(min|opt) alignment"), NULL),
+
+		     str_list_create (_(number_msg), _(min_or_opt_msg),
+				      NULL), 1));
         command_register (commands, command_create (
                 str_list_create_unique ("check", _("check"), NULL),
                 do_check,
@@ -2182,7 +2311,7 @@ NULL),
                 do_mkfs,
                 str_list_create (
 _("mkfs NUMBER FS-TYPE                      make a FS-TYPE file "
-  "system on partititon NUMBER"),
+  "system on partition NUMBER"),
 NULL),
                 str_list_create (_(number_msg), _(mkfs_fs_type_msg), NULL), 1));
 
@@ -2364,7 +2493,7 @@ int     opt, help = 0, list = 0, version = 0, wrong = 0;
 
 while (1)
 {
-        opt = getopt_long (*argc_ptr, *argv_ptr, "hlmsv",
+        opt = getopt_long (*argc_ptr, *argv_ptr, "hlmsva:",
                            options, NULL);
         if (opt == -1)
                 break;
@@ -2375,16 +2504,22 @@ while (1)
                 case 'm': opt_machine_mode = 1; break;
                 case 's': opt_script_mode = 1; break;
                 case 'v': version = 1; break;
+                case 'a':
+                  alignment = XARGMATCH ("--align", optarg,
+                                         align_args, align_types);
+                  break;
                 case PRETEND_INPUT_TTY:
                   pretend_input_tty = 1;
                   break;
-                default:  wrong = 1; break;
+                default:
+                  wrong = 1;
+                  break;
         }
 }
 
 if (wrong == 1) {
         fprintf (stderr,
-                 _("Usage: %s [-hlmsv] [DEVICE [COMMAND [PARAMETERS]]...]\n"),
+                 _("Usage: %s [-hlmsv] [-a<align>] [DEVICE [COMMAND [PARAMETERS]]...]\n"),
                  program_name);
         return 0;
 }
@@ -2458,6 +2593,10 @@ _init_commands ();
 
 if (!_parse_options (argc_ptr, argv_ptr))
         goto error_done_commands;
+
+if (!opt_script_mode)
+        if (init_readline ())
+                goto error_done_commands;
 
 #ifdef HAVE_GETUID
         if (getuid() != 0 && !opt_script_mode) {

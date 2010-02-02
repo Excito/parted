@@ -2,7 +2,7 @@
 
     libparted - a library for manipulating disk partitions
     disk_amiga.c - libparted module to manipulate amiga RDB partition tables.
-    Copyright (C) 2000, 2001, 2004, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 2000-2001, 2004, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@
 #include <parted/parted.h>
 #include <parted/debug.h>
 #include <parted/endian.h>
+
+#include "pt-tools.h"
 
 #ifndef MAX
 # define MAX(a,b) ((a) < (b) ? (b) : (a))
@@ -354,18 +356,22 @@ amiga_alloc (const PedDevice* dev)
 	if (!(disk = _ped_disk_alloc (dev, &amiga_disk_type)))
 		return NULL;
 
-	if (!(disk->disk_specific = ped_malloc (PED_SECTOR_SIZE_DEFAULT))) {
+	if (!(disk->disk_specific = ped_malloc (disk->dev->sector_size))) {
 		free (disk);
 		return NULL;
 	}
 	rdb = disk->disk_specific;
 
-	memset(rdb, 0, sizeof(struct RigidDiskBlock));
+        /* Upon failed assertion this does leak.  That's fine, because
+           if the assertion fails, you have bigger problems than this leak. */
+        PED_ASSERT(sizeof(*rdb) <= disk->dev->sector_size, return NULL);
+
+	memset(rdb, 0, disk->dev->sector_size);
 
 	rdb->rdb_ID = PED_CPU_TO_BE32 (IDNAME_RIGIDDISK);
 	rdb->rdb_SummedLongs = PED_CPU_TO_BE32 (64);
 	rdb->rdb_HostID = PED_CPU_TO_BE32 (0);
-	rdb->rdb_BlockBytes = PED_CPU_TO_BE32 (PED_SECTOR_SIZE_DEFAULT);
+	rdb->rdb_BlockBytes = PED_CPU_TO_BE32 (disk->dev->sector_size);
 	rdb->rdb_Flags = PED_CPU_TO_BE32 (0);
 
 	/* Block lists */
@@ -451,7 +457,7 @@ amiga_clobber (PedDevice* dev)
 	int result = 0;
 	PED_ASSERT(dev != NULL, return 0);
 
-	if ((rdb=RDSK(ped_malloc(PED_SECTOR_SIZE_DEFAULT)))==NULL)
+	if ((rdb=RDSK(ped_malloc(dev->sector_size)))==NULL)
 		return 0;
 
 	while ((i = _amiga_find_rdb (dev, rdb)) != AMIGA_RDB_NOT_FOUND) {
@@ -647,7 +653,7 @@ amiga_write (const PedDisk* disk)
 	struct LinkedBlock *block;
 	struct PartitionBlock *partition;
 	PedPartition *part, *next_part;
-	PedSector cylblocks, first_hb, last_hb, last_used_hb;
+	PedSector cylblocks, first_hb, last_hb;
 	uint32_t * table;
 	uint32_t i;
 	uint32_t rdb_num, part_num, block_num, next_num;
@@ -656,7 +662,7 @@ amiga_write (const PedDisk* disk)
 	PED_ASSERT (disk->dev != NULL, return 0);
 	PED_ASSERT (disk->disk_specific != NULL, return 0);
 
-	if (!(rdb = ped_malloc (PED_SECTOR_SIZE_DEFAULT)))
+	if (!(rdb = ped_malloc (disk->dev->sector_size)))
 		return 0;
 
 	/* Let's read the rdb */
@@ -668,7 +674,7 @@ amiga_write (const PedDisk* disk)
 		memset ((char *)(RDSK(disk->disk_specific)) + pb_size,
 			0, PED_SECTOR_SIZE_DEFAULT - pb_size);
 	} else {
-		memcpy (RDSK(disk->disk_specific), rdb, PED_SECTOR_SIZE_DEFAULT);
+		memcpy (RDSK(disk->disk_specific), rdb, disk->dev->sector_size);
 	}
 	free (rdb);
 	rdb = RDSK(disk->disk_specific);
@@ -677,7 +683,6 @@ amiga_write (const PedDisk* disk)
 		(PedSector) PED_BE32_TO_CPU (rdb->rdb_Sectors);
 	first_hb = (PedSector) PED_BE32_TO_CPU (rdb->rdb_RDBBlocksLo);
 	last_hb = (PedSector) PED_BE32_TO_CPU (rdb->rdb_RDBBlocksHi);
-	last_used_hb = (PedSector) PED_BE32_TO_CPU (rdb->rdb_HighRDSKBlock);
 
 	/* Allocate a free block table and initialize it.
 	   There must be room for at least RDB_NUM + 2 entries, since
@@ -693,7 +698,7 @@ amiga_write (const PedDisk* disk)
 		table[i] = LINK_END;
 
 	/* Let's allocate a partition block */
-	if (!(block = ped_malloc (PED_SECTOR_SIZE_DEFAULT))) {
+	if (!(block = ped_malloc (disk->dev->sector_size))) {
 		free (table);
 		return 0;
 	}
@@ -732,8 +737,8 @@ amiga_write (const PedDisk* disk)
 		goto error_free_table;
 	}
 
-	block_num = next_num = part_num = _amiga_next_free_block(table, rdb_num+1,
-	                                                         IDNAME_PARTITION);
+	block_num = part_num = _amiga_next_free_block(table, rdb_num+1,
+                                                      IDNAME_PARTITION);
 	part = _amiga_next_real_partition(disk, NULL);
 	rdb->rdb_PartitionList = PED_CPU_TO_BE32(part ? part_num : LINK_END);
 	for (; part != NULL; part = next_part, block_num = next_num) {
@@ -807,7 +812,7 @@ amiga_partition_new (const PedDisk* disk, PedPartitionType part_type,
 		return NULL;
 
 	if (ped_partition_is_active (part)) {
-		if (!(part->disk_specific = ped_malloc (PED_SECTOR_SIZE_DEFAULT))) {
+		if (!(part->disk_specific = ped_malloc (disk->dev->sector_size))) {
 			free (part);
 			return NULL;
 		}
@@ -1024,6 +1029,15 @@ amiga_partition_get_name (const PedPartition* part)
 	return _amiga_get_bstr(partition->pb_DriveName);
 }
 
+static PedAlignment*
+amiga_get_partition_alignment(const PedDisk *disk)
+{
+	PedSector cylinder_size =
+		disk->dev->hw_geom.sectors * disk->dev->hw_geom.heads;
+
+        return ped_alignment_new(0, cylinder_size);
+}
+
 static PedConstraint*
 _amiga_get_constraint (const PedDisk *disk)
 {
@@ -1131,42 +1145,19 @@ amiga_get_max_supported_partition_count (const PedDisk* disk, int *max_n)
 	return true;
 }
 
-static PedDiskOps amiga_disk_ops = {
-	probe:			amiga_probe,
-#ifndef DISCOVER_ONLY
-	clobber:		amiga_clobber,
-#else
-	clobber:		NULL,
-#endif
-	alloc:			amiga_alloc,
-	duplicate:		amiga_duplicate,
-	free:			amiga_free,
-	read:			amiga_read,
-#ifndef DISCOVER_ONLY
-	write:			amiga_write,
-#else
-	write:			NULL,
-#endif
+#include "pt-common.h"
+PT_define_limit_functions (amiga)
 
-	partition_new:		amiga_partition_new,
-	partition_duplicate:	amiga_partition_duplicate,
-	partition_destroy:	amiga_partition_destroy,
-	partition_set_system:	amiga_partition_set_system,
-	partition_set_flag:	amiga_partition_set_flag,
-	partition_get_flag:	amiga_partition_get_flag,
-	partition_is_flag_available:
-				amiga_partition_is_flag_available,
+static PedDiskOps amiga_disk_ops = {
+	clobber:		NULL_IF_DISCOVER_ONLY (amiga_clobber),
+	write:			NULL_IF_DISCOVER_ONLY (amiga_write),
+
 	partition_set_name:	amiga_partition_set_name,
 	partition_get_name:	amiga_partition_get_name,
-	partition_align:	amiga_partition_align,
-	partition_enumerate:	amiga_partition_enumerate,
 
+	get_partition_alignment: amiga_get_partition_alignment,
 
-	alloc_metadata:		amiga_alloc_metadata,
-	get_max_primary_partition_count:
-				amiga_get_max_primary_partition_count,
-	get_max_supported_partition_count:
-				amiga_get_max_supported_partition_count
+	PT_op_function_initializers (amiga)
 };
 
 static PedDiskType amiga_disk_type = {

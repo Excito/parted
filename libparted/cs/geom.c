@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000, 2005, 2007 Free Software Foundation, Inc.
+    Copyright (C) 1999-2000, 2005, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -158,7 +158,8 @@ ped_geometry_set (PedGeometry* geom, PedSector start, PedSector length)
 		ped_exception_throw (
 			PED_EXCEPTION_ERROR,
 			PED_EXCEPTION_CANCEL,
-			_("Can't have the end before the start!"));
+			_("Can't have the end before the start!"
+                          " (start sector=%jd length=%jd)"), start, length);
 		return 0;
 	}
 	if (start < 0 || start + length - 1 >= geom->dev->length) {
@@ -302,6 +303,24 @@ ped_geometry_read (const PedGeometry* geom, void* buffer, PedSector offset,
 	if (!ped_device_read (geom->dev, buffer, real_start, count))
 		return 0;
 	return 1;
+}
+
+/* Like ped_device_read, but read into malloc'd storage.  */
+int
+ped_geometry_read_alloc (const PedGeometry* geom, void** buffer,
+                         PedSector offset, PedSector count)
+{
+	char *buf = ped_malloc (count * geom->dev->sector_size);
+	if (buf == NULL)
+		return 0;
+	int ok = ped_geometry_read (geom, buf, offset, count);
+	if (!ok) {
+		free (buf);
+		buf = NULL;
+	}
+
+	*buffer = buf;
+	return ok;
 }
 
 /**
@@ -471,4 +490,3 @@ ped_geometry_map (const PedGeometry* dst, const PedGeometry* src,
 }
 
 /** @} */
-

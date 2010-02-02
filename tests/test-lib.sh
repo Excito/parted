@@ -7,6 +7,7 @@ LANG=C
 LC_ALL=C
 TZ=UTC
 export LANG LC_ALL TZ
+export PARTED_SUPPRESS_FILE_SYSTEM_MANIPULATION_WARNING=1
 
 . ./init.sh || { echo >&2 you must run make first; exit 1; }
 
@@ -23,6 +24,19 @@ unset TERM
 # This test checks if command xyzzy does the right thing...
 # '
 # . ./test-lib.sh
+
+skip_test_()
+{
+  echo "$0: skipping test: $@" | head -1 1>&9
+  echo "$0: skipping test: $@" 1>&2
+  exit 77
+}
+
+require_512_byte_sector_size_()
+{
+  test $sector_size_ = 512 \
+      || skip_test_ FS test with sector size != 512
+}
 
 error () {
 	echo "* error: $*"
@@ -51,6 +65,7 @@ do
 		exit 0 ;;
 	-v|--v|--ve|--ver|--verb|--verbo|--verbos|--verbose)
 		verbose=t; shift ;;
+	*) echo "invalid option: $1"; exit 1;;
 	esac
 done
 
@@ -346,3 +361,32 @@ mdadm_create_linear_device_()
   echo $mdd
   return 0
 }
+
+# Often, when parted cannot use the specified size or start/endpoints
+# of a partition, it outputs a warning or error like this:
+#
+# Error: You requested a partition from 512B to 50.7kB.
+# The closest location we can manage is 17.4kB to 33.8kB.
+#
+# But those numbers depend on sector size, so
+# replace the specific values with place-holders,
+# so tests do not depend on sector size.
+normalize_part_diag_()
+{
+  local file=$1
+  sed 's/ [0-9.k]*B to [0-9.k]*B\.$/ X to Y./' $file > $file.t \
+    && mv $file.t $file && return 0
+  return 1
+}
+
+require_xfs_()
+{
+  ( mkfs.xfs -V ) >/dev/null 2>&1 ||
+    {
+      say "skipping $0: this test requires XFS support"
+      test_done
+      exit
+    }
+}
+
+sector_size_=${PARTED_SECTOR_SIZE:-512}

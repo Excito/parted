@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1998, 1999, 2000, 2002, 2007 Free Software Foundation, Inc.
+    Copyright (C) 1998-2000, 2002, 2007, 2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -30,10 +30,11 @@ extern void ped_debug_set_handler (PedDebugHandler* handler);
 extern void ped_debug ( const int level, const char* file, int line,
                         const char* function, const char* msg, ... );
 
-extern int ped_assert ( int cond, const char* cond_text,
-	                const char* file, int line, const char* function );
+extern void __attribute__((__noreturn__))
+ped_assert ( const char* cond_text,
+                         const char* file, int line, const char* function );
 
-#if defined(__GNUC__) && !defined(__JSFTRACE__)
+#if defined __GNUC__ && !defined __JSFTRACE__
 
 #define PED_DEBUG(level, ...) \
         ped_debug ( level, __FILE__, __LINE__, __PRETTY_FUNCTION__, \
@@ -41,14 +42,13 @@ extern int ped_assert ( int cond, const char* cond_text,
 
 #define PED_ASSERT(cond, action)				\
 	do {							\
-	if (!ped_assert ( cond,			                \
+		if (!(cond)) {					\
+			ped_assert (				\
 			  #cond,				\
 			  __FILE__,				\
 			  __LINE__,				\
-			  __PRETTY_FUNCTION__ ))		\
-	{							\
-		action;						\
-	}							\
+			  __PRETTY_FUNCTION__ );		\
+		}						\
 	} while (0)
 
 #else /* !__GNUC__ */
@@ -65,14 +65,13 @@ static void PED_DEBUG (int level, ...)
 
 #define PED_ASSERT(cond, action)				\
 	do {							\
-	if (!ped_assert ( cond,                     		\
+		if (!(cond)) {					\
+			ped_assert (				\
 			  #cond,				\
 			  "unknown",				\
 			  0,					\
-			  "unknown" )) 		        	\
-	{			 				\
-		action;						\
-	}							\
+			  "unknown");				\
+		}						\
 	} while (0)
 
 #endif /* __GNUC__ */
@@ -86,4 +85,3 @@ static void PED_DEBUG (int level, ...)
 #endif /* DEBUG */
 
 #endif /* PED_DEBUG_H_INCLUDED */
-

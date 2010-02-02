@@ -1,6 +1,6 @@
 /*
     libparted
-    Copyright (C) 1998-2000, 2007-2008 Free Software Foundation, Inc.
+    Copyright (C) 1998-2000, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -300,7 +300,7 @@ fat_table_get (const FatTable* ft, FatCluster cluster)
 				     _("fat_table_get: cluster %ld outside "
 				       "file system"),
 				     (long) cluster);
-		exit (1);	/* FIXME */
+		exit (EXIT_FAILURE);	/* FIXME */
 	}
 
 	switch (ft->fat_type) {

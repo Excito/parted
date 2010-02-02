@@ -31,6 +31,7 @@
 #endif /* ENABLE_NLS */
 
 #include "misc.h"
+#include "pt-tools.h"
 
 /* struct's hacked from Linux source:  fs/partitions/mac.h
  * I believe it was originally written by Paul Mackerras (from comments in
@@ -171,7 +172,7 @@ struct _MacDiskData {
 static PedDiskType mac_disk_type;
 
 static int
-_check_signature (MacRawDisk* raw_disk)
+_check_signature (MacRawDisk const *raw_disk)
 {
 	if (PED_BE16_TO_CPU (raw_disk->signature) != MAC_DISK_MAGIC) {
 #ifdef DISCOVER_ONLY
@@ -199,17 +200,19 @@ _rawpart_check_signature (MacRawPartition* raw_part)
 static int
 mac_probe (const PedDevice * dev)
 {
-	MacRawDisk	buf;
-
 	PED_ASSERT (dev != NULL, return 0);
 
-        if (dev->sector_size != 512)
+        if (dev->sector_size < sizeof (MacRawDisk))
                 return 0;
 
-	if (!ped_device_read (dev, &buf, 0, 1))
+	void *label;
+	if (!ptt_read_sector (dev, 0, &label))
 		return 0;
 
-	return _check_signature (&buf);
+	int valid = _check_signature (label);
+
+	free (label);
+	return valid;
 }
 
 static int
@@ -311,28 +314,33 @@ mac_duplicate (const PedDisk* disk)
 	PedDisk*	new_disk;
 	MacDiskData*	new_mac_data;
 	MacDiskData*	old_mac_data = (MacDiskData*) disk->disk_specific;
-	PedPartition*	partition_map;
 
 	new_disk = ped_disk_new_fresh (disk->dev, &mac_disk_type);
 	if (!new_disk)
-		goto error;
+		return NULL;
 
 	new_mac_data = (MacDiskData*) new_disk->disk_specific;
 
 	/* remove the partition map partition - it will be duplicated
 	 * later.
 	 */
-	partition_map = ped_disk_get_partition_by_sector (new_disk, 1);
+	PedSector first_part_map_sector = old_mac_data->ghost_size;
+	PedPartition *partition_map
+	  = ped_disk_get_partition_by_sector (new_disk, first_part_map_sector);
 	PED_ASSERT (partition_map != NULL, return 0);
+
+	/* ped_disk_remove_partition may be used only to delete a "normal"
+	   partition.  Trying to delete at least "freespace" or "metadata"
+	   partitions leads to a violation of assumptions in
+	   ped_disk_remove_partition, since it calls _disk_push_update_mode,
+	   which destroys all "freespace" and "metadata" partitions, and
+	   depends on that destruction not freeing its PART parameter.  */
+	PED_ASSERT (partition_map->type == PED_PARTITION_NORMAL, return 0);
 	ped_disk_remove_partition (new_disk, partition_map);
 
 	/* ugly, but C is ugly :p */
 	memcpy (new_mac_data, old_mac_data, sizeof (MacDiskData));
 	return new_disk;
-
-	_ped_disk_free (new_disk);
-error:
-	return NULL;
 }
 
 static void
@@ -348,31 +356,47 @@ mac_free (PedDisk* disk)
 static int
 _clobber_part_map (PedDevice* dev)
 {
-	MacRawPartition		raw_part;
-	PedSector		sector;
+        void *buf = ped_malloc (dev->sector_size);
+        if (!buf)
+                return 0;
 
+        int ok = 1;
+	PedSector sector;
 	for (sector=1; 1; sector++) {
-		if (!ped_device_read (dev, &raw_part, sector, 1))
-			return 0;
-		if (!_rawpart_check_signature (&raw_part))
-			return 1;
-		memset (&raw_part, 0, 512);
-		if (!ped_device_write (dev, &raw_part, sector, 1))
-			return 0;
+                if (!ped_device_read (dev, buf, sector, 1)) {
+                        ok = 0;
+                        break;
+                }
+		if (!_rawpart_check_signature (buf)) {
+                        ok = 1;
+                        break;
+                }
+		memset (buf, 0, dev->sector_size);
+		if (!ped_device_write (dev, buf, sector, 1)) {
+                        ok = 0;
+                        break;
+                }
 	}
+        free (buf);
+        return ok;
 }
 
 static int
 mac_clobber (PedDevice* dev)
 {
-	MacRawDisk		raw_disk;
+	void *buf;
+	if (!ptt_read_sector (dev, 0, &buf))
+		return 0;
 
-	if (!ped_device_read (dev, &raw_disk, 0, 1))
+	if (!_check_signature (buf)) {
+                free (buf);
 		return 0;
-	if (!_check_signature (&raw_disk))
-		return 0;
-	memset (&raw_disk, 0, 512);
-	if (!ped_device_write (dev, &raw_disk, 0, 1))
+        }
+
+        memset (buf, 0, dev->sector_size);
+        int ok = ped_device_write (dev, buf, 0, 1);
+        free (buf);
+        if (!ok)
 		return 0;
 
 	return _clobber_part_map (dev);
@@ -718,35 +742,39 @@ static int
 _disk_analyse_ghost_size (PedDisk* disk)
 {
 	MacDiskData*		mac_disk_data = disk->disk_specific;
-	MacRawPartition		raw_part;
-	int			i;
 
+	void *buf = ped_malloc (disk->dev->sector_size);
+	if (!buf)
+		return 0;
+
+	int i;
+	int found = 0;
 	for (i = 1; i < 64; i *= 2) {
-		if (!ped_device_read (disk->dev, &raw_part, i, 1))
-			return 0;
-		if (_rawpart_check_signature (&raw_part)
-		    && !_rawpart_is_void (&raw_part)) {
+		if (!ped_device_read (disk->dev, buf, i, 1))
+			break;
+		if (_rawpart_check_signature (buf)
+		    && !_rawpart_is_void (buf)) {
 			mac_disk_data->ghost_size = i;
-			PED_ASSERT (i <= disk->dev->sector_size / 512,
-				    return 0);
-			return 1;
+			PED_ASSERT (i <= disk->dev->sector_size / 512, break);
+			found = 1;
+			break;
 		}
 	}
+        free (buf);
 
 #ifndef DISCOVER_ONLY
-	ped_exception_throw (
-		PED_EXCEPTION_ERROR,
-		PED_EXCEPTION_CANCEL,
-		_("No valid partition map found."));
+        if (!found)
+		ped_exception_throw (
+			PED_EXCEPTION_ERROR,
+			PED_EXCEPTION_CANCEL,
+			_("No valid partition map found."));
 #endif
-	return 0;
+	return found;
 }
 
 static int
 mac_read (PedDisk* disk)
 {
-	MacRawDisk		raw_disk;
-	MacRawPartition		raw_part;
 	MacDiskData*		mac_disk_data;
 	PedPartition*		part;
 	int			num;
@@ -759,12 +787,16 @@ mac_read (PedDisk* disk)
 	mac_disk_data = disk->disk_specific;
 	mac_disk_data->part_map_entry_num = 0;		/* 0 == none */
 
-	if (!ped_device_read (disk->dev, &raw_disk, 0, 1))
-		goto error;
-	if (!_check_signature (&raw_disk))
+	void *buf;
+	if (!ptt_read_sector (disk->dev, 0, &buf))
+		return 0;
+
+	MacRawDisk *raw_disk = (MacRawDisk *) buf;
+
+	if (!_check_signature (raw_disk))
 		goto error;
 
-	if (!_disk_analyse_block_size (disk, &raw_disk))
+	if (!_disk_analyse_block_size (disk, raw_disk))
 		goto error;
 	if (!_disk_analyse_ghost_size (disk))
 		goto error;
@@ -773,25 +805,26 @@ mac_read (PedDisk* disk)
 	if (!ped_disk_delete_all (disk))
 		goto error;
 
-	if (raw_disk.driver_count && raw_disk.driver_count < 62) {
-		memcpy(&mac_disk_data->driverlist[0], &raw_disk.driverlist[0],
+	if (raw_disk->driver_count && raw_disk->driver_count < 62) {
+		memcpy(&mac_disk_data->driverlist[0], &raw_disk->driverlist[0],
 				sizeof(mac_disk_data->driverlist));
-		mac_disk_data->driver_count = raw_disk.driver_count;
-		mac_disk_data->block_size = raw_disk.block_size;
+		mac_disk_data->driver_count = raw_disk->driver_count;
+		mac_disk_data->block_size = raw_disk->block_size;
 	}
 
 	for (num=1; num==1 || num <= last_part_entry_num; num++) {
-		if (!ped_device_read (disk->dev, &raw_part,
+		void *raw_part = buf;
+		if (!ped_device_read (disk->dev, raw_part,
 				      num * ghost_size, 1))
 			goto error_delete_all;
 
-		if (!_rawpart_check_signature (&raw_part))
+		if (!_rawpart_check_signature (raw_part))
 			continue;
 
 		if (num == 1)
 			last_part_entry_num
-				= _rawpart_get_partmap_size (&raw_part, disk);
-		if (_rawpart_get_partmap_size (&raw_part, disk)
+				= _rawpart_get_partmap_size (raw_part, disk);
+		if (_rawpart_get_partmap_size (raw_part, disk)
 				!= last_part_entry_num) {
 			if (ped_exception_throw (
 				PED_EXCEPTION_ERROR,
@@ -800,15 +833,15 @@ mac_read (PedDisk* disk)
 				  "Entry 1 says it is %d, but entry %d says "
 				  "it is %d!"),
 				last_part_entry_num,
-				_rawpart_get_partmap_size (&raw_part, disk))
+				_rawpart_get_partmap_size (raw_part, disk))
 					!= PED_EXCEPTION_IGNORE)
 				goto error_delete_all;
 		}
 
-		if (!_rawpart_is_active (&raw_part))
+		if (!_rawpart_is_active (raw_part))
 			continue;
 
-		part = _rawpart_analyse (&raw_part, disk, num);
+		part = _rawpart_analyse (raw_part, disk, num);
 		if (!part)
 			goto error_delete_all;
 		part->num = num;
@@ -818,7 +851,7 @@ mac_read (PedDisk* disk)
 			goto error_delete_all;
 		ped_constraint_destroy (constraint_exact);
 
-		if (_rawpart_is_partition_map (&raw_part)) {
+		if (_rawpart_is_partition_map (raw_part)) {
 			if (mac_disk_data->part_map_entry_num
 			    && ped_exception_throw (
 					PED_EXCEPTION_ERROR,
@@ -839,11 +872,13 @@ mac_read (PedDisk* disk)
 			goto error_delete_all;
 		ped_disk_commit_to_dev (disk);
 	}
+	free (buf);
 	return 1;
 
 error_delete_all:
 	ped_disk_delete_all (disk);
 error:
+	free (buf);
 	return 0;
 }
 
@@ -857,19 +892,25 @@ static int
 _pad_raw_part (PedDisk* disk, int num, MacRawPartition* part_map)
 {
 	MacDiskData*		mac_disk_data = disk->disk_specific;
-	MacRawPartition		ghost_entry;
 	int			i;
 
-	memset (&ghost_entry, 0, sizeof (ghost_entry));
-	ghost_entry.signature = PED_CPU_TO_BE16 (MAC_PARTITION_MAGIC_2);
-	strcpy (ghost_entry.type, "Apple_Void");
-	ghost_entry.map_count
+	size_t ss = disk->dev->sector_size;
+	void *buf = ped_calloc (ss);
+	if (!buf)
+		return 0;
+
+	MacRawPartition	*ghost_entry = buf;
+	ghost_entry->signature = PED_CPU_TO_BE16 (MAC_PARTITION_MAGIC_2);
+	strcpy (ghost_entry->type, "Apple_Void");
+	ghost_entry->map_count
 		= PED_CPU_TO_BE32 (mac_disk_data->last_part_entry_num);
 
-	for (i=0; i < mac_disk_data->ghost_size - 1; i++)
-		memcpy (&part_map [i + (num - 1) * mac_disk_data->ghost_size],
-			&ghost_entry, sizeof (MacRawPartition));
+	for (i=0; i < mac_disk_data->ghost_size - 1; i++) {
+		PedSector idx = i + (num - 1) * mac_disk_data->ghost_size;
+		memcpy ((char*)part_map + idx * ss, ghost_entry, ss);
+        }
 
+	free (buf);
 	return 1;
 }
 
@@ -901,13 +942,22 @@ _update_driver_count (MacRawPartition* part_map_entry,
 	}
 }
 
+static MacRawPartition *
+get_pme (MacRawPartition const *part_map, PedSector i, PedDisk const *disk)
+{
+	MacDiskData const *mac_disk_data = disk->disk_specific;
+	PedSector idx = i * mac_disk_data->ghost_size - 1;
+	return (MacRawPartition *) ((char*)part_map
+                                    + idx * disk->dev->sector_size);
+}
+
+/* Initialize the disk->dev->sector_size bytes of part_map[part->num]. */
 static int
 _generate_raw_part (PedDisk* disk, PedPartition* part,
 	       	    MacRawPartition* part_map, MacDiskData *mac_driverdata)
 {
 	MacDiskData*		mac_disk_data;
 	MacPartitionData*	mac_part_data;
-	MacRawPartition*	part_map_entry;
 	PedSector		block_size = disk->dev->sector_size / 512;
 
 	PED_ASSERT (part->num > 0, goto error);
@@ -915,7 +965,8 @@ _generate_raw_part (PedDisk* disk, PedPartition* part,
 	mac_disk_data = disk->disk_specific;
 	mac_part_data = part->disk_specific;
 
-	part_map_entry = &part_map [part->num * mac_disk_data->ghost_size - 1];
+	MacRawPartition *part_map_entry = get_pme (part_map, part->num, disk);
+	memset (part_map_entry, 0, disk->dev->sector_size);
 
 	part_map_entry->signature = PED_CPU_TO_BE16 (MAC_PARTITION_MAGIC_2);
 	part_map_entry->map_count
@@ -965,12 +1016,11 @@ _generate_raw_freespace_part (PedDisk* disk, PedGeometry* geom, int num,
 			      MacRawPartition* part_map)
 {
 	MacDiskData*		mac_disk_data = disk->disk_specific;
-	MacRawPartition*	part_map_entry;
 	PedSector		block_size = disk->dev->sector_size / 512;
 
 	PED_ASSERT (num > 0, goto error);
 
-	part_map_entry = &part_map [num * mac_disk_data->ghost_size - 1];
+	MacRawPartition *part_map_entry = get_pme (part_map, num, disk);
 
 	part_map_entry->signature = PED_CPU_TO_BE16 (MAC_PARTITION_MAGIC_2);
 	part_map_entry->map_count
@@ -999,11 +1049,10 @@ static int
 _generate_empty_part (PedDisk* disk, int num, MacRawPartition* part_map)
 {
 	MacDiskData*		mac_disk_data = disk->disk_specific;
-	MacRawPartition*	part_map_entry;
 
 	PED_ASSERT (num > 0, return 0);
 
-	part_map_entry = &part_map [num * mac_disk_data->ghost_size - 1];
+	MacRawPartition *part_map_entry = get_pme (part_map, num, disk);
 	part_map_entry->signature = PED_CPU_TO_BE16 (MAC_PARTITION_MAGIC_2);
 	part_map_entry->map_count
 		= PED_CPU_TO_BE32 (mac_disk_data->last_part_entry_num);
@@ -1020,7 +1069,8 @@ _get_first_empty_part_entry (PedDisk* disk, MacRawPartition* part_map)
 	int		i;
 
 	for (i=1; i <= mac_disk_data->last_part_entry_num; i++) {
-		if (!part_map[i * mac_disk_data->ghost_size - 1].signature)
+		MacRawPartition *part_map_entry = get_pme (part_map, i, disk);
+		if (!part_map_entry->signature)
 			return i;
 	}
 
@@ -1031,21 +1081,23 @@ static int
 write_block_zero (PedDisk* disk, MacDiskData* mac_driverdata)
 {
 	PedDevice*	dev = disk->dev;
-	MacRawDisk	raw_disk;
-
-	if (!ped_device_read (dev, &raw_disk, 0, 1))
+	void *s0;
+	if (!ptt_read_sector (dev, 0, &s0))
 		return 0;
+	MacRawDisk *raw_disk = (MacRawDisk *) s0;
 
-	raw_disk.signature = PED_CPU_TO_BE16 (MAC_DISK_MAGIC);
-	raw_disk.block_size = PED_CPU_TO_BE16 (dev->sector_size);
-	raw_disk.block_count
+	raw_disk->signature = PED_CPU_TO_BE16 (MAC_DISK_MAGIC);
+	raw_disk->block_size = PED_CPU_TO_BE16 (dev->sector_size);
+	raw_disk->block_count
 		= PED_CPU_TO_BE32 (dev->length / (dev->sector_size / 512));
 
-	raw_disk.driver_count = mac_driverdata->driver_count;
-	memcpy(&raw_disk.driverlist[0], &mac_driverdata->driverlist[0],
-			sizeof(raw_disk.driverlist));
+	raw_disk->driver_count = mac_driverdata->driver_count;
+	memcpy(&raw_disk->driverlist[0], &mac_driverdata->driverlist[0],
+			sizeof(raw_disk->driverlist));
 
-	return ped_device_write (dev, &raw_disk, 0, 1);
+	int write_ok = ped_device_write (dev, raw_disk, 0, 1);
+        free (s0);
+	return write_ok;
 }
 
 static int
@@ -1074,11 +1126,12 @@ mac_write (PedDisk* disk)
 		goto error;
 	memset (mac_driverdata, 0, sizeof(MacDiskData));
 
-	part_map = (MacRawPartition*)
-			ped_malloc (mac_disk_data->part_map_entry_count * 512);
+        size_t pmap_bytes = (mac_disk_data->part_map_entry_count
+                             * mac_disk_data->ghost_size
+                             * disk->dev->sector_size);
+	part_map = (MacRawPartition*) ped_calloc (pmap_bytes);
 	if (!part_map)
 		goto error_free_driverdata;
-	memset (part_map, 0, mac_disk_data->part_map_entry_count * 512);
 
 /* write (to memory) the "real" partitions */
 	for (part = ped_disk_next_partition (disk, NULL); part;
@@ -1110,7 +1163,9 @@ mac_write (PedDisk* disk)
 			       mac_disk_data->part_map_entry_count))
 		goto error_free_part_map;
 	free (part_map);
-	return write_block_zero (disk, mac_driverdata);
+	int write_ok = write_block_zero (disk, mac_driverdata);
+	free (mac_driverdata);
+	return write_ok;
 
 error_free_part_map:
 	free (part_map);
@@ -1146,11 +1201,10 @@ mac_partition_new (
 	}
 	return part;
 
-	free (mac_data);
 error_free_part:
 	free (part);
 error:
-	return 0;
+	return NULL;
 }
 
 static PedPartition*
@@ -1375,6 +1429,14 @@ mac_partition_get_name (const PedPartition* part)
 	return mac_data->volume_name;
 }
 
+static PedAlignment*
+mac_get_partition_alignment(const PedDisk *disk)
+{
+        PedSector sector_size = disk->dev->sector_size / 512;
+
+        return ped_alignment_new(0, sector_size);
+}
+
 static PedConstraint*
 _primary_constraint (PedDisk* disk)
 {
@@ -1519,13 +1581,9 @@ error:
 static int
 mac_alloc_metadata (PedDisk* disk)
 {
-	MacDiskData*		mac_disk_data;
-
 	PED_ASSERT (disk != NULL, return 0);
 	PED_ASSERT (disk->disk_specific != NULL, return 0);
 	PED_ASSERT (disk->dev != NULL, return 0);
-
-	mac_disk_data = disk->disk_specific;
 
 	if (!add_metadata_part (disk, 0, disk->dev->sector_size / 512 - 1))
 		return 0;
@@ -1571,42 +1629,21 @@ mac_get_max_supported_partition_count (const PedDisk* disk, int *max_n)
 	return true;
 }
 
+#include "pt-common.h"
+PT_define_limit_functions (mac)
+
 static PedDiskOps mac_disk_ops = {
-	probe:			mac_probe,
-#ifndef DISCOVER_ONLY
-	clobber:		mac_clobber,
-#else
-	clobber:		NULL,
-#endif
-	alloc:			mac_alloc,
-	duplicate:		mac_duplicate,
-	free:			mac_free,
-	read:			mac_read,
-#ifndef DISCOVER_ONLY
+	clobber: NULL_IF_DISCOVER_ONLY (mac_clobber),
         /* FIXME: remove this cast, once mac_write is fixed not to
            modify its *DISK parameter.  */
-	write:			(int (*) (const PedDisk*)) mac_write,
-#else
-	write:			NULL,
-#endif
+	write:	NULL_IF_DISCOVER_ONLY ((int (*) (const PedDisk*)) mac_write),
 
-	partition_new:		mac_partition_new,
-	partition_duplicate:	mac_partition_duplicate,
-	partition_destroy:	mac_partition_destroy,
-	partition_set_system:	mac_partition_set_system,
-	partition_set_flag:	mac_partition_set_flag,
-	partition_get_flag:	mac_partition_get_flag,
-	partition_is_flag_available:	mac_partition_is_flag_available,
 	partition_set_name:	mac_partition_set_name,
 	partition_get_name:	mac_partition_get_name,
-	partition_align:	mac_partition_align,
-	partition_enumerate:	mac_partition_enumerate,
 
-	alloc_metadata:		mac_alloc_metadata,
-	get_max_primary_partition_count:
-				mac_get_max_primary_partition_count,
-	get_max_supported_partition_count:
-				mac_get_max_supported_partition_count
+	get_partition_alignment: mac_get_partition_alignment,
+
+	PT_op_function_initializers (mac)
 };
 
 static PedDiskType mac_disk_type = {
@@ -1630,4 +1667,3 @@ ped_disk_mac_done ()
 {
 	ped_disk_type_unregister (&mac_disk_type);
 }
-

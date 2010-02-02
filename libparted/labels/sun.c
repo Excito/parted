@@ -1,7 +1,7 @@
 /* -*- Mode: c; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2001, 2005, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 2000-2001, 2005, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,6 +34,8 @@
 #endif /* ENABLE_NLS */
 
 #include "misc.h"
+#include "pt-tools.h"
+#include "verify.h"
 
 /* Most of this came from util-linux's sun support, which was mostly done
    by Jakub Jelinek.  */
@@ -94,6 +96,7 @@ struct _SunPartitionData {
 struct _SunDiskData {
 	PedSector		length; /* This is based on cyl - alt-cyl */
 	SunRawLabel		raw_label;
+	int                     cylinder_alignment;
 };
 
 static PedDiskType sun_disk_type;
@@ -112,7 +115,7 @@ sun_compute_checksum (SunRawLabel *label)
 
 /* Checksum Verification */
 static int
-sun_verify_checksum (SunRawLabel *label)
+sun_verify_checksum (SunRawLabel const *label)
 {
 	u_int16_t *ush = ((u_int16_t *)(label + 1)) - 1;
 	u_int16_t csum = 0;
@@ -126,47 +129,49 @@ sun_verify_checksum (SunRawLabel *label)
 static int
 sun_probe (const PedDevice *dev)
 {
-	SunRawLabel	label;
-
 	PED_ASSERT (dev != NULL, return 0);
 
-        if (dev->sector_size != 512)
-                return 0;
-
-	if (!ped_device_read (dev, &label, 0, 1))
+	void *s0;
+	if (!ptt_read_sector (dev, 0, &s0))
 		return 0;
+	SunRawLabel const *label = (void const *) s0;
 
+	int ok = 1;
 	/* check magic */
-	if (PED_BE16_TO_CPU (label.magic) != SUN_DISK_MAGIC)
-		return 0;
-
+	if (PED_BE16_TO_CPU (label->magic) != SUN_DISK_MAGIC) {
+		ok = 0;
+	} else {
 #ifndef DISCOVER_ONLY
-	if (!sun_verify_checksum(&label)) {
-		ped_exception_throw (
-			PED_EXCEPTION_ERROR,
-			PED_EXCEPTION_CANCEL,
-			_("Corrupted Sun disk label detected."));
-		return 0;
+		if (!sun_verify_checksum(label)) {
+			ok = 0;
+			ped_exception_throw (
+				PED_EXCEPTION_ERROR,
+				PED_EXCEPTION_CANCEL,
+				_("Corrupted Sun disk label detected."));
+		}
 	}
 #endif
 
-	return 1;
+	free (s0);
+	return ok;
 }
 
 #ifndef DISCOVER_ONLY
 static int
 sun_clobber (PedDevice* dev)
 {
-	SunRawLabel label;
-
 	PED_ASSERT (dev != NULL, return 0);
 	PED_ASSERT (sun_probe (dev), return 0);
 
-	if (!ped_device_read (dev, &label, 0, 1))
+	void *s0;
+	if (!ptt_read_sector (dev, 0, &s0))
 		return 0;
 
-	label.magic = 0;
-	return ped_device_write (dev, &label, 0, 1);
+	SunRawLabel *table = s0;
+	table->magic = 0;
+	int write_ok = ped_device_write (dev, (void*) table, 0, 1);
+	free (s0);
+	return write_ok;
 }
 #endif /* !DISCOVER_ONLY */
 
@@ -176,8 +181,9 @@ sun_alloc (const PedDevice* dev)
 	PedDisk*	disk;
 	SunRawLabel*	label;
 	SunDiskData*	sun_specific;
-	PedCHSGeometry*	bios_geom = &((PedDevice*)dev)->bios_geom;
+	const PedCHSGeometry*	bios_geom = &dev->bios_geom;
 	PedSector	cyl_size = bios_geom->sectors * bios_geom->heads;
+	PED_ASSERT (cyl_size != 0, return NULL);
 
         disk = _ped_disk_alloc (dev, &sun_disk_type);
 	if (!disk)
@@ -188,8 +194,10 @@ sun_alloc (const PedDevice* dev)
 		goto error_free_disk;
 	sun_specific = (SunDiskData*) disk->disk_specific;
 
-	bios_geom->cylinders = dev->length / cyl_size;
-	sun_specific->length = bios_geom->cylinders * cyl_size;
+	PED_ASSERT (bios_geom->cylinders == (PedSector) (dev->length / cyl_size),
+                    return NULL);
+	sun_specific->length = ped_round_down_to (dev->length, cyl_size);
+        sun_specific->cylinder_alignment = 1;
 
 	label = &sun_specific->raw_label;
 	memset(label, 0, sizeof(SunRawLabel));
@@ -203,13 +211,13 @@ sun_alloc (const PedDevice* dev)
 	label->sparecyl	= 0;
 	label->ntrks	= PED_CPU_TO_BE16 (bios_geom->heads);
 	label->nsect	= PED_CPU_TO_BE16 (bios_geom->sectors);
-	label->ncyl	= PED_CPU_TO_BE16 (bios_geom->cylinders - 0);
+	label->ncyl	= PED_CPU_TO_BE16 (dev->length / cyl_size);
 
 	/* Add a whole disk partition at a minimum */
 	label->infos[WHOLE_DISK_PART].id = WHOLE_DISK_ID;
 	label->partitions[WHOLE_DISK_PART].start_cylinder = 0;
 	label->partitions[WHOLE_DISK_PART].num_sectors =
-		PED_CPU_TO_BE32(bios_geom->cylinders * cyl_size);
+		PED_CPU_TO_BE32(sun_specific->length);
 
 	/* Now a neato string to describe this label */
 	snprintf(label->info, sizeof(label->info) - 1,
@@ -252,6 +260,42 @@ sun_free (PedDisk *disk)
 }
 
 static int
+sun_disk_set_flag (PedDisk *disk, PedDiskFlag flag, int state)
+{
+        SunDiskData *disk_specific = disk->disk_specific;
+        switch (flag) {
+        case PED_DISK_CYLINDER_ALIGNMENT:
+                disk_specific->cylinder_alignment = !!state;
+                return 1;
+        default:
+                return 0;
+        }
+}
+
+static int
+sun_disk_get_flag (const PedDisk *disk, PedDiskFlag flag)
+{
+        SunDiskData *disk_specific = disk->disk_specific;
+        switch (flag) {
+        case PED_DISK_CYLINDER_ALIGNMENT:
+                return disk_specific->cylinder_alignment;
+        default:
+                return 0;
+        }
+}
+
+static int
+sun_disk_is_flag_available (const PedDisk *disk, PedDiskFlag flag)
+{
+        switch (flag) {
+        case PED_DISK_CYLINDER_ALIGNMENT:
+               return 1;
+        default:
+               return 0;
+        }
+}
+
+static int
 _check_geometry_sanity (PedDisk* disk, SunRawLabel* label)
 {
 	PedDevice*	dev = disk->dev;
@@ -259,6 +303,11 @@ _check_geometry_sanity (PedDisk* disk, SunRawLabel* label)
 	if (PED_BE16_TO_CPU(label->nsect) == dev->hw_geom.sectors &&
 	    PED_BE16_TO_CPU(label->ntrks) == dev->hw_geom.heads)
 		dev->bios_geom = dev->hw_geom;
+
+	if (!!PED_BE16_TO_CPU(label->pcylcount)
+	    * !!PED_BE16_TO_CPU(label->ntrks)
+	    * !!PED_BE16_TO_CPU(label->nsect) == 0)
+		return 0;
 
 	if (PED_BE16_TO_CPU(label->nsect) != dev->bios_geom.sectors ||
 	    PED_BE16_TO_CPU(label->ntrks) != dev->bios_geom.heads) {
@@ -301,7 +350,6 @@ _check_geometry_sanity (PedDisk* disk, SunRawLabel* label)
 static int
 sun_read (PedDisk* disk)
 {
-	SunRawLabel* label;
 	SunPartitionData* sun_data;
 	SunDiskData* disk_data;
 	int i;
@@ -314,12 +362,18 @@ sun_read (PedDisk* disk)
 	PED_ASSERT (disk->disk_specific != NULL, return 0);
 
 	disk_data = (SunDiskData*) disk->disk_specific;
-	label = &disk_data->raw_label;
 
 	ped_disk_delete_all (disk);
 
-	if (!ped_device_read (disk->dev, label, 0, 1))
+	void *s0;
+	if (!ptt_read_sector (disk->dev, 0, &s0))
 		goto error;
+
+	SunRawLabel *label = &disk_data->raw_label;
+	verify (sizeof (*label) == 512);
+	memcpy (label, s0, sizeof (*label));
+	free (s0);
+
 	if (!_check_geometry_sanity (disk, label))
 		goto error;
 
@@ -367,19 +421,20 @@ sun_read (PedDisk* disk)
 }
 
 #ifndef DISCOVER_ONLY
-static void
-_probe_and_use_old_info (const PedDisk* disk)
+static int
+_use_old_info (const PedDisk* disk, const void *sector_0)
 {
-	SunDiskData*		sun_specific;
-	SunRawLabel		old_label;
+	SunRawLabel const *old_label = sector_0;
 
-	sun_specific = (SunDiskData*) disk->disk_specific;
+	if (old_label->info[0]
+	    && PED_BE16_TO_CPU (old_label->magic) == SUN_DISK_MAGIC) {
+		SunDiskData *sun_specific = disk->disk_specific;
+		memcpy (&sun_specific->raw_label, sector_0,
+                        sizeof (sun_specific->raw_label));
+                verify (sizeof (sun_specific->raw_label) == 512);
+	}
 
-	if (!ped_device_read (disk->dev, &old_label, 0, 1))
-		return;
-	if (old_label.info [0]
-	    && PED_BE16_TO_CPU (old_label.magic) == SUN_DISK_MAGIC)
-		memcpy (&sun_specific->raw_label, &old_label, 512);
+	return 1;
 }
 
 static int
@@ -394,7 +449,17 @@ sun_write (const PedDisk* disk)
 	PED_ASSERT (disk != NULL, return 0);
 	PED_ASSERT (disk->dev != NULL, return 0);
 
-	_probe_and_use_old_info (disk);
+	void *s0;
+	if (!ptt_read_sector (disk->dev, 0, &s0))
+		return 0;
+
+	/* Calling _use_old_info here in sun_write
+	   above seems wrong, because it modifies *DISK.
+	   FIXME: maybe later.  */
+	if (!_use_old_info (disk, s0)) {
+                free (s0);
+		return 0;
+        }
 
 	disk_data = (SunDiskData*) disk->disk_specific;
 	label = &disk_data->raw_label;
@@ -455,11 +520,14 @@ sun_write (const PedDisk* disk)
 
 	sun_compute_checksum (label);
 
-	if (!ped_device_write (disk->dev, label, 0, 1))
-		goto error;
-	return ped_device_sync (disk->dev);
+        verify (sizeof *label == 512);
+        memcpy (s0, label, sizeof *label);
+	int write_ok = ped_device_write (disk->dev, s0, 0, 1);
+	free (s0);
 
-error:
+	if (write_ok)
+		return ped_device_sync (disk->dev);
+
 	return 0;
 }
 #endif /* !DISCOVER_ONLY */
@@ -677,6 +745,15 @@ sun_get_max_primary_partition_count (const PedDisk* disk)
 	return SUN_DISK_MAXPARTITIONS;
 }
 
+static PedAlignment*
+sun_get_partition_alignment(const PedDisk *disk)
+{
+	PedSector block =
+		disk->dev->hw_geom.sectors * disk->dev->hw_geom.heads;
+
+        return ped_alignment_new(0, block);
+}
+
 static PedConstraint*
 _get_strict_constraint (PedDisk* disk)
 {
@@ -729,12 +806,15 @@ sun_partition_align (PedPartition* part, const PedConstraint* constraint)
 {
         PED_ASSERT (part != NULL, return 0);
 
-	if (_ped_partition_attempt_align (part, constraint,
-					  _get_strict_constraint (part->disk)))
-	       	return 1;
-	if (_ped_partition_attempt_align (part, constraint,
-					  _get_lax_constraint (part->disk)))
-	       	return 1;
+        SunDiskData *disk_specific = part->disk->disk_specific;
+
+        if (disk_specific->cylinder_alignment &&
+            _ped_partition_attempt_align (part, constraint,
+                                          _get_strict_constraint (part->disk)))
+                return 1;
+        if (_ped_partition_attempt_align (part, constraint,
+                                          _get_lax_constraint (part->disk)))
+                return 1;
 
 #ifndef DISCOVER_ONLY
 	ped_exception_throw (
@@ -836,40 +916,23 @@ error:
 	return 0;
 }
 
-static PedDiskOps sun_disk_ops = {
-	probe:			sun_probe,
-#ifndef DISCOVER_ONLY
-	clobber:		sun_clobber,
-#else
-	clobber:		NULL,
-#endif
-	alloc:			sun_alloc,
-	duplicate:		sun_duplicate,
-	free:			sun_free,
-	read:			sun_read,
-#ifndef DISCOVER_ONLY
-	write:			sun_write,
-#else
-	write:			NULL,
-#endif
+#include "pt-common.h"
+PT_define_limit_functions (sun)
 
-	partition_new:		sun_partition_new,
-	partition_duplicate:	sun_partition_duplicate,
-	partition_destroy:	sun_partition_destroy,
-	partition_set_system:	sun_partition_set_system,
-	partition_set_flag:	sun_partition_set_flag,
-	partition_get_flag:	sun_partition_get_flag,
-	partition_is_flag_available:	sun_partition_is_flag_available,
-	partition_align:	sun_partition_align,
-	partition_enumerate:	sun_partition_enumerate,
-	alloc_metadata:		sun_alloc_metadata,
-	get_max_primary_partition_count:
-				sun_get_max_primary_partition_count,
-	get_max_supported_partition_count:
-				sun_get_max_supported_partition_count,
+static PedDiskOps sun_disk_ops = {
+	clobber:		NULL_IF_DISCOVER_ONLY (sun_clobber),
+	write:			NULL_IF_DISCOVER_ONLY (sun_write),
+
+	disk_set_flag:          sun_disk_set_flag,
+	disk_get_flag:          sun_disk_get_flag,
+	disk_is_flag_available: sun_disk_is_flag_available,
+
+	get_partition_alignment: sun_get_partition_alignment,
 
 	partition_set_name:		NULL,
 	partition_get_name:		NULL,
+
+	PT_op_function_initializers (sun)
 };
 
 static PedDiskType sun_disk_type = {

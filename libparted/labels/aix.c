@@ -1,7 +1,7 @@
 /* -*- Mode: c; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2001, 2007, 2009 Free Software Foundation, Inc.
+    Copyright (C) 2000-2001, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include <parted/debug.h>
 #include <parted/endian.h>
 #include <stdbool.h>
+#include "pt-tools.h"
 
 #if ENABLE_NLS
 #  include <libintl.h>
@@ -50,29 +51,13 @@ aix_label_magic_set (char *label, int magic_val)
 	*(unsigned int *)label = magic_val;
 }
 
-/* Read a single sector, of length DEV->sector_size, into malloc'd storage.
-   If the read fails, free the memory and return zero without modifying *BUF.
-   Otherwise, set *BUF to the new buffer and return 1.  */
-static int
-read_sector (const PedDevice *dev, char **buf)
-{
-	char *b = ped_malloc (dev->sector_size);
-	PED_ASSERT (b != NULL, return 0);
-	if (!ped_device_read (dev, b, 0, 1)) {
-		free (b);
-		return 0;
-	}
-	*buf = b;
-	return 1;
-}
-
 static int
 aix_probe (const PedDevice *dev)
 {
 	PED_ASSERT (dev != NULL, return 0);
 
-	char *label;
-	if (!read_sector (dev, &label))
+	void *label;
+	if (!ptt_read_sector (dev, 0, &label))
 		return 0;
 	unsigned int magic = aix_label_magic_get (label);
 	free (label);
@@ -88,8 +73,8 @@ aix_clobber (PedDevice* dev)
 	if (!aix_probe (dev))
 		return 0;
 
-	char *label;
-	if (!read_sector (dev, &label))
+	void *label;
+	if (!ptt_read_sector (dev, 0, &label))
 		return 0;
 
 	aix_label_magic_set (label, 0);
@@ -250,40 +235,17 @@ aix_alloc_metadata (PedDisk* disk)
 	return 1;
 }
 
-static PedDiskOps aix_disk_ops = {
-	probe:			aix_probe,
-#ifndef DISCOVER_ONLY
-	clobber:		aix_clobber,
-#else
-	clobber:		NULL,
-#endif
-	alloc:			aix_alloc,
-	duplicate:		aix_duplicate,
-	free:			aix_free,
-	read:			aix_read,
-#ifndef DISCOVER_ONLY
-	write:			aix_write,
-#else
-	write:			NULL,
-#endif
+#include "pt-common.h"
+PT_define_limit_functions (aix)
 
-	partition_new:		aix_partition_new,
-	partition_duplicate:	aix_partition_duplicate,
-	partition_destroy:	aix_partition_destroy,
-	partition_set_system:	aix_partition_set_system,
-	partition_set_flag:	aix_partition_set_flag,
-	partition_get_flag:	aix_partition_get_flag,
-	partition_is_flag_available:	aix_partition_is_flag_available,
-	partition_align:	aix_partition_align,
-	partition_enumerate:	aix_partition_enumerate,
-	alloc_metadata:		aix_alloc_metadata,
-	get_max_primary_partition_count:
-				aix_get_max_primary_partition_count,
-	get_max_supported_partition_count:
-				aix_get_max_supported_partition_count,
+static PedDiskOps aix_disk_ops = {
+	clobber:		NULL_IF_DISCOVER_ONLY (aix_clobber),
+	write:			NULL_IF_DISCOVER_ONLY (aix_write),
 
 	partition_set_name:		NULL,
 	partition_get_name:		NULL,
+
+	PT_op_function_initializers (aix)
 };
 
 static PedDiskType aix_disk_type = {

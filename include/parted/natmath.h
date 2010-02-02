@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2007, 2008 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ typedef struct _PedAlignment	PedAlignment;
 
 #include <parted/disk.h>
 #include <parted/device.h>
+#include <parted/geom.h>
 
 #define PED_MIN(a, b)	( ((a)<(b)) ? (a) : (b) )
 #define PED_MAX(a, b)	( ((a)>(b)) ? (a) : (b) )

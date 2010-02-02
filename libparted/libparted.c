@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000, 2001, 2007, 2008 Free Software Foundation, Inc.
+    Copyright (C) 1999-2001, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -81,7 +81,7 @@ init_disk_types ()
 {
 	ped_disk_loop_init ();	/* must be last in the probe list */
 
-#if defined(__s390__) || defined(__s390x__)
+#if defined __s390__ || defined __s390x__
 	ped_disk_dasd_init();
 #endif
 
@@ -141,7 +141,7 @@ extern void ped_disk_dasd_done ();
 static void
 done_disk_types ()
 {
-#if defined(__s390__) || (__s390x__)
+#if defined __s390__ || __s390x__
 	ped_disk_dasd_done ();
 #endif
 	ped_disk_sun_done ();

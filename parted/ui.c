@@ -1,7 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999, 2000, 2001, 2002, 2006, 2007, 2008, 2009
-    Free Software Foundation, Inc.
+    Copyright (C) 1999-2002, 2006-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,6 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <config.h>
 
 #include <config.h>
 
@@ -28,6 +28,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <setjmp.h>
+#include <assert.h>
 
 #include "command.h"
 #include "strlist.h"
@@ -192,6 +193,11 @@ static StrList*     ex_opt_str [64];
 static StrList*     on_list;
 static StrList*     off_list;
 static StrList*     on_off_list;
+
+static StrList*     align_opt_list;
+static StrList*     align_min_list;
+static StrList*     align_opt_min_list;
+
 static StrList*     fs_type_list;
 static StrList*     disk_type_list;
 
@@ -313,7 +319,7 @@ reset_env (int quit)
         if (in_readline) {
                 putchar ('\n');
                 if (quit)
-                        exit (0);
+                        exit (EXIT_SUCCESS);
 
                 siglongjmp (readline_state.jmp_state, 1);
         }
@@ -841,8 +847,12 @@ command_line_prompt_words (const char* prompt, const char* def,
                 real_prompt = _construct_prompt (prompt, _def, possibilities);
                 line = _readline (real_prompt, possibilities);
                 free (real_prompt);
-                if (!line)
+                if (!line) {
+                        /* readline returns NULL to indicate EOF.
+                           Treat that like an interrupt.  */
+                        got_ctrl_c = 1;
                         break;
+                }
 
                 if (!strlen (line)) {
                         if (_def)
@@ -979,15 +989,12 @@ command_line_get_state (const char* prompt, int* value)
 int
 command_line_get_device (const char* prompt, PedDevice** value)
 {
-        char*         def_dev_name = *value ? (*value)->path : NULL;
-        char*         dev_name;
-        PedDevice*    dev;
-
-        dev_name = command_line_get_word (prompt, def_dev_name, NULL, 1);
+        char *def_dev_name = *value ? (*value)->path : NULL;
+        char *dev_name = command_line_get_word (prompt, def_dev_name, NULL, 1);
         if (!dev_name)
                 return 0;
 
-        dev = ped_device_get (dev_name);
+        PedDevice *dev = ped_device_get (dev_name);
         free (dev_name);
         if (!dev)
                 return 0;
@@ -1004,6 +1011,7 @@ command_line_get_disk (const char* prompt, PedDisk** value)
         if (!command_line_get_device (prompt, &dev))
                 return 0;
 
+        assert (*value);
         if (dev != (*value)->dev) {
                 PedDisk*    new_disk = ped_disk_new (dev);
                 if (!new_disk)
@@ -1257,6 +1265,27 @@ command_line_get_ex_opt (const char* prompt, PedExceptionOption options)
 }
 
 int
+command_line_get_align_type (const char *prompt, enum AlignmentType *align_type)
+{
+  char*    def_word;
+  char*    input;
+
+  if (*align_type)
+    def_word = str_list_convert_node (align_opt_list);
+  else
+    def_word = str_list_convert_node (align_min_list);
+  input = command_line_get_word (prompt, def_word, align_opt_min_list, 1);
+  free (def_word);
+  if (!input)
+    return 0;
+  *align_type = (str_list_match_any (align_opt_list, input)
+	     ? PA_OPTIMUM
+	     : PA_MINIMUM);
+  free (input);
+  return 1;
+}
+
+int
 command_line_get_unit (const char* prompt, PedUnit* unit)
 {
         StrList*       opts = NULL;
@@ -1344,6 +1373,24 @@ done_state_str ()
 }
 
 static int
+init_alignment_type_str ()
+{
+        align_opt_list = str_list_create_unique (_("optimal"), "optimal", NULL);
+        align_min_list = str_list_create_unique (_("minimal"), "minimal", NULL);
+        align_opt_min_list = str_list_join (str_list_duplicate (align_opt_list),
+					    str_list_duplicate (align_min_list));
+        return 1;
+}
+
+static void
+done_alignment_type_str ()
+{
+        str_list_destroy (align_opt_list);
+        str_list_destroy (align_min_list);
+        str_list_destroy (align_opt_min_list);
+}
+
+static int
 init_fs_type_str ()
 {
         PedFileSystemType*    walk;
@@ -1389,20 +1436,28 @@ init_disk_type_str ()
 }
 
 int
+init_readline (void)
+{
+#ifdef HAVE_LIBREADLINE
+  if (!opt_script_mode) {
+    rl_initialize ();
+    rl_attempted_completion_function = (CPPFunction*) complete_function;
+    readline_state.in_readline = 0;
+  }
+#endif
+  return 0;
+}
+
+int
 init_ui ()
 {
         if (!init_ex_opt_str ()
             || !init_state_str ()
+            || !init_alignment_type_str ()
             || !init_fs_type_str ()
             || !init_disk_type_str ())
                 return 0;
         ped_exception_set_handler (exception_handler);
-
-#ifdef HAVE_LIBREADLINE
-        rl_initialize ();
-        rl_attempted_completion_function = (CPPFunction*) complete_function;
-        readline_state.in_readline = 0;
-#endif
 
 #ifdef SA_SIGINFO
         sigset_t curr;
@@ -1443,6 +1498,7 @@ done_ui ()
         ped_exception_set_handler (NULL);
         done_ex_opt_str ();
         done_state_str ();
+        done_alignment_type_str ();
         str_list_destroy (fs_type_list);
         str_list_destroy (disk_type_list);
 }
@@ -1461,7 +1517,7 @@ help_msg ()
         fputs (_("COMMANDs:"), stdout);
         putchar ('\n');
         print_commands_help ();
-        exit (0);
+        exit (EXIT_SUCCESS);
 }
 
 void
@@ -1543,7 +1599,7 @@ non_interactive_mode (PedDevice** dev, Command* cmd_list[],
                 if (!(cmd->non_interactive)) {
                         fputs(_("This command does not make sense in "
                                 "non-interactive mode.\n"), stdout);
-                        exit(1);
+                        exit(EXIT_FAILURE);
                         goto error;
                 }
 

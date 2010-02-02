@@ -1,7 +1,6 @@
  /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000, 2001, 2002, 2003, 2005, 2007, 2008
-                  Free Software Foundation, Inc.
+    Copyright (C) 1999-2003, 2005, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -40,6 +39,7 @@
 
 #include "architecture.h"
 #include "intprops.h"
+#include "labels/pt-tools.h"
 
 #if ENABLE_NLS
 #  include <libintl.h>
@@ -54,8 +54,8 @@
 #ifdef DEBUG
 static int _disk_check_sanity (PedDisk* disk);
 #endif
-static void _disk_push_update_mode (PedDisk* disk);
-static void _disk_pop_update_mode (PedDisk* disk);
+static int _disk_push_update_mode (PedDisk* disk);
+static int _disk_pop_update_mode (PedDisk* disk);
 static int _disk_raw_insert_before (PedDisk* disk, PedPartition* loc,
 				    PedPartition* part);
 static int _disk_raw_insert_after (PedDisk* disk, PedPartition* loc,
@@ -102,7 +102,7 @@ ped_disk_type_unregister (PedDiskType* disk_type)
  * \return Next disk; NULL if "type" is the last registered disk type.
  */
 PedDiskType*
-ped_disk_type_get_next (PedDiskType* type)
+ped_disk_type_get_next (PedDiskType const *type)
 {
 	if (type)
 		return type->next;
@@ -148,8 +148,15 @@ ped_disk_probe (PedDevice* dev)
         ped_exception_fetch_all ();
         for (walk = ped_disk_type_get_next (NULL); walk;
              walk = ped_disk_type_get_next (walk))
+          {
+                if (getenv ("PARTED_DEBUG")) {
+                        fprintf (stderr, "probe label: %s\n",
+                                 walk->name);
+                        fflush (stderr);
+                }
                 if (walk->ops->probe (dev))
                         break;
+          }
 
         if (ped_exception)
                 ped_exception_catch ();
@@ -215,9 +222,11 @@ _add_duplicate_part (PedDisk* disk, PedPartition* old_part)
 		goto error;
 	new_part->disk = disk;
 
-	_disk_push_update_mode (disk);
+	if (!_disk_push_update_mode (disk))
+		goto error_destroy_new_part;
 	ret = _disk_raw_add (disk, new_part);
-	_disk_pop_update_mode (disk);
+	if (!_disk_pop_update_mode (disk))
+		goto error_destroy_new_part;
 	if (!ret)
 		goto error_destroy_new_part;
 #ifdef DEBUG
@@ -253,15 +262,19 @@ ped_disk_duplicate (const PedDisk* old_disk)
 	if (!new_disk)
 		goto error;
 
-	_disk_push_update_mode (new_disk);
+	if (!_disk_push_update_mode (new_disk))
+		goto error_destroy_new_disk;
 	for (old_part = ped_disk_next_partition (old_disk, NULL); old_part;
 	     old_part = ped_disk_next_partition (old_disk, old_part)) {
 		if (ped_partition_is_active (old_part)) {
-			if (!_add_duplicate_part (new_disk, old_part))
+			if (!_add_duplicate_part (new_disk, old_part)){
+				_disk_pop_update_mode (new_disk);
 				goto error_destroy_new_disk;
+			}
 		}
 	}
-	_disk_pop_update_mode (new_disk);
+	if (!_disk_pop_update_mode (new_disk))
+		goto error_destroy_new_disk;
 	return new_disk;
 
 error_destroy_new_disk:
@@ -270,49 +283,18 @@ error:
 	return NULL;
 }
 
-/**
- * Remove all identifying signatures of a partition table,
- * except for partition tables of a given type.
- *
- * \return 0 on error, 1 otherwise.
- *
- * \sa ped_disk_clobber()
- */
-int
-ped_disk_clobber_exclude (PedDevice* dev, const PedDiskType* exclude)
+/* Given a partition table type NAME, e.g., "gpt", return its PedDiskType
+   handle.  If no known type has a name matching NAME, return NULL.  */
+static PedDiskType const *
+find_disk_type (char const *name)
 {
-	PedDiskType*	walk;
-
-	PED_ASSERT (dev != NULL, goto error);
-
-	if (!ped_device_open (dev))
-		goto error;
-
-	for (walk = ped_disk_type_get_next (NULL); walk;
-	     walk = ped_disk_type_get_next (walk)) {
-		int	probed;
-
-		if (walk == exclude)
-			continue;
-
-		ped_exception_fetch_all ();
-		probed = walk->ops->probe (dev);
-		if (!probed)
-			ped_exception_catch ();
-		ped_exception_leave_all ();
-
-		if (probed && walk->ops->clobber) {
-			if (!walk->ops->clobber (dev))
-				goto error_close_dev;
-		}
-	}
-	ped_device_close (dev);
-	return 1;
-
-error_close_dev:
-	ped_device_close (dev);
-error:
-	return 0;
+  PedDiskType const *t;
+  for (t = ped_disk_type_get_next (NULL); t; t = ped_disk_type_get_next (t))
+    {
+      if (strcmp (t->name, name) == 0)
+        return t;
+    }
+  return NULL;
 }
 
 /**
@@ -320,12 +302,55 @@ error:
  *
  * \return 0 on error, 1 otherwise.
  *
- * \sa ped_disk_clobber_exclude()
+ * \sa ped_disk_clobber()
  */
 int
 ped_disk_clobber (PedDevice* dev)
 {
-	return ped_disk_clobber_exclude (dev, NULL);
+	PED_ASSERT (dev != NULL, goto error);
+
+	if (!ped_device_open (dev))
+		goto error;
+
+        PedDiskType const *gpt = find_disk_type ("gpt");
+	PED_ASSERT (gpt != NULL, goto error);
+
+        /* If there is a GPT table, don't clobber the protective MBR.  */
+        bool is_gpt = gpt->ops->probe (dev);
+        PedSector first_sector = (is_gpt ? 1 : 0);
+
+	/* How many sectors to zero out at each end.
+	   This must be large enough to zero out the magic bytes
+	   starting at offset 8KiB on a DASD partition table.
+	   Doing the same from the end of the disk is probably
+	   overkill, but at least on GPT, we do need to zero out
+	   the final sector.  */
+	const PedSector n_sectors = 9 * 1024 / dev->sector_size + 1;
+
+	/* Clear the first few.  */
+	PedSector n = n_sectors;
+	if (dev->length < first_sector + n_sectors)
+	  n = dev->length - first_sector;
+        if (!ptt_clear_sectors (dev, first_sector, n))
+          goto error_close_dev;
+
+	/* Clear the last few.  */
+	PedSector t = (dev->length -
+		       (n_sectors < dev->length ? n_sectors : 1));
+
+        /* Don't clobber the pMBR if we have a pathologically small disk.  */
+        if (t < first_sector)
+          t = first_sector;
+        if (!ptt_clear_sectors (dev, t, dev->length - t))
+          goto error_close_dev;
+
+	ped_device_close (dev);
+	return 1;
+
+error_close_dev:
+	ped_device_close (dev);
+error:
+	return 0;
 }
 
 /**
@@ -345,18 +370,22 @@ ped_disk_new_fresh (PedDevice* dev, const PedDiskType* type)
 	PED_ASSERT (dev != NULL, return NULL);
 	PED_ASSERT (type != NULL, return NULL);
 	PED_ASSERT (type->ops->alloc != NULL, return NULL);
+	PedCHSGeometry*	bios_geom = &dev->bios_geom;
+	PED_ASSERT (bios_geom->sectors != 0, return NULL);
+	PED_ASSERT (bios_geom->heads != 0, return NULL);
 
 	disk = type->ops->alloc (dev);
 	if (!disk)
        		goto error;
-	_disk_pop_update_mode (disk);
-	PED_ASSERT (disk->update_mode == 0, goto error_destroy_disk);
+        if (!_disk_pop_update_mode (disk))
+                goto error_destroy_disk;
+	PED_ASSERT (disk->update_mode == 0, ignored);
 
 	disk->needs_clobber = 1;
 	return disk;
 
 error_destroy_disk:
-	ped_disk_destroy (disk);
+        ped_disk_destroy (disk);
 error:
 	return NULL;
 }
@@ -462,7 +491,7 @@ ped_disk_commit_to_dev (PedDisk* disk)
 		goto error;
 
 	if (disk->needs_clobber) {
-		if (!ped_disk_clobber_exclude (disk->dev, disk->type))
+		if (!ped_disk_clobber (disk->dev))
 			goto error_close_dev;
 		disk->needs_clobber = 0;
 	}
@@ -489,9 +518,25 @@ error:
 int
 ped_disk_commit (PedDisk* disk)
 {
+        /* Open the device here, so that the underlying fd is not closed
+           between commit_to_dev and commit_to_os (closing causes unwanted
+           udev events to be sent under Linux). */
+	if (!ped_device_open (disk->dev))
+		goto error;
+
 	if (!ped_disk_commit_to_dev (disk))
-		return 0;
-	return ped_disk_commit_to_os (disk);
+		goto error_close_dev;
+
+	if (!ped_disk_commit_to_os (disk))
+		goto error_close_dev;
+
+	ped_device_close (disk->dev);
+	return 1;
+
+error_close_dev:
+	ped_device_close (disk->dev);
+error:
+	return 0;
 }
 
 /**
@@ -570,12 +615,14 @@ ped_disk_check (const PedDisk* disk)
 
 		length_error = abs (walk->geom.length - geom->length);
 		max_length_error = PED_MAX (4096, walk->geom.length / 100);
-		if (!ped_geometry_test_inside (&walk->geom, geom)
-		    || length_error > max_length_error) {
-			char* part_size = ped_unit_format (disk->dev, walk->geom.length);
-			char* fs_size = ped_unit_format (disk->dev, geom->length);
+                bool ok = (ped_geometry_test_inside (&walk->geom, geom)
+                           && length_error <= max_length_error);
+                char *fs_size = ped_unit_format (disk->dev, geom->length);
+                ped_geometry_destroy (geom);
+                if (!ok) {
+			char* part_size = ped_unit_format (disk->dev,
+                                                           walk->geom.length);
 			PedExceptionOption choice;
-
 			choice = ped_exception_throw (
 				PED_EXCEPTION_WARNING,
 				PED_EXCEPTION_IGNORE_CANCEL,
@@ -589,6 +636,7 @@ ped_disk_check (const PedDisk* disk)
 			if (choice != PED_EXCEPTION_IGNORE)
 				return 0;
 		}
+		free (fs_size);
 	}
 
 	return 1;
@@ -663,6 +711,26 @@ ped_disk_get_max_supported_partition_count(const PedDisk* disk, int* supported)
 }
 
 /**
+ * Get the alignment needed for partition boundaries on this disk.
+ * The returned alignment describes the alignment for the start sector of the
+ * partition, for all disklabel types which require alignment, except Sun
+ * disklabels, the end sector must be aligned too. To get the end sector
+ * alignment decrease the PedAlignment offset by 1.
+ *
+ * \return NULL on error, otherwise a pointer to a dynamically allocated
+ *         alignment.
+ */
+PedAlignment*
+ped_disk_get_partition_alignment(const PedDisk *disk)
+{
+        /* disklabel handlers which don't need alignment don't define this */
+        if (!disk->type->ops->get_partition_alignment)
+                return ped_alignment_duplicate(ped_alignment_any);
+
+        return disk->type->ops->get_partition_alignment(disk);
+}
+
+/**
  * Get the maximum number of (primary) partitions the disk label supports.
  *
  * For example, MacIntosh partition maps can have different sizes,
@@ -676,6 +744,141 @@ ped_disk_get_max_primary_partition_count (const PedDisk* disk)
 		    return 0);
 
 	return disk->type->ops->get_max_primary_partition_count (disk);
+}
+
+/**
+ * Set the state (\c 1 or \c 0) of a flag on a disk.
+ *
+ * \note It is an error to call this on an unavailable flag -- use
+ * ped_disk_is_flag_available() to determine which flags are available
+ * for a given disk label.
+ *
+ * \throws PED_EXCEPTION_ERROR if the requested flag is not available for this
+ *      label.
+ */
+int
+ped_disk_set_flag(PedDisk *disk, PedDiskFlag flag, int state)
+{
+        int ret;
+
+        PED_ASSERT (disk != NULL, return 0);
+
+        PedDiskOps *ops = disk->type->ops;
+
+        if (!_disk_push_update_mode(disk))
+                return 0;
+
+        if (!ped_disk_is_flag_available(disk, flag)) {
+                ped_exception_throw (
+                        PED_EXCEPTION_ERROR,
+                        PED_EXCEPTION_CANCEL,
+                        "The flag '%s' is not available for %s disk labels.",
+                        ped_disk_flag_get_name(flag),
+                        disk->type->name);
+                _disk_pop_update_mode(disk);
+                return 0;
+        }
+
+        ret = ops->disk_set_flag(disk, flag, state);
+
+        if (!_disk_pop_update_mode (disk))
+                return 0;
+
+        return ret;
+}
+
+/**
+ * Get the state (\c 1 or \c 0) of a flag on a disk.
+ */
+int
+ped_disk_get_flag(const PedDisk *disk, PedDiskFlag flag)
+{
+        PED_ASSERT (disk != NULL, return 0);
+
+        PedDiskOps *ops = disk->type->ops;
+
+        if (!ped_disk_is_flag_available(disk, flag))
+                return 0;
+
+        return ops->disk_get_flag(disk, flag);
+}
+
+/**
+ * Check whether a given flag is available on a disk.
+ *
+ * \return \c 1 if the flag is available.
+ */
+int
+ped_disk_is_flag_available(const PedDisk *disk, PedDiskFlag flag)
+{
+        PED_ASSERT (disk != NULL, return 0);
+
+        PedDiskOps *ops = disk->type->ops;
+
+        if (!ops->disk_is_flag_available)
+                return 0;
+
+        return ops->disk_is_flag_available(disk, flag);
+}
+
+/**
+ * Returns a name for a \p flag, e.g. PED_DISK_CYLINDER_ALIGNMENT will return
+ * "cylinder_alignment".
+ *
+ * \note The returned string will be in English.  However,
+ * translations are provided, so the caller can call
+ * dgettext("parted", RESULT) on the result.
+ */
+const char *
+ped_disk_flag_get_name(PedDiskFlag flag)
+{
+        switch (flag) {
+        case PED_DISK_CYLINDER_ALIGNMENT:
+                return N_("cylinder_alignment");
+
+        default:
+                ped_exception_throw (
+                        PED_EXCEPTION_BUG,
+                        PED_EXCEPTION_CANCEL,
+                        _("Unknown disk flag, %d."),
+                        flag);
+                return NULL;
+        }
+}
+
+/**
+ * Returns the flag associated with \p name.
+ *
+ * \p name can be the English
+ * string, or the translation for the native language.
+ */
+PedDiskFlag
+ped_disk_flag_get_by_name(const char *name)
+{
+        PedDiskFlag flag;
+
+        for (flag = ped_disk_flag_next(0); flag;
+             flag = ped_disk_flag_next(flag)) {
+                const char *flag_name = ped_disk_flag_get_name(flag);
+                if (strcasecmp(name, flag_name) == 0
+                    || strcasecmp(name, _(flag_name)) == 0)
+                        return flag;
+        }
+
+        return 0;
+}
+
+/**
+ * Iterates through all disk flags.
+ *
+ * ped_disk_flag_next(0) returns the first flag
+ *
+ * \return the next flag, or 0 if there are no more flags
+ */
+PedDiskFlag
+ped_disk_flag_next(PedDiskFlag flag)
+{
+        return (flag + 1) % (PED_DISK_LAST_FLAG + 1);
 }
 
 /**
@@ -914,12 +1117,13 @@ _disk_alloc_freespace (PedDisk* disk)
  * partitions are removed, making it much easier for various manipulation
  * routines...
  */
-static void
+static int
 _disk_push_update_mode (PedDisk* disk)
 {
 	if (!disk->update_mode) {
 #ifdef DEBUG
-		_disk_check_sanity (disk);
+		if (!_disk_check_sanity (disk))
+			return 0;
 #endif
 
 		_disk_remove_freespace (disk);
@@ -927,24 +1131,27 @@ _disk_push_update_mode (PedDisk* disk)
 		_disk_remove_metadata (disk);
 
 #ifdef DEBUG
-		_disk_check_sanity (disk);
+		if (!_disk_check_sanity (disk))
+			return 0;
 #endif
 	} else {
 		disk->update_mode++;
 	}
+	return 1;
 }
 
-static void
+static int
 _disk_pop_update_mode (PedDisk* disk)
 {
-	PED_ASSERT (disk->update_mode, return);
+	PED_ASSERT (disk->update_mode, return 0);
 
 	if (disk->update_mode == 1) {
 	/* re-allocate metadata BEFORE leaving update mode, to prevent infinite
 	 * recursion (metadata allocation requires update mode)
 	 */
 #ifdef DEBUG
-		_disk_check_sanity (disk);
+		if (!_disk_check_sanity (disk))
+			return 0;
 #endif
 
 		_disk_alloc_metadata (disk);
@@ -952,11 +1159,13 @@ _disk_pop_update_mode (PedDisk* disk)
 		_disk_alloc_freespace (disk);
 
 #ifdef DEBUG
-		_disk_check_sanity (disk);
+		if (!_disk_check_sanity (disk))
+			return 0;
 #endif
 	} else {
 		disk->update_mode--;
 	}
+	return 1;
 }
 
 /** @} */
@@ -1420,6 +1629,26 @@ ped_disk_get_partition_by_sector (const PedDisk* disk, PedSector sect)
 	return NULL;
 }
 
+/**
+ * Return the maximum representable length (in sectors) of a
+ * partition on disk \disk.
+ */
+PedSector
+ped_disk_max_partition_length (const PedDisk* disk)
+{
+  return disk->type->ops->max_length ();
+}
+
+/**
+ * Return the maximum representable start sector of a
+ * partition on disk \disk.
+ */
+PedSector
+ped_disk_max_partition_start_sector (const PedDisk* disk)
+{
+  return disk->type->ops->max_start_sector ();
+}
+
 /* I'm beginning to agree with Sedgewick :-/ */
 static int
 _disk_raw_insert_before (PedDisk* disk, PedPartition* loc, PedPartition* part)
@@ -1693,31 +1922,6 @@ _check_extended_partition (PedDisk* disk, PedPartition* part)
 	return 1;
 }
 
-static PedSector
-_partition_max_start (char const *label_type)
-{
-  /* List partition table names (a la disk->type->name) for which
-     the partition length, in sectors, must fit in 32 bytes.  */
-  static char const *const max_32[] = {"msdos", "dvh"};
-  unsigned int i;
-
-  for (i = 0; i < sizeof max_32 / sizeof *max_32; i++)
-    if (strcmp (label_type, max_32[i]) == 0)
-      return UINT32_MAX;
-
-  return TYPE_MAXIMUM (PedSector);
-}
-
-static PedSector
-_partition_max_len (char const *label_type)
-{
-  /* NOTE: for now, they happen to be the same, so don't
-     duplicate needlessly.  Of course, if there's some format
-     with different length and starting sector limits, then
-     these functions will diverge.  */
-  return _partition_max_start (label_type);
-}
-
 static int
 _check_partition (PedDisk* disk, PedPartition* part)
 {
@@ -1758,44 +1962,9 @@ _check_partition (PedDisk* disk, PedPartition* part)
 		return 0;
 	}
 
-	if (!(part->type & PED_PARTITION_METADATA)) {
-		char const *label_type = disk->type->name;
-		/* Enforce some restrictions inherent in the DOS
-		   partition table format.  Without these, one would be able
-		   to create a 2TB partition (or larger), and it would work,
-		   but only until the next reboot.  This was insidious: the
-		   too-large partition would work initially, because with
-		   Linux-2.4.x and newer we set the partition start sector
-		   and length (in sectors) accurately and directly via the
-		   BLKPG ioctl.  However, only the last 32 bits of each
-		   number would be written to the partition table, and the
-		   next time the system would read/use those corrupted numbers
-		   it would usually complain about an invalid partition.
-                   The same applies to the starting sector number.  */
-
-		if (part->geom.length > _partition_max_len (label_type)) {
-			ped_exception_throw (
-				PED_EXCEPTION_ERROR, PED_EXCEPTION_CANCEL,
-				_("partition length of %jd sectors exceeds the "
-                                  "%s-partition-table-imposed maximum of %jd"),
-				part->geom.length,
-                                label_type,
-                                _partition_max_len (label_type));
+	if (!(part->type & PED_PARTITION_METADATA))
+		if (!disk->type->ops->partition_check(part))
 			return 0;
-		}
-
-		/* The starting sector number must fit in 32 bytes.  */
-		if (part->geom.start > _partition_max_start (label_type)) {
-			ped_exception_throw (
-				PED_EXCEPTION_ERROR, PED_EXCEPTION_CANCEL,
-				_("starting sector number, %jd exceeds the"
-                                  " %s-partition-table-imposed maximum of %jd"),
-                                part->geom.start,
-                                label_type,
-                                _partition_max_start (label_type));
-			return 0;
-		}
-	}
 
 	return 1;
 }
@@ -1826,7 +1995,8 @@ ped_disk_add_partition (PedDisk* disk, PedPartition* part,
 	if (!_partition_check_basic_sanity (disk, part))
 		return 0;
 
-	_disk_push_update_mode (disk);
+	if (!_disk_push_update_mode (disk))
+		return 0;
 
 	if (ped_partition_is_active (part)) {
 		overlap_constraint
@@ -1847,6 +2017,12 @@ ped_disk_add_partition (PedDisk* disk, PedPartition* part,
 		if (!_partition_align (part, constraints))
 			goto error;
 	}
+        /* FIXME: when _check_partition fails, we end up leaking PART
+           at least for DVH partition tables.  Simply calling
+           ped_partition_destroy(part) here fixes it for DVH, but
+           causes trouble for other partition types.  Similarly,
+           reordering these two checks, putting _check_partition after
+           _disk_raw_add induces an infinite loop.  */
 	if (!_check_partition (disk, part))
 		goto error;
 	if (!_disk_raw_add (disk, part))
@@ -1854,7 +2030,8 @@ ped_disk_add_partition (PedDisk* disk, PedPartition* part,
 
 	ped_constraint_destroy (overlap_constraint);
 	ped_constraint_destroy (constraints);
-	_disk_pop_update_mode (disk);
+	if (!_disk_pop_update_mode (disk))
+		return 0;
 #ifdef DEBUG
 	if (!_disk_check_sanity (disk))
 		return 0;
@@ -1883,16 +2060,14 @@ ped_disk_remove_partition (PedDisk* disk, PedPartition* part)
 	PED_ASSERT (disk != NULL, return 0);
 	PED_ASSERT (part != NULL, return 0);
 
-	_disk_push_update_mode (disk);
-	PED_ASSERT (part->part_list == NULL, goto error);
+	if (!_disk_push_update_mode (disk))
+		return 0;
+	PED_ASSERT (part->part_list == NULL, ignored);
 	_disk_raw_remove (disk, part);
-	_disk_pop_update_mode (disk);
+	if (!_disk_pop_update_mode (disk))
+		return 0;
 	ped_disk_enumerate_partitions (disk);
 	return 1;
-
-error:
-	_disk_pop_update_mode (disk);
-	return 0;
 }
 
 static int
@@ -1909,12 +2084,14 @@ ped_disk_delete_partition (PedDisk* disk, PedPartition* part)
 	PED_ASSERT (disk != NULL, return 0);
 	PED_ASSERT (part != NULL, return 0);
 
-	_disk_push_update_mode (disk);
+	if (!_disk_push_update_mode (disk))
+		return 0;
 	if (part->type == PED_PARTITION_EXTENDED)
 		ped_disk_delete_all_logical (disk);
 	ped_disk_remove_partition (disk, part);
 	ped_partition_destroy (part);
-	_disk_pop_update_mode (disk);
+	if (!_disk_pop_update_mode (disk))
+		return 0;
 
 	return 1;
 }
@@ -1952,16 +2129,20 @@ ped_disk_delete_all (PedDisk* disk)
 
 	PED_ASSERT (disk != NULL, return 0);
 
-	_disk_push_update_mode (disk);
+	if (!_disk_push_update_mode (disk))
+		return 0;
 
 	for (walk = disk->part_list; walk; walk = next) {
 		next = walk->next;
 
-		if (!ped_disk_delete_partition (disk, walk))
+		if (!ped_disk_delete_partition (disk, walk)) {
+		        _disk_pop_update_mode(disk);
 			return 0;
+                }
 	}
 
-	_disk_pop_update_mode (disk);
+	if (!_disk_pop_update_mode (disk))
+		return 0;
 
 	return 1;
 }
@@ -1995,7 +2176,8 @@ ped_disk_set_partition_geom (PedDisk* disk, PedPartition* part,
 	old_geom = part->geom;
 	ped_geometry_init (&new_geom, part->geom.dev, start, end - start + 1);
 
-	_disk_push_update_mode (disk);
+	if (!_disk_push_update_mode (disk))
+		return 0;
 
 	overlap_constraint
 		= _partition_get_overlap_constraint (part, &new_geom);
@@ -2018,7 +2200,8 @@ ped_disk_set_partition_geom (PedDisk* disk, PedPartition* part,
 	_disk_raw_remove (disk, part);
 	_disk_raw_add (disk, part);
 
-	_disk_pop_update_mode (disk);
+	if (!_disk_pop_update_mode (disk))
+		goto error;
 
 	ped_constraint_destroy (overlap_constraint);
 	ped_constraint_destroy (constraints);
@@ -2026,6 +2209,7 @@ ped_disk_set_partition_geom (PedDisk* disk, PedPartition* part,
 
 error_pop_update_mode:
 	_disk_pop_update_mode (disk);
+error:
 	ped_constraint_destroy (overlap_constraint);
 	ped_constraint_destroy (constraints);
 	part->geom = old_geom;
@@ -2064,7 +2248,8 @@ ped_disk_maximize_partition (PedDisk* disk, PedPartition* part,
 
 	old_geom = part->geom;
 
-	_disk_push_update_mode (disk);
+	if (!_disk_push_update_mode (disk))
+		return 0;
 
 	if (part->prev)
 		new_start = part->prev->geom.end + 1;
@@ -2080,7 +2265,8 @@ ped_disk_maximize_partition (PedDisk* disk, PedPartition* part,
 					  new_end))
 		goto error;
 
-	_disk_pop_update_mode (disk);
+	if (!_disk_pop_update_mode (disk))
+		return 0;
 	return 1;
 
 error:
@@ -2152,11 +2338,13 @@ ped_disk_minimize_extended_partition (PedDisk* disk)
 	if (!ext_part)
 		return 1;
 
-	_disk_push_update_mode (disk);
+	if (!_disk_push_update_mode (disk))
+		return 0;
 
 	first_logical = ext_part->part_list;
 	if (!first_logical) {
-		_disk_pop_update_mode (disk);
+		if (!_disk_pop_update_mode (disk))
+			return 0;
 		return ped_disk_delete_partition (disk, ext_part);
 	}
 
@@ -2169,7 +2357,8 @@ ped_disk_minimize_extended_partition (PedDisk* disk)
 					      last_logical->geom.end);
 	ped_constraint_destroy (constraint);
 
-	_disk_pop_update_mode (disk);
+	if (!_disk_pop_update_mode (disk))
+		return 0;
 	return status;
 }
 
@@ -2246,6 +2435,8 @@ ped_partition_flag_get_name (PedPartitionFlag flag)
 		return N_("prep");
 	case PED_PARTITION_MSFT_RESERVED:
 		return N_("msftres");
+        case PED_PARTITION_APPLE_TV_RECOVERY:
+                return N_("atvrecv");
 
 	default:
 		ped_exception_throw (
