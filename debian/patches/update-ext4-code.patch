@@ -4,17 +4,16 @@ Bug: http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/188
 Last-Update: 2009-01-05
 Description: Improve ext4 code
 
-diff -urNad parted~/libparted/fs/ext2/ext2.c parted/libparted/fs/ext2/ext2.c
---- parted~/libparted/fs/ext2/ext2.c	2009-05-23 18:46:36.000000000 -0300
-+++ parted/libparted/fs/ext2/ext2.c	2009-05-23 19:35:37.000000000 -0300
+--- a/libparted/fs/ext2/ext2.c
++++ b/libparted/fs/ext2/ext2.c
 @@ -184,8 +184,8 @@
  
  		fs->gd[group].bg_free_blocks_count = PED_CPU_TO_LE16
  			(EXT2_GROUP_FREE_BLOCKS_COUNT(fs->gd[group]) + diff);
 -		fs->sb.s_free_blocks_count = PED_CPU_TO_LE32
 -			(EXT2_SUPER_FREE_BLOCKS_COUNT(fs->sb) + diff);
-+		ext2_super_free_blocks_count_set(&fs->sb,
-+				EXT2_SUPER_FREE_BLOCKS_COUNT(fs->sb) + diff);
++    ext2_super_free_blocks_count_set(&fs->sb,
++    	EXT2_SUPER_FREE_BLOCKS_COUNT(fs->sb) + diff);
  		fs->metadirty |= EXT2_META_SB | EXT2_META_GD;
  	}
  	return 1;
@@ -23,7 +22,7 @@ diff -urNad parted~/libparted/fs/ext2/ext2.c parted/libparted/fs/ext2/ext2.c
  		return 1;
  
 -	fs->sb.s_r_blocks_count = PED_CPU_TO_LE32 (
-+	ext2_super_r_blocks_count_set(&fs->sb,
++  ext2_super_r_blocks_count_set(&fs->sb,
  		fs->r_frac * (loff_t)EXT2_SUPER_BLOCKS_COUNT(fs->sb)
  				  / 100);
  
@@ -32,14 +31,13 @@ diff -urNad parted~/libparted/fs/ext2/ext2.c parted/libparted/fs/ext2/ext2.c
  	    (EXT2_SUPER_FEATURE_INCOMPAT(fs->sb)
  	    		& ~(EXT2_FEATURE_INCOMPAT_FILETYPE |
 -			    EXT3_FEATURE_INCOMPAT_RECOVER)) ||
-+			    EXT3_FEATURE_INCOMPAT_RECOVER |
-+			    EXT4_FEATURE_INCOMPAT_64BIT)) ||
++          EXT3_FEATURE_INCOMPAT_RECOVER |
++    	    EXT4_FEATURE_INCOMPAT_64BIT)) ||
  	    (EXT2_SUPER_FEATURE_RO_COMPAT(fs->sb)
  			& ~(EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER |
  			    EXT2_FEATURE_RO_COMPAT_LARGE_FILE)))
-diff -urNad parted~/libparted/fs/ext2/ext2_fs.h parted/libparted/fs/ext2/ext2_fs.h
---- parted~/libparted/fs/ext2/ext2_fs.h	2009-05-23 18:46:36.000000000 -0300
-+++ parted/libparted/fs/ext2/ext2_fs.h	2009-05-23 19:35:37.000000000 -0300
+--- a/libparted/fs/ext2/ext2_fs.h
++++ b/libparted/fs/ext2/ext2_fs.h
 @@ -174,9 +174,9 @@
  struct ext2_super_block
  {
@@ -47,9 +45,9 @@ diff -urNad parted~/libparted/fs/ext2/ext2_fs.h parted/libparted/fs/ext2/ext2_fs
 -	uint32_t	s_blocks_count;		/* Blocks count */
 -	uint32_t	s_r_blocks_count;	/* Reserved blocks count */
 -	uint32_t	s_free_blocks_count;	/* Free blocks count */
-+	uint32_t	s_blocks_count_lo;	/* Blocks count */
-+	uint32_t	s_r_blocks_count_lo;	/* Reserved blocks count */
-+	uint32_t	s_free_blocks_count_lo;	/* Free blocks count */
++  uint32_t	s_blocks_count_lo;	/* Blocks count */
++  uint32_t	s_r_blocks_count_lo;	/* Reserved blocks count */
++  uint32_t	s_free_blocks_count_lo;	/* Free blocks count */
  	uint32_t	s_free_inodes_count;	/* Free inodes count */
  	uint32_t	s_first_data_block;	/* First Data Block */
  	uint32_t	s_log_block_size;	/* Block size */
@@ -93,7 +91,7 @@ diff -urNad parted~/libparted/fs/ext2/ext2_fs.h parted/libparted/fs/ext2/ext2_fs
  #define EXT2_DIRENT_INODE(dir_ent)	(PED_LE32_TO_CPU((dir_ent).inode))
  #define EXT2_DIRENT_REC_LEN(dir_ent)	(PED_LE16_TO_CPU((dir_ent).rec_len))
  #define EXT2_DIRENT_NAME_LEN(dir_ent)	((dir_ent).name_len)
-@@ -271,10 +299,44 @@
+@@ -271,10 +299,45 @@
  #define EXT2_INODE_BLOCK(inode, blk)	(PED_LE32_TO_CPU((inode).i_block[blk]))
  
  #define EXT2_SUPER_INODES_COUNT(sb)	(PED_LE32_TO_CPU((sb).s_inodes_count))
@@ -110,6 +108,7 @@ diff -urNad parted~/libparted/fs/ext2/ext2_fs.h parted/libparted/fs/ext2/ext2_fs
 +		 ? (((uint64_t) PED_LE32_TO_CPU((sb).s_r_blocks_count_hi) << 32) \
 +		    | PED_LE32_TO_CPU((sb).s_r_blocks_count_lo)) \
 +		 : PED_LE32_TO_CPU((sb).s_r_blocks_count_lo))
++
  #define EXT2_SUPER_FREE_BLOCKS_COUNT(sb) \
 -		(PED_LE32_TO_CPU((sb).s_free_blocks_count))
 +		((EXT2_SUPER_FEATURE_INCOMPAT((sb)) & EXT4_FEATURE_INCOMPAT_64BIT) \
@@ -141,7 +140,7 @@ diff -urNad parted~/libparted/fs/ext2/ext2_fs.h parted/libparted/fs/ext2/ext2_fs
  #define EXT2_SUPER_FREE_INODES_COUNT(sb) \
  		(PED_LE32_TO_CPU((sb).s_free_inodes_count))
  #define EXT2_SUPER_FIRST_DATA_BLOCK(sb) \
-@@ -308,11 +370,6 @@
+@@ -308,11 +371,6 @@
  #define EXT2_SUPER_FIRST_INO(sb)	(PED_LE32_TO_CPU((sb).s_first_ino))
  #define EXT2_SUPER_INODE_SIZE(sb)	(PED_LE16_TO_CPU((sb).s_inode_size))
  #define EXT2_SUPER_BLOCK_GROUP_NR(sb)	(PED_LE16_TO_CPU((sb).s_block_group_nr))
@@ -153,9 +152,8 @@ diff -urNad parted~/libparted/fs/ext2/ext2_fs.h parted/libparted/fs/ext2/ext2_fs
  #define EXT2_SUPER_UUID(sb)		((sb).s_uuid)
  #define EXT2_SUPER_VOLUME_NAME(sb)	((sb).s_volume_name)
  #define EXT2_SUPER_LAST_MOUNTED(sb)	((sb).s_last_mounted)
-diff -urNad parted~/libparted/fs/ext2/ext2_mkfs.c parted/libparted/fs/ext2/ext2_mkfs.c
---- parted~/libparted/fs/ext2/ext2_mkfs.c	2009-05-23 18:46:36.000000000 -0300
-+++ parted/libparted/fs/ext2/ext2_mkfs.c	2009-05-23 19:35:37.000000000 -0300
+--- a/libparted/fs/ext2/ext2_mkfs.c
++++ b/libparted/fs/ext2/ext2_mkfs.c
 @@ -240,7 +240,7 @@
  		gd[i].bg_reserved[1] = 0;
  		gd[i].bg_reserved[2] = 0;
@@ -165,7 +163,7 @@ diff -urNad parted~/libparted/fs/ext2/ext2_mkfs.c parted/libparted/fs/ext2/ext2_
  			EXT2_SUPER_FREE_BLOCKS_COUNT(*sb)
  			+ EXT2_GROUP_FREE_BLOCKS_COUNT(gd[i]));
  	}
-@@ -424,14 +424,14 @@
+@@ -425,14 +425,14 @@
  	memset(sb, 0, 1024);
  
  	sb->s_inodes_count = PED_CPU_TO_LE32(numgroups * inodes_per_group);
@@ -183,9 +181,8 @@ diff -urNad parted~/libparted/fs/ext2/ext2_mkfs.c parted/libparted/fs/ext2/ext2_
  	sb->s_free_inodes_count = PED_CPU_TO_LE32 (numgroups
  							* inodes_per_group);
  	sb->s_first_data_block = PED_CPU_TO_LE32(first_block);
-diff -urNad parted~/libparted/fs/ext2/ext2_resize.c parted/libparted/fs/ext2/ext2_resize.c
---- parted~/libparted/fs/ext2/ext2_resize.c	2009-05-23 18:46:36.000000000 -0300
-+++ parted/libparted/fs/ext2/ext2_resize.c	2009-05-23 19:35:37.000000000 -0300
+--- a/libparted/fs/ext2/ext2_resize.c
++++ b/libparted/fs/ext2/ext2_resize.c
 @@ -104,9 +104,9 @@
  	fs->sb.s_inodes_count = PED_CPU_TO_LE32(
  		EXT2_SUPER_INODES_COUNT(fs->sb)
@@ -246,9 +243,8 @@ diff -urNad parted~/libparted/fs/ext2/ext2_resize.c parted/libparted/fs/ext2/ext
  	if (!ext2_determine_itoffset(fs) && ped_exception_throw (
                          PED_EXCEPTION_WARNING,
                          PED_EXCEPTION_OK_CANCEL,
-diff -urNad parted~/libparted/fs/ext2/interface.c parted/libparted/fs/ext2/interface.c
---- parted~/libparted/fs/ext2/interface.c	2009-05-23 18:46:36.000000000 -0300
-+++ parted/libparted/fs/ext2/interface.c	2009-05-23 19:35:37.000000000 -0300
+--- a/libparted/fs/ext2/interface.c
++++ b/libparted/fs/ext2/interface.c
 @@ -28,6 +28,7 @@
  
  static PedFileSystemType _ext2_type;
@@ -257,18 +253,18 @@ diff -urNad parted~/libparted/fs/ext2/interface.c parted/libparted/fs/ext2/inter
  
  struct ext2_dev_handle* ext2_make_dev_handle_from_parted_geometry(PedGeometry* geom);
  
-@@ -51,24 +52,20 @@
+@@ -51,25 +52,21 @@
  
- 		is_ext3 = (EXT2_SUPER_FEATURE_COMPAT (sb)
+ 		is_ext3 = (EXT2_SUPER_FEATURE_COMPAT (*sb)
  			   & EXT3_FEATURE_COMPAT_HAS_JOURNAL) != 0;
 -		if (is_ext3) {
--			is_ext4 = ((EXT2_SUPER_FEATURE_RO_COMPAT (sb)
+-			is_ext4 = ((EXT2_SUPER_FEATURE_RO_COMPAT (*sb)
 -				    & EXT4_FEATURE_RO_COMPAT_HUGE_FILE)
--				   || (EXT2_SUPER_FEATURE_RO_COMPAT (sb)
+-				   || (EXT2_SUPER_FEATURE_RO_COMPAT (*sb)
 -				       & EXT4_FEATURE_RO_COMPAT_DIR_NLINK)
--				   || (EXT2_SUPER_FEATURE_INCOMPAT (sb)
+-				   || (EXT2_SUPER_FEATURE_INCOMPAT (*sb)
 -				       & EXT4_FEATURE_INCOMPAT_EXTENTS)
--				   || (EXT2_SUPER_FEATURE_INCOMPAT (sb)
+-				   || (EXT2_SUPER_FEATURE_INCOMPAT (*sb)
 -				       & EXT4_FEATURE_INCOMPAT_64BIT));
 -			if (is_ext4)
 -				is_ext3 = 0;
@@ -281,6 +277,7 @@ diff -urNad parted~/libparted/fs/ext2/interface.c parted/libparted/fs/ext2/inter
 +			       & EXT4_FEATURE_INCOMPAT_EXTENTS)
 +			   || (EXT2_SUPER_FEATURE_INCOMPAT (sb)
 +			       & EXT4_FEATURE_INCOMPAT_64BIT));
+ 		free (sb);
  
  		if (expect_ext_ver == 2 && (is_ext3 || is_ext4))
  			return NULL;
@@ -292,7 +289,7 @@ diff -urNad parted~/libparted/fs/ext2/interface.c parted/libparted/fs/ext2/inter
  			return NULL;
  
  		if (version > 0 && group_nr > 0) {
-@@ -351,6 +348,18 @@
+@@ -362,6 +359,18 @@
  
  static PedFileSystemOps _ext4_ops = {
  	probe:		_ext4_probe,
@@ -311,7 +308,7 @@ diff -urNad parted~/libparted/fs/ext2/interface.c parted/libparted/fs/ext2/inter
  	clobber:	NULL,
  	open:		NULL,
  	create:         NULL,
-@@ -361,6 +370,7 @@
+@@ -372,6 +381,7 @@
  	get_create_constraint:	NULL,
  	get_copy_constraint:	NULL,
  	get_resize_constraint:	NULL
