@@ -30,7 +30,7 @@ DEBPKGVER = $(shell dpkg-parsechangelog | sed -n -e '/^Version: /{s///;p;q;}')
 # end if there isn't already one, otherwise increment the letter that is
 # already there.
 # When incrementing this, also set DEPVER to the current package version.
-LIBPKGVER = 1.8
+LIBPKGVER = 2.1
 
 # Append the LIBPKGVER to non-lib package names? This is useful when building
 # packages of the development versions of parted (eg. to build a parted1.5
@@ -39,11 +39,11 @@ LIBPKGVER = 1.8
 
 # The first version of the package to build with the current LIBPKGVER
 # This should be changed to the current version when LIBPKGVER is changed ...
-DEPVER = 1.8.8.git.2009.06.03-1
+DEPVER = 2.1-1
 
 # This is the library's soname. The build will fail if this is wrong, since
 # if the soname has changed we need to update stuff ...
-LIBSONAME = 12
+LIBSONAME = 0
 
 # This is for the version for the shared library
 SHAREDLIBPKGVER = $(LIBPKGVER)-$(LIBSONAME)
