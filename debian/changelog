@@ -3,7 +3,7 @@ parted (2.1-1) UNRELEASED; urgency=low
   * New upstream release
 
   [ Otavio Salvador ]
-  * control.in: bump prefered soname for libreadline (closes: #553824).
+  * control.in: bump preferred soname for libreadline (closes: #553824).
 
   [ Colin Watson ]
   * control.in: Remove copy-and-paste error from libparted1.8-i18n
@@ -17,7 +17,7 @@ parted (2.1-1) UNRELEASED; urgency=low
 
   [ Xavier Oswald ]
   * debian/control.in: 
-    - Change my mail adress
+    - Change my mail address
     - Bump Standards-Version to 3.8.3
     - Update Build-Depends on debhelper 7
   * debian/compat: update version to 7

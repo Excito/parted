@@ -25,7 +25,7 @@ export DH_OPTIONS
 DEBPKGVER = $(shell dpkg-parsechangelog | sed -n -e '/^Version: /{s///;p;q;}')
 
 # The library package version, ie. version 0.2 will build package
-# libparted0.2, libparted0.2-dev etc.
+# libparted-0.2, libparted-0.2-dev etc.
 # When incrementing this because of a new library SONAME, add an 'a' to the
 # end if there isn't already one, otherwise increment the letter that is
 # already there.
@@ -57,9 +57,9 @@ SUBSTS = LIBPKGVER BINPKGVER DEPVER LIBSONAME SHAREDLIBPKGVER
 # You will probably need to change this depending on what files your package
 # needs ...
 GENFILES = debian/control \
-	debian/libparted$(SHAREDLIBPKGVER).files \
-	debian/libparted$(LIBPKGVER)-dev.files \
-	debian/libparted$(LIBPKGVER)-i18n.files \
+	debian/libparted-$(SHAREDLIBPKGVER).files \
+	debian/libparted-$(LIBPKGVER)-dev.files \
+	debian/libparted-$(LIBPKGVER)-i18n.files \
 
 ifneq (, $(BINPKGVER))
 GENFILES += debian/parted$(BINPKGVER).files \
@@ -149,11 +149,11 @@ SUBSTLIST = $(foreach subst, $(SUBSTS), s/@$(subst)@/$($(subst))/g;)
 debian/%: debian/%.in debian/rules
 	sed -e '$(SUBSTLIST)' < $< > $@
 
-# This puts the libparted* packaging files in their right places
-debian/libparted$(SHAREDLIBPKGVER)%: debian/libparted%
+# This puts the libparted-* packaging files in their right places
+debian/libparted-$(SHAREDLIBPKGVER)%: debian/libparted%
 	cp $< $@
 
-debian/libparted$(LIBPKGVER)%: debian/libparted%
+debian/libparted-$(LIBPKGVER)%: debian/libparted%
 	cp $< $@
 
 debian/parted$(BINPKGVER)%: debian/parted%
@@ -263,13 +263,13 @@ clean: unpatch packaging-files
 	rm -rf build-deb build-udeb build-dbg
 
 #	 Remove all debian/libparted*.* except for libparted.*,
-#	 libparted-dev.* and libparted$(LIBPKGVER)*
+#	 libparted-dev.* and libparted-$(LIBPKGVER)*
 	@for file in debian/libparted*; do \
 	   file="`basename $$file`"; \
 	   case "$$file" in \
 	   libparted.*|libparted-dev.*|libparted-i18n.*|\
-	   libparted$(LIBPKGVER).*|libparted$(LIBPKGVER)-dev.*|\
-	   libparted$(LIBPKGVER)-i18n.*|libparted$(LIBPKGVER)-udeb.*) \
+	   libparted-$(LIBPKGVER).*|libparted-$(LIBPKGVER)-dev.*|\
+	   libparted-$(LIBPKGVER)-i18n.*|libparted-$(LIBPKGVER)-udeb.*) \
 	      ;; \
 	   *) \
 	      echo "rm -rf \"debian/$$file\""; \
@@ -279,11 +279,11 @@ clean: unpatch packaging-files
 
 	dh_clean
 
-install: DH_OPTIONS=-Nparted$(BINPKGVER)-udeb -Nlibparted$(LIBPKGVER)-udeb -Nlibparted$(LIBPKGVER)-dbg
+install: DH_OPTIONS=-Nparted$(BINPKGVER)-udeb -Nlibparted-$(LIBPKGVER)-udeb -Nlibparted-$(LIBPKGVER)-dbg
 install: build packaging-files
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 
 	$(MAKE) -C build-deb install DESTDIR=$(CURDIR)/debian/tmp
@@ -328,34 +328,34 @@ install: build packaging-files
 	   echo " *** Maybe the debian/*.files files need updating ..." >&2; \
 	 fi
 
-install-udeb: DH_OPTIONS=-pparted$(BINPKGVER)-udeb -plibparted$(LIBPKGVER)-udeb
-install-udeb: LIBPARTED_UDEB=$(shell dh_listpackages | grep -E '^libparted$(LIBPKGVER)-udeb$$')
+install-udeb: DH_OPTIONS=-pparted$(BINPKGVER)-udeb -plibparted-$(LIBPKGVER)-udeb
+install-udeb: LIBPARTED_UDEB=$(shell dh_listpackages | grep -E '^libparted-$(LIBPKGVER)-udeb$$')
 install-udeb: PARTED_UDEB=$(shell dh_listpackages | grep -E '^parted$(BINPKGVER)-udeb$$')
 install-udeb: build-udeb
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 
 	[ -z "$(LIBPARTED_UDEB)" ] || \
 	   $(MAKE) -C build-udeb/libparted install \
-			DESTDIR=$(CURDIR)/debian/libparted$(LIBPKGVER)-udeb
+			DESTDIR=$(CURDIR)/debian/libparted-$(LIBPKGVER)-udeb
 
 	[ -z "$(LIBPARTED_UDEB)" ] || \
-	   rm -f debian/libparted$(LIBPKGVER)-udeb/lib/libparted.so \
-	         debian/libparted$(LIBPKGVER)-udeb/lib/libparted.la
+	   rm -f debian/libparted-$(LIBPKGVER)-udeb/lib/libparted.so \
+	         debian/libparted-$(LIBPKGVER)-udeb/lib/libparted.la
 
 	[ -z "$(PARTED_UDEB)" ] || $(MAKE) -C build-udeb/parted install \
 			DESTDIR=$(CURDIR)/debian/parted$(BINPKGVER)-udeb
 
-install-dbg: DH_OPTIONS=-plibparted$(LIBPKGVER)-dbg
+install-dbg: DH_OPTIONS=-plibparted-$(LIBPKGVER)-dbg
 install-dbg: build-dbg
 	dh_testdir
 	dh_testroot
-	dh_clean -k -plibparted$(LIBPKGVER)-dbg
+	dh_prep -plibparted-$(LIBPKGVER)-dbg
 
 	install -D -m644 build-dbg/libparted/.libs/libparted.a \
-	   debian/libparted$(LIBPKGVER)-dbg/usr/lib/libparted_g.a
+	   debian/libparted-$(LIBPKGVER)-dbg/usr/lib/libparted_g.a
 
 # This single target is used to build all the packages, all at once, or
 # one at a time. So keep in mind: any options passed to commands here will
@@ -375,10 +375,10 @@ binary-common:
 	dh_link
 	dh_compress
 	dh_fixperms
-	dh_makeshlibs -V'libparted$(SHAREDLIBPKGVER) (>= $(DEPVER))' \
-		--add-udeb=$(shell dh_listpackages | grep -E '^libparted$(LIBPKGVER)-udeb$$')
-	dh_shlibdeps -Llibparted$(SHAREDLIBPKGVER) \
-		-l/debian/libparted$(SHAREDLIBPKGVER)/lib
+	dh_makeshlibs -V'libparted-$(SHAREDLIBPKGVER) (>= $(DEPVER))' \
+		--add-udeb=$(shell dh_listpackages | grep -E '^libparted-$(LIBPKGVER)-udeb$$')
+	dh_shlibdeps -Llibparted-$(SHAREDLIBPKGVER) \
+		-l/debian/libparted-$(SHAREDLIBPKGVER)/lib
 	dh_installdeb
 	dh_gencontrol
 	dh_md5sums
@@ -395,8 +395,8 @@ binary-indep: build install
 # FIXME: this is an ugly hack :-( Work out a better way to build the
 # separate debug package ...
 binary-arch: build install install-udeb
-	$(MAKE) -f debian/rules DH_OPTIONS="-a -Nlibparted$(LIBPKGVER)-dbg" binary-common
-	$(MAKE) -f debian/rules binary-libparted$(LIBPKGVER)-dbg
+	$(MAKE) -f debian/rules DH_OPTIONS="-a -Nlibparted-$(LIBPKGVER)-dbg" binary-common
+	$(MAKE) -f debian/rules binary-libparted-$(LIBPKGVER)-dbg
 
 # Any other binary targets build just one binary package at a time.
 binary-%-dbg: build-dbg install-dbg
