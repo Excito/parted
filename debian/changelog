@@ -22,6 +22,8 @@ parted (2.1-1) UNRELEASED; urgency=low
     - Update Build-Depends on debhelper 7
   * debian/compat: update version to 7
   * Refresh update-ext4-code.patch
+  * Parted not informing the kernel of changes to the partition table 
+    (Closes: #557044), fixed upstream
 
   [ Otavio Salvador ]
   * debian/watch: fix URL to download
