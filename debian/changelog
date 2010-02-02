@@ -24,6 +24,13 @@ parted (2.1-1) UNRELEASED; urgency=low
 
   [ Otavio Salvador ]
   * debian/watch: fix URL to download
+  * Switch to quilt to manage patches
+    - unpartitioned-disks.dpatch, drop (merged upstream)
+    - unblacklist-md.dpatch, drop (merged upstream)
+    - amiga-raid-lvm-fix.dpatch, drop (not used for ages)
+    - devfs.dpatch, drop (devfs is not used)
+    - reiserfs-libname.dpatch, drop (referenced library is unavailable)
+
 
  -- Otavio Salvador <otavio@debian.org>  Mon, 14 Sep 2009 13:54:18 -0300
 

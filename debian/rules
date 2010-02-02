@@ -176,7 +176,7 @@ echo-vars:
 
 packaging-files: $(GENFILES)
 
-build-deb/config.status: patch-stamp
+build-deb/config.status: patch
 	dh_testdir
 	[ -d build-deb ] || mkdir build-deb
 
@@ -193,7 +193,7 @@ endif
 		$(CONFDEVMAPPER) \
 	    $(CONFFLAGS)
 
-build-udeb/config.status: patch-stamp
+build-udeb/config.status: patch
 	dh_testdir
 	[ -d build-udeb ] || mkdir build-udeb
 
@@ -204,7 +204,7 @@ build-udeb/config.status: patch-stamp
 	    --without-readline $(CONFDEVMAPPER) \
 		$(CONFFLAGS)
 
-build-dbg/config.status: patch-stamp
+build-dbg/config.status: patch
 	dh_testdir
 	[ -d build-dbg ] || mkdir build-dbg
 
@@ -407,11 +407,11 @@ binary-%: build install
 
 binary: binary-arch binary-indep
 
+include /usr/share/quilt/quilt.make
+
 .PHONY: configure configure-udeb configure-dbg
 .PHONY: build build-udeb build-dbg
 .PHONY: install install-udeb install-dbg
 .PHONY: clean binary-indep binary-arch binary
 .PHONY: binary-%-dbg binary-%-udeb binary-%
 .PHONY: packaging-files
-
-include /usr/share/dpatch/dpatch.make

@@ -1,10 +1,9 @@
-#! /bin/sh /usr/share/dpatch/dpatch-run
-## update-ext4-code.dpatch by Colin Watson <cjwatson@ubuntu.com>
-##
-## All lines beginning with `## DP:' are a description of the patch.
-## DP: Improve ext4 support
+From: Colin Watson <cjwatson@ubuntu.com>
+Forwarded: http://lists.alioth.debian.org/pipermail/parted-devel/2009-January/002503.html
+Bug: http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/188
+Last-Update: 2009-01-05
+Description: Improve ext4 code
 
-@DPATCH@
 diff -urNad parted~/libparted/fs/ext2/ext2.c parted/libparted/fs/ext2/ext2.c
 --- parted~/libparted/fs/ext2/ext2.c	2009-05-23 18:46:36.000000000 -0300
 +++ parted/libparted/fs/ext2/ext2.c	2009-05-23 19:35:37.000000000 -0300

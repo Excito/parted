@@ -8,7 +8,6 @@ Vcs-Git: git://git.debian.org/git/parted/debian/parted.git
 Vcs-Browser: http://git.debian.org/?p=parted/debian/parted.git
 Build-Depends:
  debhelper (>= 7),
- dpatch,
  libncurses-dev | libncurses5-dev,
  libreadline-dev | libreadline6-dev,
  libdevmapper-dev [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64],

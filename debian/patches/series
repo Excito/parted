@@ -1,0 +1,7 @@
+# Debian specific patches
+doc-package.patch
+
+# For upstream merging
+preserve-hidden-parts.patch
+#update-ext4-code.patch
+#unblacklist-md.patch
