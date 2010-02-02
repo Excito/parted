@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999, 2000, 2007, 2009 Free Software Foundation, Inc.
+    Copyright (C) 1999-2000, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,6 +23,8 @@
 #include <parted/endian.h>
 #include <stdbool.h>
 
+#include "pt-tools.h"
+
 #if ENABLE_NLS
 #  include <libintl.h>
 #  define _(String) dgettext (PACKAGE, String)
@@ -40,20 +42,18 @@ static void loop_free (PedDisk* disk);
 static int
 loop_probe (const PedDevice* dev)
 {
-	PedDisk*	disk;
-	char		buf [512];
-	int		result;
-
-        if (dev->sector_size != 512)
-                return 0;
-
-	disk = loop_alloc (dev);
+	PedDisk *disk = loop_alloc (dev);
 	if (!disk)
 		goto error;
 
-	if (!ped_device_read (dev, buf, 0, 1))
+	void *buf;
+	if (!ptt_read_sector (dev, 0, &buf))
 		goto error_destroy_disk;
-	if (strncmp (buf, LOOP_SIGNATURE, strlen (LOOP_SIGNATURE)) == 0) {
+        int found_sig = !strncmp (buf, LOOP_SIGNATURE, strlen (LOOP_SIGNATURE));
+        free (buf);
+
+	int result;
+	if (found_sig) {
 		result = 1;
 	} else {
 		PedGeometry*	geom;
@@ -77,18 +77,8 @@ error:
 static int
 loop_clobber (PedDevice* dev)
 {
-	char		buf [512];
-	PedSector	i = 0;
-
 	PED_ASSERT (dev != NULL, return 0);
-
-	memset (buf, 0, 512);
-
-	while (loop_probe (dev)) {
-		if (!ped_device_write (dev, buf, i++, 1))
-			return 0;
-	}
-	return 1;
+        return ptt_clear_sectors (dev, 0, 1);
 }
 #endif /* !DISCOVER_ONLY */
 
@@ -120,7 +110,6 @@ static int
 loop_read (PedDisk* disk)
 {
 	PedDevice*		dev = NULL;
-	char			buf [512];
 	PedGeometry*		geom;
 	PedFileSystemType*	fs_type;
 	PedPartition*		part;
@@ -132,10 +121,17 @@ loop_read (PedDisk* disk)
 
 	ped_disk_delete_all (disk);
 
-	if (!ped_device_read (dev, buf, 0, 1))
+	void *buf;
+	if (!ptt_read_sector (dev, 0, &buf))
 		goto error;
-	if (!strncmp (buf, LOOP_SIGNATURE, strlen (LOOP_SIGNATURE)))
+
+        int found_sig = !strncmp (buf, LOOP_SIGNATURE, strlen (LOOP_SIGNATURE));
+        free (buf);
+
+        if (found_sig) {
+		ped_constraint_destroy (constraint_any);
 		return 1;
+        }
 
 	geom = ped_geometry_new (dev, 0, dev->length);
 	if (!geom)
@@ -168,21 +164,30 @@ error:
 static int
 loop_write (const PedDisk* disk)
 {
-	char		buf [512];
+	size_t buflen = disk->dev->sector_size;
+	char *buf = ped_malloc (buflen);
+	if (buf == NULL)
+		return 0;
 
 	if (ped_disk_get_partition (disk, 1)) {
-		if (!ped_device_read (disk->dev, buf, 0, 1))
+		if (!ped_device_read (disk->dev, buf, 0, 1)) {
+			free (buf);
 			return 0;
-		if (strncmp (buf, LOOP_SIGNATURE, strlen (LOOP_SIGNATURE)) != 0)
-	       		return 1;
+		}
+		if (strncmp (buf, LOOP_SIGNATURE, strlen (LOOP_SIGNATURE)) != 0) {
+			free (buf);
+			return 1;
+                }
 		memset (buf, 0, strlen (LOOP_SIGNATURE));
 		return ped_device_write (disk->dev, buf, 0, 1);
 	}
 
-	memset (buf, 0, 512);
+	memset (buf, 0, buflen);
 	strcpy (buf, LOOP_SIGNATURE);
 
-	return ped_device_write (disk->dev, buf, 0, 1);
+        int write_ok = ped_device_write (disk->dev, buf, 0, 1);
+        free (buf);
+	return write_ok;
 }
 #endif /* !DISCOVER_ONLY */
 
@@ -288,40 +293,17 @@ loop_get_max_supported_partition_count (const PedDisk* disk, int *max_n)
 	return true;
 }
 
-static PedDiskOps loop_disk_ops = {
-	probe:			loop_probe,
-#ifndef DISCOVER_ONLY
-	clobber:		loop_clobber,
-#else
-	clobber:		NULL,
-#endif
-	alloc:			loop_alloc,
-	duplicate:		loop_duplicate,
-	free:			loop_free,
-	read:			loop_read,
-#ifndef DISCOVER_ONLY
-	write:			loop_write,
-#else
-	write:			NULL,
-#endif
+#include "pt-common.h"
+PT_define_limit_functions (loop)
 
-	partition_new:		loop_partition_new,
-	partition_duplicate:	loop_partition_duplicate,
-	partition_destroy:	loop_partition_destroy,
-	partition_set_system:	loop_partition_set_system,
-	partition_set_flag:	loop_partition_set_flag,
-	partition_get_flag:	loop_partition_get_flag,
-	partition_is_flag_available:	loop_partition_is_flag_available,
+static PedDiskOps loop_disk_ops = {
+	clobber:		NULL_IF_DISCOVER_ONLY (loop_clobber),
+	write:			NULL_IF_DISCOVER_ONLY (loop_write),
+
 	partition_set_name:	NULL,
 	partition_get_name:	NULL,
-	partition_align:	loop_partition_align,
-	partition_enumerate:	loop_partition_enumerate,
 
-	alloc_metadata:		loop_alloc_metadata,
-	get_max_primary_partition_count:
-				loop_get_max_primary_partition_count,
-	get_max_supported_partition_count:
-				loop_get_max_supported_partition_count
+	PT_op_function_initializers (loop)
 };
 
 static PedDiskType loop_disk_type = {

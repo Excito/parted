@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999, 2000, 2001, 2007, 2009 Free Software Foundation, Inc.
+    Copyright (C) 1999-2001, 2007, 2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -128,7 +128,7 @@ gettext_to_wchar (const char* str)
 
 error:
 	printf ("Error during translation: %s\n", strerror (errno));
-	exit (1);
+	exit (EXIT_FAILURE);
 }
 
 #else /* ENABLE_NLS */
@@ -177,7 +177,7 @@ wchar_to_str (const wchar_t* str, size_t count)
 
 error:
 	printf ("Error during translation: %s\n", strerror (errno));
-	exit (1);
+	exit (EXIT_FAILURE);
 }
 
 #else /* ENABLE_NLS */
@@ -226,7 +226,8 @@ str_list_destroy (StrList* list)
 void
 str_list_destroy_node (StrList* list)
 {
-	free ((wchar_t*) list->str);
+	void *p = (char *) (list->str); /* discard const */
+	free (p);
 	free (list);
 }
 

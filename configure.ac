@@ -28,9 +28,15 @@ dnl set PED_BINARY_AGE _and_ PED_INTERFACE_AGE to 0.
 
 # Derive these numbers from $PACKAGE_VERSION, which is set
 # when autoconf creates configure (see AC_INIT, above).
-PED_MAJOR_VERSION=1
-PED_MINOR_VERSION=8
-PED_MICRO_VERSION=12
+PED_MAJOR_VERSION=`echo "$PACKAGE_VERSION"|sed 's/\..*//'`
+PED_MINOR_VERSION=`echo "$PACKAGE_VERSION"|sed 's/^[[0-9]][[0-9]]*\.//;s/\..*//'`
+case $PACKAGE_VERSION in
+  *.*.*.*.*)
+    PED_MICRO_VERSION=`echo "$PACKAGE_VERSION" \
+      | sed 's/^[^.]*\.[^.]*\.//;s/\..*//'`
+    ;;
+  *) PED_MICRO_VERSION=0;;
+esac
 
 PED_INTERFACE_AGE=0
 PED_BINARY_AGE=0
@@ -54,9 +60,7 @@ case "$host_os" in
 	linux*) OS=linux ;;
 	gnu*)	OS=gnu ;;
 	beos*)	OS=beos ;;
-	*freebsd*)
-		OS=freebsd ;;
-	*)	AC_MSG_ERROR([Unknown or unsupported OS "$host_os".  Only "linux", "gnu", "beos" and "freebsd" are supported in this version of GNU Parted.]) ;;
+	*)	AC_MSG_ERROR([Unknown or unsupported OS "$host_os".  Only "linux", "gnu" and "beos" are supported in this version of GNU Parted.]) ;;
 esac
 AC_SUBST([OS])
 
@@ -186,6 +190,90 @@ dnl whether functions and headers are available, whether they work, etc.
 AC_SYS_LARGEFILE
 
 gl_INIT
+
+AC_ARG_ENABLE([gcc-warnings],
+  [AS_HELP_STRING([--enable-gcc-warnings],
+		  [turn on lots of GCC warnings (for developers)])],
+  [case $enableval in
+     yes|no) ;;
+     *)      AC_MSG_ERROR([bad value $enableval for gcc-warnings option]) ;;
+   esac
+   gl_gcc_warnings=$enableval],
+  [gl_gcc_warnings=no]
+)
+
+if test "$gl_gcc_warnings" = yes; then
+  gl_WARN_ADD([-Werror], [WERROR_CFLAGS])
+  AC_SUBST([WERROR_CFLAGS])
+
+  nw=
+  # This, $nw, is the list of warnings we disable.
+  nw="$nw -Wdeclaration-after-statement" # too useful to forbid
+  nw="$nw -Waggregate-return"       # anachronistic
+  nw="$nw -Wlong-long"              # C90 is anachronistic (lib/gethrxtime.h)
+  nw="$nw -Wc++-compat"             # We don't care about C++ compilers
+  nw="$nw -Wundef"                  # Warns on '#if GNULIB_FOO' etc in gnulib
+  nw="$nw -Wtraditional"            # Warns on #elif which we use often
+  nw="$nw -Wcast-qual"              # Too many warnings for now
+  nw="$nw -Wconversion"             # Too many warnings for now
+  nw="$nw -Wsystem-headers"         # Don't let system headers trigger warnings
+  nw="$nw -Wsign-conversion"        # Too many warnings for now
+  nw="$nw -Wtraditional-conversion" # Too many warnings for now
+  nw="$nw -Wunreachable-code"       # Too many warnings for now
+  nw="$nw -Wpadded"                 # Our structs are not padded
+  nw="$nw -Wredundant-decls"        # openat.h declares e.g., mkdirat
+  nw="$nw -Wlogical-op"             # any use of fwrite provokes this
+  nw="$nw -Wformat-nonliteral"      # who.c and pinky.c strftime uses
+  nw="$nw -Wvla"                    # warnings in gettext.h
+  nw="$nw -Wnested-externs"         # use of XARGMATCH/verify_function__
+  nw="$nw -Wswitch-enum"            # Too many warnings for now
+  nw="$nw -Wswitch-default"         # Too many warnings for now
+  # Too many warnings for now
+  nw="$nw -Wattributes"
+  nw="$nw -Wstrict-prototypes"
+  nw="$nw -Wold-style-definition"
+  nw="$nw -Wpacked"
+  nw="$nw -Wmissing-prototypes"
+  nw="$nw -Wmissing-declarations"
+  nw="$nw -Wmissing-noreturn"
+  # things I might fix soon:
+  nw="$nw -Wfloat-equal"            # sort.c, seq.c
+  nw="$nw -Wmissing-format-attribute" # copy.c
+  nw="$nw -Wunsafe-loop-optimizations" # a few src/*.c
+  nw="$nw -Winline"                 # system.h's readdir_ignoring_dot_and_dotdot
+  nw="$nw -Wstrict-overflow"        # expr.c, pr.c, tr.c, factor.c
+  nw="$nw -Wstack-protector"        # libparted/label/gpt.c
+  # ?? -Wstrict-overflow
+
+  gl_MANYWARN_ALL_GCC([ws])
+  gl_MANYWARN_COMPLEMENT([ws], [$ws], [$nw])
+  for w in $ws; do
+    gl_WARN_ADD([$w])
+  done
+  gl_WARN_ADD([-Wno-missing-field-initializers]) # We need this one
+  gl_WARN_ADD([-Wno-sign-compare])     # Too many warnings for now
+  gl_WARN_ADD([-Wno-pointer-sign])     # Too many warnings for now
+  gl_WARN_ADD([-Wno-unused-parameter]) # Too many warnings for now
+  gl_WARN_ADD([-Wno-unused-macros]) # Too many warnings for now
+
+  # FIXME: investigate these
+  gl_WARN_ADD([-Wno-jump-misses-init])
+
+  # In spite of excluding -Wlogical-op above, it is enabled, as of
+  # gcc 4.5.0 20090517, and it provokes warnings in cat.c, dd.c, truncate.c
+  gl_WARN_ADD([-Wno-logical-op])
+
+  gl_WARN_ADD([-fdiagnostics-show-option])
+
+  AC_SUBST([WARN_CFLAGS])
+
+  AC_DEFINE([lint], [1], [Define to 1 if the compiler is checking for lint.])
+  AC_DEFINE([_FORTIFY_SOURCE], [2],
+    [enable compile-time and run-time bounds-checking, and some warnings])
+  AC_DEFINE([GNULIB_PORTCHECK], [1], [enable some gnulib portability checks])
+fi
+
+
 
 AC_CHECK_SIZEOF([off_t], [64], [
 	#include <stdio.h>
@@ -514,6 +602,18 @@ USER=$(whoami)
 HOST=$(hostname)
 BUILDINFO="$USER@$HOST, $DATE"
 AC_SUBST([BUILDINFO])
+
+LIB_BLKID=
+AC_SUBST([LIB_BLKID])
+pe_saved_libs=$LIBS
+  AC_SEARCH_LIBS([blkid_probe_get_topology], [blkid],
+    [test "$ac_cv_search_blkid_probe_get_topology" = "none required" \
+     || LIB_BLKID=$ac_cv_search_blkid_probe_get_topology])
+  AC_CHECK_FUNC([blkid_probe_get_topology], [use_blkid=1], [use_blkid=0])
+LIBS=$pe_saved_libs
+AC_DEFINE_UNQUOTED([USE_BLKID], [$use_blkid],
+  [Define if you have sufficient blkid support.])
+AC_CHECK_HEADERS_ONCE([blkid/blkid.h])
 
 AC_OUTPUT([
 Makefile

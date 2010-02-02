@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2001, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 2000-2001, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #include <parted/parted.h>
 #include <parted/debug.h>
 #include <parted/endian.h>
+
+#include "pt-tools.h"
 
 #if ENABLE_NLS
 #  include <libintl.h>
@@ -501,34 +503,37 @@ fill_raw_part (PC98RawPartition* raw_part, const PedPartition* part)
 static int
 pc98_write (const PedDisk* disk)
 {
-	PC98RawTable		table;
 	PedPartition*		part;
 	int			i;
 
 	PED_ASSERT (disk != NULL, return 0);
 	PED_ASSERT (disk->dev != NULL, return 0);
 
-	if (!ped_device_read (disk->dev, &table, 0, 2))
+	void *s0;
+	if (!ptt_read_sectors (disk->dev, 0, 2, &s0))
 		return 0;
+	PC98RawTable *table = s0;
 
-	if (!pc98_check_ipl_signature (&table)) {
-		memset (table.boot_code, 0, sizeof(table.boot_code));
-		memcpy (table.boot_code, MBR_BOOT_CODE, sizeof(MBR_BOOT_CODE));
+	if (!pc98_check_ipl_signature (table)) {
+		memset (table->boot_code, 0, sizeof(table->boot_code));
+		memcpy (table->boot_code, MBR_BOOT_CODE, sizeof(MBR_BOOT_CODE));
 	}
 
-	memset (table.partitions, 0, sizeof (table.partitions));
-	table.magic = PED_CPU_TO_LE16(PC9800_EXTFMT_MAGIC);
+	memset (table->partitions, 0, sizeof (table->partitions));
+	table->magic = PED_CPU_TO_LE16(PC9800_EXTFMT_MAGIC);
 
 	for (i = 1; i <= MAX_PART_COUNT; i++) {
 		part = ped_disk_get_partition (disk, i);
 		if (!part)
 			continue;
 
-		if (!fill_raw_part (&table.partitions [i - 1], part))
+		if (!fill_raw_part (&table->partitions [i - 1], part))
 			return 0;
 	}
 
-	if (!ped_device_write (disk->dev, (void*) &table, 0, 2))
+	int write_ok = ped_device_write (disk->dev, table, 0, 2);
+	free (s0);
+	if (!write_ok)
 		return 0;
 	return ped_device_sync (disk->dev);
 }
@@ -720,6 +725,15 @@ pc98_partition_get_name (const PedPartition* part)
 	return pc98_data->name;
 }
 
+static PedAlignment*
+pc98_get_partition_alignment(const PedDisk *disk)
+{
+	PedSector cylinder_size =
+		disk->dev->hw_geom.sectors * disk->dev->hw_geom.heads;
+
+        return ped_alignment_new(0, cylinder_size);
+}
+
 static PedConstraint*
 _primary_constraint (PedDisk* disk)
 {
@@ -839,40 +853,19 @@ pc98_get_max_supported_partition_count (const PedDisk* disk, int *max_n)
 	return true;
 }
 
-static PedDiskOps pc98_disk_ops = {
-	probe:			pc98_probe,
-#ifndef DISCOVER_ONLY
-	clobber:		pc98_clobber,
-#else
-	clobber:		NULL,
-#endif
-	alloc:			pc98_alloc,
-	duplicate:		pc98_duplicate,
-	free:			pc98_free,
-	read:			pc98_read,
-#ifndef DISCOVER_ONLY
-	write:			pc98_write,
-#else
-	write:			NULL,
-#endif
+#include "pt-common.h"
+PT_define_limit_functions (pc98)
 
-	partition_new:		pc98_partition_new,
-	partition_duplicate:	pc98_partition_duplicate,
-	partition_destroy:	pc98_partition_destroy,
-	partition_set_system:	pc98_partition_set_system,
-	partition_set_flag:	pc98_partition_set_flag,
-	partition_get_flag:	pc98_partition_get_flag,
-	partition_is_flag_available:	pc98_partition_is_flag_available,
+static PedDiskOps pc98_disk_ops = {
+	clobber:		NULL_IF_DISCOVER_ONLY (pc98_clobber),
+	write:			NULL_IF_DISCOVER_ONLY (pc98_write),
+
 	partition_set_name:	pc98_partition_set_name,
 	partition_get_name:	pc98_partition_get_name,
-	partition_align:	pc98_partition_align,
-	partition_enumerate:	pc98_partition_enumerate,
 
-	alloc_metadata:		pc98_alloc_metadata,
-	get_max_primary_partition_count:
-				pc98_get_max_primary_partition_count,
-	get_max_supported_partition_count:
-				pc98_get_max_supported_partition_count
+	get_partition_alignment: pc98_get_partition_alignment,
+
+	PT_op_function_initializers (pc98)
 };
 
 static PedDiskType pc98_disk_type = {

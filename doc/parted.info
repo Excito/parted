@@ -1,5 +1,4 @@
-This is ../../doc/parted.info, produced by makeinfo version 4.13 from
-../../doc/parted.texi.
+This is parted.info, produced by makeinfo version 4.13 from parted.texi.
 
 This file documents the use of GNU Parted, a program for creating,
 resizing, checking and copy partitions and file systems on them.
@@ -27,8 +26,7 @@ This document describes the use of GNU Parted, a program for creating,
 destroying, resizing, checking and copying hard drive partitions, and
 the file systems on them.
 
-  This document applies roughly to version *UNKNOWN-dirty* of GNU
-Parted.
+  This document applies roughly to version *2.1* of GNU Parted.
 
   The original version was written by Andrew Clausen in text format.
 Richard M. Kreuter translated it into Texinfo format in 2002, to be
@@ -422,6 +420,11 @@ begin with a hyphen, commands do not:
 `--script'
      never prompt the user
 
+`-a alignment-type'
+`--align alignment-type'
+     Set alignment for newly created partitions, valid alignment types
+     are: none, cylinder, minimal and optimal.
+
 `-v'
 `--version'
      display the version
@@ -436,6 +439,7 @@ GNU Parted provides the following commands:
 
 * Menu:
 
+* align-check::
 * check::
 * cp::
 * help::
@@ -455,9 +459,31 @@ GNU Parted provides the following commands:
 * unit::
 
 
-File: parted.info,  Node: check,  Next: cp,  Up: Command explanations
+File: parted.info,  Node: align-check,  Next: check,  Up: Command explanations
 
-2.4.1 check
+2.4.1 align-check
+-----------------
+
+ -- Command: align-check ALIGN-TYPE N
+     Determine whether the starting sector of partition N meets the
+     disk's selected alignment criteria.  ALIGN-TYPE must be `minimal',
+     `optimal' or an abbreviation.  When in script mode, if the
+     partition does not meet the alignment requirement, exit with
+     status 1;  otherwise (including on older kernels for which
+     alignment data is not available), continue processing any
+     remaining commands.  Without `--script', print either `N aligned'
+     or `N not aligned'.
+
+     Example:
+
+          (parted) align-check minimal 1
+          1 aligned
+
+
+
+File: parted.info,  Node: check,  Next: cp,  Prev: align-check,  Up: Command explanations
+
+2.4.2 check
 -----------
 
  -- Command: check NUMBER
@@ -472,7 +498,7 @@ File: parted.info,  Node: check,  Next: cp,  Up: Command explanations
 
 File: parted.info,  Node: cp,  Next: help,  Prev: check,  Up: Command explanations
 
-2.4.2 cp
+2.4.3 cp
 --------
 
  -- Command: cp [FROM-DEVICE] FROM-NUMBER TO-NUMBER
@@ -505,7 +531,7 @@ File: parted.info,  Node: cp,  Next: help,  Prev: check,  Up: Command explanatio
 
 File: parted.info,  Node: help,  Next: mklabel,  Prev: cp,  Up: Command explanations
 
-2.4.3 help
+2.4.4 help
 ----------
 
  -- Command: help [COMMAND]
@@ -520,7 +546,7 @@ File: parted.info,  Node: help,  Next: mklabel,  Prev: cp,  Up: Command explanat
 
 File: parted.info,  Node: mklabel,  Next: mkfs,  Prev: help,  Up: Command explanations
 
-2.4.4 mklabel
+2.4.5 mklabel
 -------------
 
  -- Command: mklabel LABEL-TYPE
@@ -561,7 +587,7 @@ are all the same thing: partition table, partition map.
 
 File: parted.info,  Node: mkfs,  Next: mkpart,  Prev: mklabel,  Up: Command explanations
 
-2.4.5 mkfs
+2.4.6 mkfs
 ----------
 
  -- Command: mkfs NUMBER FS-TYPE
@@ -586,7 +612,7 @@ File: parted.info,  Node: mkfs,  Next: mkpart,  Prev: mklabel,  Up: Command expl
 
 File: parted.info,  Node: mkpart,  Next: mkpartfs,  Prev: mkfs,  Up: Command explanations
 
-2.4.6 mkpart
+2.4.7 mkpart
 ------------
 
  -- Command: mkpart [PART-TYPE FS-TYPE NAME] START END
@@ -631,7 +657,7 @@ File: parted.info,  Node: mkpart,  Next: mkpartfs,  Prev: mkfs,  Up: Command exp
 
 File: parted.info,  Node: mkpartfs,  Next: move,  Prev: mkpart,  Up: Command explanations
 
-2.4.7 mkpartfs
+2.4.8 mkpartfs
 --------------
 
  -- Command: mkpartfs PART-TYPE FS-TYPE START END
@@ -666,7 +692,7 @@ File: parted.info,  Node: mkpartfs,  Next: move,  Prev: mkpart,  Up: Command exp
 
 File: parted.info,  Node: move,  Next: name,  Prev: mkpartfs,  Up: Command explanations
 
-2.4.8 move
+2.4.9 move
 ----------
 
  -- Command: move NUMBER START END
@@ -698,8 +724,8 @@ File: parted.info,  Node: move,  Next: name,  Prev: mkpartfs,  Up: Command expla
 
 File: parted.info,  Node: name,  Next: print,  Prev: move,  Up: Command explanations
 
-2.4.9 name
-----------
+2.4.10 name
+-----------
 
  -- Command: name NUMBER NAME
      Sets the name for the partition NUMBER (GPT, Mac, MIPS and PC98
@@ -714,7 +740,7 @@ File: parted.info,  Node: name,  Next: print,  Prev: move,  Up: Command explanat
 
 File: parted.info,  Node: print,  Next: quit,  Prev: name,  Up: Command explanations
 
-2.4.10 print
+2.4.11 print
 ------------
 
  -- Command: print [NUMBER]
@@ -741,7 +767,7 @@ File: parted.info,  Node: print,  Next: quit,  Prev: name,  Up: Command explanat
 
 File: parted.info,  Node: quit,  Next: rescue,  Prev: print,  Up: Command explanations
 
-2.4.11 quit
+2.4.12 quit
 -----------
 
  -- Command: quit
@@ -756,7 +782,7 @@ File: parted.info,  Node: quit,  Next: rescue,  Prev: print,  Up: Command explan
 
 File: parted.info,  Node: rescue,  Next: resize,  Prev: quit,  Up: Command explanations
 
-2.4.12 rescue
+2.4.13 rescue
 -------------
 
  -- Command: rescue START END
@@ -801,7 +827,7 @@ File: parted.info,  Node: rescue,  Next: resize,  Prev: quit,  Up: Command expla
 
 File: parted.info,  Node: resize,  Next: rm,  Prev: rescue,  Up: Command explanations
 
-2.4.13 resize
+2.4.14 resize
 -------------
 
  -- Command: resize NUMBER START END
@@ -839,7 +865,7 @@ File: parted.info,  Node: resize,  Next: rm,  Prev: rescue,  Up: Command explana
 
 File: parted.info,  Node: rm,  Next: select,  Prev: resize,  Up: Command explanations
 
-2.4.14 rm
+2.4.15 rm
 ---------
 
  -- Command: rm NUMBER
@@ -865,7 +891,7 @@ File: parted.info,  Node: rm,  Next: select,  Prev: resize,  Up: Command explana
 
 File: parted.info,  Node: select,  Next: set,  Prev: rm,  Up: Command explanations
 
-2.4.15 select
+2.4.16 select
 -------------
 
  -- Command: select DEVICE
@@ -883,13 +909,17 @@ File: parted.info,  Node: select,  Next: set,  Prev: rm,  Up: Command explanatio
 
 File: parted.info,  Node: set,  Next: unit,  Prev: select,  Up: Command explanations
 
-2.4.16 set
+2.4.17 set
 ----------
 
  -- Command: set NUMBER FLAG STATE
      Changes a flag on the partition with number NUMBER.  A flag can be
      either "on" or "off".  Some or all of these flags will be
      available, depending on what disk label you are using:
+
+    `bios_grub'
+          (GPT) - Enable this to record that the selected partition is a
+          GRUB BIOS partition.
 
     `boot'
           (Mac, MS-DOS, PC98) - should be enabled if you want to boot
@@ -945,7 +975,7 @@ File: parted.info,  Node: set,  Next: unit,  Prev: select,  Up: Command explanat
 
 File: parted.info,  Node: unit,  Prev: set,  Up: Command explanations
 
-2.4.17 unit
+2.4.18 unit
 -----------
 
  -- Command: unit UNIT
@@ -1081,7 +1111,7 @@ A.1 GNU Free Documentation License
 
                         Version 1.1, March 2000
 
-     Copyright (C) 2000 Free Software Foundation, Inc.
+     Copyright (C) 2000, 2009 Free Software Foundation, Inc.
      51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 
      Everyone is permitted to copy and distribute verbatim copies
@@ -1489,9 +1519,11 @@ Index
  [index ]
 * Menu:
 
+* align-check, command description:      align-check.           (line 6)
 * bugs, reporting:                       Overview.              (line 6)
 * building parted:                       Compiling.             (line 6)
 * check, command description:            check.                 (line 6)
+* command description, align-check:      align-check.           (line 6)
 * command description, check:            check.                 (line 6)
 * command description, cp:               cp.                    (line 6)
 * command description, help:             help.                  (line 6)
@@ -1564,41 +1596,42 @@ Index
 
 
 Tag Table:
-Node: Top778
-Node: Introduction1673
-Node: Overview2243
-Node: Software Required4288
-Node: Supported Platforms5647
-Node: License6363
-Node: Compiling6994
-Node: Static binaries8639
-Node: Using Parted10474
-Node: Partitioning10893
-Node: Running Parted11349
-Node: Invoking Parted14292
-Node: Command explanations14908
-Node: check15278
-Node: cp15557
-Node: help16488
-Node: mklabel16762
-Ref: mklabel-Footnote-117643
-Node: mkfs17772
-Node: mkpart18268
-Node: mkpartfs19678
-Node: move20824
-Node: name21705
-Node: print22081
-Node: quit22970
-Node: rescue23465
-Node: resize24990
-Node: rm26200
-Node: select27097
-Node: set27566
-Node: unit29607
-Node: Related information33155
-Node: Copying This Manual33978
-Node: GNU Free Documentation License34222
-Node: History54099
-Node: Index54896
+Node: Top758
+Node: Introduction1643
+Node: Overview2213
+Node: Software Required4258
+Node: Supported Platforms5617
+Node: License6333
+Node: Compiling6964
+Node: Static binaries8609
+Node: Using Parted10444
+Node: Partitioning10863
+Node: Running Parted11319
+Node: Invoking Parted14262
+Node: Command explanations15042
+Node: align-check15428
+Node: check16157
+Node: cp16456
+Node: help17387
+Node: mklabel17661
+Ref: mklabel-Footnote-118542
+Node: mkfs18671
+Node: mkpart19167
+Node: mkpartfs20577
+Node: move21723
+Node: name22604
+Node: print22982
+Node: quit23871
+Node: rescue24366
+Node: resize25891
+Node: rm27101
+Node: select27998
+Node: set28467
+Node: unit30629
+Node: Related information34177
+Node: Copying This Manual35000
+Node: GNU Free Documentation License35244
+Node: History55127
+Node: Index55924
 
 End Tag Table

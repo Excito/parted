@@ -1,4 +1,4 @@
-# generated automatically by aclocal 1.11 -*- Autoconf -*-
+# generated automatically by aclocal 1.11a -*- Autoconf -*-
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
 # 2005, 2006, 2007, 2008, 2009  Free Software Foundation, Inc.
@@ -13,8 +13,8 @@
 
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
-m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.64],,
-[m4_warning([this file was generated for autoconf 2.64.
+m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.65.8-b4f0a],,
+[m4_warning([this file was generated for autoconf 2.65.8-b4f0a.
 You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically `autoreconf'.])])
@@ -87,16 +87,14 @@ fi])
 # _PKG_CONFIG([VARIABLE], [COMMAND], [MODULES])
 # ---------------------------------------------
 m4_define([_PKG_CONFIG],
-[if test -n "$PKG_CONFIG"; then
-    if test -n "$$1"; then
-        pkg_cv_[]$1="$$1"
-    else
-        PKG_CHECK_EXISTS([$3],
-                         [pkg_cv_[]$1=`$PKG_CONFIG --[]$2 "$3" 2>/dev/null`],
-			 [pkg_failed=yes])
-    fi
-else
-	pkg_failed=untried
+[if test -n "$$1"; then
+    pkg_cv_[]$1="$$1"
+ elif test -n "$PKG_CONFIG"; then
+    PKG_CHECK_EXISTS([$3],
+                     [pkg_cv_[]$1=`$PKG_CONFIG --[]$2 "$3" 2>/dev/null`],
+		     [pkg_failed=yes])
+ else
+    pkg_failed=untried
 fi[]dnl
 ])# _PKG_CONFIG
 
@@ -140,9 +138,9 @@ See the pkg-config man page for more details.])
 if test $pkg_failed = yes; then
         _PKG_SHORT_ERRORS_SUPPORTED
         if test $_pkg_short_errors_supported = yes; then
-	        $1[]_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "$2"`
+	        $1[]_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "$2" 2>&1`
         else 
-	        $1[]_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "$2"`
+	        $1[]_PKG_ERRORS=`$PKG_CONFIG --print-errors "$2" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$$1[]_PKG_ERRORS" >&AS_MESSAGE_LOG_FD
@@ -189,10 +187,10 @@ fi[]dnl
 # generated from the m4 files accompanying Automake X.Y.
 # (This private macro should not be called outside this file.)
 AC_DEFUN([AM_AUTOMAKE_VERSION],
-[am__api_version='1.11'
+[am__api_version='1.11a'
 dnl Some users find AM_AUTOMAKE_VERSION and mistake it for a way to
 dnl require some minimum version.  Point them to the right macro.
-m4_if([$1], [1.11], [],
+m4_if([$1], [1.11a], [],
       [AC_FATAL([Do not call $0, use AM_INIT_AUTOMAKE([$1]).])])dnl
 ])
 
@@ -208,7 +206,7 @@ m4_define([_AM_AUTOCONF_VERSION], [])
 # Call AM_AUTOMAKE_VERSION and AM_AUTOMAKE_VERSION so they can be traced.
 # This function is AC_REQUIREd by AM_INIT_AUTOMAKE.
 AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
-[AM_AUTOMAKE_VERSION([1.11])dnl
+[AM_AUTOMAKE_VERSION([1.11a])dnl
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
 _AM_AUTOCONF_VERSION(m4_defn([AC_AUTOCONF_VERSION]))])
@@ -936,22 +934,19 @@ AC_DEFUN([_AM_IF_OPTION],
 
 # Check to make sure that the build environment is sane.    -*- Autoconf -*-
 
-# Copyright (C) 1996, 1997, 2000, 2001, 2003, 2005, 2008
+# Copyright (C) 1996, 1997, 2000, 2001, 2003, 2005, 2008, 2009
 # Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-# serial 5
+# serial 6
 
 # AM_SANITY_CHECK
 # ---------------
 AC_DEFUN([AM_SANITY_CHECK],
 [AC_MSG_CHECKING([whether build environment is sane])
-# Just in case
-sleep 1
-echo timestamp > conftest.file
 # Reject unsafe characters in $srcdir or the absolute working directory
 # name.  Accept space and tab only in the latter.
 am_lf='
@@ -971,23 +966,30 @@ esac
 # (eg FreeBSD returns the mod time of the symlink's containing
 # directory).
 if (
-   set X `ls -Lt "$srcdir/configure" conftest.file 2> /dev/null`
-   if test "$[*]" = "X"; then
-      # -L didn't work.
-      set X `ls -t "$srcdir/configure" conftest.file`
-   fi
-   rm -f conftest.file
-   if test "$[*]" != "X $srcdir/configure conftest.file" \
-      && test "$[*]" != "X conftest.file $srcdir/configure"; then
+   for am_try in 1 2; do
+     echo timestamp > conftest.file
+     set X `ls -Lt "$srcdir/configure" conftest.file 2> /dev/null`
+     if test "$[*]" = "X"; then
+	# -L didn't work.
+	set X `ls -t "$srcdir/configure" conftest.file`
+     fi
+     rm -f conftest.file
+     if test "$[*]" != "X $srcdir/configure conftest.file" \
+	&& test "$[*]" != "X conftest.file $srcdir/configure"; then
 
-      # If neither matched, then we have a broken ls.  This can happen
-      # if, for instance, CONFIG_SHELL is bash and it inherits a
-      # broken ls alias from the environment.  This has actually
-      # happened.  Such a system could not be considered "sane".
-      AC_MSG_ERROR([ls -t appears to fail.  Make sure there is not a broken
-alias in your environment])
-   fi
-
+	# If neither matched, then we have a broken ls.  This can happen
+	# if, for instance, CONFIG_SHELL is bash and it inherits a
+	# broken ls alias from the environment.  This has actually
+	# happened.  Such a system could not be considered "sane".
+	AC_MSG_ERROR([ls -t appears to fail.  Make sure there is not a broken
+  alias in your environment])
+     fi
+     if test "$[2]" = conftest.file || test $am_try -eq 2; then
+       break
+     fi
+     # Just in case.
+     sleep 1
+   done
    test "$[2]" = conftest.file
    )
 then
@@ -1171,10 +1173,13 @@ AC_SUBST([am__untar])
 
 m4_include([m4/00gnulib.m4])
 m4_include([m4/alloca.m4])
+m4_include([m4/argmatch.m4])
 m4_include([m4/assert.m4])
 m4_include([m4/btowc.m4])
 m4_include([m4/calloc.m4])
+m4_include([m4/canonicalize.m4])
 m4_include([m4/close-stream.m4])
+m4_include([m4/close.m4])
 m4_include([m4/closeout.m4])
 m4_include([m4/codeset.m4])
 m4_include([m4/config-h.m4])
@@ -1187,9 +1192,13 @@ m4_include([m4/errno_h.m4])
 m4_include([m4/error.m4])
 m4_include([m4/exitfail.m4])
 m4_include([m4/extensions.m4])
+m4_include([m4/fclose.m4])
+m4_include([m4/fcntl_h.m4])
 m4_include([m4/fpending.m4])
+m4_include([m4/fsync.m4])
 m4_include([m4/getopt.m4])
 m4_include([m4/gettext.m4])
+m4_include([m4/gettimeofday.m4])
 m4_include([m4/glibc21.m4])
 m4_include([m4/gnulib-common.m4])
 m4_include([m4/gnulib-comp.m4])
@@ -1210,36 +1219,60 @@ m4_include([m4/locale-ja.m4])
 m4_include([m4/locale-zh.m4])
 m4_include([m4/long-options.m4])
 m4_include([m4/longlong.m4])
+m4_include([m4/lseek.m4])
+m4_include([m4/lstat.m4])
 m4_include([m4/ltoptions.m4])
 m4_include([m4/ltsugar.m4])
 m4_include([m4/ltversion.m4])
 m4_include([m4/lt~obsolete.m4])
 m4_include([m4/malloc.m4])
 m4_include([m4/malloca.m4])
+m4_include([m4/manywarnings.m4])
 m4_include([m4/mbrtowc.m4])
 m4_include([m4/mbsinit.m4])
 m4_include([m4/mbstate_t.m4])
+m4_include([m4/memchr.m4])
+m4_include([m4/mkstemp.m4])
+m4_include([m4/mmap-anon.m4])
 m4_include([m4/multiarch.m4])
 m4_include([m4/nls.m4])
 m4_include([m4/o-direct.m4])
+m4_include([m4/pathmax.m4])
 m4_include([m4/po.m4])
+m4_include([m4/priv-set.m4])
 m4_include([m4/progtest.m4])
+m4_include([m4/putenv.m4])
+m4_include([m4/quote.m4])
 m4_include([m4/quotearg.m4])
+m4_include([m4/readlink.m4])
 m4_include([m4/realloc.m4])
 m4_include([m4/regex.m4])
 m4_include([m4/rpmatch.m4])
 m4_include([m4/safe-read.m4])
 m4_include([m4/setenv.m4])
 m4_include([m4/ssize_t.m4])
+m4_include([m4/stat.m4])
 m4_include([m4/stdarg.m4])
 m4_include([m4/stdbool.m4])
+m4_include([m4/stddef_h.m4])
 m4_include([m4/stdint.m4])
+m4_include([m4/stdio_h.m4])
 m4_include([m4/stdlib_h.m4])
+m4_include([m4/strdup.m4])
 m4_include([m4/strerror.m4])
 m4_include([m4/string_h.m4])
 m4_include([m4/strndup.m4])
 m4_include([m4/strnlen.m4])
+m4_include([m4/symlink.m4])
+m4_include([m4/sys_stat_h.m4])
+m4_include([m4/sys_time_h.m4])
+m4_include([m4/tempname.m4])
+m4_include([m4/time_h.m4])
 m4_include([m4/unistd_h.m4])
+m4_include([m4/unlink.m4])
+m4_include([m4/unlinkdir.m4])
+m4_include([m4/version-etc.m4])
+m4_include([m4/warnings.m4])
 m4_include([m4/wchar.m4])
 m4_include([m4/wchar_t.m4])
 m4_include([m4/wcrtomb.m4])

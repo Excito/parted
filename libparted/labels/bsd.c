@@ -1,7 +1,7 @@
 /* -*- Mode: c; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2001, 2007, 2009 Free Software Foundation, Inc.
+    Copyright (C) 2000-2001, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 #include <config.h>
 
+#include <stdbool.h>
 #include <parted/parted.h>
 #include <parted/debug.h>
 #include <parted/endian.h>
@@ -34,6 +35,7 @@
 #endif /* ENABLE_NLS */
 
 #include "misc.h"
+#include "pt-tools.h"
 
 /* struct's & #define's stolen from libfdisk, which probably came from
  * Linux...
@@ -146,30 +148,28 @@ alpha_bootblock_checksum (char *boot) {
 	dp[63] = sum;
 }
 
-
 static int
 bsd_probe (const PedDevice *dev)
 {
-	char		boot[512];
-	BSDRawLabel	*label;
+	BSDRawLabel	*partition;
 
 	PED_ASSERT (dev != NULL, return 0);
 
-        if (dev->sector_size != 512)
+        if (dev->sector_size < 512)
                 return 0;
 
-	if (!ped_device_read (dev, boot, 0, 1))
+	void *label;
+	if (!ptt_read_sector (dev, 0, &label))
 		return 0;
 
-	label = (BSDRawLabel *) (boot + BSD_LABEL_OFFSET);
+	partition = (BSDRawLabel *) ((char *) label + BSD_LABEL_OFFSET);
 
-	alpha_bootblock_checksum(boot);
+	alpha_bootblock_checksum(label);
 
 	/* check magic */
-	if (PED_LE32_TO_CPU (label->d_magic) != BSD_DISKMAGIC)
-		return 0;
-
-	return 1;
+        bool found = PED_LE32_TO_CPU (partition->d_magic) == BSD_DISKMAGIC;
+	free (label);
+	return found;
 }
 
 static PedDisk*
@@ -258,13 +258,13 @@ bsd_free (PedDisk* disk)
 static int
 bsd_clobber (PedDevice* dev)
 {
-	char		boot [512];
-	BSDRawLabel*	label = (BSDRawLabel *) (boot + BSD_LABEL_OFFSET);
-
-	if (!ped_device_read (dev, boot, 0, 1))
+	void *label;
+	if (!ptt_read_sector (dev, 0, &label))
 		return 0;
-	label->d_magic = 0;
-	return ped_device_write (dev, (void*) boot, 0, 1);
+	BSDRawLabel *rawlabel
+	  = (BSDRawLabel *) ((char *) label + BSD_LABEL_OFFSET);
+	rawlabel->d_magic = 0;
+	return ped_device_write (dev, label, 0, 1);
 }
 #endif /* !DISCOVER_ONLY */
 
@@ -277,8 +277,13 @@ bsd_read (PedDisk* disk)
 
 	ped_disk_delete_all (disk);
 
-	if (!ped_device_read (disk->dev, bsd_specific->boot_code, 0, 1))
-		goto error;
+	void *s0;
+	if (!ptt_read_sector (disk->dev, 0, &s0))
+		return 0;
+
+	memcpy (bsd_specific->boot_code, s0, sizeof (bsd_specific->boot_code));
+	free (s0);
+
 	label = (BSDRawLabel *) (bsd_specific->boot_code + BSD_LABEL_OFFSET);
 
 	for (i = 1; i <= BSD_MAXPARTITIONS; i++) {
@@ -318,18 +323,20 @@ error:
 static void
 _probe_and_add_boot_code (const PedDisk* disk)
 {
-	BSDDiskData*		bsd_specific;
-	BSDRawLabel*		old_label;
-	char			old_boot_code [512];
-
-	bsd_specific = (BSDDiskData*) disk->disk_specific;
-	old_label = (BSDRawLabel*) (old_boot_code + BSD_LABEL_OFFSET);
-
-	if (!ped_device_read (disk->dev, old_boot_code, 0, 1))
+	void *s0;
+	if (!ptt_read_sector (disk->dev, 0, &s0))
 		return;
+	char *old_boot_code = s0;
+	BSDRawLabel *old_label
+                = (BSDRawLabel*) (old_boot_code + BSD_LABEL_OFFSET);
+
 	if (old_boot_code [0]
-	    && old_label->d_magic == PED_CPU_TO_LE32 (BSD_DISKMAGIC))
-		memcpy (bsd_specific->boot_code, old_boot_code, 512);
+	    && old_label->d_magic == PED_CPU_TO_LE32 (BSD_DISKMAGIC)) {
+		BSDDiskData *bsd_specific = (BSDDiskData*) disk->disk_specific;
+		memcpy (bsd_specific->boot_code, old_boot_code,
+                        sizeof (BSDDiskData));
+        }
+	free (s0);
 }
 
 #ifndef DISCOVER_ONLY
@@ -373,9 +380,9 @@ bsd_write (const PedDisk* disk)
 
 	alpha_bootblock_checksum (bsd_specific->boot_code);
 
-	if (!ped_device_write (disk->dev, (void*) bsd_specific->boot_code,
-			       0, 1))
-		goto error;
+        if (!ptt_write_sector (disk, bsd_specific->boot_code,
+                               sizeof (BSDDiskData)))
+                goto error;
 	return ped_device_sync (disk->dev);
 
 error:
@@ -469,7 +476,6 @@ bsd_partition_set_system (PedPartition* part, const PedFileSystemType* fs_type)
 static int
 bsd_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 {
-	PedDisk*			disk;
 //	PedPartition*		walk; // since -Werror, this unused variable would break build
 	BSDPartitionData*	bsd_data;
 
@@ -478,7 +484,6 @@ bsd_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 	PED_ASSERT (part->disk != NULL, return 0);
 
 	bsd_data = part->disk_specific;
-	disk = part->disk;
 
 	switch (flag) {
 		case PED_PARTITION_BOOT:
@@ -633,40 +638,17 @@ error:
 	return 0;
 }
 
-static PedDiskOps bsd_disk_ops = {
-	probe:			bsd_probe,
-#ifndef DISCOVER_ONLY
-	clobber:		bsd_clobber,
-#else
-	clobber:		NULL,
-#endif
-	alloc:			bsd_alloc,
-	duplicate:		bsd_duplicate,
-	free:			bsd_free,
-	read:			bsd_read,
-#ifndef DISCOVER_ONLY
-	write:			bsd_write,
-#else
-	write:			NULL,
-#endif
+#include "pt-common.h"
+PT_define_limit_functions (bsd)
 
-	partition_new:		bsd_partition_new,
-	partition_duplicate:	bsd_partition_duplicate,
-	partition_destroy:	bsd_partition_destroy,
-	partition_set_system:	bsd_partition_set_system,
-	partition_set_flag:	bsd_partition_set_flag,
-	partition_get_flag:	bsd_partition_get_flag,
-	partition_is_flag_available:	bsd_partition_is_flag_available,
+static PedDiskOps bsd_disk_ops = {
+	clobber:		NULL_IF_DISCOVER_ONLY (bsd_clobber),
+	write:			NULL_IF_DISCOVER_ONLY (bsd_write),
+
 	partition_set_name:	NULL,
 	partition_get_name:	NULL,
-	partition_align:	bsd_partition_align,
-	partition_enumerate:	bsd_partition_enumerate,
 
-	alloc_metadata:		bsd_alloc_metadata,
-	get_max_primary_partition_count:
-				bsd_get_max_primary_partition_count,
-	get_max_supported_partition_count:
-				bsd_get_max_supported_partition_count
+	PT_op_function_initializers (bsd)
 };
 
 static PedDiskType bsd_disk_type = {

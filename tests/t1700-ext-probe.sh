@@ -20,6 +20,8 @@ test_description='Probe Ext2, Ext3 and Ext4 file systems.'
 : ${srcdir=.}
 . $srcdir/test-lib.sh
 
+require_512_byte_sector_size_
+
 dev=loop-file
 
 for type in ext2 ext3 ext4; do
@@ -30,7 +32,7 @@ for type in ext2 ext3 ext4; do
 test_expect_success \
     "create an $type file system" '
     dd if=/dev/zero of=$dev bs=1024 count=4096 >/dev/null &&
-    mkfs -F -t $type $dev >/dev/null'
+    mkfs.$type -F $dev >/dev/null'
 
 test_expect_success \
     "probe the $type file system" '

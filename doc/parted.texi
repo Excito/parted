@@ -496,6 +496,11 @@ display a help message
 @itemx --script
 never prompt the user
 
+@item -a alignment-type
+@itemx --align alignment-type
+Set alignment for newly created partitions, valid alignment types are:
+none, cylinder, minimal and optimal.
+
 @item -v
 @itemx --version
 display the version
@@ -510,6 +515,7 @@ display the version
 GNU Parted provides the following commands:
 
 @menu
+* align-check::
 * check::
 * cp::
 * help::
@@ -528,6 +534,33 @@ GNU Parted provides the following commands:
 * set::
 * unit::
 @end menu
+
+@node align-check
+@subsection align-check
+@cindex align-check, command description
+@cindex command description, align-check
+
+@deffn Command align-check @var{align-type} @var{n}
+
+Determine whether the starting sector of partition @var{n}
+meets the disk's selected alignment criteria.
+@var{align-type} must be @samp{minimal}, @samp{optimal}
+or an abbreviation.
+When in script mode, if the partition does not meet the alignment
+requirement, exit with status 1;  otherwise (including on older
+kernels for which alignment data is not available), continue processing
+any remaining commands.
+Without @option{--script}, print either @samp{@var{N} aligned}
+or @samp{@var{N} not aligned}.
+
+Example:
+
+@example
+(parted) @kbd{align-check minimal 1}
+1 aligned
+@end example
+
+@end deffn
 
 @node check
 @subsection check
@@ -1012,6 +1045,11 @@ either ``on'' or ``off''.  Some or all of these flags will be available,
 depending on what disk label you are using:
 
 @table @samp
+
+@item bios_grub
+(GPT) - Enable this to record that the selected partition is a
+GRUB BIOS partition.
+
 @item boot
 (Mac, MS-DOS, PC98) - should be enabled if you want to boot off the
 partition.  The semantics vary between disk labels.  For MS-DOS disk

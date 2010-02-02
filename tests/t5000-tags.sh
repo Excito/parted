@@ -19,64 +19,78 @@ test_description="test bios_grub flag in gpt labels"
 
 : ${srcdir=.}
 . $srcdir/test-lib.sh
+ss=$sector_size_
 
 dev=loop-file
+N=300 # number of sectors
+
+part_sectors=128
+start_sector=60
+end_sector=$(expr $start_sector + $part_sectors - 1)
+
+test_expect_success \
+    "setup: reasonable params" \
+    'test $end_sector -lt $N'
 
 test_expect_success \
     "setup: create zeroed device" \
-    '{ dd if=/dev/zero bs=1024 count=64; } > $dev'
+    'dd if=/dev/zero of=$dev bs=${ss}c count=$N 2> /dev/null'
 
 test_expect_success \
     'create gpt label' \
-    'parted -s $dev mklabel gpt >out 2>&1'
+    'parted -s $dev mklabel gpt > empty 2>&1'
+
+test_expect_success 'ensure there was no output' \
+    'compare /dev/null empty'
+
+test_expect_success \
+    'print the table (before adding a partition)' \
+    'parted -m -s $dev unit s print > t 2>&1 &&
+     sed 's,.*/$dev:,$dev:,' t > out'
+
+test_expect_success \
+    'check for expected output' \
+    'printf "BYT;\n$dev:${N}s:file:$ss:$ss:gpt:;\n" > exp &&
+     compare exp out'
 
 test_expect_success \
     'add a partition' \
-    'parted -s $dev mkpart primary 0 1 >>out 2>&1'
+    'parted -s $dev u s mkpart name1 ${start_sector} ${end_sector} >out 2>&1'
 
 test_expect_success \
-    'print the table (before manual modification)' \
-    'parted -s $dev print >>out 2>&1'
-
-# Using bios_boot_magic='\x48\x61' looks nicer, but isn't portable.
-# dash's builtin printf doesn't recognize such \xHH hexadecimal escapes.
-bios_boot_magic='\110\141\150\41\111\144\157\156\164\116\145\145\144\105\106\111'
-
-printf "$bios_boot_magic" | dd of=$dev bs=1024 seek=1 conv=notrunc
+    'print the table before modification' \
+    '
+     parted -m -s $dev unit s print > t 2>&1 &&
+     sed 's,.*/$dev:,$dev:,' t >> out
+    '
 
 test_expect_success \
-    'print the table (after manual modification)' \
-    'parted -s $dev print >>out 2>&1'
+    'set the new bios_grub attribute' \
+    'parted -m -s $dev set 1 bios_grub on'
 
-pwd=`pwd`
+test_expect_success \
+    'print the table after modification' \
+    '
+     parted -m -s $dev unit s print > t 2>&1
+     sed 's,.*/$dev:,$dev:,' t >> out
+    '
 
-fail=0
+gen_exp()
 {
   cat <<EOF
-Model:  (file)
-Disk .../$dev: 65.5kB
-Sector size (logical/physical): 512B/512B
-Partition Table: gpt
-
-Number  Start   End     Size    File system  Name     Flags
- 1      17.4kB  48.6kB  31.2kB               primary
-
-Model:  (file)
-Disk .../$dev: 65.5kB
-Sector size (logical/physical): 512B/512B
-Partition Table: gpt
-
-Number  Start   End     Size    File system  Name     Flags
- 1      17.4kB  48.6kB  31.2kB               primary  bios_grub
-
+BYT;
+$dev:${N}s:file:$ss:$ss:gpt:;
+1:${start_sector}s:${end_sector}s:${part_sectors}s::name1:;
+BYT;
+$dev:${N}s:file:$ss:$ss:gpt:;
+1:${start_sector}s:${end_sector}s:${part_sectors}s::name1:bios_grub;
 EOF
-} > exp || fail=1
+}
 
-test_expect_success \
-    'prepare actual and expected output' \
-    'test $fail = 0 &&
-     mv out o2 && sed "s,^Disk .*/$dev:,Disk .../$dev:," o2 > out'
-
-test_expect_success 'check for expected output' 'compare out exp'
+test_expect_success 'check for expected output' \
+    '
+     gen_exp > exp &&
+     compare exp out
+    '
 
 test_done

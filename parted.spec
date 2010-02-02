@@ -12,14 +12,14 @@
 
 Summary:   The GNU disk partition manipulation program
 Name:      parted
-Version:   1.8.8.1.180-6b96
+Version:   2.0.139-c60f
 Release:   1
 Source:    ftp://ftp.gnu.org/gnu/%{name}/%{name}-%{version}.tar.bz2
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 License:   GPL
 Group:     Applications/System
 
-BuildRequires: e2fsprogs-devel readline-devel ncurses-devel
+BuildRequires: e2fsprogs-devel readline-devel ncurses-devel gperf
 BuildRequires: automake libtool gettext-devel texinfo pkgconfig
 
 BuildRequires: device-mapper-devel, libselinux-devel libsepol-devel

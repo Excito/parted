@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2004, 2005, 2007 Free Software Foundation, Inc.
+    Copyright (C) 2004-2005, 2007, 2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ hfs_effect_move_extent (PedFileSystem *fs, unsigned int *ptr_fblock,
 	PED_ASSERT (hfs_block != NULL, return -1);
 	PED_ASSERT (*ptr_to_fblock <= *ptr_fblock, return -1);
 	/* quiet gcc */
-	next_to_fblock = start = stop = 0;
+	start = stop = 0;
 
 /*
 	Try to fit the extent AT or _BEFORE_ the wanted place,

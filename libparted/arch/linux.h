@@ -18,8 +18,8 @@
 #ifndef PED_ARCH_LINUX_H_INCLUDED
 #define PED_ARCH_LINUX_H_INCLUDED
 
-#if defined(__s390__) || defined(__s390x__)
-#  include <parted/fdasd.h>
+#if HAVE_BLKID_BLKID_H
+#  include <blkid/blkid.h>
 #endif
 
 #define LINUX_SPECIFIC(dev)	((LinuxSpecific*) (dev)->arch_specific)
@@ -28,11 +28,16 @@ typedef	struct _LinuxSpecific	LinuxSpecific;
 
 struct _LinuxSpecific {
 	int	fd;
+	int	major;
+	int	minor;
 	char*	dmtype;         /**< device map target type */
-#if defined(__s390__) || defined(__s390x__)
+#if defined __s390__ || defined __s390x__
 	unsigned int real_sector_size;
-	/* IBM internal dasd structure (i guess ;), required. */
-	struct fdasd_anchor *anchor;
+	unsigned int devno;
+#endif
+#if USE_BLKID
+        blkid_probe probe;
+        blkid_topology topology;
 #endif
 };
 

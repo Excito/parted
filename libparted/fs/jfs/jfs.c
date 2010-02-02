@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2001, 2007 Free Software Foundation, Inc.
+    Copyright (C) 2001, 2007, 2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,6 +43,10 @@ jfs_probe (PedGeometry* geom)
 		struct superblock	sb;
 		char			bytes[512];
 	} buf;
+
+        /* FIXME: for now, don't even try to deal with larger sector size.  */
+	if (geom->dev->sector_size != PED_SECTOR_SIZE_DEFAULT)
+		return NULL;
 
 	if (geom->length < JFS_SUPER_SECTOR + 1)
 		return NULL;

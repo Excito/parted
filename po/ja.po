@@ -1,81 +1,97 @@
-# Parted¤Î¥á¥Ã¥»¡¼¥¸¤ÎÆüËÜ¸ìÌõ
+# Partedã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®æ—¥æœ¬èªè¨³
 # Copyright (C) 1999 Free Software Foundation, Inc.
-# Hiroshi Takekawa <sian@big.or.jp>, 1999-2007.
+# This file is distributed under the same license as the parted package.
+# Hiroshi Takekawa <sian@big.or.jp>, 1999-2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: parted 1.8.8\n"
+"Project-Id-Version: parted 2.0\n"
 "Report-Msgid-Bugs-To: bug-parted@gnu.org\n"
-"POT-Creation-Date: 2009-07-19 12:52-0300\n"
-"PO-Revision-Date: 2007-08-15 18:55+0900\n"
+"POT-Creation-Date: 2009-12-20 11:51+0100\n"
+"PO-Revision-Date: 2009-10-07 11:22+0900\n"
 "Last-Translator: Hiroshi Takekawa <sian@big.or.jp>\n"
 "Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=EUC-JP\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: lib/closeout.c:112 libparted/labels/fdasd.c:106
+#: lib/argmatch.c:133
+#, fuzzy, c-format
+msgid "invalid argument %s for %s"
+msgstr "ä¸æ­£ãª %s%s ã®å¼•æ•° '%s' ã§ã™"
+
+#: lib/argmatch.c:134
+#, c-format
+msgid "ambiguous argument %s for %s"
+msgstr ""
+
+#: lib/argmatch.c:153
+#, fuzzy, c-format
+msgid "Valid arguments are:"
+msgstr "ä¸æ­£ãª %s%s ã®å¼•æ•° '%s' ã§ã™"
+
+#: lib/closeout.c:112 libparted/labels/fdasd.c:107
 msgid "write error"
-msgstr "½ñ¤­¹ş¤ß¥¨¥é¡¼"
+msgstr "æ›¸ãè¾¼ã¿ã‚¨ãƒ©ãƒ¼"
 
-#: lib/error.c:125
+#: lib/error.c:153
 msgid "Unknown system error"
-msgstr "ÉÔÌÀ¤Ê¥·¥¹¥Æ¥à¥¨¥é¡¼"
+msgstr "ä¸æ˜ãªã‚·ã‚¹ãƒ†ãƒ ã‚¨ãƒ©ãƒ¼"
 
-#: lib/getopt.c:526 lib/getopt.c:542
+#: lib/getopt.c:527 lib/getopt.c:543
 #, c-format
 msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: ¥ª¥×¥·¥ç¥ó `%s' ¤Ï¤¤¤¯¤Ä¤«¤Î°ÕÌ£¤Ë¤È¤ì¤Æ¤·¤Ş¤¤¤Ş¤¹\n"
+msgstr "%s: ã‚ªãƒ—ã‚·ãƒ§ãƒ³ `%s' ã¯ã„ãã¤ã‹ã®æ„å‘³ã«ã¨ã‚Œã¦ã—ã¾ã„ã¾ã™\n"
 
-#: lib/getopt.c:575 lib/getopt.c:579
+#: lib/getopt.c:576 lib/getopt.c:580
 #, c-format
 msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: ¥ª¥×¥·¥ç¥ó `--%s' ¤Ï°ú¿ô¤ò¼õ¤±¤È¤ê¤Ş¤»¤ó\n"
+msgstr "%s: ã‚ªãƒ—ã‚·ãƒ§ãƒ³ `--%s' ã¯å¼•æ•°ã‚’å—ã‘ã¨ã‚Šã¾ã›ã‚“\n"
 
-#: lib/getopt.c:588 lib/getopt.c:593
+#: lib/getopt.c:589 lib/getopt.c:594
 #, c-format
 msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: ¥ª¥×¥·¥ç¥ó `%c%s' ¤Ï°ú¿ô¤ò¼õ¤±¤È¤ê¤Ş¤»¤ó\n"
+msgstr "%s: ã‚ªãƒ—ã‚·ãƒ§ãƒ³ `%c%s' ã¯å¼•æ•°ã‚’å—ã‘ã¨ã‚Šã¾ã›ã‚“\n"
 
-#: lib/getopt.c:636 lib/getopt.c:655 lib/getopt.c:971 lib/getopt.c:990
+#: lib/getopt.c:637 lib/getopt.c:656 lib/getopt.c:972 lib/getopt.c:991
 #, c-format
 msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: ¥ª¥×¥·¥ç¥ó `%s' ¤Ë¤Ï°ú¿ô¤¬É¬Í×¤Ç¤¹\n"
+msgstr "%s: ã‚ªãƒ—ã‚·ãƒ§ãƒ³ `%s' ã«ã¯å¼•æ•°ãŒå¿…è¦ã§ã™\n"
 
-#: lib/getopt.c:693 lib/getopt.c:696
+#: lib/getopt.c:694 lib/getopt.c:697
 #, c-format
 msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: `--%s' ¤ÏÇ§¼±¤Ç¤­¤Ê¤¤¥ª¥×¥·¥ç¥ó¤Ç¤¹\n"
+msgstr "%s: `--%s' ã¯èªè­˜ã§ããªã„ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã§ã™\n"
 
-#: lib/getopt.c:704 lib/getopt.c:707
+#: lib/getopt.c:705 lib/getopt.c:708
 #, c-format
 msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: `%c%s' ¤ÏÇ§¼±¤Ç¤­¤Ê¤¤¥ª¥×¥·¥ç¥ó¤Ç¤¹\n"
+msgstr "%s: `%c%s' ã¯èªè­˜ã§ããªã„ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã§ã™\n"
 
-#: lib/getopt.c:759 lib/getopt.c:762
+#: lib/getopt.c:760 lib/getopt.c:763
 #, c-format
 msgid "%s: illegal option -- %c\n"
-msgstr "%s: %c ¤ÏÉÔË¡¤Ê¥ª¥×¥·¥ç¥ó¤Ç¤¹\n"
+msgstr "%s: %c ã¯ä¸æ³•ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã§ã™\n"
 
-#: lib/getopt.c:768 lib/getopt.c:771
+#: lib/getopt.c:769 lib/getopt.c:772
 #, c-format
 msgid "%s: invalid option -- %c\n"
-msgstr "%s: %c ¤ÏÉÔÀµ¤Ê¥ª¥×¥·¥ç¥ó¤Ç¤¹\n"
+msgstr "%s: %c ã¯ä¸æ­£ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³ã§ã™\n"
 
-#: lib/getopt.c:823 lib/getopt.c:839 lib/getopt.c:1043 lib/getopt.c:1061
+#: lib/getopt.c:824 lib/getopt.c:840 lib/getopt.c:1044 lib/getopt.c:1062
 #, c-format
 msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: %c ¤Ë¤Ï°ú¿ô¤¬É¬Í×¤Ç¤¹\n"
+msgstr "%s: %c ã«ã¯å¼•æ•°ãŒå¿…è¦ã§ã™\n"
 
-#: lib/getopt.c:892 lib/getopt.c:908
+#: lib/getopt.c:893 lib/getopt.c:909
 #, c-format
 msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: ¥ª¥×¥·¥ç¥ó `-W %s' ¤Ï¤¤¤¯¤Ä¤«¤Î°ÕÌ£¤Ë¤È¤ì¤Æ¤·¤Ş¤¤¤Ş¤¹\n"
+msgstr "%s: ã‚ªãƒ—ã‚·ãƒ§ãƒ³ `-W %s' ã¯ã„ãã¤ã‹ã®æ„å‘³ã«ã¨ã‚Œã¦ã—ã¾ã„ã¾ã™\n"
 
-#: lib/getopt.c:932 lib/getopt.c:950
+#: lib/getopt.c:933 lib/getopt.c:951
 #, c-format
 msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: ¥ª¥×¥·¥ç¥ó `-W %s' ¤Ï°ú¿ô¤ò¼õ¤±¤È¤ê¤Ş¤»¤ó\n"
+msgstr "%s: ã‚ªãƒ—ã‚·ãƒ§ãƒ³ `-W %s' ã¯å¼•æ•°ã‚’å—ã‘ã¨ã‚Šã¾ã›ã‚“\n"
 
 #. TRANSLATORS:
 #. Get translations for open and closing quotation marks.
@@ -90,91 +106,91 @@ msgstr "%s: ¥ª¥×¥·¥ç¥ó `-W %s' ¤Ï°ú¿ô¤ò¼õ¤±¤È¤ê¤Ş¤»¤ó\n"
 #. translate "`" to U+201C (LEFT DOUBLE QUOTATION MARK), and
 #. should translate "'" to U+201D (RIGHT DOUBLE QUOTATION
 #. MARK).  A British English Unicode locale should instead
-#. translate these to U+2018 (LEFT SINGLE QUOTATION MARK) and
-#. U+2019 (RIGHT SINGLE QUOTATION MARK), respectively.
+#. translate these to U+2018 (LEFT SINGLE QUOTATION MARK)
+#. and U+2019 (RIGHT SINGLE QUOTATION MARK), respectively.
 #.
 #. If you don't know what to put here, please see
 #. <http://en.wikipedia.org/wiki/Quotation_mark#Glyphs>
 #. and use glyphs suitable for your language.
-#: lib/quotearg.c:249
+#: lib/quotearg.c:272
 msgid "`"
 msgstr "`"
 
-#: lib/quotearg.c:250
+#: lib/quotearg.c:273
 msgid "'"
 msgstr "'"
 
 #: lib/regcomp.c:134
 msgid "Success"
-msgstr "À®¸ù"
+msgstr "æˆåŠŸ"
 
 #: lib/regcomp.c:137
 msgid "No match"
-msgstr "¥Ş¥Ã¥Á¤Ê¤·"
+msgstr "ãƒãƒƒãƒãªã—"
 
 #: lib/regcomp.c:140
 msgid "Invalid regular expression"
-msgstr "ÉÔÀµ¤ÊÀµµ¬É½¸½"
+msgstr "ä¸æ­£ãªæ­£è¦è¡¨ç¾"
 
 #: lib/regcomp.c:143
 msgid "Invalid collation character"
-msgstr "ÉÔÀµ¤Ê½ç½øÊ¸»ú"
+msgstr "ä¸æ­£ãªé †åºæ–‡å­—"
 
 #: lib/regcomp.c:146
 msgid "Invalid character class name"
-msgstr "ÉÔÀµ¤ÊÊ¸»ú¥¯¥é¥¹Ì¾"
+msgstr "ä¸æ­£ãªæ–‡å­—ã‚¯ãƒ©ã‚¹å"
 
 #: lib/regcomp.c:149
 msgid "Trailing backslash"
-msgstr "Í¾Ê¬¤Ê¥Ğ¥Ã¥¯¥¹¥é¥Ã¥·¥å"
+msgstr "ä½™åˆ†ãªãƒãƒƒã‚¯ã‚¹ãƒ©ãƒƒã‚·ãƒ¥"
 
 #: lib/regcomp.c:152
 msgid "Invalid back reference"
-msgstr "ÉÔÀµ¤Ê¸åÊı»²¾È"
+msgstr "ä¸æ­£ãªå¾Œæ–¹å‚ç…§"
 
 #: lib/regcomp.c:155
 msgid "Unmatched [ or [^"
-msgstr "ÂĞ±ş¤Î¤Ê¤¤ [ ¤¢¤ë¤¤¤Ï [^"
+msgstr "å¯¾å¿œã®ãªã„ [ ã‚ã‚‹ã„ã¯ [^"
 
 #: lib/regcomp.c:158
 msgid "Unmatched ( or \\("
-msgstr "ÂĞ±ş¤Î¤Ê¤¤ ( ¤¢¤ë¤¤¤Ï \\("
+msgstr "å¯¾å¿œã®ãªã„ ( ã‚ã‚‹ã„ã¯ \\("
 
 #: lib/regcomp.c:161
 msgid "Unmatched \\{"
-msgstr "ÂĞ±ş¤Î¤Ê¤¤ \\{"
+msgstr "å¯¾å¿œã®ãªã„ \\{"
 
 #: lib/regcomp.c:164
 msgid "Invalid content of \\{\\}"
-msgstr "\\{\\} ¤ÎÃæ¿È¤¬ÉÔÀµ"
+msgstr "\\{\\} ã®ä¸­èº«ãŒä¸æ­£"
 
 #: lib/regcomp.c:167
 msgid "Invalid range end"
-msgstr "ÉÔÀµ¤Ê½ªÎ»ÃÍ"
+msgstr "ä¸æ­£ãªçµ‚äº†å€¤"
 
 #: lib/regcomp.c:170
 msgid "Memory exhausted"
-msgstr "¥á¥â¥êÉÔÂ­"
+msgstr "ãƒ¡ãƒ¢ãƒªä¸è¶³"
 
 #: lib/regcomp.c:173
 msgid "Invalid preceding regular expression"
-msgstr "Àè¹Ô¤¹¤ëÀµµ¬É½¸½¤¬ÉÔÀµ"
+msgstr "å…ˆè¡Œã™ã‚‹æ­£è¦è¡¨ç¾ãŒä¸æ­£"
 
 #: lib/regcomp.c:176
 msgid "Premature end of regular expression"
-msgstr "Àµµ¬É½¸½¤¬ÅÓÃæ¤Ç½ª¤ï¤Ã¤Æ¤¤¤ë"
+msgstr "æ­£è¦è¡¨ç¾ãŒé€”ä¸­ã§çµ‚ã‚ã£ã¦ã„ã‚‹"
 
 #: lib/regcomp.c:179
 msgid "Regular expression too big"
-msgstr "Âç¤­¤¹¤®¤ëÀµµ¬É½¸½"
+msgstr "å¤§ãã™ãã‚‹æ­£è¦è¡¨ç¾"
 
 #: lib/regcomp.c:182
 msgid "Unmatched ) or \\)"
-msgstr "ÂĞ±ş¤Î¤Ê¤¤ ) ¤Ş¤¿¤Ï \\)"
+msgstr "å¯¾å¿œã®ãªã„ ) ã¾ãŸã¯ \\)"
 
 #: lib/regcomp.c:703
 msgid "No previous regular expression"
-msgstr "¤³¤ì¤è¤êÁ°¤ËÀµµ¬É½¸½¤¬¤Ê¤¤"
+msgstr "ã“ã‚Œã‚ˆã‚Šå‰ã«æ­£è¦è¡¨ç¾ãŒãªã„"
 
 #. TRANSLATORS: A regular expression testing for an affirmative answer
 #. (english: "yes").  Testing the first character may be sufficient.
@@ -196,25 +212,24 @@ msgstr "^[yY]"
 msgid "^[nN]"
 msgstr "^[nN]"
 
-#: lib/version-etc.c:68
+#: lib/version-etc.c:74
 #, c-format
 msgid "Packaged by %s (%s)\n"
-msgstr ""
+msgstr "ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ä½œæˆè€… %s (%s)\n"
 
-#: lib/version-etc.c:71
+#: lib/version-etc.c:77
 #, c-format
 msgid "Packaged by %s\n"
-msgstr ""
+msgstr "ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ä½œæˆè€… %s\n"
 
 #. TRANSLATORS: Translate "(C)" to the copyright symbol
 #. (C-in-a-circle), if this symbol is available in the user's
 #. locale.  Otherwise, do not translate "(C)"; leave it as-is.
-#: lib/version-etc.c:78
+#: lib/version-etc.c:84
 msgid "(C)"
 msgstr "(C)"
 
-#: lib/version-etc.c:80
-#, fuzzy
+#: lib/version-etc.c:86
 msgid ""
 "\n"
 "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl."
@@ -224,221 +239,224 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"¥é¥¤¥»¥ó¥¹ GPLv3+: GNU GPL ¥Ğ¡¼¥¸¥ç¥ó 3 ¤¢¤ë¤¤¤Ï¤½¤ì°Ê¹ß¤Î¥Ğ¡¼¥¸¥ç¥ó <http://"
+"ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ GPLv3+: GNU GPL ãƒãƒ¼ã‚¸ãƒ§ãƒ³ 3 ã‚ã‚‹ã„ã¯ãã‚Œä»¥é™ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ <http://"
 "gnu.org/licenses/gpl.html>\n"
-"¤³¤Î¥½¥Õ¥È¥¦¥§¥¢¤Ï¥Õ¥ê¡¼¥½¥Õ¥È¥¦¥§¥¢¤Ç¤¹¡£¼«Í³¤ËÊÑ¹¹¡¢ºÆÇÛÉÛ¤¬¤Ç¤­¤Ş¤¹¡£\n"
-"Ë¡Î§¤¬µö¤¹¤«¤®¤ê¡¢Á´¤¯¤ÎÌµÊİ¾Ú¤Ç¤¹¡£\n"
+"ã“ã®ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã¯ãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã§ã™ã€‚è‡ªç”±ã«å¤‰æ›´ã€å†é…å¸ƒãŒã§ãã¾ã™ã€‚\n"
+"æ³•å¾‹ãŒè¨±ã™ã‹ãã‚Šã€å…¨ãã®ç„¡ä¿è¨¼ã§ã™ã€‚\n"
 "\n"
 
 #. TRANSLATORS: %s denotes an author name.
-#: lib/version-etc.c:96
+#: lib/version-etc.c:102
 #, c-format
 msgid "Written by %s.\n"
-msgstr "%s ¤Ë¤è¤Ã¤Æºî¤é¤ì¤Ş¤·¤¿¡£\n"
+msgstr "%s ã«ã‚ˆã£ã¦ä½œã‚‰ã‚Œã¾ã—ãŸã€‚\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
-#: lib/version-etc.c:100
+#: lib/version-etc.c:106
 #, c-format
 msgid "Written by %s and %s.\n"
-msgstr "%s ¤È %s ¤Ë¤è¤Ã¤Æºî¤é¤ì¤Ş¤·¤¿¡£\n"
+msgstr "%s ã¨ %s ã«ã‚ˆã£ã¦ä½œã‚‰ã‚Œã¾ã—ãŸã€‚\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
-#: lib/version-etc.c:104
+#: lib/version-etc.c:110
 #, c-format
 msgid "Written by %s, %s, and %s.\n"
-msgstr "%s¡¢%s ¤È %s ¤Ë¤è¤Ã¤Æºî¤é¤ì¤Ş¤·¤¿¡£\n"
+msgstr "%sã€%s ã¨ %s ã«ã‚ˆã£ã¦ä½œã‚‰ã‚Œã¾ã—ãŸã€‚\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:111
+#: lib/version-etc.c:117
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
 "and %s.\n"
 msgstr ""
-"%s¡¢%s¡¢%s¡¢\n"
-"¤ª¤è¤Ó¡¢%s ¤Ë¤è¤Ã¤Æºî¤é¤ì¤Ş¤·¤¿¡£\n"
+"%sã€%sã€%sã€\n"
+"ãŠã‚ˆã³ã€%s ã«ã‚ˆã£ã¦ä½œã‚‰ã‚Œã¾ã—ãŸã€‚\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:118
+#: lib/version-etc.c:124
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
 "%s, and %s.\n"
 msgstr ""
-"%s¡¢%s¡¢%s¡¢\n"
-"%s¡¢¤ª¤è¤Ó¡¢%s¤Ë¤è¤Ã¤Æºî¤é¤ì¤Ş¤·¤¿¡£\n"
+"%sã€%sã€%sã€\n"
+"%sã€ãŠã‚ˆã³ã€%sã«ã‚ˆã£ã¦ä½œã‚‰ã‚Œã¾ã—ãŸã€‚\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:125
+#: lib/version-etc.c:131
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
 "%s, %s, and %s.\n"
 msgstr ""
-"%s¡¢%s¡¢%s¡¢\n"
-"%s¡¢%s¡¢¤ª¤è¤Ó¡¢%s¤Ë¤è¤Ã¤Æºî¤é¤ì¤Ş¤·¤¿¡£\n"
+"%sã€%sã€%sã€\n"
+"%sã€%sã€ãŠã‚ˆã³ã€%sã«ã‚ˆã£ã¦ä½œã‚‰ã‚Œã¾ã—ãŸã€‚\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:133
+#: lib/version-etc.c:139
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
 "%s, %s, %s, and %s.\n"
 msgstr ""
-"%s¡¢%s¡¢%s¡¢\n"
-"%s¡¢%s¡¢%s¡¢¤ª¤è¤Ó¡¢%s¤Ë¤è¤Ã¤Æºî¤é¤ì¤Ş¤·¤¿¡£\n"
+"%sã€%sã€%sã€\n"
+"%sã€%sã€%sã€ãŠã‚ˆã³ã€%sã«ã‚ˆã£ã¦ä½œã‚‰ã‚Œã¾ã—ãŸã€‚\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:141
+#: lib/version-etc.c:147
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
 "%s, %s, %s, %s,\n"
 "and %s.\n"
 msgstr ""
-"%s¡¢%s¡¢%s¡¢\n"
-"%s¡¢%s¡¢%s¡¢%s¡¢\n"
-"¤ª¤è¤Ó%s¤Ë¤è¤Ã¤Æºî¤é¤ì¤Ş¤·¤¿¡£\n"
+"%sã€%sã€%sã€\n"
+"%sã€%sã€%sã€%sã€\n"
+"ãŠã‚ˆã³%sã«ã‚ˆã£ã¦ä½œã‚‰ã‚Œã¾ã—ãŸã€‚\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:150
+#: lib/version-etc.c:156
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
 "%s, %s, %s, %s,\n"
 "%s, and %s.\n"
 msgstr ""
-"%s¡¢%s¡¢%s¡¢\n"
-"%s¡¢%s¡¢%s¡¢%s¡¢\n"
-"%s¡¢¤ª¤è¤Ó¡¢%s¤Ë¤è¤Ã¤Æºî¤é¤ì¤Ş¤·¤¿¡£\n"
+"%sã€%sã€%sã€\n"
+"%sã€%sã€%sã€%sã€\n"
+"%sã€ãŠã‚ˆã³ã€%sã«ã‚ˆã£ã¦ä½œã‚‰ã‚Œã¾ã—ãŸã€‚\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: lib/version-etc.c:161
+#: lib/version-etc.c:167
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
 "%s, %s, %s, %s,\n"
 "%s, %s, and others.\n"
 msgstr ""
-"%s¡¢%s¡¢%s¡¢\n"
-"%s¡¢%s¡¢%s¡¢%s¡¢\n"
-"%s¡¢%s¤È¤¤¤Ã¤¿¿Í¡¹¤Ë¤è¤Ã¤Æºî¤é¤ì¤Ş¤·¤¿¡£\n"
+"%sã€%sã€%sã€\n"
+"%sã€%sã€%sã€%sã€\n"
+"%sã€%sã¨ã„ã£ãŸäººã€…ã«ã‚ˆã£ã¦ä½œã‚‰ã‚Œã¾ã—ãŸã€‚\n"
 
 #. TRANSLATORS: The placeholder indicates the bug-reporting address
 #. for this package.  Please add _another line_ saying
 #. "Report translation bugs to <...>\n" with the address for translation
 #. bugs (typically your translation team's web or email address).
-#: lib/version-etc.c:239 debug/clearfat/clearfat.c:76
-#: partprobe/partprobe.c:154
-#, c-format
+#: lib/version-etc.c:245
+#, fuzzy, c-format
 msgid ""
 "\n"
-"Report bugs to <%s>.\n"
+"Report bugs to: %s\n"
 msgstr ""
 "\n"
-"¥Ğ¥°¥ì¥İ¡¼¥È¤Ï <%s> ¤Ø¡£\n"
+"ãƒã‚°ãƒ¬ãƒãƒ¼ãƒˆã¯ <%s> ã¸ã€‚\n"
 
-#: lib/version-etc.c:241
+#: lib/version-etc.c:247
 #, fuzzy, c-format
-msgid "Report %s bugs to <%s>.\n"
-msgstr ""
-"\n"
-"¥Ğ¥°¥ì¥İ¡¼¥È¤Ï <%s> ¤Ø¡£\n"
+msgid "Report %s bugs to: %s\n"
+msgstr "%s ã®ãƒã‚°ãƒ¬ãƒãƒ¼ãƒˆã¯ <%s> ã¸ã€‚\n"
 
-#: lib/version-etc.c:244
+#: lib/version-etc.c:251
 #, c-format
-msgid "%s home page: <http://www.gnu.org/software/%s/>.\n"
+msgid "%s home page: <%s>\n"
 msgstr ""
 
-#: lib/version-etc.c:246
-msgid "General help using GNU software: <http://www.gnu.org/gethelp/>.\n"
-msgstr ""
+#: lib/version-etc.c:253
+#, fuzzy, c-format
+msgid "%s home page: <http://www.gnu.org/software/%s/>\n"
+msgstr "%s ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸: <http://www.gnu.org/software/%s/>.\n"
+
+#: lib/version-etc.c:256
+#, fuzzy
+msgid "General help using GNU software: <http://www.gnu.org/gethelp/>\n"
+msgstr "GNU ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã®ä¸€èˆ¬çš„ãªãƒ˜ãƒ«ãƒ—ã¯: <http://www.gnu.org/gethelp/>.\n"
 
 #: lib/xalloc-die.c:34
 msgid "memory exhausted"
-msgstr "¥á¥â¥êÉÔÂ­"
+msgstr "ãƒ¡ãƒ¢ãƒªä¸è¶³"
 
 #: lib/xstrtol-error.c:63
-#, fuzzy, c-format
+#, c-format
 msgid "invalid %s%s argument `%s'"
-msgstr "ÉÔÀµ¤Ê¥È¡¼¥¯¥ó¤Ç¤¹: %s"
+msgstr "ä¸æ­£ãª %s%s ã®å¼•æ•° '%s' ã§ã™"
 
 #: lib/xstrtol-error.c:68
 #, c-format
 msgid "invalid suffix in %s%s argument `%s'"
-msgstr ""
+msgstr "ä¸æ­£ãªæ¥å°¾è¾ãŒ %s%s ã®å¼•æ•° `%s' ã«ã‚ã‚Šã¾ã™"
 
 #: lib/xstrtol-error.c:72
 #, c-format
 msgid "%s%s argument `%s' too large"
-msgstr ""
+msgstr "%s%s ã®å¼•æ•° `%s' ã¯å¤§ãã™ãã¾ã™"
 
 #: libparted/arch/beos.c:245
 msgid "Disk Image"
-msgstr "¥Ç¥£¥¹¥¯¥¤¥á¡¼¥¸"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚¯ã‚¤ãƒ¡ãƒ¼ã‚¸"
 
 #: libparted/arch/beos.c:346 libparted/arch/gnu.c:276
-#: libparted/arch/linux.c:1428
+#: libparted/arch/linux.c:1510
 #, c-format
 msgid "Error opening %s: %s"
-msgstr "%s ¤ò¥ª¡¼¥×¥óÃæ¤Ë¥¨¥é¡¼: %s"
+msgstr "%s ã‚’ã‚ªãƒ¼ãƒ—ãƒ³ä¸­ã«ã‚¨ãƒ©ãƒ¼: %s"
 
 #: libparted/arch/beos.c:357 libparted/arch/gnu.c:286
-#: libparted/arch/linux.c:1439
+#: libparted/arch/linux.c:1521
 #, c-format
 msgid "Unable to open %s read-write (%s).  %s has been opened read-only."
 msgstr ""
-"%s ¤òÆÉ¤ß½ñ¤­²ÄÇ½¤Ê¾õÂÖ¤Ë¥ª¡¼¥×¥ó¤Ç¤­¤Ş¤»¤ó(%s)¡£%s ¤ÏÆÉ¤ß¹ş¤ß¤Î¤ß²ÄÇ½¤Ê¾õÂÖ"
-"¤Ç¥ª¡¼¥×¥ó¤µ¤ì¤Ş¤·¤¿¡£"
+"%s ã‚’èª­ã¿æ›¸ãå¯èƒ½ãªçŠ¶æ…‹ã«ã‚ªãƒ¼ãƒ—ãƒ³ã§ãã¾ã›ã‚“(%s)ã€‚%s ã¯èª­ã¿è¾¼ã¿ã®ã¿å¯èƒ½ãªçŠ¶æ…‹"
+"ã§ã‚ªãƒ¼ãƒ—ãƒ³ã•ã‚Œã¾ã—ãŸã€‚"
 
-#: libparted/arch/beos.c:419 libparted/arch/linux.c:1587
+#: libparted/arch/beos.c:419 libparted/arch/linux.c:1679
 #, c-format
 msgid "%s during seek for read on %s"
-msgstr "%s: %s ¤«¤éÆÉ¤ß¹ş¤ßÃæ¤Î¥·¡¼¥¯¤Ç¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£"
+msgstr "%s: %s ã‹ã‚‰èª­ã¿è¾¼ã¿ä¸­ã®ã‚·ãƒ¼ã‚¯ã§ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
 #: libparted/arch/beos.c:452 libparted/arch/gnu.c:464 libparted/arch/gnu.c:563
-#: libparted/arch/gnu.c:691 libparted/arch/linux.c:1547
-#: libparted/arch/linux.c:1626
+#: libparted/arch/gnu.c:691 libparted/arch/linux.c:1639
+#: libparted/arch/linux.c:1720
 #, c-format
 msgid "%s during read on %s"
-msgstr "%s: %s ¤«¤éÆÉ¤ß¹ş¤ßÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£"
+msgstr "%s: %s ã‹ã‚‰èª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
 #: libparted/arch/beos.c:488 libparted/arch/gnu.c:524
-#: libparted/arch/linux.c:1702
+#: libparted/arch/linux.c:1796
 #, c-format
 msgid "Can't write to %s, because it is opened read-only."
-msgstr "ÆÉ¤ß¹ş¤ß¤Î¤ß¤¬²ÄÇ½¤Ê¤è¤¦¤Ë¥ª¡¼¥×¥ó¤µ¤ì¤Æ¤¤¤ë¤Î¤Ç¡¢%s¤Ë½ñ¤­¤³¤á¤Ş¤»¤ó¡£"
+msgstr "èª­ã¿è¾¼ã¿ã®ã¿ãŒå¯èƒ½ãªã‚ˆã†ã«ã‚ªãƒ¼ãƒ—ãƒ³ã•ã‚Œã¦ã„ã‚‹ã®ã§ã€%sã«æ›¸ãã“ã‚ã¾ã›ã‚“ã€‚"
 
-#: libparted/arch/beos.c:504 libparted/arch/linux.c:1726
+#: libparted/arch/beos.c:504 libparted/arch/linux.c:1821
 #, c-format
 msgid "%s during seek for write on %s"
-msgstr "%s: %s ¤Ë½ñ¤­¤³¤ßÃæ¤Î¥·¡¼¥¯¤Ç¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£"
+msgstr "%s: %s ã«æ›¸ãã“ã¿ä¸­ã®ã‚·ãƒ¼ã‚¯ã§ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
 #: libparted/arch/beos.c:541 libparted/arch/gnu.c:600 libparted/arch/gnu.c:645
-#: libparted/arch/gnu.c:722 libparted/arch/linux.c:1675
-#: libparted/arch/linux.c:1768 libparted/arch/linux.c:1840
+#: libparted/arch/gnu.c:722 libparted/arch/linux.c:1769
+#: libparted/arch/linux.c:1863 libparted/arch/linux.c:1935
 #, c-format
 msgid "%s during write on %s"
-msgstr "%s: %s ¤Ë½ñ¤­¤³¤ßÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£"
+msgstr "%s: %s ã«æ›¸ãã“ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
 #: debug/clearfat/clearfat.c:62 partprobe/partprobe.c:137
 #, c-format
 msgid "Try `%s --help' for more information.\n"
-msgstr "¤è¤ê¾Ü¤·¤¯ÃÎ¤ë¤Ë¤Ï `%s --help' ¤ò»È¤Ã¤Æ¤ß¤Æ¤¯¤À¤µ¤¤¡£\n"
+msgstr "ã‚ˆã‚Šè©³ã—ãçŸ¥ã‚‹ã«ã¯ `%s --help' ã‚’ä½¿ã£ã¦ã¿ã¦ãã ã•ã„ã€‚\n"
 
 #: debug/clearfat/clearfat.c:66
 #, c-format
@@ -446,45 +464,54 @@ msgid ""
 "Usage: %s [OPTION]\n"
 "  or:  %s DEVICE MINOR\n"
 msgstr ""
-"»È¤¤Êı: %s [¥ª¥×¥·¥ç¥ó]\n"
-"¤¢¤ë¤¤¤Ï: %s ¥Ç¥Ğ¥¤¥¹ ¥Ş¥¤¥Ê¡¼ÈÖ¹æ\n"
+"ä½¿ã„æ–¹: %s [ã‚ªãƒ—ã‚·ãƒ§ãƒ³]\n"
+"ã‚ã‚‹ã„ã¯: %s ãƒ‡ãƒã‚¤ã‚¹ ãƒã‚¤ãƒŠãƒ¼ç•ªå·\n"
 
 #: debug/clearfat/clearfat.c:69
 msgid ""
 "Clear unused space on a FAT partition (a GNU Parted testing tool).\n"
 "\n"
 msgstr ""
-"FAT ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¾å¤ÎÌ¤»ÈÍÑÎÎ°è¤ò¥¯¥ê¥¢¤·¤Ş¤¹ (GNU Parted ¤Î¥Æ¥¹¥È¥Ä¡¼"
-"¥ë)¡£\n"
+"FAT ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ä¸Šã®æœªä½¿ç”¨é ˜åŸŸã‚’ã‚¯ãƒªã‚¢ã—ã¾ã™ (GNU Parted ã®ãƒ†ã‚¹ãƒˆãƒ„ãƒ¼"
+"ãƒ«)ã€‚\n"
 "\n"
 
 #: debug/clearfat/clearfat.c:73
 msgid "      --help     display this help and exit\n"
-msgstr "      --help     ¤³¤Î¥Ø¥ë¥×¤òÉ½¼¨¤·½ªÎ»\n"
+msgstr "      --help     ã“ã®ãƒ˜ãƒ«ãƒ—ã‚’è¡¨ç¤ºã—çµ‚äº†\n"
 
 #: debug/clearfat/clearfat.c:74
 msgid "      --version  output version information and exit\n"
-msgstr "      --version  ¥Ğ¡¼¥¸¥ç¥ó¾ğÊó¤òÉ½¼¨¤·½ªÎ»\n"
+msgstr "      --version  ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ã‚’è¡¨ç¤ºã—çµ‚äº†\n"
+
+#: debug/clearfat/clearfat.c:76 partprobe/partprobe.c:154
+#, c-format
+msgid ""
+"\n"
+"Report bugs to <%s>.\n"
+msgstr ""
+"\n"
+"ãƒã‚°ãƒ¬ãƒãƒ¼ãƒˆã¯ <%s> ã¸ã€‚\n"
 
 #: debug/clearfat/clearfat.c:284
 #, c-format
 msgid "too few arguments"
-msgstr "°ú¿ô¤¬¾¯¤Ê¤¹¤®¤Ş¤¹"
+msgstr "å¼•æ•°ãŒå°‘ãªã™ãã¾ã™"
 
 #: debug/clearfat/clearfat.c:289
 #, c-format
 msgid "too many arguments"
-msgstr "°ú¿ô¤¬Â¿¤¹¤®¤Ş¤¹¡£"
+msgstr "å¼•æ•°ãŒå¤šã™ãã¾ã™ã€‚"
 
 #: debug/clearfat/clearfat.c:297
-#, fuzzy, c-format
+#, c-format
 msgid "invalid minor device number: %s"
-msgstr "ÉÔÀµ¤Ê¥È¡¼¥¯¥ó¤Ç¤¹: %s"
+msgstr "ä¸æ­£ãªãƒã‚¤ãƒŠãƒ¼ç•ªå·ã§ã™: %s"
 
 #: partprobe/partprobe.c:141
 #, c-format
 msgid "Usage: %s [OPTION] [DEVICE]...\n"
-msgstr "»È¤¤Êı: %s [¥ª¥×¥·¥ç¥ó] [¥Ç¥Ğ¥¤¥¹]...\n"
+msgstr "ä½¿ã„æ–¹: %s [ã‚ªãƒ—ã‚·ãƒ§ãƒ³] [ãƒ‡ãƒã‚¤ã‚¹]...\n"
 
 #: partprobe/partprobe.c:142
 msgid ""
@@ -495,12 +522,12 @@ msgid ""
 "  -h, --help       display this help and exit\n"
 "  -v, --version    output version information and exit\n"
 msgstr ""
-"OS ¤Ë¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤ÎÊÑ¹¹¤òÄÌÃÎ¤·¤Ş¤¹¡£\n"
+"OS ã«ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã®å¤‰æ›´ã‚’é€šçŸ¥ã—ã¾ã™ã€‚\n"
 "\n"
-"  -d, --dry-run    ¥«¡¼¥Í¥ë¤ËÊÑ¹¹¤òÄÌÃÎ¤·¤Ê¤¤\n"
-"  -s, --summary    ÆâÍÆ¤Î¥µ¥Ş¥ê¤òÉ½¼¨\n"
-"  -h, --help       ¤³¤Î¥Ø¥ë¥×¤òÉ½¼¨¤·¤Æ½ªÎ»\n"
-"  -v, --version    ¥Ğ¡¼¥¸¥ç¥ó¾ğÊó¤òÉ½¼¨¤·¤Æ½ªÎ»\n"
+"  -d, --dry-run    ã‚«ãƒ¼ãƒãƒ«ã«å¤‰æ›´ã‚’é€šçŸ¥ã—ãªã„\n"
+"  -s, --summary    å†…å®¹ã®ã‚µãƒãƒªã‚’è¡¨ç¤º\n"
+"  -h, --help       ã“ã®ãƒ˜ãƒ«ãƒ—ã‚’è¡¨ç¤ºã—ã¦çµ‚äº†\n"
+"  -v, --version    ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ±ã‚’è¡¨ç¤ºã—ã¦çµ‚äº†\n"
 
 #: partprobe/partprobe.c:150
 msgid ""
@@ -508,16 +535,16 @@ msgid ""
 "When no DEVICE is given, probe all partitions.\n"
 msgstr ""
 "\n"
-"¥Ç¥Ğ¥¤¥¹¤Î»ØÄê¤¬¤Ê¤¤¾ì¹ç¤Ï¡¢Á´¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òÄ´¤Ù¤Ş¤¹¡£\n"
+"ãƒ‡ãƒã‚¤ã‚¹ã®æŒ‡å®šãŒãªã„å ´åˆã¯ã€å…¨ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’èª¿ã¹ã¾ã™ã€‚\n"
 
 #: libparted/arch/gnu.c:109
 #, c-format
 msgid "Unable to open %s."
-msgstr "%s ¤ò³«¤±¤Ş¤»¤ó¡£"
+msgstr "%s ã‚’é–‹ã‘ã¾ã›ã‚“ã€‚"
 
 #: libparted/arch/gnu.c:129
 msgid "Unable to probe store."
-msgstr "¥Ç¥Ğ¥¤¥¹¤Î¥×¥í¡¼¥Ö¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹ã®ãƒ—ãƒ­ãƒ¼ãƒ–ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
 
 #: libparted/arch/gnu.c:367
 msgid ""
@@ -528,12 +555,12 @@ msgid ""
 "and reinstall your boot loader from the rescue disk.  Read section 4 of the "
 "Parted User documentation for more information."
 msgstr ""
-"¥«¡¼¥Í¥ë¤Ï¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤ÎºÆÆÉ¤ß¹ş¤ß¤¬¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿¤Î¤Ç¡¢ÊÑ¹¹¤ò²Ã"
-"¤¨¤¿¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò mount ¤¹¤ëÁ°¤ËºÆµ¯Æ°¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Ş¤¹¡£¤Ş¤¿¡¢ºÆµ¯Æ°¤¹¤ë"
-"Á°¤Ë¥Ö¡¼¥È¥í¡¼¥À¤òºÆ¥¤¥ó¥¹¥È¡¼¥ë¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Ş¤¹(¤³¤Î¤³¤È¤Ï¡¢ÊÑ¹¹¤·¤¿¥Ñ¡¼"
-"¥Æ¥£¥·¥ç¥ó¤Î mount ¤¬É¬Í×¤È¤Ê¤ë¤«¤â¤·¤ì¤Ş¤»¤ó)¡£¤Ç¤â¤½¤ì¤é¤òÎ¾ÊıÆ±»ş¤Ë¤Ï¤Ç¤­"
-"¤Ş¤»¤ó! ¥ì¥¹¥­¥å¡¼¥Ç¥£¥¹¥¯¤ò»È¤Ã¤Æ¥Ö¡¼¥È¤·¤Æ¡¢¥Ö¡¼¥È¥í¡¼¥À¤ò¤¤¤ì¤Ê¤ª¤·¤Æ¤¯¤À"
-"¤µ¤¤¡£¤è¤ê¾Ü¤·¤¤¤³¤È¤Ï Parted ¤Î¥æ¡¼¥¶¥É¥­¥å¥á¥ó¥È¤Î4¾Ï¤òÆÉ¤ó¤Ç¤¯¤À¤µ¤¤¡£"
+"ã‚«ãƒ¼ãƒãƒ«ã¯ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã®å†èª­ã¿è¾¼ã¿ãŒã§ãã¾ã›ã‚“ã§ã—ãŸã®ã§ã€å¤‰æ›´ã‚’åŠ "
+"ãˆãŸãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ mount ã™ã‚‹å‰ã«å†èµ·å‹•ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚ã¾ãŸã€å†èµ·å‹•ã™ã‚‹"
+"å‰ã«ãƒ–ãƒ¼ãƒˆãƒ­ãƒ¼ãƒ€ã‚’å†ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™(ã“ã®ã“ã¨ã¯ã€å¤‰æ›´ã—ãŸãƒ‘ãƒ¼"
+"ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã® mount ãŒå¿…è¦ã¨ãªã‚‹ã‹ã‚‚ã—ã‚Œã¾ã›ã‚“)ã€‚ã§ã‚‚ãã‚Œã‚‰ã‚’ä¸¡æ–¹åŒæ™‚ã«ã¯ã§ã"
+"ã¾ã›ã‚“! ãƒ¬ã‚¹ã‚­ãƒ¥ãƒ¼ãƒ‡ã‚£ã‚¹ã‚¯ã‚’ä½¿ã£ã¦ãƒ–ãƒ¼ãƒˆã—ã¦ã€ãƒ–ãƒ¼ãƒˆãƒ­ãƒ¼ãƒ€ã‚’ã„ã‚ŒãªãŠã—ã¦ãã "
+"ã•ã„ã€‚ã‚ˆã‚Šè©³ã—ã„ã“ã¨ã¯ Parted ã®ãƒ¦ãƒ¼ã‚¶ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®4ç« ã‚’èª­ã‚“ã§ãã ã•ã„ã€‚"
 
 #: libparted/arch/gnu.c:384
 #, c-format
@@ -542,67 +569,76 @@ msgid ""
 "nothing about any modifications you made.  You should reboot your computer "
 "before doing anything with %s."
 msgstr ""
-"¥«¡¼¥Í¥ë¤Ï %s ¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤ÎÆâÍÆ¤òºÆÆÉ¤ß¹ş¤ß¤Ç¤­¤Ş¤»¤ó(%s)¡£¤³¤ì"
-"¤Ï Hurd ¤Ï¤¢¤Ê¤¿¤¬¹Ô¤Ã¤¿ÊÑ¹¹¤ò´ØÃÎ¤·¤Æ¤¤¤Ê¤¤¤³¤È¤ò°ÕÌ£¤·¤Æ¤¤¤Ş¤¹¡£%s ¤ËÂĞ¤·¤Æ"
-"²¿¤«Áàºî¤ò¤¹¤ëÁ°¤Ë¥³¥ó¥Ô¥å¡¼¥¿¤òºÆµ¯Æ°¤¹¤ë¤Ù¤­¤Ç¤¹¡£"
+"ã‚«ãƒ¼ãƒãƒ«ã¯ %s ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã®å†…å®¹ã‚’å†èª­ã¿è¾¼ã¿ã§ãã¾ã›ã‚“(%s)ã€‚ã“ã‚Œ"
+"ã¯ Hurd ã¯ã‚ãªãŸãŒè¡Œã£ãŸå¤‰æ›´ã‚’é–¢çŸ¥ã—ã¦ã„ãªã„ã“ã¨ã‚’æ„å‘³ã—ã¦ã„ã¾ã™ã€‚%s ã«å¯¾ã—ã¦"
+"ä½•ã‹æ“ä½œã‚’ã™ã‚‹å‰ã«ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ã‚’å†èµ·å‹•ã™ã‚‹ã¹ãã§ã™ã€‚"
 
-#: libparted/arch/gnu.c:395 parted/parted.c:2495
+#: libparted/arch/gnu.c:395 parted/parted.c:2634
 msgid ""
 "You should reinstall your boot loader before rebooting.  Read section 4 of "
 "the Parted User documentation for more information."
 msgstr ""
-"ºÆµ¯Æ°¤¹¤ëÁ°¤Ë¥Ö¡¼¥È¥í¡¼¥À¤ò¤¤¤ì¤Ê¤ª¤¹¤Ù¤­¤Ç¤¹¡£¾ÜºÙ¤Ï Parted ¥æ¡¼¥¶¥É¥­¥å¥á"
-"¥ó¥È¤Î4¾Ï¤òÆÉ¤ó¤Ç¤¯¤À¤µ¤¤¡£"
+"å†èµ·å‹•ã™ã‚‹å‰ã«ãƒ–ãƒ¼ãƒˆãƒ­ãƒ¼ãƒ€ã‚’ã„ã‚ŒãªãŠã™ã¹ãã§ã™ã€‚è©³ç´°ã¯ Parted ãƒ¦ãƒ¼ã‚¶ãƒ‰ã‚­ãƒ¥ãƒ¡"
+"ãƒ³ãƒˆã®4ç« ã‚’èª­ã‚“ã§ãã ã•ã„ã€‚"
 
 #: libparted/arch/gnu.c:787
 #, c-format
 msgid "%s trying to sync %s to disk"
-msgstr "%s: %s ¤òÆ±´üÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£"
+msgstr "%s: %s ã‚’åŒæœŸä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
-#: libparted/arch/linux.c:498
+#: libparted/arch/linux.c:508
 #, c-format
 msgid "Could not stat device %s - %s."
-msgstr "¥Ç¥Ğ¥¤¥¹ %s ¤òÄ´¤Ù¤é¤ì¤Ş¤»¤ó: %s"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹ %s ã‚’èª¿ã¹ã‚‰ã‚Œã¾ã›ã‚“: %s"
 
-#: libparted/arch/linux.c:552
-#, fuzzy, c-format
+#: libparted/arch/linux.c:563
+#, c-format
 msgid "Unable to determine the dm type of %s."
-msgstr "%s ¤Î¥µ¥¤¥º¤ò·èÄê¤Ç¤­¤Ş¤»¤ó(%s)"
+msgstr "%s ã® dm ã‚¿ã‚¤ãƒ—ã‚’ç‰¹å®šã§ãã¾ã›ã‚“"
 
-#: libparted/arch/linux.c:626
+#: libparted/arch/linux.c:653
 #, c-format
 msgid ""
 "Could not determine sector size for %s: %s.\n"
 "Using the default sector size (%lld)."
 msgstr ""
-"%s ¤Î¥»¥¯¥¿¥µ¥¤¥º¤¬·èÄê¤Ç¤­¤Ş¤»¤ó: %s\n"
-"¥Ç¥Õ¥©¥ë¥È¤Î¥»¥¯¥¿¥µ¥¤¥º (%lld) ¤ò»È¤¤¤Ş¤¹¡£"
+"%s ã®ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚ºãŒæ±ºå®šã§ãã¾ã›ã‚“: %s\n"
+"ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚º (%lld) ã‚’ä½¿ã„ã¾ã™ã€‚"
 
-#: libparted/arch/linux.c:642
+#: libparted/arch/linux.c:666
+#, fuzzy, c-format
+msgid ""
+"Could not determine minimum io size for %s: %s.\n"
+"Using the default size (%lld)."
+msgstr ""
+"%s ã®ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚ºãŒæ±ºå®šã§ãã¾ã›ã‚“: %s\n"
+"ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚º (%lld) ã‚’ä½¿ã„ã¾ã™ã€‚"
+
+#: libparted/arch/linux.c:689
 #, c-format
 msgid ""
 "Device %s has a logical sector size of %lld.  Not all parts of GNU Parted "
 "support this at the moment, and the working code is HIGHLY EXPERIMENTAL.\n"
 msgstr ""
-"%s ¤Î ÏÀÍı¥»¥¯¥¿¥µ¥¤¥º¤¬ %lld ¤Ç¤¹¡£¤¤¤Ş¤Î¤È¤³¤í GNU Parted ¤ÏÁ´¤Æ¤Îµ¡Ç½¤Ë¤ª"
-"¤¤¤Æ¡¢¤³¤Î¥µ¥¤¥º¤ò¥µ¥İ¡¼¥È¤·¤Æ¤¤¤ë¤ï¤±¤Ç¤Ï¤Ê¤¯¡¢°ì±şÆ°ºî¤¹¤ë¾ì¹ç¤Ç¤â¤Ş¤È¤â¤Ë"
-"Æ°ºî¤¹¤ë¤È¤Ï¸Â¤ê¤Ş¤»¤ó¡£\n"
+"%s ã® è«–ç†ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚ºãŒ %lld ã§ã™ã€‚ã„ã¾ã®ã¨ã“ã‚ GNU Parted ã¯å…¨ã¦ã®æ©Ÿèƒ½ã«ãŠ"
+"ã„ã¦ã€ã“ã®ã‚µã‚¤ã‚ºã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã‚‹ã‚ã‘ã§ã¯ãªãã€ä¸€å¿œå‹•ä½œã™ã‚‹å ´åˆã§ã‚‚ã¾ã¨ã‚‚ã«"
+"å‹•ä½œã™ã‚‹ã¨ã¯é™ã‚Šã¾ã›ã‚“ã€‚\n"
 
-#: libparted/arch/linux.c:682
+#: libparted/arch/linux.c:729
 #, c-format
 msgid "Unable to determine the size of %s (%s)."
-msgstr "%s ¤Î¥µ¥¤¥º¤ò·èÄê¤Ç¤­¤Ş¤»¤ó(%s)"
+msgstr "%s ã®ã‚µã‚¤ã‚ºã‚’æ±ºå®šã§ãã¾ã›ã‚“(%s)"
 
-#: libparted/arch/linux.c:771
+#: libparted/arch/linux.c:815
 #, c-format
 msgid "Could not get identity of device %s - %s"
-msgstr "¥Ç¥Ğ¥¤¥¹ %s ¤Î identity ¤ò¼èÆÀ¤Ç¤­¤Ş¤»¤ó: %s"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹ %s ã® identity ã‚’å–å¾—ã§ãã¾ã›ã‚“: %s"
 
-#: libparted/arch/linux.c:780
+#: libparted/arch/linux.c:824
 msgid "Generic IDE"
-msgstr "°ìÈÌÅª¤Ê IDE"
+msgstr "ä¸€èˆ¬çš„ãª IDE"
 
-#: libparted/arch/linux.c:801
+#: libparted/arch/linux.c:845
 #, c-format
 msgid ""
 "Device %s has multiple (%d) logical sectors per physical sector.\n"
@@ -610,338 +646,332 @@ msgid ""
 "system combinations, e.g. GPT and ext2/3.\n"
 "Please consult the web site for up-to-date information."
 msgstr ""
-"¥Ç¥Ğ¥¤¥¹ %s ¤Ë¤Ï¡¢ÊªÍı¥»¥¯¥¿°ì¤Ä¤Ë¤Ä¤­Ê£¿ô (%d¥»¥¯¥¿) ¤ÎÏÀÍı¥»¥¯¥¿¤¬¤¢¤ê¤Ş"
-"¤¹¡£\n"
-"GNU Parted ¤Ï¡¢¤¢¤ëÆÃÄê¤Î¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤È¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ÎÁÈ¤ß¹ç¤ï¤»¤Ë¤Ä¤¤"
-"¤Æ¡¢¤³¤Î¤è¤¦¤Ê¾ì¹ç¤ò¡Ö¼Â¸³Åª¤Ë¡×¥µ¥İ¡¼¥È¤·¤Æ¤¤¤Ş¤¹¡£Îã¤¨¤Ğ¡¢GPT ¤È ext2/3 ¤È"
-"¤¤¤Ã¤¿ÁÈ¤ß¹ç¤ï¤»¤Ç¤¹¡£\n"
-"ºÇ¿·¤Î¾ğÊó¤Ï web ¥µ¥¤¥È¤ò¤´Í÷¤¯¤À¤µ¤¤¡£"
+"ãƒ‡ãƒã‚¤ã‚¹ %s ã«ã¯ã€ç‰©ç†ã‚»ã‚¯ã‚¿ä¸€ã¤ã«ã¤ãè¤‡æ•° (%dã‚»ã‚¯ã‚¿) ã®è«–ç†ã‚»ã‚¯ã‚¿ãŒã‚ã‚Šã¾"
+"ã™ã€‚\n"
+"GNU Parted ã¯ã€ã‚ã‚‹ç‰¹å®šã®ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã¨ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®çµ„ã¿åˆã‚ã›ã«ã¤ã„"
+"ã¦ã€ã“ã®ã‚ˆã†ãªå ´åˆã‚’ã€Œå®Ÿé¨“çš„ã«ã€ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã™ã€‚ä¾‹ãˆã°ã€GPT ã¨ ext2/3 ã¨"
+"ã„ã£ãŸçµ„ã¿åˆã‚ã›ã§ã™ã€‚\n"
+"æœ€æ–°ã®æƒ…å ±ã¯ web ã‚µã‚¤ãƒˆã‚’ã”è¦§ãã ã•ã„ã€‚"
 
-#: libparted/arch/linux.c:976
+#: libparted/arch/linux.c:1020
 #, c-format
 msgid "Error initialising SCSI device %s - %s"
-msgstr "SCSI ¥Ç¥Ğ¥¤¥¹ %s ¤Î½é´ü²½¤Ë¼ºÇÔ¤·¤Ş¤·¤¿: %s"
+msgstr "SCSI ãƒ‡ãƒã‚¤ã‚¹ %s ã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ: %s"
 
-#: libparted/arch/linux.c:1031
+#: libparted/arch/linux.c:1084
 #, c-format
 msgid ""
 "The device %s has zero length, and can't possibly store a file system or "
 "partition table.  Perhaps you selected the wrong device?"
 msgstr ""
-"¥Ç¥Ğ¥¤¥¹ %s ¤ÎÄ¹¤µ¤¬ 0 ¤Ê¤Î¤Ç¡¢¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ä¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤òµ­Ï¿"
-"¤Ç¤­¤Ş¤»¤ó¡£¥Ç¥Ğ¥¤¥¹¤ÎÁªÂò¤ò´Ö°ã¤Ã¤Æ¤¤¤Ê¤¤¤«³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"ãƒ‡ãƒã‚¤ã‚¹ %s ã®é•·ã•ãŒ 0 ãªã®ã§ã€ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚„ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’è¨˜éŒ²"
+"ã§ãã¾ã›ã‚“ã€‚ãƒ‡ãƒã‚¤ã‚¹ã®é¸æŠã‚’é–“é•ã£ã¦ã„ãªã„ã‹ç¢ºèªã—ã¦ãã ã•ã„ã€‚"
 
-#: libparted/arch/linux.c:1135
+#: libparted/arch/linux.c:1191
 #, c-format
 msgid ""
 "Unable to determine geometry of file/device %s.  You should not use Parted "
 "unless you REALLY know what you're doing!"
 msgstr ""
-"¥Õ¥¡¥¤¥ë¤Ş¤¿¤Ï¥Ç¥Ğ¥¤¥¹ %s ¤Î geometry ¤ò·èÄê¤Ç¤­¤Ş¤»¤ó¡£¼«Ê¬¤Ç²¿¤ò¤·¤Æ¤¤¤ë¤«"
-"¤è¤¯Íı²ò¤·¤Æ¤¤¤Ê¤±¤ì¤Ğ Parted ¤ò»È¤¦¤Ù¤­¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£"
+"ãƒ•ã‚¡ã‚¤ãƒ«ã¾ãŸã¯ãƒ‡ãƒã‚¤ã‚¹ %s ã® geometry ã‚’æ±ºå®šã§ãã¾ã›ã‚“ã€‚è‡ªåˆ†ã§ä½•ã‚’ã—ã¦ã„ã‚‹ã‹"
+"ã‚ˆãç†è§£ã—ã¦ã„ãªã‘ã‚Œã° Parted ã‚’ä½¿ã†ã¹ãã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
-#: libparted/arch/linux.c:1195
+#: libparted/arch/linux.c:1251
 msgid "Generic SD/MMC Storage Card"
-msgstr ""
+msgstr "SD/MMC ã‚«ãƒ¼ãƒ‰"
 
-#: libparted/arch/linux.c:1244
+#: libparted/arch/linux.c:1304
 msgid "DAC960 RAID controller"
-msgstr "DAC960 RAID ¥³¥ó¥È¥í¡¼¥é"
+msgstr "DAC960 RAID ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©"
 
-#: libparted/arch/linux.c:1249
+#: libparted/arch/linux.c:1309
 msgid "Promise SX8 SATA Device"
-msgstr "Promise SX8 SATA ¥Ç¥Ğ¥¤¥¹"
+msgstr "Promise SX8 SATA ãƒ‡ãƒã‚¤ã‚¹"
 
-#: libparted/arch/linux.c:1254
+#: libparted/arch/linux.c:1315
 msgid "IBM S390 DASD drive"
-msgstr "IBM S390 DASD ¥É¥é¥¤¥Ö"
+msgstr "IBM S390 DASD ãƒ‰ãƒ©ã‚¤ãƒ–"
 
-#: libparted/arch/linux.c:1259
+#: libparted/arch/linux.c:1321
 msgid "IBM iSeries Virtual DASD"
 msgstr "IBM iSeries Virtual DASD"
 
-#: libparted/arch/linux.c:1264
+#: libparted/arch/linux.c:1326
 msgid "Compaq Smart Array"
 msgstr "Compaq Smart Array"
 
-#: libparted/arch/linux.c:1269
+#: libparted/arch/linux.c:1331
 msgid "ATARAID Controller"
-msgstr "ATA RAID ¥³¥ó¥È¥í¡¼¥é"
+msgstr "ATA RAID ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©"
 
-#: libparted/arch/linux.c:1274
+#: libparted/arch/linux.c:1336
 msgid "I2O Controller"
-msgstr "I2O ¥³¥ó¥È¥í¡¼¥é"
+msgstr "I2O ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©"
 
-#: libparted/arch/linux.c:1279
+#: libparted/arch/linux.c:1341
 msgid "User-Mode Linux UBD"
 msgstr "User-Mode Linux UBD"
 
-#: libparted/arch/linux.c:1292
-#, fuzzy, c-format
+#: libparted/arch/linux.c:1354
+#, c-format
 msgid "Linux device-mapper (%s)"
-msgstr "Linux device-mapper"
+msgstr "Linux device-mapper (%s)"
 
-#: libparted/arch/linux.c:1303
+#: libparted/arch/linux.c:1365
 msgid "Xen Virtual Block Device"
 msgstr "Xen Virtual Block Device"
 
-#: libparted/arch/linux.c:1308
+#: libparted/arch/linux.c:1370
 msgid "Unknown"
-msgstr "ÉÔÌÀ"
+msgstr "ä¸æ˜"
 
-#: libparted/arch/linux.c:1317
-#, fuzzy
+#: libparted/arch/linux.c:1379
 msgid "Virtio Block Device"
-msgstr "Xen Virtual Block Device"
+msgstr "Virtio Block Device"
 
-#: libparted/arch/linux.c:1324
+#: libparted/arch/linux.c:1386
 msgid "ped_device_new()  Unsupported device type"
-msgstr "ped_device_new()  ¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ê¤¤¼ïÎà¤Î¥Ç¥Ğ¥¤¥¹¤Ç¤¹¡£"
+msgstr "ped_device_new()  ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„ç¨®é¡ã®ãƒ‡ãƒã‚¤ã‚¹ã§ã™ã€‚"
 
-#: libparted/arch/linux.c:2246
+#: libparted/arch/linux.c:1483 libparted/arch/linux.c:1555
 #, c-format
-msgid ""
-"Error informing the kernel about modifications to partition %s -- %s.  This "
-"means Linux won't know about any changes you made to %s until you reboot -- "
-"so you shouldn't mount it or use it in any way before rebooting."
-msgstr ""
-"¥Ñ¡¼¥Æ¥£¥·¥ç¥ó %s ¤ÎÊÑ¹¹¤ò¥«¡¼¥Í¥ë¤ËÅÁ¤¨¤ëºİ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿ -- %s¡£"
-"¥«¡¼¥Í¥ë¤Ï %s ¤ËÂĞ¤·¤Æ¤Ê¤µ¤ì¤¿ÊÑ¹¹¤òºÆµ¯Æ°¤¹¤ë¤Ş¤Ç´ØÃÎ¤·¤Ş¤»¤ó¤Î¤Ç¡¢¤³¤Î¥Ñ¡¼"
-"¥Æ¥£¥·¥ç¥ó¤ò mount ¤·¤è¤¦¤È¤·¤¿¤ê¡¢¤Ê¤ó¤é¤«¤ÎÁàºî¤ò¤¹¤Ù¤­¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£"
+msgid "Error fsyncing/closing %s: %s"
+msgstr "%s ã‚’ fsync/close ä¸­ã«ã‚¨ãƒ©ãƒ¼: %s"
 
-#: libparted/arch/linux.c:2481
+#: libparted/arch/linux.c:1719
+#, c-format
+msgid "end of file while reading %s"
+msgstr ""
+
+#: libparted/arch/linux.c:2416
 #, c-format
 msgid ""
 "parted was unable to re-read the partition table on %s (%s).  This means "
 "Linux won't know anything about the modifications you made. "
 msgstr ""
-"parted ¤Ï %s ¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤ÎÆâÍÆ¤òºÆÆÉ¤ß¹ş¤ß¤Ç¤­¤Ş¤»¤ó(%s)¡£¤³¤ì"
-"¤Ï Linux ¥«¡¼¥Í¥ë¤Ï¤¢¤Ê¤¿¤¬¹Ô¤Ã¤¿ÊÑ¹¹¤ò´ØÃÎ¤·¤Æ¤¤¤Ê¤¤¤³¤È¤ò°ÕÌ£¤·¤Æ¤¤¤Ş¤¹¡£"
+"parted ã¯ %s ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã®å†…å®¹ã‚’å†èª­ã¿è¾¼ã¿ã§ãã¾ã›ã‚“(%s)ã€‚ã“ã‚Œ"
+"ã¯ Linux ã‚«ãƒ¼ãƒãƒ«ã¯ã‚ãªãŸãŒè¡Œã£ãŸå¤‰æ›´ã‚’é–¢çŸ¥ã—ã¦ã„ãªã„ã“ã¨ã‚’æ„å‘³ã—ã¦ã„ã¾ã™ã€‚"
 
-#: libparted/arch/linux.c:2590
+#: libparted/arch/linux.c:2531
 #, c-format
 msgid ""
-"The kernel was unable to re-read the partition table on %s (%s).  This means "
-"Linux won't know anything about the modifications you made until you "
-"reboot.  You should reboot your computer before doing anything with %s."
+"WARNING: the kernel failed to re-read the partition table on %s (%s).  As a "
+"result, it may not reflect all of your changes until after reboot."
 msgstr ""
-"¥«¡¼¥Í¥ë¤Ï %s ¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤ÎÆâÍÆ¤òºÆÆÉ¤ß¹ş¤ß¤Ç¤­¤Ş¤»¤ó(%s)¡£¤³¤ì"
-"¤ÏºÆµ¯Æ°¤¹¤ë¤Ş¤Ç Linux ¥«¡¼¥Í¥ë¤Ï¤¢¤Ê¤¿¤¬¹Ô¤Ã¤¿ÊÑ¹¹¤ò´ØÃÎ¤·¤Æ¤¤¤Ê¤¤¤³¤È¤ò°ÕÌ£"
-"¤·¤Æ¤¤¤Ş¤¹¡£%s ¤ËÂĞ¤·¤Æ²¿¤«Áàºî¤ò¤¹¤ëÁ°¤Ë¥³¥ó¥Ô¥å¡¼¥¿¤òºÆµ¯Æ°¤¹¤ë¤Ù¤­¤Ç¤¹¡£"
 
 #: libparted/cs/geom.c:161
-msgid "Can't have the end before the start!"
-msgstr "½ªÎ»°ÌÃÖ¤ò³«»Ï°ÌÃÖ¤ò±Û¤¨¤ÆÆ°¤«¤¹¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó¡£"
+#, c-format
+msgid "Can't have the end before the start! (start sector=%jd length=%jd)"
+msgstr "çµ‚äº†ä½ç½®ã‚’é–‹å§‹ä½ç½®ã®å‰ã«ã¯å‹•ã‹ã›ã¾ã›ã‚“(é–‹å§‹ã‚»ã‚¯ã‚¿=%jd é•·ã•=%jd)ã€‚"
 
-#: libparted/cs/geom.c:168
+#: libparted/cs/geom.c:169
 msgid "Can't have a partition outside the disk!"
-msgstr "¥Ç¥£¥¹¥¯¤Î³°Â¦¤Ë¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ïºî¤ì¤Ş¤»¤ó¡£"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚¯ã®å¤–å´ã«ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¯ä½œã‚Œã¾ã›ã‚“ã€‚"
 
-#: libparted/cs/geom.c:365
+#: libparted/cs/geom.c:384
 #, c-format
 msgid "Attempt to write sectors %ld-%ld outside of partition on %s."
 msgstr ""
-"½ñ¤­¹ş¤â¤¦¤È¤·¤¿¥»¥¯¥¿ (%ld-%ld) ¤Ï %s ¾å¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î³°¤Ë¤¢¤ê¤Ş¤¹¡£"
+"æ›¸ãè¾¼ã‚‚ã†ã¨ã—ãŸã‚»ã‚¯ã‚¿ (%ld-%ld) ã¯ %s ä¸Šã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®å¤–ã«ã‚ã‚Šã¾ã™ã€‚"
 
-#: libparted/cs/geom.c:405 libparted/fs/linux_swap/linux_swap.c:482
+#: libparted/cs/geom.c:424 libparted/fs/linux_swap/linux_swap.c:487
 msgid "checking for bad blocks"
-msgstr "ÉÔÎÉ¥Ö¥í¥Ã¥¯¤ò¥Á¥§¥Ã¥¯Ãæ"
+msgstr "ä¸è‰¯ãƒ–ãƒ­ãƒƒã‚¯ã‚’ãƒã‚§ãƒƒã‚¯ä¸­"
 
-#: libparted/debug.c:101
+#: libparted/debug.c:96
 #, c-format
 msgid "Backtrace has %d calls on stack:\n"
 msgstr "Backtrace has %d calls on stack:\n"
 
-#: libparted/debug.c:114
+#: libparted/debug.c:109
 #, c-format
 msgid "Assertion (%s) at %s:%d in function %s() failed."
 msgstr "Assertion (%s) at %s:%d in function %s() failed."
 
-#: libparted/disk.c:186
+#: libparted/disk.c:193
 #, c-format
 msgid "%s: unrecognised disk label"
-msgstr "%s: ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤¬Ç§¼±¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "%s: ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ãŒèªè­˜ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/disk.c:455
+#: libparted/disk.c:484
 #, c-format
 msgid ""
 "This libparted doesn't have write support for %s.  Perhaps it was compiled "
 "read-only."
 msgstr ""
-"»ÈÍÑ¤·¤Æ¤¤¤ë libparted ¤Ï %s ¤Î½ñ¤­¤³¤ß¤ò¥µ¥İ¡¼¥È¤·¤Æ¤¤¤Ş¤»¤ó¡£ÆÉ¤ß¹ş¤ßÀìÍÑ¤Ç"
-"¥³¥ó¥Ñ¥¤¥ë¤µ¤ì¤Æ¤¤¤ë¤È»×¤ï¤ì¤Ş¤¹¡£"
+"ä½¿ç”¨ã—ã¦ã„ã‚‹ libparted ã¯ %s ã®æ›¸ãã“ã¿ã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚èª­ã¿è¾¼ã¿å°‚ç”¨ã§"
+"ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¦ã„ã‚‹ã¨æ€ã‚ã‚Œã¾ã™ã€‚"
 
-#: libparted/disk.c:582
+#: libparted/disk.c:629
 #, c-format
 msgid "Partition %d is %s, but the file system is %s."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó %d ¤Ï %s ¤Ç¤¢¤ë¤Î¤Ë¡¢¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ï %s ¤Ç¤¹¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ %d ã¯ %s ã§ã‚ã‚‹ã®ã«ã€ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯ %s ã§ã™ã€‚"
 
-#: libparted/disk.c:1073
+#: libparted/disk.c:837
+msgid "cylinder_alignment"
+msgstr ""
+
+#: libparted/disk.c:843
+#, fuzzy, c-format
+msgid "Unknown disk flag, %d."
+msgstr "%d ã¯ä¸æ˜ãªãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ•ãƒ©ã‚°ã§ã™ã€‚"
+
+#: libparted/disk.c:1282
 #, c-format
 msgid "%s disk labels do not support extended partitions."
-msgstr "%s ¤Î¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Ï³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò¥µ¥İ¡¼¥È¤·¤Æ¤¤¤Ş¤»¤ó¡£"
+msgstr "%s ã®ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã¯æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚"
 
-#: libparted/disk.c:1632
+#: libparted/disk.c:1861
 #, c-format
 msgid "%s disk labels don't support logical or extended partitions."
 msgstr ""
-"%s ¤Î¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤ÏÏÀÍı¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ä³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò¥µ¥İ¡¼¥È¤·¤Æ¤Ş¤»"
-"¤ó"
+"%s ã®ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã¯è«–ç†ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚„æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã¾ã›"
+"ã‚“"
 
-#: libparted/disk.c:1645
+#: libparted/disk.c:1874
 msgid "Too many primary partitions."
-msgstr "¥×¥é¥¤¥Ş¥ê¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬Â¿¤¹¤®¤Ş¤¹¡£"
+msgstr "ãƒ—ãƒ©ã‚¤ãƒãƒªãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒå¤šã™ãã¾ã™ã€‚"
 
-#: libparted/disk.c:1654
+#: libparted/disk.c:1883
 #, c-format
 msgid ""
 "Can't add a logical partition to %s, because there is no extended partition."
-msgstr "³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬¤Ê¤¤¤Î¤Ç¡¢ÏÀÍı¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò %s ¤Ëºî¤ì¤Ş¤»¤ó¡£"
+msgstr "æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒãªã„ã®ã§ã€è«–ç†ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ %s ã«ä½œã‚Œã¾ã›ã‚“ã€‚"
 
-#: libparted/disk.c:1678
+#: libparted/disk.c:1907
 #, c-format
 msgid "Can't have more than one extended partition on %s."
-msgstr "%s ¤Ë¤Ï 1 ¸Ä¤·¤«³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òºî¤ì¤Ş¤»¤ó¡£"
+msgstr "%s ã«ã¯ 1 å€‹ã—ã‹æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ä½œã‚Œã¾ã›ã‚“ã€‚"
 
-#: libparted/disk.c:1688
+#: libparted/disk.c:1917
 msgid "Can't have logical partitions outside of the extended partition."
-msgstr "ÏÀÍı¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î³°¤Ë¤Ï»ı¤Æ¤Ş¤»¤ó¡£"
+msgstr "è«–ç†ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®å¤–ã«ã¯æŒã¦ã¾ã›ã‚“ã€‚"
 
-#: libparted/disk.c:1738
+#: libparted/disk.c:1942
 #, c-format
 msgid "Can't have a logical partition outside of the extended partition on %s."
-msgstr "%s ¤Î³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î³°¤ËÏÀÍı¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ïºî¤ì¤Ş¤»¤ó¡£"
+msgstr "%s ã®æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®å¤–ã«è«–ç†ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¯ä½œã‚Œã¾ã›ã‚“ã€‚"
 
-#: libparted/disk.c:1748 libparted/disk.c:1841 libparted/disk.c:2007
+#: libparted/disk.c:1952 libparted/disk.c:2011 libparted/disk.c:2189
 msgid "Can't have overlapping partitions."
-msgstr "½Å¤Ê¤ê¤Î¤¢¤ë¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ï»ı¤Æ¤Ş¤»¤ó¡£"
+msgstr "é‡ãªã‚Šã®ã‚ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¯æŒã¦ã¾ã›ã‚“ã€‚"
 
-#: libparted/disk.c:1756
+#: libparted/disk.c:1960
 msgid "Can't have a primary partition inside an extended partition."
-msgstr "³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥óÆâ¤Ë¥×¥é¥¤¥Ş¥ê¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ïºî¤ì¤Ş¤»¤ó¡£"
+msgstr "æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³å†…ã«ãƒ—ãƒ©ã‚¤ãƒãƒªãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¯ä½œã‚Œã¾ã›ã‚“ã€‚"
 
-#: libparted/disk.c:1779
-#, c-format
-msgid ""
-"partition length of %jd sectors exceeds the %s-partition-table-imposed "
-"maximum of %jd"
-msgstr ""
-
-#: libparted/disk.c:1791
-#, c-format
-msgid ""
-"starting sector number, %jd exceeds the %s-partition-table-imposed maximum "
-"of %jd"
-msgstr ""
-
-#: libparted/disk.c:2202
+#: libparted/disk.c:2391
 msgid "metadata"
-msgstr "¥á¥¿¾ğÊó"
+msgstr "ãƒ¡ã‚¿æƒ…å ±"
 
-#: libparted/disk.c:2204
+#: libparted/disk.c:2393
 msgid "free"
-msgstr "¶õ¤­"
+msgstr "ç©ºã"
 
-#: libparted/disk.c:2206 parted/ui.c:1185 parted/ui.c:1213
+#: libparted/disk.c:2395 parted/ui.c:1193 parted/ui.c:1221
 msgid "extended"
-msgstr "³ÈÄ¥"
+msgstr "æ‹¡å¼µ"
 
-#: libparted/disk.c:2208 parted/ui.c:1189 parted/ui.c:1217
+#: libparted/disk.c:2397 parted/ui.c:1197 parted/ui.c:1225
 msgid "logical"
-msgstr "ÏÀÍı"
+msgstr "è«–ç†"
 
-#: libparted/disk.c:2210 parted/ui.c:1181 parted/ui.c:1209
+#: libparted/disk.c:2399 parted/ui.c:1189 parted/ui.c:1217
 msgid "primary"
-msgstr "¥×¥é¥¤¥Ş¥ê"
+msgstr "ãƒ—ãƒ©ã‚¤ãƒãƒª"
 
-#: libparted/disk.c:2226
+#: libparted/disk.c:2415
 msgid "boot"
 msgstr "boot"
 
-#: libparted/disk.c:2228
+#: libparted/disk.c:2417
 msgid "bios_grub"
-msgstr ""
+msgstr "bios_grub"
 
-#: libparted/disk.c:2230
+#: libparted/disk.c:2419
 msgid "root"
 msgstr "root"
 
-#: libparted/disk.c:2232
+#: libparted/disk.c:2421
 msgid "swap"
 msgstr "swap"
 
-#: libparted/disk.c:2234
+#: libparted/disk.c:2423
 msgid "hidden"
 msgstr "hidden"
 
-#: libparted/disk.c:2236
+#: libparted/disk.c:2425
 msgid "raid"
 msgstr "raid"
 
-#: libparted/disk.c:2238
+#: libparted/disk.c:2427
 msgid "lvm"
 msgstr "lvm"
 
-#: libparted/disk.c:2240
+#: libparted/disk.c:2429
 msgid "lba"
 msgstr "lba"
 
-#: libparted/disk.c:2242
+#: libparted/disk.c:2431
 msgid "hp-service"
 msgstr "hp-service"
 
-#: libparted/disk.c:2244
+#: libparted/disk.c:2433
 msgid "palo"
 msgstr "palo"
 
-#: libparted/disk.c:2246
+#: libparted/disk.c:2435
 msgid "prep"
 msgstr "prep"
 
-#: libparted/disk.c:2248
+#: libparted/disk.c:2437
 msgid "msftres"
 msgstr "msftres"
 
-#: libparted/disk.c:2254
+#: libparted/disk.c:2439
+msgid "atvrecv"
+msgstr ""
+
+#: libparted/disk.c:2445
 #, c-format
 msgid "Unknown partition flag, %d."
-msgstr "%d ¤ÏÉÔÌÀ¤Ê¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Õ¥é¥°¤Ç¤¹¡£"
+msgstr "%d ã¯ä¸æ˜ãªãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ•ãƒ©ã‚°ã§ã™ã€‚"
 
 #: libparted/exception.c:77
 msgid "Information"
-msgstr "ÄÌÃÎ"
+msgstr "é€šçŸ¥"
 
 #: libparted/exception.c:78
 msgid "Warning"
-msgstr "·Ù¹ğ"
+msgstr "è­¦å‘Š"
 
 #: libparted/exception.c:79
 msgid "Error"
-msgstr "¥¨¥é¡¼"
+msgstr "ã‚¨ãƒ©ãƒ¼"
 
 #: libparted/exception.c:80
 msgid "Fatal"
-msgstr "Ã×Ì¿Åª¥¨¥é¡¼"
+msgstr "è‡´å‘½çš„ã‚¨ãƒ©ãƒ¼"
 
 #: libparted/exception.c:81
 msgid "Bug"
-msgstr "¥Ğ¥°"
+msgstr "ãƒã‚°"
 
 #: libparted/exception.c:82
 msgid "No Implementation"
-msgstr "Ì¤¼ÂÁõ"
+msgstr "æœªå®Ÿè£…"
 
 #: libparted/exception.c:86
 msgid "Fix"
-msgstr "½¤Àµ"
+msgstr "ä¿®æ­£"
 
 #: libparted/exception.c:87
 msgid "Yes"
-msgstr "¤Ï¤¤(Y)"
+msgstr "ã¯ã„(Y)"
 
 #: libparted/exception.c:88
 msgid "No"
-msgstr "¤¤¤¤¤¨(N)"
+msgstr "ã„ã„ãˆ(N)"
 
 #: libparted/exception.c:89
 msgid "OK"
@@ -949,15 +979,15 @@ msgstr "OK"
 
 #: libparted/exception.c:90
 msgid "Retry"
-msgstr "¤ä¤ê¤Ê¤ª¤·(R)"
+msgstr "ã‚„ã‚ŠãªãŠã—(R)"
 
 #: libparted/exception.c:91
 msgid "Ignore"
-msgstr "Ìµ»ë(I)"
+msgstr "ç„¡è¦–(I)"
 
 #: libparted/exception.c:92
 msgid "Cancel"
-msgstr "¼è¾Ã(C)"
+msgstr "å–æ¶ˆ(C)"
 
 #: libparted/exception.c:132
 #, c-format
@@ -968,46 +998,46 @@ msgid ""
 "parted@gnu.org containing at least the version (%s) and the following "
 "message:  "
 msgstr ""
-"GNU parted ¤Ë¥Ğ¥°¤¬¸«¤Ä¤«¤ê¤Ş¤·¤¿¡£http://www.gnu.org/software/parted/parted."
-"html ¤ò¸«¤Æ¡¢¥Ğ¥°¥ì¥İ¡¼¥È¤ËÉ¬Í×¤Ê¾ğÊó¤òÆÀ¤Æ¤¯¤À¤µ¤¤¡£bug-parted@gnu.org ¤Ë "
-"version(%s) ¤È°Ê²¼¤Î¥á¥Ã¥»¡¼¥¸¤ò´Ş¤á¤Æ¥á¡¼¥ë¤ÇÁ÷¤Ã¤Æ¤¯¤À¤µ¤¤: "
+"GNU parted ã«ãƒã‚°ãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸã€‚http://www.gnu.org/software/parted/parted."
+"html ã‚’è¦‹ã¦ã€ãƒã‚°ãƒ¬ãƒãƒ¼ãƒˆã«å¿…è¦ãªæƒ…å ±ã‚’å¾—ã¦ãã ã•ã„ã€‚bug-parted@gnu.org ã« "
+"version(%s) ã¨ä»¥ä¸‹ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å«ã‚ã¦ãƒ¡ãƒ¼ãƒ«ã§é€ã£ã¦ãã ã•ã„: "
 
-#: libparted/filesys.c:456
+#: libparted/filesys.c:462
 msgid "Could not detect file system."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ò¸¡½Ğ¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’æ¤œå‡ºã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/filesys.c:467
+#: libparted/filesys.c:473
 msgid "The file system is bigger than its volume!"
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤¬¥Ü¥ê¥å¡¼¥à¤è¤ê¤âÂç¤­¤¤¤Ç¤¹!"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãŒãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚ˆã‚Šã‚‚å¤§ãã„ã§ã™!"
 
-#: libparted/filesys.c:475
+#: libparted/filesys.c:481
 #, c-format
 msgid "Support for opening %s file systems is not implemented yet."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à(%s)¤Î¥ª¡¼¥×¥ó¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ (%s)ã®ã‚ªãƒ¼ãƒ—ãƒ³ã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
-#: libparted/filesys.c:517
+#: libparted/filesys.c:523
 #, c-format
 msgid "Support for creating %s file systems is not implemented yet."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à(%s)¤ÎºîÀ®¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ (%s)ã®ä½œæˆã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
-#: libparted/filesys.c:577
+#: libparted/filesys.c:583
 #, c-format
 msgid "Support for checking %s file systems is not implemented yet."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à(%s)¤ËÂĞ¤¹¤ë¥Á¥§¥Ã¥¯¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ (%s)ã«å¯¾ã™ã‚‹ãƒã‚§ãƒƒã‚¯ã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
-#: libparted/filesys.c:643
+#: libparted/filesys.c:649
 msgid "raw block copying"
-msgstr "¥Ö¥í¥Ã¥¯¤ò¤½¤Î¤Ş¤Ş¥³¥Ô¡¼Ãæ"
+msgstr "ãƒ–ãƒ­ãƒƒã‚¯ã‚’ãã®ã¾ã¾ã‚³ãƒ”ãƒ¼ä¸­"
 
-#: libparted/filesys.c:654
+#: libparted/filesys.c:660
 msgid "growing file system"
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤òÂç¤­¤¯¤·¤Æ¤¤¤Ş¤¹"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’å¤§ããã—ã¦ã„ã¾ã™"
 
-#: libparted/filesys.c:694
+#: libparted/filesys.c:700
 msgid "Can't copy onto an overlapping partition."
-msgstr "½Å¤Ê¤ê¤Î¤¢¤ë¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¤Ï¥³¥Ô¡¼¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "é‡ãªã‚Šã®ã‚ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«ã¯ã‚³ãƒ”ãƒ¼ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/filesys.c:716
+#: libparted/filesys.c:722
 #, c-format
 msgid ""
 "Direct support for copying file systems is not yet implemented for %s.  "
@@ -1016,93 +1046,93 @@ msgid ""
 "either shrink the partition you are trying to copy, or copy to a bigger "
 "partition."
 msgstr ""
-"%s ¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¥³¥Ô¡¼¤ÎÄ¾ÀÜÅª¤Ê¼ÂÁõ¤Ï¤Ş¤À¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£¿·¤·¤¤¥Ñ¡¼"
-"¥Æ¥£¥·¥ç¥ó¤¬¸Å¤¤¤Î¤È¾¯¤Ê¤¯¤È¤âÆ±¤¸¤¯¤é¤¤¤ÎÂç¤­¤µ¤Ç¤¢¤ì¤Ğ¥³¥Ô¡¼¤Ç¤­¤Ş¤¹¡£¥ê¥µ"
-"¥¤¥º¤Ï¼ÂÁõ¤µ¤ì¤Æ¤¤¤Ş¤¹¤Î¤Ç¡¢¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò¾®¤µ¤¯¤·¤Æ¤«¤é¥³¥Ô¡¼¤·¤Æ¤ß¤ë¤«¡¢"
-"¤â¤Ã¤ÈÂç¤­¤¤¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¥³¥Ô¡¼¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"%s ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ã‚³ãƒ”ãƒ¼ã®ç›´æ¥çš„ãªå®Ÿè£…ã¯ã¾ã ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚æ–°ã—ã„ãƒ‘ãƒ¼"
+"ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒå¤ã„ã®ã¨å°‘ãªãã¨ã‚‚åŒã˜ãã‚‰ã„ã®å¤§ãã•ã§ã‚ã‚Œã°ã‚³ãƒ”ãƒ¼ã§ãã¾ã™ã€‚ãƒªã‚µ"
+"ã‚¤ã‚ºã¯å®Ÿè£…ã•ã‚Œã¦ã„ã¾ã™ã®ã§ã€ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’å°ã•ãã—ã¦ã‹ã‚‰ã‚³ãƒ”ãƒ¼ã—ã¦ã¿ã‚‹ã‹ã€"
+"ã‚‚ã£ã¨å¤§ãã„ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«ã‚³ãƒ”ãƒ¼ã—ã¦ãã ã•ã„ã€‚"
 
-#: libparted/filesys.c:730
+#: libparted/filesys.c:736
 #, c-format
 msgid "Support for copying %s file systems is not implemented yet."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à(%s)¤Î¥³¥Ô¡¼¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ (%s)ã®ã‚³ãƒ”ãƒ¼ã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
-#: libparted/filesys.c:768
+#: libparted/filesys.c:774
 #, c-format
 msgid "Support for resizing %s file systems is not implemented yet."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à(%s)¤Î¥ê¥µ¥¤¥º¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ (%s)ã®ãƒªã‚µã‚¤ã‚ºã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:314
 msgid "creating"
-msgstr "ºîÀ®Ãæ"
+msgstr "ä½œæˆä¸­"
 
 #: libparted/fs/reiserfs/reiserfs.c:401
 msgid "The file system is in an invalid state.  Perhaps it is mounted?"
 msgstr ""
-"¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤¬ÉÔÀµ¤Ê¾õÂÖ¤Ë¤¢¤ê¤Ş¤¹¡£¥Ş¥¦¥ó¥È¤µ¤ì¤Æ¤¤¤¿¤ê¤·¤Ş¤»¤ó¤«¡©"
+"ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãŒä¸æ­£ãªçŠ¶æ…‹ã«ã‚ã‚Šã¾ã™ã€‚ãƒã‚¦ãƒ³ãƒˆã•ã‚Œã¦ã„ãŸã‚Šã—ã¾ã›ã‚“ã‹ï¼Ÿ"
 
 #: libparted/fs/reiserfs/reiserfs.c:409
 msgid "The file system is in old (unresizeable) format."
-msgstr "¤³¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ï¸Å¤¤(¥ê¥µ¥¤¥ºÉÔ²ÄÇ½)¥Õ¥©¡¼¥Ş¥Ã¥È¤Ç¤¹¡£"
+msgstr "ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯å¤ã„(ãƒªã‚µã‚¤ã‚ºä¸å¯èƒ½)ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã§ã™ã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:415
 msgid "Invalid free blocks count.  Run reiserfsck --check first."
-msgstr "¶õ¤­¥Ö¥í¥Ã¥¯¿ô¤¬ÉÔÀµ¤Ç¤¹¡£¤Ş¤º reiserfsck --check ¤ò¼Â¹Ô¤·¤Æ¤¯¤À¤µ¤¤¡£"
+msgstr "ç©ºããƒ–ãƒ­ãƒƒã‚¯æ•°ãŒä¸æ­£ã§ã™ã€‚ã¾ãš reiserfsck --check ã‚’å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:430
 msgid "checking"
-msgstr "¥Á¥§¥Ã¥¯Ãæ"
+msgstr "ãƒã‚§ãƒƒã‚¯ä¸­"
 
 #: libparted/fs/reiserfs/reiserfs.c:436
 msgid "Reiserfs tree seems to be corrupted.  Run reiserfsck --check first."
 msgstr ""
-"Reiserfs ¤ÎÌÚ¹½Â¤¤¬²õ¤ì¤Æ¤¤¤Ş¤¹¡£¤Ş¤º reiserfsck --check ¤ò¼Â¹Ô¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"Reiserfs ã®æœ¨æ§‹é€ ãŒå£Šã‚Œã¦ã„ã¾ã™ã€‚ã¾ãš reiserfsck --check ã‚’å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:448
 msgid ""
 "The reiserfs file system passed a basic check.  For a more comprehensive "
 "check, run reiserfsck --check."
 msgstr ""
-"¤³¤Î reiserfs ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ï´ÊÃ±¤Ê¥Á¥§¥Ã¥¯¤ò¥Ñ¥¹¤·¤Ş¤·¤¿¡£¤µ¤é¤Ë¥Á¥§¥Ã¥¯"
-"¤¹¤ë¤Ë¤Ï reiserfsck --check ¤ò»È¤Ã¤Æ¤¯¤À¤µ¤¤¡£"
+"ã“ã® reiserfs ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯ç°¡å˜ãªãƒã‚§ãƒƒã‚¯ã‚’ãƒ‘ã‚¹ã—ã¾ã—ãŸã€‚ã•ã‚‰ã«ãƒã‚§ãƒƒã‚¯"
+"ã™ã‚‹ã«ã¯ reiserfsck --check ã‚’ä½¿ã£ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:473
 msgid "Sorry, can't move the start of reiserfs partitions yet."
-msgstr "»ÄÇ°¤Ç¤¹¤¬¡¢¤Ş¤À reiserfs ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î³«»Ï°ÌÃÖ¤Ï°ÜÆ°¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "æ®‹å¿µã§ã™ãŒã€ã¾ã  reiserfs ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®é–‹å§‹ä½ç½®ã¯ç§»å‹•ã§ãã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:489
 msgid "Couldn't reopen device abstraction layer for read/write."
-msgstr "¥Ç¥Ğ¥¤¥¹Ãê¾İ²½ÁØ¤òÆÉ¤ß½ñ¤­ÍÑ¤ËºÆ¥ª¡¼¥×¥ó¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹æŠ½è±¡åŒ–å±¤ã‚’èª­ã¿æ›¸ãç”¨ã«å†ã‚ªãƒ¼ãƒ—ãƒ³ã§ãã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:507 libparted/fs/ext2/ext2_resize.c:551
 #: libparted/fs/hfs/hfs.c:249 libparted/fs/hfs/hfs.c:628
 msgid "shrinking"
-msgstr "½Ì¾®Ãæ"
+msgstr "ç¸®å°ä¸­"
 
 #: libparted/fs/reiserfs/reiserfs.c:519
 msgid "expanding"
-msgstr "³ÈÂçÃæ"
+msgstr "æ‹¡å¤§ä¸­"
 
 #: libparted/fs/reiserfs/reiserfs.c:591
 msgid "Couldn't create reiserfs device abstraction handler."
-msgstr "reiserfs ¤Î¥Ç¥Ğ¥¤¥¹Ãê¾İ²½¥Ï¥ó¥É¥é¤òºîÀ®¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "reiserfs ã®ãƒ‡ãƒã‚¤ã‚¹æŠ½è±¡åŒ–ãƒãƒ³ãƒ‰ãƒ©ã‚’ä½œæˆã§ãã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:605
 #, c-format
 msgid "Device is too small for %lu blocks."
-msgstr "%lu ¤Ë¤Ï¥Ö¥í¥Ã¥¯¥Ç¥Ğ¥¤¥¹¤¬¾®¤µ¤¹¤®¤Ş¤¹¡£"
+msgstr "%lu ã«ã¯ãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒã‚¤ã‚¹ãŒå°ã•ã™ãã¾ã™ã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:614
 msgid "copying"
-msgstr "¥³¥Ô¡¼Ãæ"
+msgstr "ã‚³ãƒ”ãƒ¼ä¸­"
 
 #: libparted/fs/reiserfs/reiserfs.c:681
 #, c-format
 msgid "Couldn't resolve symbol %s.  Error: %s."
-msgstr "¥·¥ó¥Ü¥ë %s ¤ò²ò·è¤Ç¤­¤Ş¤»¤ó¡£¥¨¥é¡¼: %s¡£"
+msgstr "ã‚·ãƒ³ãƒœãƒ« %s ã‚’è§£æ±ºã§ãã¾ã›ã‚“ã€‚ã‚¨ãƒ©ãƒ¼: %sã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:703
 msgid "GNU Parted found an invalid libreiserfs library."
-msgstr "GNU Parted ¤ÏÉÔÀµ¤Ê libreiserfs ¥é¥¤¥Ö¥é¥ê¤ò¸«¤Ä¤±¤Ş¤·¤¿¡£"
+msgstr "GNU Parted ã¯ä¸æ­£ãª libreiserfs ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’è¦‹ã¤ã‘ã¾ã—ãŸã€‚"
 
 #: libparted/fs/reiserfs/reiserfs.c:714
 #, c-format
@@ -1110,217 +1140,215 @@ msgid ""
 "GNU Parted has detected libreiserfs interface version mismatch.  Found %d-%"
 "d, required %d. ReiserFS support will be disabled."
 msgstr ""
-"GNU Parted ¤Ï libreiserfs ¤Î¥¤¥ó¥¿¡¼¥Õ¥§¡¼¥¹¥Ğ¡¼¥¸¥ç¥ó¤ÎÉÔÀ°¹ç¤ò¸¡½Ğ¤·¤Ş¤·"
-"¤¿¡£%d-%d ¤¬¸¡½Ğ¤µ¤ì¤Ş¤·¤¿¤¬¡¢%d ¤¬É¬Í×¤Ç¤¹¡£ReiserFS ¥µ¥İ¡¼¥È¤òÌµ¸ú¤Ë¤·¤Ş"
-"¤¹¡£"
+"GNU Parted ã¯ libreiserfs ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ãƒ¼ã‚¹ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®ä¸æ•´åˆã‚’æ¤œå‡ºã—ã¾ã—"
+"ãŸã€‚%d-%d ãŒæ¤œå‡ºã•ã‚Œã¾ã—ãŸãŒã€%d ãŒå¿…è¦ã§ã™ã€‚ReiserFS ã‚µãƒãƒ¼ãƒˆã‚’ç„¡åŠ¹ã«ã—ã¾"
+"ã™ã€‚"
 
-#: libparted/labels/aix.c:138
+#: libparted/labels/aix.c:123
 msgid "Support for reading AIX disk labels is is not implemented yet."
-msgstr "AIX ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤ÎÆÉ¤ß¹ş¤ß¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "AIX ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã®èª­ã¿è¾¼ã¿ã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
-#: libparted/labels/aix.c:149
+#: libparted/labels/aix.c:134
 msgid "Support for writing AIX disk labels is is not implemented yet."
-msgstr "AIX ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Î½ñ¤­¹ş¤ß¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "AIX ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã®æ›¸ãè¾¼ã¿ã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
-#: libparted/labels/aix.c:162
+#: libparted/labels/aix.c:147
 msgid ""
 "Support for adding partitions to AIX disk labels is not implemented yet."
-msgstr "AIX ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Ø¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ÎÄÉ²Ã¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "AIX ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã¸ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®è¿½åŠ ã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
-#: libparted/labels/aix.c:172
+#: libparted/labels/aix.c:157
 msgid ""
 "Support for duplicating partitions in AIX disk labels is not implemented yet."
-msgstr "AIX ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Ç¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ÎÊ£À½¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "AIX ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã§ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®è¤‡è£½ã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
-#: libparted/labels/aix.c:190
+#: libparted/labels/aix.c:175
 msgid ""
 "Support for setting system type of partitions in AIX disk labels is not "
 "implemented yet."
-msgstr "AIX ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¥·¥¹¥Æ¥à¥¿¥¤¥×¤ÎÀßÄê¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "AIX ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ã‚·ã‚¹ãƒ†ãƒ ã‚¿ã‚¤ãƒ—ã®è¨­å®šã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
-#: libparted/labels/aix.c:200
+#: libparted/labels/aix.c:185
 msgid "Support for setting flags in AIX disk labels is not implemented yet."
-msgstr "AIX ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Î¥Õ¥é¥°¤ÎÀßÄê¤ÏÌ¤¼ÂÁõ¤Ç¤¹¡£"
+msgstr "AIX ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã®ãƒ•ãƒ©ã‚°ã®è¨­å®šã¯æœªå®Ÿè£…ã§ã™ã€‚"
 
-#: libparted/labels/bsd.c:578 libparted/labels/dasd.c:774
-#: libparted/labels/dos.c:2010 libparted/labels/dvh.c:771
-#: libparted/labels/gpt.c:1576 libparted/labels/loop.c:249
-#: libparted/labels/mac.c:1412 libparted/labels/pc98.c:759
-#: libparted/labels/rdb.c:1059 libparted/labels/sun.c:743
+#: libparted/labels/bsd.c:583 libparted/labels/dasd.c:805
+#: libparted/labels/dos.c:2064 libparted/labels/dvh.c:795
+#: libparted/labels/gpt.c:1726 libparted/labels/loop.c:254
+#: libparted/labels/mac.c:1474 libparted/labels/pc98.c:773
+#: libparted/labels/rdb.c:1073 libparted/labels/sun.c:823
 msgid "Unable to satisfy all constraints on the partition."
-msgstr "¤³¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ÇÁ´¤Æ¤ÎÀ©Ìó¤òËş¤¿¤»¤Ş¤»¤ó¡£"
+msgstr "ã“ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã§å…¨ã¦ã®åˆ¶ç´„ã‚’æº€ãŸã›ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/bsd.c:603
+#: libparted/labels/bsd.c:608
 msgid "Unable to allocate a bsd disklabel slot."
-msgstr "BSD¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Î¥¹¥í¥Ã¥È¤ò³ÎÊİ¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "BSDãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã®ã‚¹ãƒ­ãƒƒãƒˆã‚’ç¢ºä¿ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/dasd.c:169
-msgid "Unable to determine the block size of this dasd"
-msgstr "¤³¤Î dasd ¤Î¥Ö¥í¥Ã¥¯¥µ¥¤¥º¤ò·èÄê¤Ç¤­¤Ş¤»¤ó"
-
-#: libparted/labels/dasd.c:800
+#: libparted/labels/dasd.c:831
 msgid "Unable to allocate a dasd disklabel slot"
-msgstr "dasd ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Î¥¹¥í¥Ã¥È¤ò³ÎÊİ¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "dasd ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã®ã‚¹ãƒ­ãƒƒãƒˆã‚’ç¢ºä¿ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/dos.c:861
+#: libparted/labels/dos.c:895
 #, c-format
 msgid "Invalid partition table on %s -- wrong signature %x."
 msgstr ""
-"%s ¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤¬ÉÔÀµ¤Ç¤¹¡£%x ¤È¤¤¤¦¥·¥°¥Í¥Á¥ã¤Ï¤¢¤ä¤Ş¤ê¤Ç¤¹¡£"
+"%s ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ãŒä¸æ­£ã§ã™ã€‚%x ã¨ã„ã†ã‚·ã‚°ãƒãƒãƒ£ã¯ã‚ã‚„ã¾ã‚Šã§ã™ã€‚"
 
-#: libparted/labels/dos.c:889
+#: libparted/labels/dos.c:923
 #, c-format
 msgid "Invalid partition table - recursive partition on %s."
 msgstr ""
-"¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤¬ÉÔÀµ¤Ç¤¹¡£ºÆµ¢Åª¤Ê¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬ %s ¤Ë¤¢¤ê¤Ş¤¹¡£"
+"ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ãŒä¸æ­£ã§ã™ã€‚å†å¸°çš„ãªãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒ %s ã«ã‚ã‚Šã¾ã™ã€‚"
 
-#: libparted/labels/dos.c:1354
+#: libparted/labels/dos.c:1405
 msgid "Extended partitions cannot be hidden on msdos disk labels."
-msgstr "MSDOS ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Ç³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ï±£¤»¤Ş¤»¤ó¡£"
+msgstr "MSDOS ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã§æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¯éš ã›ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/dos.c:1994
+#: libparted/labels/dos.c:2046
 msgid "Parted can't resize partitions managed by Windows Dynamic Disk."
 msgstr ""
-"¥À¥¤¥Ê¥ß¥Ã¥¯¥Ç¥£¥¹¥¯¤Ë»È¤ï¤ì¤Æ¤¤¤ë¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ï Parted ¤Ç¤Ï¥ê¥µ¥¤¥º¤Ç¤­¤Ş"
-"¤»¤ó¡£"
+"ãƒ€ã‚¤ãƒŠãƒŸãƒƒã‚¯ãƒ‡ã‚£ã‚¹ã‚¯ã«ä½¿ã‚ã‚Œã¦ã„ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¯ Parted ã§ã¯ãƒªã‚µã‚¤ã‚ºã§ãã¾"
+"ã›ã‚“ã€‚"
 
-#: libparted/labels/dvh.c:189
+#: libparted/labels/dvh.c:208
 #, c-format
 msgid "%s has no extended partition (volume header partition)."
 msgstr ""
-"%s ¤Ï°ì¤Ä¤â³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¡Ê¥Ü¥ê¥å¡¼¥à¥Ø¥Ã¥À¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¡Ë¤ò»ı¤Ã¤Æ¤¤¤Ş¤»"
-"¤ó¡£"
+"%s ã¯ä¸€ã¤ã‚‚æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ï¼ˆãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ˜ãƒƒãƒ€ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ï¼‰ã‚’æŒã£ã¦ã„ã¾ã›"
+"ã‚“ã€‚"
 
-#: libparted/labels/dvh.c:312
+#: libparted/labels/dvh.c:334
 msgid "Checksum is wrong, indicating the partition table is corrupt."
-msgstr "¥Á¥§¥Ã¥¯¥µ¥à¤ÎÃÍ¤¬°ã¤¤¤Ş¤¹¡£¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤¬²õ¤ì¤Æ¤¤¤Ş¤¹¡£"
+msgstr "ãƒã‚§ãƒƒã‚¯ã‚µãƒ ã®å€¤ãŒé•ã„ã¾ã™ã€‚ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ãŒå£Šã‚Œã¦ã„ã¾ã™ã€‚"
 
-#: libparted/labels/dvh.c:615
+#: libparted/labels/dvh.c:639
 msgid "Only primary partitions can be root partitions."
-msgstr "¥×¥é¥¤¥Ş¥ê¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤À¤±¤¬¥ë¡¼¥È¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¤Ê¤ì¤Ş¤¹¡£"
+msgstr "ãƒ—ãƒ©ã‚¤ãƒãƒªãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã ã‘ãŒãƒ«ãƒ¼ãƒˆãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«ãªã‚Œã¾ã™ã€‚"
 
-#: libparted/labels/dvh.c:629
+#: libparted/labels/dvh.c:653
 msgid "Only primary partitions can be swap partitions."
-msgstr "¥×¥é¥¤¥Ş¥ê¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤À¤±¤¬¥¹¥ï¥Ã¥×¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¤Ê¤ì¤Ş¤¹¡£"
+msgstr "ãƒ—ãƒ©ã‚¤ãƒãƒªãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã ã‘ãŒã‚¹ãƒ¯ãƒƒãƒ—ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«ãªã‚Œã¾ã™ã€‚"
 
-#: libparted/labels/dvh.c:643
+#: libparted/labels/dvh.c:667
 msgid "Only logical partitions can be a boot file."
-msgstr "ÏÀÍı¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤À¤±¤¬¥Ö¡¼¥È¥Õ¥¡¥¤¥ë¤Ë¤Ê¤ì¤Ş¤¹¡£"
+msgstr "è«–ç†ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã ã‘ãŒãƒ–ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã«ãªã‚Œã¾ã™ã€‚"
 
-#: libparted/labels/dvh.c:720
-#, fuzzy, c-format
+#: libparted/labels/dvh.c:744
+#, c-format
 msgid ""
 "failed to set dvh partition name to %s:\n"
 "Only logical partitions (boot files) have a name."
-msgstr "Æâ¤Ë¥×¥é¥¤¥Ş¥ê¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ïºî¤ì¤Ş¤»¤ó¡£<"
+msgstr ""
+"dvh ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³åã‚’ %s ã«è¨­å®šã™ã‚‹ã®ã«å¤±æ•—ã—ã¾ã—ãŸ:\n"
+"è«–ç†ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³(ãƒ–ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«)ã ã‘ãŒåå‰ã‚’æŒã¡ã¾ã™ã€‚"
 
-#: libparted/labels/dvh.c:813
+#: libparted/labels/dvh.c:837
 msgid "Too many primary partitions"
-msgstr "¥×¥é¥¤¥Ş¥ê¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬Â¿¤¹¤®¤Ş¤¹¡£"
+msgstr "ãƒ—ãƒ©ã‚¤ãƒãƒªãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒå¤šã™ãã¾ã™ã€‚"
 
-#: libparted/labels/fdasd.c:97
+#: libparted/labels/fdasd.c:98
 msgid "open error"
-msgstr "¥ª¡¼¥×¥ó¥¨¥é¡¼"
+msgstr "ã‚ªãƒ¼ãƒ—ãƒ³ã‚¨ãƒ©ãƒ¼"
 
-#: libparted/labels/fdasd.c:100
+#: libparted/labels/fdasd.c:101
 msgid "seek error"
-msgstr "¥·¡¼¥¯¥¨¥é¡¼"
+msgstr "ã‚·ãƒ¼ã‚¯ã‚¨ãƒ©ãƒ¼"
 
-#: libparted/labels/fdasd.c:103
+#: libparted/labels/fdasd.c:104
 msgid "read error"
-msgstr "ÆÉ¤ß¹ş¤ß¥¨¥é¡¼"
+msgstr "èª­ã¿è¾¼ã¿ã‚¨ãƒ©ãƒ¼"
 
-#: libparted/labels/fdasd.c:109
+#: libparted/labels/fdasd.c:110
 msgid "ioctl() error"
-msgstr "ioctl()¥¨¥é¡¼"
+msgstr "ioctl()ã‚¨ãƒ©ãƒ¼"
 
-#: libparted/labels/fdasd.c:113
+#: libparted/labels/fdasd.c:114
 msgid "API version mismatch"
-msgstr "API ¥Ğ¡¼¥¸¥ç¥óÉÔÀ°¹ç"
+msgstr "API ãƒãƒ¼ã‚¸ãƒ§ãƒ³ä¸æ•´åˆ"
 
-#: libparted/labels/fdasd.c:117
+#: libparted/labels/fdasd.c:118
 msgid "Unsupported disk type"
-msgstr "¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ê¤¤¥Ç¥£¥¹¥¯¥¿¥¤¥×"
+msgstr "ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„ãƒ‡ã‚£ã‚¹ã‚¯ã‚¿ã‚¤ãƒ—"
 
-#: libparted/labels/fdasd.c:121
+#: libparted/labels/fdasd.c:122
 msgid "Unsupported disk format"
-msgstr "¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ê¤¤¥Ç¥£¥¹¥¯¥Õ¥©¡¼¥Ş¥Ã¥È"
+msgstr "ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ãªã„ãƒ‡ã‚£ã‚¹ã‚¯ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ"
 
-#: libparted/labels/fdasd.c:125
+#: libparted/labels/fdasd.c:126
 msgid "Disk is in use"
-msgstr "¥Ç¥£¥¹¥¯»ÈÍÑÃæ"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚¯ä½¿ç”¨ä¸­"
 
-#: libparted/labels/fdasd.c:129
+#: libparted/labels/fdasd.c:130
 msgid "Syntax error in config file"
-msgstr "¥³¥ó¥Õ¥£¥°¥Õ¥¡¥¤¥ë¤ÎÊ¸Ë¡¥¨¥é¡¼"
+msgstr "ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã®æ–‡æ³•ã‚¨ãƒ©ãƒ¼"
 
-#: libparted/labels/fdasd.c:133
+#: libparted/labels/fdasd.c:134
 msgid "Volume label is corrupted"
-msgstr "¥Ü¥ê¥å¡¼¥à¥é¥Ù¥ë¤¬²õ¤ì¤Æ¤¤¤Ş¤¹"
+msgstr "ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ©ãƒ™ãƒ«ãŒå£Šã‚Œã¦ã„ã¾ã™"
 
-#: libparted/labels/fdasd.c:137
+#: libparted/labels/fdasd.c:138
 msgid "A data set name is corrupted"
-msgstr "¥Ç¡¼¥¿¥»¥Ã¥ÈÌ¾¤¬²õ¤ì¤Æ¤¤¤Ş¤¹"
+msgstr "ãƒ‡ãƒ¼ã‚¿ã‚»ãƒƒãƒˆåãŒå£Šã‚Œã¦ã„ã¾ã™"
 
-#: libparted/labels/fdasd.c:141
+#: libparted/labels/fdasd.c:142
 msgid "Memory allocation failed"
-msgstr "¥á¥â¥ê¤Î³ÎÊİ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
-
-#: libparted/labels/fdasd.c:145
-msgid "Device verification failed"
-msgstr "¥Ç¥Ğ¥¤¥¹¤Î¥Ù¥ê¥Õ¥¡¥¤¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
+msgstr "ãƒ¡ãƒ¢ãƒªã®ç¢ºä¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
 
 #: libparted/labels/fdasd.c:146
+msgid "Device verification failed"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹ã®ãƒ™ãƒªãƒ•ã‚¡ã‚¤ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
+
+#: libparted/labels/fdasd.c:147
 msgid "The specified device is not a valid DASD device"
-msgstr "»ØÄê¤µ¤ì¤¿¥Ç¥Ğ¥¤¥¹¤ÏÍ­¸ú¤Ê DASD ¥Ç¥Ğ¥¤¥¹¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó"
+msgstr "æŒ‡å®šã•ã‚ŒãŸãƒ‡ãƒã‚¤ã‚¹ã¯æœ‰åŠ¹ãª DASD ãƒ‡ãƒã‚¤ã‚¹ã§ã¯ã‚ã‚Šã¾ã›ã‚“"
 
-#: libparted/labels/fdasd.c:149 libparted/labels/vtoc.c:179
+#: libparted/labels/fdasd.c:150 libparted/labels/vtoc.c:179
 msgid "Fatal error"
-msgstr "Ã×Ì¿Åª¤Ê¥¨¥é¡¼"
+msgstr "è‡´å‘½çš„ãªã‚¨ãƒ©ãƒ¼"
 
-#: libparted/labels/fdasd.c:225
+#: libparted/labels/fdasd.c:226
 msgid "No room for volume label."
-msgstr "¥Ü¥ê¥å¡¼¥à¥é¥Ù¥ë¤Î¤¿¤á¤ÎÎÎ°è¤¬¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ©ãƒ™ãƒ«ã®ãŸã‚ã®é ˜åŸŸãŒã‚ã‚Šã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/fdasd.c:233
+#: libparted/labels/fdasd.c:234
 msgid "No room for partition info."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¾ğÊó¤Î¤¿¤á¤ÎÎÎ°è¤¬¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³æƒ…å ±ã®ãŸã‚ã®é ˜åŸŸãŒã‚ã‚Šã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/fdasd.c:703
+#: libparted/labels/fdasd.c:704
 msgid "Invalid VTOC."
-msgstr "ÉÔÀµ¤ÊVTOC¤Ç¤¹¡£"
+msgstr "ä¸æ­£ãªVTOCã§ã™ã€‚"
 
-#: libparted/labels/fdasd.c:758
+#: libparted/labels/fdasd.c:764
 msgid "Could not retrieve API version."
-msgstr "API ¥Ğ¡¼¥¸¥ç¥ó¤¬¼èÆÀ¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "API ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒå–å¾—ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/fdasd.c:761
+#: libparted/labels/fdasd.c:767
 #, c-format
 msgid ""
 "The current API version '%d' doesn't match dasd driver API version '%d'!"
 msgstr ""
-"¸½ºß¤Î API ¤Î¥Ğ¡¼¥¸¥ç¥ó¤Ï '%d' ¤Ç¡¢dasd ¥É¥é¥¤¥Ğ API ¤Î¥Ğ¡¼¥¸¥ç¥ó '%d' ¤È°ìÃ×"
-"¤·¤Ş¤»¤ó!"
+"ç¾åœ¨ã® API ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¯ '%d' ã§ã€dasd ãƒ‰ãƒ©ã‚¤ãƒ API ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ '%d' ã¨ä¸€è‡´"
+"ã—ã¾ã›ã‚“!"
 
-#: libparted/labels/fdasd.c:780
+#: libparted/labels/fdasd.c:804
 msgid "Could not retrieve disk geometry information."
-msgstr "¥Ç¥£¥¹¥¯¤Î¥¸¥ª¥á¥È¥ê¾ğÊó¤¬¼èÆÀ¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚¯ã®ã‚¸ã‚ªãƒ¡ãƒˆãƒªæƒ…å ±ãŒå–å¾—ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/fdasd.c:784
+#: libparted/labels/fdasd.c:808
 msgid "Could not retrieve blocksize information."
-msgstr "¥Ö¥í¥Ã¥¯¥µ¥¤¥º¾ğÊó¤¬¼èÆÀ¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºæƒ…å ±ãŒå–å¾—ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/fdasd.c:789
+#: libparted/labels/fdasd.c:813
 msgid "Could not retrieve disk information."
-msgstr "¥Ç¥£¥¹¥¯¾ğÊó¤¬¼èÆÀ¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚¯æƒ…å ±ãŒå–å¾—ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/fdasd.c:793
+#: libparted/labels/fdasd.c:818
 msgid "This is not an ECKD disk!  This disk type is not supported!"
 msgstr ""
-"¤³¤Î¥Ç¥£¥¹¥¯¤Ï ECKD ¥Ç¥£¥¹¥¯¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó!  ¤³¤Î¥Ç¥£¥¹¥¯¥¿¥¤¥×¤Ï¥µ¥İ¡¼¥È¤µ¤ì"
-"¤Æ¤¤¤Ş¤»¤ó!"
+"ã“ã®ãƒ‡ã‚£ã‚¹ã‚¯ã¯ ECKD ãƒ‡ã‚£ã‚¹ã‚¯ã§ã¯ã‚ã‚Šã¾ã›ã‚“!  ã“ã®ãƒ‡ã‚£ã‚¹ã‚¯ã‚¿ã‚¤ãƒ—ã¯ã‚µãƒãƒ¼ãƒˆã•ã‚Œ"
+"ã¦ã„ã¾ã›ã‚“!"
 
-#: libparted/labels/gpt.c:459
+#: libparted/labels/gpt.c:480
 #, c-format
 msgid ""
 "%s contains GPT signatures, indicating that it has a GPT table.  However, it "
@@ -1329,429 +1357,460 @@ msgid ""
 "tables.  Or perhaps you deleted the GPT table, and are now using an msdos "
 "partition table.  Is this a GPT partition table?"
 msgstr ""
-"%s ¤Ï GPT ¥Æ¡¼¥Ö¥ë¤ÎÂ¸ºß¤ò¼¨¤¹ GPT ¤Î¥·¥°¥Í¥Á¥ã¤ò´Ş¤ó¤Ç¤¤¤Ş¤¹¤¬¡¢»ı¤Ã¤Æ¤¤¤ë¤Ù"
-"¤­¸«¤»¤«¤±¤Î msdos ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤ò»ı¤Ã¤Æ¤¤¤Ş¤»¤ó¡£¤ª¤½¤é¤¯²õ¤ì¤Æ¤¤¤ë"
-"¤Î¤Ç¤·¤ç¤¦¡£GPT ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤òÍı²ò¤·¤Ê¤¤¥×¥í¥°¥é¥à¤¬²õ¤·¤Æ¤·¤Ş¤Ã¤¿"
-"¤Î¤«¤â¤·¤ì¤Ş¤»¤ó¡£¤¢¤ë¤¤¤Ï¡¢GPT ¥Æ¡¼¥Ö¥ë¤ò¼«¤é¾Ã¤·¤Æ¤¤¤Æ¡¢msdos ¥Ñ¡¼¥Æ¥£¥·¥ç"
-"¥ó¥Æ¡¼¥Ö¥ë¤ò»È¤Ã¤Æ¤¤¤ë¤Î¤«¤â¤·¤ì¤Ş¤»¤ó¡£¤³¤Î¥Æ¡¼¥Ö¥ë¤Ï GPT ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼"
-"¥Ö¥ë¤Ç¤¹¤«¡©"
+"%s ã¯ GPT ãƒ†ãƒ¼ãƒ–ãƒ«ã®å­˜åœ¨ã‚’ç¤ºã™ GPT ã®ã‚·ã‚°ãƒãƒãƒ£ã‚’å«ã‚“ã§ã„ã¾ã™ãŒã€æŒã£ã¦ã„ã‚‹ã¹"
+"ãè¦‹ã›ã‹ã‘ã® msdos ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’æŒã£ã¦ã„ã¾ã›ã‚“ã€‚ãŠãã‚‰ãå£Šã‚Œã¦ã„ã‚‹"
+"ã®ã§ã—ã‚‡ã†ã€‚GPT ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ç†è§£ã—ãªã„ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãŒå£Šã—ã¦ã—ã¾ã£ãŸ"
+"ã®ã‹ã‚‚ã—ã‚Œã¾ã›ã‚“ã€‚ã‚ã‚‹ã„ã¯ã€GPT ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’è‡ªã‚‰æ¶ˆã—ã¦ã„ã¦ã€msdos ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§"
+"ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½¿ã£ã¦ã„ã‚‹ã®ã‹ã‚‚ã—ã‚Œã¾ã›ã‚“ã€‚ã“ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã¯ GPT ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼"
+"ãƒ–ãƒ«ã§ã™ã‹ï¼Ÿ"
 
-#: libparted/labels/gpt.c:664
+#: libparted/labels/gpt.c:689
 #, c-format
 msgid ""
 "The format of the GPT partition table is version %x, which is newer than "
 "what Parted can recognise.  Please tell us!  bug-parted@gnu.org"
 msgstr ""
-"GPT ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤Î¥Õ¥©¡¼¥Ş¥Ã¥È¤Î¥Ğ¡¼¥¸¥ç¥ó¤¬ %x ¤Ç parted ¤ÎÍı²ò¤Ç"
-"¤­¤ë¤â¤Î¤è¤ê¿·¤·¤¤¤Ç¤¹¡£ bug-parted@gnu.org ¤Ş¤ÇÊó¹ğ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"GPT ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒ %x ã§ parted ã®ç†è§£ã§"
+"ãã‚‹ã‚‚ã®ã‚ˆã‚Šæ–°ã—ã„ã§ã™ã€‚ bug-parted@gnu.org ã¾ã§å ±å‘Šã—ã¦ãã ã•ã„ã€‚"
 
-#: libparted/labels/gpt.c:714
+#: libparted/labels/gpt.c:736
 #, c-format
 msgid ""
 "Not all of the space available to %s appears to be used, you can fix the GPT "
 "to use all of the space (an extra %llu blocks) or continue with the current "
 "setting? "
 msgstr ""
-"%s ¤ÇÍøÍÑ²ÄÇ½¤ÊÎÎ°è¤Î°ìÉô¤¬ÍøÍÑ¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£GPT ¤ò½¤Àµ¤·¤ÆÁ´¤Æ¤ÎÎÎ°è¤òÍøÍÑ"
-"²ÄÇ½¤Ë¤¹¤ë¤«(%llu ¥Ö¥í¥Ã¥¯Áı¤¨¤Ş¤¹)¡¢¤³¤Î¤Ş¤Ş¤ÇÂ³¹Ô¤¹¤ë¤³¤È¤¬¤Ç¤­¤Ş¤¹¤¬¡¢¤É¤¦"
-"¤·¤Ş¤¹¤«¡©"
+"%s ã§åˆ©ç”¨å¯èƒ½ãªé ˜åŸŸã®ä¸€éƒ¨ãŒåˆ©ç”¨ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚GPT ã‚’ä¿®æ­£ã—ã¦å…¨ã¦ã®é ˜åŸŸã‚’åˆ©ç”¨"
+"å¯èƒ½ã«ã™ã‚‹ã‹(%llu ãƒ–ãƒ­ãƒƒã‚¯å¢—ãˆã¾ã™)ã€ã“ã®ã¾ã¾ã§ç¶šè¡Œã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ãŒã€ã©ã†"
+"ã—ã¾ã™ã‹ï¼Ÿ"
 
-#: libparted/labels/gpt.c:850
+#: libparted/labels/gpt.c:942
 msgid ""
 "The backup GPT table is not at the end of the disk, as it should be.  This "
 "might mean that another operating system believes the disk is smaller.  Fix, "
 "by moving the backup to the end (and removing the old backup)?"
 msgstr ""
-"¤¢¤ë¤Ù¤­ GPT ¥Æ¡¼¥Ö¥ë¤Î¥Ğ¥Ã¥¯¥¢¥Ã¥×¤¬¥Ç¥£¥¹¥¯¤ÎºÇ¸å¤Ë¤¢¤ê¤Ş¤»¤ó¡£Â¾¤Î OS ¤¬"
-"¥Ç¥£¥¹¥¯¤Ï¤â¤Ã¤È¾®¤µ¤¤¤â¤Î¤À¤È»×¤Ã¤Æ¤¤¤ë¤Î¤«¤â¤·¤ì¤Ş¤»¤ó¡£¥Ğ¥Ã¥¯¥¢¥Ã¥×¤òºÇ¸å"
-"¤Ë»ı¤Ã¤Æ¤­¤Æ¡Ê¸Å¤¤¥Ğ¥Ã¥¯¥¢¥Ã¥×¤òºï½ü¤·¤Æ¡Ë½¤Éü¤·¤Ş¤¹¤«¡©"
+"ã‚ã‚‹ã¹ã GPT ãƒ†ãƒ¼ãƒ–ãƒ«ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãŒãƒ‡ã‚£ã‚¹ã‚¯ã®æœ€å¾Œã«ã‚ã‚Šã¾ã›ã‚“ã€‚ä»–ã® OS ãŒ"
+"ãƒ‡ã‚£ã‚¹ã‚¯ã¯ã‚‚ã£ã¨å°ã•ã„ã‚‚ã®ã ã¨æ€ã£ã¦ã„ã‚‹ã®ã‹ã‚‚ã—ã‚Œã¾ã›ã‚“ã€‚ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’æœ€å¾Œ"
+"ã«æŒã£ã¦ãã¦ï¼ˆå¤ã„ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’å‰Šé™¤ã—ã¦ï¼‰ä¿®å¾©ã—ã¾ã™ã‹ï¼Ÿ"
 
-#: libparted/labels/gpt.c:895
-msgid ""
-"The primary GPT table is corrupt, but the backup appears OK, so that will be "
-"used."
-msgstr ""
-"¤³¤Î¥×¥é¥¤¥Ş¥ê GPT ¥Æ¡¼¥Ö¥ë¤Ï²õ¤ì¤Æ¤¤¤Ş¤¹¤¬¡¢¥Ğ¥Ã¥¯¥¢¥Ã¥×¤ÏÌäÂê¤Ê¤¤¤è¤¦¤Ê¤Î"
-"¤Ç¡¢¤½¤Á¤é¤ò»È¤¤¤Ş¤¹¡£"
-
-#: libparted/labels/gpt.c:903
+#: libparted/labels/gpt.c:966
 msgid ""
 "Both the primary and backup GPT tables are corrupt.  Try making a fresh "
 "table, and using Parted's rescue feature to recover partitions."
 msgstr ""
-"¥×¥é¥¤¥Ş¥ê GPT ¥Æ¡¼¥Ö¥ë¤È¥Ğ¥Ã¥¯¥¢¥Ã¥×¤ÎÎ¾Êı¤¬²õ¤ì¤Æ¤¤¤Ş¤¹¡£¿·¤¿¤Ë¥Æ¡¼¥Ö¥ë¤òºî"
-"¤ê¤Ê¤ª¤·¤Æ¡¢Parted ¤Î½¤Éüµ¡Ç½¤òÍÑ¤¤¤Æ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î½¤Éü¤ò»î¤ß¤Ş¤¹¡£"
+"ãƒ—ãƒ©ã‚¤ãƒãƒª GPT ãƒ†ãƒ¼ãƒ–ãƒ«ã¨ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã®ä¸¡æ–¹ãŒå£Šã‚Œã¦ã„ã¾ã™ã€‚æ–°ãŸã«ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’ä½œ"
+"ã‚ŠãªãŠã—ã¦ã€Parted ã®ä¿®å¾©æ©Ÿèƒ½ã‚’ç”¨ã„ã¦ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ä¿®å¾©ã‚’è©¦ã¿ã¾ã™ã€‚"
 
-#: libparted/labels/mac.c:183
+#: libparted/labels/gpt.c:977
+#, fuzzy
+msgid ""
+"The backup GPT table is corrupt, but the primary appears OK, so that will be "
+"used."
+msgstr ""
+"ã“ã®ãƒ—ãƒ©ã‚¤ãƒãƒª GPT ãƒ†ãƒ¼ãƒ–ãƒ«ã¯å£Šã‚Œã¦ã„ã¾ã™ãŒã€ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã¯å•é¡Œãªã„ã‚ˆã†ãªã®"
+"ã§ã€ãã¡ã‚‰ã‚’ä½¿ã„ã¾ã™ã€‚"
+
+#: libparted/labels/gpt.c:989
+msgid ""
+"The primary GPT table is corrupt, but the backup appears OK, so that will be "
+"used."
+msgstr ""
+"ã“ã®ãƒ—ãƒ©ã‚¤ãƒãƒª GPT ãƒ†ãƒ¼ãƒ–ãƒ«ã¯å£Šã‚Œã¦ã„ã¾ã™ãŒã€ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã¯å•é¡Œãªã„ã‚ˆã†ãªã®"
+"ã§ã€ãã¡ã‚‰ã‚’ä½¿ã„ã¾ã™ã€‚"
+
+#: libparted/labels/gpt.c:1013
+msgid "primary partition table array CRC mismatch"
+msgstr ""
+
+#: libparted/labels/mac.c:184
 #, c-format
 msgid "Invalid signature %x for Mac disk labels."
-msgstr "Mac ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Î¥·¥°¥Í¥Á¥ã %x ¤ÏÉÔÀµ¤Ç¤¹¡£"
+msgstr "Mac ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã®ã‚·ã‚°ãƒãƒãƒ£ %x ã¯ä¸æ­£ã§ã™ã€‚"
 
-#: libparted/labels/mac.c:228
+#: libparted/labels/mac.c:231
 msgid "Partition map has no partition map entry!"
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Ş¥Ã¥×¤Ë¥¨¥ó¥È¥ê¤¬¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ—ã«ã‚¨ãƒ³ãƒˆãƒªãŒã‚ã‚Šã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/mac.c:276
+#: libparted/labels/mac.c:279
 #, c-format
 msgid "%s is too small for a Mac disk label!"
-msgstr "%s ¤Ï Mac ¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Ë¤Ï¾®¤µ¤¹¤®¤Ş¤¹¡£"
+msgstr "%s ã¯ Mac ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã«ã¯å°ã•ã™ãã¾ã™ã€‚"
 
-#: libparted/labels/mac.c:535
+#: libparted/labels/mac.c:559
 #, c-format
 msgid "Partition %d has an invalid signature %x."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó %d ¤Î¥·¥°¥Í¥Á¥ã %x ¤ÏÉÔÀµ¤Ç¤¹¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ %d ã®ã‚·ã‚°ãƒãƒãƒ£ %x ã¯ä¸æ­£ã§ã™ã€‚"
 
-#: libparted/labels/mac.c:553
+#: libparted/labels/mac.c:577
 #, c-format
 msgid "Partition %d has an invalid length of 0 bytes!"
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó %d ¤ÎÄ¹¤µ¤¬ 0 ¤Ê¤Î¤ÏÉÔÀµ¤Ç¤¹¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ %d ã®é•·ã•ãŒ 0 ãªã®ã¯ä¸æ­£ã§ã™ã€‚"
 
-#: libparted/labels/mac.c:584
+#: libparted/labels/mac.c:608
 msgid "The data region doesn't start at the start of the partition."
-msgstr "¥Ç¡¼¥¿ÎÎ°è¤¬¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î³«»Ï°ÌÃÖ¤«¤é»Ï¤Ş¤Ã¤Æ¤Ş¤»¤ó¡£"
+msgstr "ãƒ‡ãƒ¼ã‚¿é ˜åŸŸãŒãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®é–‹å§‹ä½ç½®ã‹ã‚‰å§‹ã¾ã£ã¦ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/mac.c:601
+#: libparted/labels/mac.c:625
 msgid "The boot region doesn't start at the start of the partition."
-msgstr "¥Ö¡¼¥ÈÎÎ°è¤¬¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î³«»Ï°ÌÃÖ¤«¤é»Ï¤Ş¤Ã¤Æ¤Ş¤»¤ó¡£"
+msgstr "ãƒ–ãƒ¼ãƒˆé ˜åŸŸãŒãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®é–‹å§‹ä½ç½®ã‹ã‚‰å§‹ã¾ã£ã¦ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/mac.c:615
+#: libparted/labels/mac.c:639
 msgid "The partition's boot region doesn't occupy the entire partition."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¥Ö¡¼¥ÈÎÎ°è¤¬¡¢¥Ñ¡¼¥Æ¥£¥·¥ç¥óÁ´ÂÎ¤òÀêÍ­¤·¤Æ¤Ş¤»¤ó¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ãƒ–ãƒ¼ãƒˆé ˜åŸŸãŒã€ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³å…¨ä½“ã‚’å æœ‰ã—ã¦ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/mac.c:626
+#: libparted/labels/mac.c:650
 msgid "The partition's data region doesn't occupy the entire partition."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¥Ç¡¼¥¿ÎÎ°è¤¬¡¢¥Ñ¡¼¥Æ¥£¥·¥ç¥óÁ´ÂÎ¤òÀêÍ­¤·¤Æ¤Ş¤»¤ó¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ãƒ‡ãƒ¼ã‚¿é ˜åŸŸãŒã€ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³å…¨ä½“ã‚’å æœ‰ã—ã¦ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/mac.c:679
+#: libparted/labels/mac.c:703
 #, c-format
 msgid ""
 "Weird block size on device descriptor: %d bytes is not divisible by 512."
 msgstr ""
-"¥Ç¥Ğ¥¤¥¹¥Ç¥£¥¹¥¯¥ê¥×¥¿¤Ë½ñ¤¤¤Æ¤¢¤ë¥Ö¥í¥Ã¥¯¥µ¥¤¥º¤Ï¤ª¤«¤·¤¤¤Ç¤¹¡£%d ¥Ğ¥¤¥È¤Ï "
-"512 ¤Ç³ä¤êÀÚ¤ì¤Ş¤»¤ó¡£"
+"ãƒ‡ãƒã‚¤ã‚¹ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ã«æ›¸ã„ã¦ã‚ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºã¯ãŠã‹ã—ã„ã§ã™ã€‚%d ãƒã‚¤ãƒˆã¯ "
+"512 ã§å‰²ã‚Šåˆ‡ã‚Œã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/mac.c:692
+#: libparted/labels/mac.c:716
 #, c-format
 msgid ""
 "The driver descriptor says the physical block size is %d bytes, but Linux "
 "says it is %d bytes."
 msgstr ""
-"¥É¥é¥¤¥Ğ¤ÏÊªÍı¥Ö¥í¥Ã¥¯¥µ¥¤¥º¤¬ %d ¥Ğ¥¤¥È¤Ç¤¢¤ë¤È¸À¤Ã¤Æ¤¤¤Ş¤¹¤¬¡¢Linux ¤Ï %d "
-"¥Ğ¥¤¥È¤À¤È¸À¤Ã¤Æ¤¤¤Ş¤¹¡£"
+"ãƒ‰ãƒ©ã‚¤ãƒã¯ç‰©ç†ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºãŒ %d ãƒã‚¤ãƒˆã§ã‚ã‚‹ã¨è¨€ã£ã¦ã„ã¾ã™ãŒã€Linux ã¯ %d "
+"ãƒã‚¤ãƒˆã ã¨è¨€ã£ã¦ã„ã¾ã™ã€‚"
 
-#: libparted/labels/mac.c:740
+#: libparted/labels/mac.c:770
 msgid "No valid partition map found."
-msgstr "Àµ¤·¤¤¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Ş¥Ã¥×¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó¡£"
+msgstr "æ­£ã—ã„ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ—ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/mac.c:799
+#: libparted/labels/mac.c:832
 #, c-format
 msgid ""
 "Conflicting partition map entry sizes!  Entry 1 says it is %d, but entry %d "
 "says it is %d!"
 msgstr ""
-"¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Ş¥Ã¥×¤Î¥¨¥ó¥È¥ê¤Î¥µ¥¤¥º¤¬°ìÃ×¤·¤Ş¤»¤ó¡£¥¨¥ó¥È¥ê 1 ¤Ë¤è¤ì¤Ğ %d "
-"¤Ç¤¹¤¬¡¢¥¨¥ó¥È¥ê %d ¤Ë¤è¤ì¤Ğ %d ¤Ç¤¹¡£"
+"ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ—ã®ã‚¨ãƒ³ãƒˆãƒªã®ã‚µã‚¤ã‚ºãŒä¸€è‡´ã—ã¾ã›ã‚“ã€‚ã‚¨ãƒ³ãƒˆãƒª 1 ã«ã‚ˆã‚Œã° %d "
+"ã§ã™ãŒã€ã‚¨ãƒ³ãƒˆãƒª %d ã«ã‚ˆã‚Œã° %d ã§ã™ã€‚"
 
-#: libparted/labels/mac.c:826
+#: libparted/labels/mac.c:859
 msgid "Weird!  There are 2 partitions map entries!"
-msgstr "¤ª¤«¤·¤¤¤Ç¤¹¡£¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Ş¥Ã¥×¥¨¥ó¥È¥ê¤¬2¤Ä¤¢¤ê¤Ş¤¹¡£"
+msgstr "ãŠã‹ã—ã„ã§ã™ã€‚ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ—ã‚¨ãƒ³ãƒˆãƒªãŒ2ã¤ã‚ã‚Šã¾ã™ã€‚"
 
-#: libparted/labels/mac.c:1351
+#: libparted/labels/mac.c:1405
 msgid ""
 "Changing the name of a root or swap partition will prevent Linux from "
 "recognising it as such."
 msgstr ""
-"root ¤Ë»È¤ï¤ì¤Æ¤¤¤ë¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ä swap ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ÎÌ¾Á°¤òÊÑ¹¹¤¹¤ë¤È "
-"Linux ¤¬¤½¤ì¤é¤ò¤½¤¦¤ÈÇ§¼±¤Ç¤­¤Ê¤¯¤Ê¤ê¤Ş¤¹¡£"
+"root ã«ä½¿ã‚ã‚Œã¦ã„ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚„ swap ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®åå‰ã‚’å¤‰æ›´ã™ã‚‹ã¨ "
+"Linux ãŒãã‚Œã‚‰ã‚’ãã†ã¨èªè­˜ã§ããªããªã‚Šã¾ã™ã€‚"
 
-#: libparted/labels/mac.c:1447
+#: libparted/labels/mac.c:1509
 msgid "Can't add another partition -- the partition map is too small!"
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òÄÉ²Ã¤Ç¤­¤Ş¤»¤ó¡£¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Ş¥Ã¥×¤¬¾®¤µ¤¹¤®¤Ş¤¹¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ ã§ãã¾ã›ã‚“ã€‚ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ—ãŒå°ã•ã™ãã¾ã™ã€‚"
 
-#: libparted/labels/pc98.c:353
+#: libparted/labels/pc98.c:355
 #, c-format
 msgid "Invalid partition table on %s."
-msgstr "%s ¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤¬ÉÔÀµ¤Ç¤¹¡£"
+msgstr "%s ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ãŒä¸æ­£ã§ã™ã€‚"
 
-#: libparted/labels/pc98.c:406 libparted/labels/pc98.c:484
+#: libparted/labels/pc98.c:408 libparted/labels/pc98.c:486
 #, c-format
 msgid ""
 "Partition %d isn't aligned to cylinder boundaries.  This is still "
 "unsupported."
 msgstr ""
-"¥Ñ¡¼¥Æ¥£¥·¥ç¥ó %d ¤Ï¥·¥ê¥ó¥À¶­³¦¾å¤Ë¤¢¤ê¤Ş¤»¤ó¡£¤³¤ì¤Ï¤Ş¤À¥µ¥İ¡¼¥È¤µ¤ì¤Æ¤¤¤Ş"
-"¤»¤ó¡£"
+"ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ %d ã¯ã‚·ãƒªãƒ³ãƒ€å¢ƒç•Œä¸Šã«ã‚ã‚Šã¾ã›ã‚“ã€‚ã“ã‚Œã¯ã¾ã ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã¾"
+"ã›ã‚“ã€‚"
 
-#: libparted/labels/pc98.c:791
+#: libparted/labels/pc98.c:805
 msgid "Can't add another partition."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òÄÉ²Ã¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/rdb.c:167
+#: libparted/labels/pt-tools.c:125
+#, c-format
+msgid ""
+"partition length of %jd sectors exceeds the %s-partition-table-imposed "
+"maximum of %jd"
+msgstr ""
+"ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³é•· %jd ã‚»ã‚¯ã‚¿ã¯ %s ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã«ã‚ˆã£ã¦æ±ºã‚ã‚‰ã‚ŒãŸæœ€å¤§"
+"é•· %jd ã‚’è¶Šãˆã¦ã„ã¾ã™"
+
+#: libparted/labels/pt-tools.c:138
+#, c-format
+msgid ""
+"starting sector number, %jd exceeds the %s-partition-table-imposed maximum "
+"of %jd"
+msgstr ""
+"é–‹å§‹ã‚»ã‚¯ã‚¿ç•ªå· %jd ã¯ %s ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã«ã‚ˆã£ã¦æ±ºã‚ã‚‰ã‚ŒãŸæœ€å¤§å€¤ %jd "
+"ã‚’è¶Šãˆã¦ã„ã¾ã™"
+
+#: libparted/labels/rdb.c:169
 #, c-format
 msgid "%s : Bad checksum on block %llu of type %s."
-msgstr "%s : ¥Ö¥í¥Ã¥¯ %llu (type %s) ¤Î¥Á¥§¥Ã¥¯¥µ¥à¤¬ÉÔÀµ¤Ç¤¹¡£"
+msgstr "%s : ãƒ–ãƒ­ãƒƒã‚¯ %llu (type %s) ã®ãƒã‚§ãƒƒã‚¯ã‚µãƒ ãŒä¸æ­£ã§ã™ã€‚"
 
-#: libparted/labels/rdb.c:502
+#: libparted/labels/rdb.c:508
 #, c-format
 msgid "%s : Didn't find rdb block, should never happen."
 msgstr ""
-"%s : rdb ¥Ö¥í¥Ã¥¯¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó¤Ç¤·¤¿¡£¤³¤ì¤Ï¤¢¤Ã¤Æ¤Ï¤Ê¤é¤Ê¤¤¤³¤È¤Ç¤¹¡£"
+"%s : rdb ãƒ–ãƒ­ãƒƒã‚¯ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã§ã—ãŸã€‚ã“ã‚Œã¯ã‚ã£ã¦ã¯ãªã‚‰ãªã„ã“ã¨ã§ã™ã€‚"
 
-#: libparted/labels/rdb.c:588
+#: libparted/labels/rdb.c:594
 #, c-format
 msgid "%s : Loop detected at block %d."
-msgstr "%s : ¥Ö¥í¥Ã¥¯ %d ¤Ë¥ë¡¼¥×¤¬È¯¸«¤µ¤ì¤Ş¤·¤¿¡£"
+msgstr "%s : ãƒ–ãƒ­ãƒƒã‚¯ %d ã«ãƒ«ãƒ¼ãƒ—ãŒç™ºè¦‹ã•ã‚Œã¾ã—ãŸã€‚"
 
-#: libparted/labels/rdb.c:607
+#: libparted/labels/rdb.c:613
 #, c-format
 msgid "%s : The %s list seems bad at block %s."
-msgstr "%s : %s ¥ê¥¹¥È¤¬¤ª¤«¤·¤¤¤è¤¦¤Ç¤¹(¥Ö¥í¥Ã¥¯ %s)¡£"
+msgstr "%s : %s ãƒªã‚¹ãƒˆãŒãŠã‹ã—ã„ã‚ˆã†ã§ã™(ãƒ–ãƒ­ãƒƒã‚¯ %s)ã€‚"
 
-#: libparted/labels/rdb.c:707
+#: libparted/labels/rdb.c:712
 #, c-format
 msgid "%s : Failed to list bad blocks."
-msgstr "%s : ÉÔÀµ¤Ê¥Ö¥í¥Ã¥¯¤Î°ìÍ÷¤òÆÀ¤é¤ì¤Ş¤»¤ó¤Ç¤·¤¿¡£"
+msgstr "%s : ä¸æ­£ãªãƒ–ãƒ­ãƒƒã‚¯ã®ä¸€è¦§ã‚’å¾—ã‚‰ã‚Œã¾ã›ã‚“ã§ã—ãŸã€‚"
 
-#: libparted/labels/rdb.c:715
+#: libparted/labels/rdb.c:720
 #, c-format
 msgid "%s : Failed to list partition blocks."
-msgstr "%s : ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Ö¥í¥Ã¥¯¤Î°ìÍ÷¤òÆÀ¤é¤ì¤Ş¤»¤ó¤Ç¤·¤¿¡£"
+msgstr "%s : ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯ã®ä¸€è¦§ã‚’å¾—ã‚‰ã‚Œã¾ã›ã‚“ã§ã—ãŸã€‚"
 
-#: libparted/labels/rdb.c:723
+#: libparted/labels/rdb.c:728
 #, c-format
 msgid "%s : Failed to list file system blocks."
-msgstr "%s : ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¥Ö¥í¥Ã¥¯¤Î°ìÍ÷¤òÆÀ¤é¤ì¤Ş¤»¤ó¤Ç¤·¤¿¡£"
+msgstr "%s : ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãƒ–ãƒ­ãƒƒã‚¯ã®ä¸€è¦§ã‚’å¾—ã‚‰ã‚Œã¾ã›ã‚“ã§ã—ãŸã€‚"
 
-#: libparted/labels/rdb.c:731
+#: libparted/labels/rdb.c:736
 #, c-format
 msgid "%s : Failed to list boot blocks."
-msgstr "%s : ¥Ö¡¼¥È¥Ö¥í¥Ã¥¯¤Î°ìÍ÷¤òÆÀ¤é¤ì¤Ş¤»¤ó¤Ç¤·¤¿¡£"
+msgstr "%s : ãƒ–ãƒ¼ãƒˆãƒ–ãƒ­ãƒƒã‚¯ã®ä¸€è¦§ã‚’å¾—ã‚‰ã‚Œã¾ã›ã‚“ã§ã—ãŸã€‚"
 
-#: libparted/labels/rdb.c:758
+#: libparted/labels/rdb.c:763
 #, c-format
 msgid "Failed to write partition block at %d."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Ö¥í¥Ã¥¯(¥Ö¥í¥Ã¥¯ %d)¤Î½ñ¤­¤³¤ß¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯(ãƒ–ãƒ­ãƒƒã‚¯ %d)ã®æ›¸ãã“ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
 
-#: libparted/labels/rdb.c:1087
+#: libparted/labels/rdb.c:1101
 msgid "Unable to allocate a partition number."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥óÈÖ¹æ¤ò³ä¤êÅö¤Æ¤é¤ì¤Ş¤»¤ó¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ç•ªå·ã‚’å‰²ã‚Šå½“ã¦ã‚‰ã‚Œã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/sun.c:148
+#: libparted/labels/sun.c:150
 msgid "Corrupted Sun disk label detected."
-msgstr "Sun¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤ÎÇËÂ»¤ò¸¡½Ğ¤·¤Ş¤·¤¿¡£"
+msgstr "Sunãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã®ç ´æã‚’æ¤œå‡ºã—ã¾ã—ãŸã€‚"
 
-#: libparted/labels/sun.c:269
+#: libparted/labels/sun.c:318
 #, c-format
 msgid ""
 "The disk CHS geometry (%d,%d,%d) reported by the operating system does not "
 "match the geometry stored on the disk label (%d,%d,%d)."
 msgstr ""
-"¥Ç¥£¥¹¥¯¤Î geometry(CHS) (%d,%d,%d) ¤¬¡¢¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Î¤â¤Î (%d,%d,%d) ¤È°ì"
-"Ã×¤·¤Ş¤»¤ó¡£"
+"ãƒ‡ã‚£ã‚¹ã‚¯ã® geometry(CHS) (%d,%d,%d) ãŒã€ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã®ã‚‚ã® (%d,%d,%d) ã¨ä¸€"
+"è‡´ã—ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/sun.c:291
+#: libparted/labels/sun.c:340
 #, c-format
 msgid "The disk label describes a disk bigger than %s."
-msgstr "¥Ç¥£¥¹¥¯¥ì¥Ù¥ë¤Ë¤è¤ë¤È¡¢¥Ç¥£¥¹¥¯¤Ï %s ¤è¤êÂç¤­¤¤¤³¤È¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹¡£"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚¯ãƒ¬ãƒ™ãƒ«ã«ã‚ˆã‚‹ã¨ã€ãƒ‡ã‚£ã‚¹ã‚¯ã¯ %s ã‚ˆã‚Šå¤§ãã„ã“ã¨ã«ãªã£ã¦ã„ã¾ã™ã€‚"
 
-#: libparted/labels/sun.c:447
+#: libparted/labels/sun.c:512
 #, c-format
 msgid "The disk has %d cylinders, which is greater than the maximum of 65536."
 msgstr ""
-"¤³¤Î¥Ç¥£¥¹¥¯¤Ï %d ¥·¥ê¥ó¥À¤¢¤ê¤Ş¤¹¡£¤³¤ì¤ÏºÇÂçÃÍ¤Î 65536 ¤ò±Û¤¨¤Æ¤¤¤Ş¤¹¡£"
+"ã“ã®ãƒ‡ã‚£ã‚¹ã‚¯ã¯ %d ã‚·ãƒªãƒ³ãƒ€ã‚ã‚Šã¾ã™ã€‚ã“ã‚Œã¯æœ€å¤§å€¤ã® 65536 ã‚’è¶Šãˆã¦ã„ã¾ã™ã€‚"
 
-#: libparted/labels/sun.c:775
+#: libparted/labels/sun.c:855
 msgid ""
 "The Whole Disk partition is the only available one left.  Generally, it is "
 "not a good idea to overwrite this partition with a real one.  Solaris may "
 "not be able to boot without it, and SILO (the sparc boot loader) appreciates "
 "it as well."
 msgstr ""
-"Whole Disk ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤·¤«»Ä¤µ¤ì¤Æ¤Ş¤»¤ó¡£¤À¤¤¤¿¤¤¤Î¾ì¹ç¤Ë¤ª¤¤¤Æ¡¢¤³¤Î¥Ñ¡¼"
-"¥Æ¥£¥·¥ç¥ó¤ò¾å½ñ¤­¤¹¤ë¤Î¤Ï¤è¤¯¤¢¤ê¤Ş¤»¤ó¡£Solaris ¤¬µ¯Æ°¤·¤Ê¤¯¤Ê¤ë¤«¤â¤·¤ì¤Ş"
-"¤»¤ó¤·¡¢SILO(the sparc boot loader)¤Ë¤âÅÔ¹ç¤¬¤è¤¯¤¢¤ê¤Ş¤»¤ó¡£"
+"Whole Disk ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã—ã‹æ®‹ã•ã‚Œã¦ã¾ã›ã‚“ã€‚ã ã„ãŸã„ã®å ´åˆã«ãŠã„ã¦ã€ã“ã®ãƒ‘ãƒ¼"
+"ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ä¸Šæ›¸ãã™ã‚‹ã®ã¯ã‚ˆãã‚ã‚Šã¾ã›ã‚“ã€‚Solaris ãŒèµ·å‹•ã—ãªããªã‚‹ã‹ã‚‚ã—ã‚Œã¾"
+"ã›ã‚“ã—ã€SILO(the sparc boot loader)ã«ã‚‚éƒ½åˆãŒã‚ˆãã‚ã‚Šã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/sun.c:790
+#: libparted/labels/sun.c:870
 msgid "Sun disk label is full."
-msgstr "Sun¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤¬¤¤¤Ã¤Ñ¤¤¤Ç¤¹¡£"
+msgstr "Sunãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ãŒã„ã£ã±ã„ã§ã™ã€‚"
 
 #: libparted/labels/vtoc.c:164
 msgid "opening of device failed"
-msgstr "¥Ç¥Ğ¥¤¥¹¤Î¥ª¡¼¥×¥ó¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹ã®ã‚ªãƒ¼ãƒ—ãƒ³ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
 
 #: libparted/labels/vtoc.c:168
 msgid "seeking on device failed"
-msgstr "¥Ç¥Ğ¥¤¥¹¤Î¥·¡¼¥¯¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹ã®ã‚·ãƒ¼ã‚¯ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
 
 #: libparted/labels/vtoc.c:172
 msgid "writing to device failed"
-msgstr "¥Ç¥Ğ¥¤¥¹¤Ø¤Î½ñ¤­¹ş¤ß¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹ã¸ã®æ›¸ãè¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
 
 #: libparted/labels/vtoc.c:176
 msgid "reading from device failed"
-msgstr "¥Ç¥Ğ¥¤¥¹¤«¤é¤ÎÆÉ¤ß¹ş¤ß¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹ã‹ã‚‰ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
 
-#: libparted/labels/vtoc.c:281 libparted/labels/vtoc.c:288
+#: libparted/labels/vtoc.c:277 libparted/labels/vtoc.c:284
 msgid "Could not read volume label."
-msgstr "¥Ü¥ê¥å¡¼¥à¥é¥Ù¥ë¤¬ÆÉ¤á¤Ş¤»¤ó¡£"
+msgstr "ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ©ãƒ™ãƒ«ãŒèª­ã‚ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:307 libparted/labels/vtoc.c:312
+#: libparted/labels/vtoc.c:303 libparted/labels/vtoc.c:308
 msgid "Could not write volume label."
-msgstr "¥Ü¥ê¥å¡¼¥à¥é¥Ù¥ë¤¬½ñ¤±¤Ş¤»¤ó¡£"
+msgstr "ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ©ãƒ™ãƒ«ãŒæ›¸ã‘ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:418
+#: libparted/labels/vtoc.c:414
 msgid "Could not read VTOC labels."
-msgstr "VTOC ¥é¥Ù¥ë¤¬ÆÉ¤á¤Ş¤»¤ó¡£"
+msgstr "VTOC ãƒ©ãƒ™ãƒ«ãŒèª­ã‚ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:424
+#: libparted/labels/vtoc.c:420
 msgid "Could not read VTOC FMT1 DSCB."
-msgstr "VTOC FMT1 DSCB ¤¬ÆÉ¤á¤Ş¤»¤ó¡£"
+msgstr "VTOC FMT1 DSCB ãŒèª­ã‚ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:431
+#: libparted/labels/vtoc.c:427
 msgid "Could not read VTOC FMT4 DSCB."
-msgstr "VTOC FMT4 DSCB ¤¬ÆÉ¤á¤Ş¤»¤ó¡£"
+msgstr "VTOC FMT4 DSCB ãŒèª­ã‚ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:438
+#: libparted/labels/vtoc.c:434
 msgid "Could not read VTOC FMT5 DSCB."
-msgstr "VTOC FMT5 DSCB ¤¬ÆÉ¤á¤Ş¤»¤ó¡£"
+msgstr "VTOC FMT5 DSCB ãŒèª­ã‚ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:445
+#: libparted/labels/vtoc.c:441
 msgid "Could not read VTOC FMT7 DSCB."
-msgstr "VTOC FMT7 DSCB ¤¬ÆÉ¤á¤Ş¤»¤ó¡£"
+msgstr "VTOC FMT7 DSCB ãŒèª­ã‚ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:462
+#: libparted/labels/vtoc.c:461
 msgid "Could not write VTOC labels."
-msgstr "VTOC ¥é¥Ù¥ë¤¬½ñ¤±¤Ş¤»¤ó¡£"
+msgstr "VTOC ãƒ©ãƒ™ãƒ«ãŒæ›¸ã‘ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:468
+#: libparted/labels/vtoc.c:467
 msgid "Could not write VTOC FMT1 DSCB."
-msgstr "VTOC FMT1 DSCB ¤¬½ñ¤±¤Ş¤»¤ó¡£"
+msgstr "VTOC FMT1 DSCB ãŒæ›¸ã‘ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:475
+#: libparted/labels/vtoc.c:474
 msgid "Could not write VTOC FMT4 DSCB."
-msgstr "VTOC FMT4 DSCB ¤¬½ñ¤±¤Ş¤»¤ó¡£"
+msgstr "VTOC FMT4 DSCB ãŒæ›¸ã‘ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:482
+#: libparted/labels/vtoc.c:481
 msgid "Could not write VTOC FMT5 DSCB."
-msgstr "VTOC FMT5 DSCB ¤¬½ñ¤±¤Ş¤»¤ó¡£"
+msgstr "VTOC FMT5 DSCB ãŒæ›¸ã‘ã¾ã›ã‚“ã€‚"
 
-#: libparted/labels/vtoc.c:489
+#: libparted/labels/vtoc.c:488
 msgid "Could not write VTOC FMT7 DSCB."
-msgstr "VTOC FMT7 DSCB ¤¬½ñ¤±¤Ş¤»¤ó¡£"
+msgstr "VTOC FMT7 DSCB ãŒæ›¸ã‘ã¾ã›ã‚“ã€‚"
 
 #: libparted/libparted.c:237 libparted/libparted.c:252
 msgid "Out of memory."
-msgstr "¥á¥â¥êÉÔÂ­¤Ç¤¹¡£"
+msgstr "ãƒ¡ãƒ¢ãƒªä¸è¶³ã§ã™ã€‚"
 
 #: libparted/unit.c:138
 msgid "Cannot get unit size for special unit 'COMPACT'."
-msgstr "ÆÃÊÌ¤ÊÃ±°Ì¤Ç¤¢¤ë 'COMPACT' ¤ÎÃ±°Ì¤¢¤¿¤ê¤Î¥µ¥¤¥º¤òÆÀ¤é¤ì¤Ş¤»¤ó¡£"
+msgstr "ç‰¹åˆ¥ãªå˜ä½ã§ã‚ã‚‹ 'COMPACT' ã®å˜ä½ã‚ãŸã‚Šã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‰ã‚Œã¾ã›ã‚“ã€‚"
 
-#: libparted/unit.c:385
+#: libparted/unit.c:384
 #, c-format
 msgid "\"%s\" has invalid syntax for locations."
-msgstr "\"%s\" ¤Ë¤Ï°ÌÃÖ¤Ë¤Ä¤¤¤Æ¸í¤ê¤¬¤¢¤ê¤Ş¤¹¡£"
+msgstr "\"%s\" ã«ã¯ä½ç½®ã«ã¤ã„ã¦èª¤ã‚ŠãŒã‚ã‚Šã¾ã™ã€‚"
 
-#: libparted/unit.c:393
+#: libparted/unit.c:392
 #, c-format
 msgid "The maximum head value is %d."
-msgstr "ºÇÂç¥Ø¥Ã¥ÉÃÍ¤Ï %d ¤Ç¤¹¡£"
+msgstr "æœ€å¤§ãƒ˜ãƒƒãƒ‰å€¤ã¯ %d ã§ã™ã€‚"
 
-#: libparted/unit.c:400
+#: libparted/unit.c:399
 #, c-format
 msgid "The maximum sector value is %d."
-msgstr "ºÇÂç¥»¥¯¥¿ÃÍ¤Ï %d ¤Ç¤¹¡£"
+msgstr "æœ€å¤§ã‚»ã‚¯ã‚¿å€¤ã¯ %d ã§ã™ã€‚"
 
-#: libparted/unit.c:412 libparted/unit.c:544
+#: libparted/unit.c:411 libparted/unit.c:543
 #, c-format
 msgid "The location %s is outside of the device %s."
-msgstr "%s ¤Ï¡¢¥Ç¥Ğ¥¤¥¹ %s ¤Î³°¤Ç¤¹¡£"
+msgstr "%s ã¯ã€ãƒ‡ãƒã‚¤ã‚¹ %s ã®å¤–ã§ã™ã€‚"
 
-#: libparted/unit.c:526
+#: libparted/unit.c:525
 msgid "Invalid number."
-msgstr "ÉÔÀµ¤ÊÃÍ¤Ç¤¹¡£"
+msgstr "ä¸æ­£ãªå€¤ã§ã™ã€‚"
 
 #: libparted/fs/amiga/affs.c:62 libparted/fs/amiga/apfs.c:55
 #: libparted/fs/amiga/asfs.c:69
 #, c-format
 msgid "%s : Failed to allocate partition block\n"
-msgstr "%s : ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Ö¥í¥Ã¥¯¤Î³ÎÊİ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£\n"
+msgstr "%s : ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯ã®ç¢ºä¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚\n"
 
-#: libparted/fs/amiga/affs.c:77 libparted/fs/amiga/apfs.c:69
-#: libparted/fs/amiga/asfs.c:85
+#: libparted/fs/amiga/affs.c:77 libparted/fs/amiga/apfs.c:68
+#: libparted/fs/amiga/asfs.c:81
 #, c-format
 msgid "%s : Failed to allocate block\n"
-msgstr "%s : ¥Ö¥í¥Ã¥¯¤Î³ÎÊİ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£\n"
+msgstr "%s : ãƒ–ãƒ­ãƒƒã‚¯ã®ç¢ºä¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚\n"
 
-#: libparted/fs/amiga/affs.c:82 libparted/fs/amiga/apfs.c:74
+#: libparted/fs/amiga/affs.c:82 libparted/fs/amiga/apfs.c:73
 #, c-format
 msgid "%s : Couldn't read boot block %llu\n"
-msgstr "%s : ¥Ö¡¼¥È¥Ö¥í¥Ã¥¯ %llu ¤¬ÆÉ¤á¤Ş¤»¤ó\n"
+msgstr "%s : ãƒ–ãƒ¼ãƒˆãƒ–ãƒ­ãƒƒã‚¯ %llu ãŒèª­ã‚ã¾ã›ã‚“\n"
 
-#: libparted/fs/amiga/affs.c:98 libparted/fs/amiga/apfs.c:85
-#: libparted/fs/amiga/asfs.c:91 libparted/fs/amiga/asfs.c:105
+#: libparted/fs/amiga/affs.c:98 libparted/fs/amiga/apfs.c:84
+#: libparted/fs/amiga/asfs.c:87 libparted/fs/amiga/asfs.c:101
 #, c-format
 msgid "%s : Couldn't read root block %llu\n"
-msgstr "%s : ¥ë¡¼¥È¥Ö¥í¥Ã¥¯ %llu ¤¬ÆÉ¤á¤Ş¤»¤ó\n"
+msgstr "%s : ãƒ«ãƒ¼ãƒˆãƒ–ãƒ­ãƒƒã‚¯ %llu ãŒèª­ã‚ã¾ã›ã‚“\n"
 
 #: libparted/fs/amiga/amiga.c:71
 #, c-format
 msgid "%s : Failed to allocate id list element\n"
-msgstr "%s : id list element ¤¬³ÎÊİ¤Ç¤­¤Ş¤»¤ó\n"
+msgstr "%s : id list element ãŒç¢ºä¿ã§ãã¾ã›ã‚“\n"
 
 #: libparted/fs/amiga/amiga.c:188
 #, c-format
 msgid "%s : Couldn't read block %llu\n"
-msgstr "%s : ¥Ö¥í¥Ã¥¯ %llu ¤¬ÆÉ¤á¤Ş¤»¤ó\n"
+msgstr "%s : ãƒ–ãƒ­ãƒƒã‚¯ %llu ãŒèª­ã‚ã¾ã›ã‚“\n"
 
 #: libparted/fs/amiga/amiga.c:201
 #, c-format
 msgid "%s : Bad checksum on block %llu of type %s\n"
-msgstr "%s : ¥Ö¥í¥Ã¥¯ %llu (¥¿¥¤¥× %s) ¤Î¥Á¥§¥Ã¥¯¥µ¥à¤¬ÉÔÀµ¤Ç¤¹\n"
+msgstr "%s : ãƒ–ãƒ­ãƒƒã‚¯ %llu (ã‚¿ã‚¤ãƒ— %s) ã®ãƒã‚§ãƒƒã‚¯ã‚µãƒ ãŒä¸æ­£ã§ã™\n"
 
 #: libparted/fs/amiga/amiga.c:211
 #, c-format
 msgid "%s : Couldn't write block %d\n"
-msgstr "%s : ¥Ö¥í¥Ã¥¯ %d ¤Ë½ñ¤­¤³¤á¤Ş¤»¤ó\n"
+msgstr "%s : ãƒ–ãƒ­ãƒƒã‚¯ %d ã«æ›¸ãã“ã‚ã¾ã›ã‚“\n"
 
 #: libparted/fs/amiga/amiga.c:277
 #, c-format
 msgid "%s : Failed to allocate disk_specific rdb block\n"
-msgstr "%s : disk_specific rdb ¥Ö¥í¥Ã¥¯¤¬³ÎÊİ¤Ç¤­¤Ş¤»¤ó\n"
+msgstr "%s : disk_specific rdb ãƒ–ãƒ­ãƒƒã‚¯ãŒç¢ºä¿ã§ãã¾ã›ã‚“\n"
 
 #: libparted/fs/amiga/amiga.c:288
 #, c-format
 msgid "%s : Didn't find rdb block, should never happen\n"
-msgstr "%s : rdb ¥Ö¥í¥Ã¥¯¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó¡£µ¯¤³¤ë¤Ï¤º¤Î¤Ê¤¤¤³¤È¤Ç¤¹¡£\n"
+msgstr "%s : rdb ãƒ–ãƒ­ãƒƒã‚¯ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚èµ·ã“ã‚‹ã¯ãšã®ãªã„ã“ã¨ã§ã™ã€‚\n"
 
 #: libparted/fs/amiga/amiga.c:317
 #, c-format
 msgid "%s : Failed to read partition block %llu\n"
-msgstr "%s : ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Ö¥í¥Ã¥¯ %llu ¤¬ÆÉ¤á¤Ş¤»¤ó\n"
+msgstr "%s : ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯ %llu ãŒèª­ã‚ã¾ã›ã‚“\n"
 
 #: libparted/fs/ext2/ext2.c:86 libparted/fs/ext2/ext2.c:111
 msgid "Inconsistent group descriptors!"
-msgstr "¥°¥ë¡¼¥×µ­½Ò»Ò¤ËÌ·½â¤¬¤¢¤ê¤Ş¤¹!"
+msgstr "ã‚°ãƒ«ãƒ¼ãƒ—è¨˜è¿°å­ã«çŸ›ç›¾ãŒã‚ã‚Šã¾ã™!"
 
 #: libparted/fs/ext2/ext2.c:90 libparted/fs/ext2/ext2.c:115
 msgid "File system full!"
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤¬¤¤¤Ã¤Ñ¤¤¤Ë¤Ê¤ê¤Ş¤·¤¿!"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãŒã„ã£ã±ã„ã«ãªã‚Šã¾ã—ãŸ!"
 
 #: libparted/fs/ext2/ext2.c:685
 msgid "Invalid superblock.  Are you sure this is an ext2 file system?"
-msgstr "¥¹¡¼¥Ñ¡¼¥Ö¥í¥Ã¥¯¤¬ÉÔÀµ¤Ç¤¹¡£¤³¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ÏËÜÅö¤Ë ext2 ¤Ç¤¹¤«¡©"
+msgstr "ã‚¹ãƒ¼ãƒ‘ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ãŒä¸æ­£ã§ã™ã€‚ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯æœ¬å½“ã« ext2 ã§ã™ã‹ï¼Ÿ"
 
 #: libparted/fs/ext2/ext2.c:699 libparted/fs/ext2/ext2_resize.c:657
 msgid "File system has errors!  You should run e2fsck."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ë¥¨¥é¡¼¤¬¤¢¤ê¤Ş¤¹¡£Àè¤Ë e2fsck ¤ò¼Â¹Ô¤·¤Æ¤¯¤À¤µ¤¤¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã«ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚Šã¾ã™ã€‚å…ˆã« e2fsck ã‚’å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/ext2/ext2.c:710
 msgid ""
 "File system was not cleanly unmounted!  You should run e2fsck.  Modifying an "
 "unclean file system could cause severe corruption."
 msgstr ""
-"¥¯¥ê¡¼¥ó¤Ë unmount ¤µ¤ì¤Æ¤Ş¤»¤ó¡£e2fsck ¤ò¼Â¹Ô¤¹¤Ù¤­¤Ç¤¹¡£¥¯¥ê¡¼¥ó¤Ë¤Ê¤Ã¤Æ¤¤"
-"¤Ê¤¤¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ø¤ÎÊÑ¹¹¤ÏÂç¤­¤ÊÂ»³²¤Ë¤Ä¤Ê¤¬¤ê¤«¤Í¤Ş¤»¤ó¡£"
+"ã‚¯ãƒªãƒ¼ãƒ³ã« unmount ã•ã‚Œã¦ã¾ã›ã‚“ã€‚e2fsck ã‚’å®Ÿè¡Œã™ã¹ãã§ã™ã€‚ã‚¯ãƒªãƒ¼ãƒ³ã«ãªã£ã¦ã„"
+"ãªã„ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¸ã®å¤‰æ›´ã¯å¤§ããªæå®³ã«ã¤ãªãŒã‚Šã‹ã­ã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/ext2/ext2.c:730
 msgid ""
@@ -1759,50 +1818,53 @@ msgid ""
 "has_journal, dir_index, filetype, sparse_super and large_file.  Use tune2fs "
 "or debugfs to remove features."
 msgstr ""
+"ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯äº’æ›æ€§ã®ãªã„æ©Ÿèƒ½ãŒæœ‰åŠ¹ã«ãªã£ã¦ã„ã¾ã™ã€‚äº’æ›æ€§ã®ã‚ã‚‹æ©Ÿèƒ½ã¯ "
+"has_journal, dir_index, filetype, sparse_super ãŠã‚ˆã³ large_file ã§ã™ã€‚"
+"tune2fs ã‹ debugfs ã‚’ä½¿ã£ã¦äº’æ›æ€§ã®ãªã„æ©Ÿèƒ½ã‚’ç„¡åŠ¹ã«ã—ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/ext2/ext2.c:744
 msgid "Error allocating buffer cache."
-msgstr "¥Ğ¥Ã¥Õ¥¡¥­¥ã¥Ã¥·¥å¤ò³ÎÊİ¤·¤Æ¤ëºÇÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£"
+msgstr "ãƒãƒƒãƒ•ã‚¡ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ç¢ºä¿ã—ã¦ã‚‹æœ€ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/ext2/ext2_inode_relocator.c:113
 msgid ""
 "Found an inode with a incorrect link count.  Better go run e2fsck first!"
 msgstr ""
-"¥ê¥ó¥¯¤Î¿ô¤¬Àµ¤·¤¯¤Ê¤¤inode¤¬¸«¤Ä¤«¤ê¤Ş¤·¤¿¡£Àè¤Ë e2fsck ¤ò¼Â¹Ô¤·¤¿Êı¤¬¤¤¤¤¤Ç"
-"¤·¤ç¤¦¡£"
+"ãƒªãƒ³ã‚¯ã®æ•°ãŒæ­£ã—ããªã„inodeãŒè¦‹ã¤ã‹ã‚Šã¾ã—ãŸã€‚å…ˆã« e2fsck ã‚’å®Ÿè¡Œã—ãŸæ–¹ãŒã„ã„ã§"
+"ã—ã‚‡ã†ã€‚"
 
 #: libparted/fs/ext2/ext2_inode_relocator.c:486
 msgid "Not enough free inodes!"
-msgstr "Ì¤»ÈÍÑ¤Î inode ¤Î¿ô¤¬ÉÔÂ­¤·¤Æ¤¤¤Ş¤¹¡£"
+msgstr "æœªä½¿ç”¨ã® inode ã®æ•°ãŒä¸è¶³ã—ã¦ã„ã¾ã™ã€‚"
 
 #: libparted/fs/ext2/ext2_resize.c:222
 msgid "File system is too full to remove a group!"
-msgstr "¥°¥ë¡¼¥×¤òºï½ü¤¹¤ë¤Ë¤Ï¶õ¤­ÎÎ°è¤¬Â­¤ê¤Ş¤»¤ó¡£"
+msgstr "ã‚°ãƒ«ãƒ¼ãƒ—ã‚’å‰Šé™¤ã™ã‚‹ã«ã¯ç©ºãé ˜åŸŸãŒè¶³ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/ext2/ext2_resize.c:231
 msgid "File system has too many allocated inodes to remove a group!"
-msgstr "¥°¥ë¡¼¥×¤òºï½ü¤¹¤ë¤Ë¤ÏÌ¤»ÈÍÑ¤Î inode ¤¬Â­¤ê¤Ş¤»¤ó¡£"
+msgstr "ã‚°ãƒ«ãƒ¼ãƒ—ã‚’å‰Šé™¤ã™ã‚‹ã«ã¯æœªä½¿ç”¨ã® inode ãŒè¶³ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/ext2/ext2_resize.c:490
 msgid "adding groups"
-msgstr "¥°¥ë¡¼¥×¤òÄÉ²ÃÃæ"
+msgstr "ã‚°ãƒ«ãƒ¼ãƒ—ã‚’è¿½åŠ ä¸­"
 
 #: libparted/fs/ext2/ext2_resize.c:527
 #, c-format
 msgid "Your file system is too full to resize it to %i blocks.  Sorry."
-msgstr "%i ¥Ö¥í¥Ã¥¯¤Ë¥ê¥µ¥¤¥º¤¹¤ë¤Ë¤ÏÎÎ°è¤¬ÉÔÂ­¤·¤Æ¤¤¤Ş¤¹¡£"
+msgstr "%i ãƒ–ãƒ­ãƒƒã‚¯ã«ãƒªã‚µã‚¤ã‚ºã™ã‚‹ã«ã¯é ˜åŸŸãŒä¸è¶³ã—ã¦ã„ã¾ã™ã€‚"
 
 #: libparted/fs/ext2/ext2_resize.c:537
 #, c-format
 msgid ""
 "Your file system has too many occupied inodes to resize it to %i blocks.  "
 "Sorry."
-msgstr "%i ¥Ö¥í¥Ã¥¯¤Ë¥ê¥µ¥¤¥º¤¹¤ë¤Ë¤Ï inode ¤¬ÉÔÂ­¤·¤Æ¤¤¤Ş¤¹¡£"
+msgstr "%i ãƒ–ãƒ­ãƒƒã‚¯ã«ãƒªã‚µã‚¤ã‚ºã™ã‚‹ã«ã¯ inode ãŒä¸è¶³ã—ã¦ã„ã¾ã™ã€‚"
 
 #: libparted/fs/ext2/ext2_resize.c:665
 msgid "File system was not cleanly unmounted!  You should run e2fsck."
 msgstr ""
-"¥¯¥ê¡¼¥ó¤Ë unmount ¤µ¤ì¤Æ¤Ş¤»¤ó¤Ç¤·¤¿¡£¤Ş¤º¡¢e2fsck ¤ò¼Â¹Ô¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"ã‚¯ãƒªãƒ¼ãƒ³ã« unmount ã•ã‚Œã¦ã¾ã›ã‚“ã§ã—ãŸã€‚ã¾ãšã€e2fsck ã‚’å®Ÿè¡Œã—ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/ext2/ext2_resize.c:674
 msgid ""
@@ -1810,9 +1872,9 @@ msgid ""
 "the file system if it disables this feature.  You can enable it later by "
 "running 'tune2fs -O dir_index DEVICE' and then 'e2fsck -fD DEVICE'."
 msgstr ""
-"¤³¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ï 'dir_index' ¤¬Í­¸ú¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹¡£¤³¤ì¤òÌµ¸ú¤Ë¤·¤Ê¤¤"
-"¤È Parted ¤Ç¤Ï¥ê¥µ¥¤¥º¤Ç¤­¤Ş¤»¤ó¡£°ìÃ¶Ìµ¸ú¤Ë¤·¤Æ¤â¼¡¤Î¤è¤¦¤Ë¤¹¤ë¤³¤È¤Ç¡¢Í­¸ú"
-"¤Ë¤Ç¤­¤Ş¤¹¡£'tune2fs -O dir_index DEVICE' 'e2fsck -fD DEVICE'"
+"ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯ 'dir_index' ãŒæœ‰åŠ¹ã«ãªã£ã¦ã„ã¾ã™ã€‚ã“ã‚Œã‚’ç„¡åŠ¹ã«ã—ãªã„"
+"ã¨ Parted ã§ã¯ãƒªã‚µã‚¤ã‚ºã§ãã¾ã›ã‚“ã€‚ä¸€æ—¦ç„¡åŠ¹ã«ã—ã¦ã‚‚æ¬¡ã®ã‚ˆã†ã«ã™ã‚‹ã“ã¨ã§ã€æœ‰åŠ¹"
+"ã«ã§ãã¾ã™ã€‚'tune2fs -O dir_index DEVICE' 'e2fsck -fD DEVICE'"
 
 #: libparted/fs/ext2/ext2_resize.c:690
 msgid ""
@@ -1820,51 +1882,51 @@ msgid ""
 "that MAY CORRUPT it (although no one has reported any such damage yet).\n"
 "You should at least backup your data first, and run 'e2fsck -f' afterwards."
 msgstr ""
-"¤³¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¥ê¥µ¥¤¥º¤Î¥³¡¼¥É¤Ï»î¸³Ãæ¤Î¤¿¤á¡¢¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ò\n"
-"²õ¤¹²ÄÇ½À­¤¬¤¢¤ê¤Ş¤¹(¤Ş¤ÀÃ¯¤â¤½¤¦¤¤¤¦¤³¤È¤¬µ¯¤­¤¿¤È¤Ï¸À¤Ã¤Æ¤­¤Æ¤¤¤Ş¤»¤ó"
-"¤¬)¡£\n"
-"¾¯¤Ê¤¯¤È¤â¤Ş¤º¥Ğ¥Ã¥¯¥¢¥Ã¥×¤ò¤·¤Æ¤«¤é¹Ô¤¤¡¢¤½¤Î¸å 'e2fsck -f' ¤ò¼Â¹Ô¤·¤Æ¤¯¤À¤µ"
-"¤¤¡£"
+"ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ãƒªã‚µã‚¤ã‚ºã®ã‚³ãƒ¼ãƒ‰ã¯è©¦é¨“ä¸­ã®ãŸã‚ã€ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’\n"
+"å£Šã™å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™(ã¾ã èª°ã‚‚ãã†ã„ã†ã“ã¨ãŒèµ·ããŸã¨ã¯è¨€ã£ã¦ãã¦ã„ã¾ã›ã‚“"
+"ãŒ)ã€‚\n"
+"å°‘ãªãã¨ã‚‚ã¾ãšãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã‚’ã—ã¦ã‹ã‚‰è¡Œã„ã€ãã®å¾Œ 'e2fsck -f' ã‚’å®Ÿè¡Œã—ã¦ãã ã•"
+"ã„ã€‚"
 
 #: libparted/fs/ext2/ext2_block_relocator.c:197
 msgid "Cross-linked blocks found!  Better go run e2fsck first!"
 msgstr ""
-"Cross-link ¤·¤Æ¤¤¤ë¥Ö¥í¥Ã¥¯¤¬¤ß¤Ä¤«¤ê¤Ş¤·¤¿¡£Àè¤Ë e2fsck ¤ò¼Â¹Ô¤·¤¿Êı¤¬¤¤¤¤¤Ç"
-"¤·¤ç¤¦¡£"
+"Cross-link ã—ã¦ã„ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ãŒã¿ã¤ã‹ã‚Šã¾ã—ãŸã€‚å…ˆã« e2fsck ã‚’å®Ÿè¡Œã—ãŸæ–¹ãŒã„ã„ã§"
+"ã—ã‚‡ã†ã€‚"
 
 #: libparted/fs/ext2/ext2_block_relocator.c:536
 #, c-format
 msgid "Block %i has no reference?  Weird."
-msgstr "¥Ö¥í¥Ã¥¯ %i ¤Ï²¿¤â»²¾È¤·¤Æ¤¤¤Ş¤»¤ó¡£¤ª¤«¤·¤¤¤Ç¤¹¡£"
+msgstr "ãƒ–ãƒ­ãƒƒã‚¯ %i ã¯ä½•ã‚‚å‚ç…§ã—ã¦ã„ã¾ã›ã‚“ã€‚ãŠã‹ã—ã„ã§ã™ã€‚"
 
 #: libparted/fs/ext2/ext2_block_relocator.c:737
 #, c-format
 msgid "Block %i shouldn't have been marked (%d, %d)!"
-msgstr "¥Ö¥í¥Ã¥¯ %i ¤Ï¥Ş¡¼¥¯¤µ¤ì¤Æ¤¤¤Ê¤¤¤Ï¤º¤Ç¤¹(%d, %d)¡£"
+msgstr "ãƒ–ãƒ­ãƒƒã‚¯ %i ã¯ãƒãƒ¼ã‚¯ã•ã‚Œã¦ã„ãªã„ã¯ãšã§ã™(%d, %d)ã€‚"
 
-#: libparted/fs/ext2/interface.c:211
+#: libparted/fs/ext2/interface.c:222
 msgid ""
 "The ext2 file system passed a basic check.  For a more comprehensive check, "
 "use the e2fsck program."
 msgstr ""
-"¤³¤Î ext2 ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ï´ÊÃ±¤Ê¥Á¥§¥Ã¥¯¤ò¥Ñ¥¹¤·¤Ş¤·¤¿¡£¤µ¤é¤Ë¥Á¥§¥Ã¥¯¤¹¤ë"
-"¤Ë¤Ï e2fsck ¤ò»È¤Ã¤Æ¤¯¤À¤µ¤¤¡£"
+"ã“ã® ext2 ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯ç°¡å˜ãªãƒã‚§ãƒƒã‚¯ã‚’ãƒ‘ã‚¹ã—ã¾ã—ãŸã€‚ã•ã‚‰ã«ãƒã‚§ãƒƒã‚¯ã™ã‚‹"
+"ã«ã¯ e2fsck ã‚’ä½¿ã£ã¦ãã ã•ã„ã€‚"
 
-#: libparted/fs/ext2/interface.c:228
+#: libparted/fs/ext2/interface.c:239
 msgid "Sorry, can't move the start of ext2 partitions yet!"
-msgstr "»ÄÇ°¤Ç¤¹¤¬¡¢¤Ş¤À ext2 ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î³«»Ï°ÌÃÖ¤Ï°ÜÆ°¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "æ®‹å¿µã§ã™ãŒã€ã¾ã  ext2 ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®é–‹å§‹ä½ç½®ã¯ç§»å‹•ã§ãã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/ext2/ext2_buffer.c:81
 msgid "Couldn't flush buffer cache!"
-msgstr "¥Ğ¥Ã¥Õ¥¡¥­¥ã¥Ã¥·¥å¤ò¥Õ¥é¥Ã¥·¥å¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "ãƒãƒƒãƒ•ã‚¡ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ãƒ•ãƒ©ãƒƒã‚·ãƒ¥ã§ãã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/ext2/ext2_mkfs.c:161
 msgid "writing per-group metadata"
-msgstr "¥°¥ë¡¼¥×Ëè¤Î¥á¥¿¾ğÊó¤ò½ñ¹şÃæ"
+msgstr "ã‚°ãƒ«ãƒ¼ãƒ—æ¯ã®ãƒ¡ã‚¿æƒ…å ±ã‚’æ›¸è¾¼ä¸­"
 
-#: libparted/fs/ext2/ext2_mkfs.c:596
+#: libparted/fs/ext2/ext2_mkfs.c:597
 msgid "File system too small for ext2."
-msgstr "ext2 ¤Ë¤¹¤ë¤Ë¤Ï¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤¬¾®¤µ¤¹¤®¤Ş¤¹¡£"
+msgstr "ext2 ã«ã™ã‚‹ã«ã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ãŒå°ã•ã™ãã¾ã™ã€‚"
 
 #: libparted/fs/fat/calc.c:134
 #, c-format
@@ -1872,33 +1934,33 @@ msgid ""
 "You need %s of free disk space to shrink this partition to this size.  "
 "Currently, only %s is free."
 msgstr ""
-"¤³¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò¤³¤Î¥µ¥¤¥º¤Ë¾®¤µ¤¯¤¹¤ë¤Ë¤Ï %s ¤Î¶õ¤­¤¬É¬Í×¤Ç¤¹¡£(¸½ºß %s "
-"¤·¤«¶õ¤­¤¬¤¢¤ê¤Ş¤»¤ó¡£)"
+"ã“ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ã“ã®ã‚µã‚¤ã‚ºã«å°ã•ãã™ã‚‹ã«ã¯ %s ã®ç©ºããŒå¿…è¦ã§ã™ã€‚(ç¾åœ¨ %s "
+"ã—ã‹ç©ºããŒã‚ã‚Šã¾ã›ã‚“ã€‚)"
 
 #: libparted/fs/fat/context.c:55
 #, c-format
 msgid ""
 "Cluster start delta = %d, which is not a multiple of the cluster size %d."
 msgstr ""
-"Cluster start delta = %d ¤³¤ì¤Ï¥¯¥é¥¹¥¿¥µ¥¤¥º %d ¤ÎÇÜ¿ô¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£"
+"Cluster start delta = %d ã“ã‚Œã¯ã‚¯ãƒ©ã‚¹ã‚¿ã‚µã‚¤ã‚º %d ã®å€æ•°ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/fat/fat.c:310
 #, c-format
 msgid "Partition too big/small for a %s file system."
 msgstr ""
-"¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬ %s ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ë¤Ï¾®¤µ¤¹¤®¡¢¤¢¤ë¤¤¤ÏÂç¤­¤¹¤®¤Ş¤¹¡£"
+"ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒ %s ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã«ã¯å°ã•ã™ãã€ã‚ã‚‹ã„ã¯å¤§ãã™ãã¾ã™ã€‚"
 
 #: libparted/fs/fat/fat.c:476
 msgid ""
 "The FATs don't match.  If you don't know what this means, then select "
 "cancel, run scandisk on the file system, and then come back."
 msgstr ""
-"FAT ¤¬°ìÃ×¤·¤Ş¤»¤ó¡£¤³¤ì¤¬²¿¤ò°ÕÌ£¤¹¤ë¤«¤ï¤«¤é¤Ê¤¤¤Ê¤é¡¢¼è¾Ã(C) ¤òÁª¤ó¤Ç¡¢"
-"scandisk ¤ò¼Â¹Ô¤·¤Æ¤«¤é¡¢¤Ş¤¿¤ä¤ê¤Ê¤ª¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"FAT ãŒä¸€è‡´ã—ã¾ã›ã‚“ã€‚ã“ã‚ŒãŒä½•ã‚’æ„å‘³ã™ã‚‹ã‹ã‚ã‹ã‚‰ãªã„ãªã‚‰ã€å–æ¶ˆ(C) ã‚’é¸ã‚“ã§ã€"
+"scandisk ã‚’å®Ÿè¡Œã—ã¦ã‹ã‚‰ã€ã¾ãŸã‚„ã‚ŠãªãŠã—ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/fat/fat.c:516
 msgid "There are no possible configurations for this FAT type."
-msgstr "¤³¤Î FAT ¥¿¥¤¥×¤Ë¹ç¤¦ configuration ¤¬¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "ã“ã® FAT ã‚¿ã‚¤ãƒ—ã«åˆã† configuration ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/fat/fat.c:528
 #, c-format
@@ -1907,40 +1969,40 @@ msgid ""
 "size is %dk (%dk expected); number of clusters is %d (%d expected); size of "
 "FATs is %d sectors (%d expected)."
 msgstr ""
-"¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¥µ¥¤¥º¤¬ Windows ¤Î´üÂÔ¤·¤½¤¦¤Ê¥µ¥¤¥º¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£¥¯¥é¥¹"
-"¥¿¥µ¥¤¥º %dk (Í½ÁÛ %dk); ¥¯¥é¥¹¥¿¤Î¿ô %d (Í½ÁÛ %d); FAT ¤Î¥µ¥¤¥º %d ¥»¥¯¥¿ "
-"(Í½ÁÛ %d)"
+"ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ã‚µã‚¤ã‚ºãŒ Windows ã®æœŸå¾…ã—ãã†ãªã‚µã‚¤ã‚ºã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚ã‚¯ãƒ©ã‚¹"
+"ã‚¿ã‚µã‚¤ã‚º %dk (äºˆæƒ³ %dk); ã‚¯ãƒ©ã‚¹ã‚¿ã®æ•° %d (äºˆæƒ³ %d); FAT ã®ã‚µã‚¤ã‚º %d ã‚»ã‚¯ã‚¿ "
+"(äºˆæƒ³ %d)"
 
 #: libparted/fs/fat/fat.c:551
 #, c-format
 msgid ""
 "File system is reporting the free space as %d clusters, not %d clusters."
 msgstr ""
-"¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¶õ¤­ÍÆÎÌ¤Ï %d ¥¯¥é¥¹¥¿ ¤Ç¡¢%d ¥¯¥é¥¹¥¿¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£"
+"ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ç©ºãå®¹é‡ã¯ %d ã‚¯ãƒ©ã‚¹ã‚¿ ã§ã€%d ã‚¯ãƒ©ã‚¹ã‚¿ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/fat/fat.c:876
 msgid ""
 "GNU Parted was miscompiled: the FAT boot sector should be 512 bytes.  FAT "
 "support will be disabled."
 msgstr ""
-"GNU parted ¤¬¤Á¤ã¤ó¤È¥³¥ó¥Ñ¥¤¥ë¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£FAT ¤Î¥Ö¡¼¥È¥»¥¯¥¿¤Ï 512 ¥Ğ¥¤"
-"¥È¤Ç¤¢¤ë¤Ù¤­¤Ç¤¹¡£FAT ¥µ¥İ¡¼¥È¤òÌµ¸ú¤Ë¤·¤Ş¤¹¡£"
+"GNU parted ãŒã¡ã‚ƒã‚“ã¨ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚FAT ã®ãƒ–ãƒ¼ãƒˆã‚»ã‚¯ã‚¿ã¯ 512 ãƒã‚¤"
+"ãƒˆã§ã‚ã‚‹ã¹ãã§ã™ã€‚FAT ã‚µãƒãƒ¼ãƒˆã‚’ç„¡åŠ¹ã«ã—ã¾ã™ã€‚"
 
 #: libparted/fs/fat/resize.c:158
 msgid ""
 "There's not enough room in the root directory for all of the files.  Either "
 "cancel, or ignore to lose the files."
 msgstr ""
-"¥ë¡¼¥È¥Ç¥£¥ì¥¯¥È¥ê¤Ë½½Ê¬¤Ê¶õ¤­¤¬¤¢¤ê¤Ş¤»¤ó¡£¼è¾Ã(C) ¤¹¤«¡¢¥Õ¥¡¥¤¥ë¤ò¼º¤Ã¤Æ¤â"
-"¤è¤±¤ì¤Ğ Ìµ»ë(I) ¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤¡£"
+"ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ååˆ†ãªç©ºããŒã‚ã‚Šã¾ã›ã‚“ã€‚å–æ¶ˆ(C) ã™ã‹ã€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å¤±ã£ã¦ã‚‚"
+"ã‚ˆã‘ã‚Œã° ç„¡è¦–(I) ã‚’é¸ã‚“ã§ãã ã•ã„ã€‚"
 
 #: libparted/fs/fat/resize.c:299
 msgid "Error writing to the root directory."
-msgstr "¥ë¡¼¥È¥Ç¥£¥ì¥¯¥È¥ê¤Ë½ñ¤­¤³¤ßÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£"
+msgstr "ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«æ›¸ãã“ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/fat/resize.c:488
 msgid "If you leave your file system as FAT16, then you will have no problems."
-msgstr "FAT16 ¤Î¤Ş¤Ş¤Ë¤·¤Æ¤ª¤¯¤Ê¤é¡¢²¿¤ÎÌäÂê¤â¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "FAT16 ã®ã¾ã¾ã«ã—ã¦ãŠããªã‚‰ã€ä½•ã®å•é¡Œã‚‚ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/fat/resize.c:491
 msgid ""
@@ -1948,16 +2010,16 @@ msgid ""
 "you must re-install the MS Windows boot loader.  If you want to do this, you "
 "should consult the Parted manual (or your distribution's manual)."
 msgstr ""
-"FAT16 ¤ËÊÑ´¹¤·¤è¤¦¤È¤·¤Æ¤¤¤Æ¡¢¤·¤«¤â MS Windows ¤¬¤³¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¥¤¥ó¥¹"
-"¥È¡¼¥ë¤µ¤ì¤Æ¤¤¤ë¤Ê¤é¡¢MS Windows ¤Î¥Ö¡¼¥È¥í¡¼¥À¤òºÆ¥¤¥ó¥¹¥È¡¼¥ë¤·¤Ê¤±¤ì¤Ğ¤Ê¤ê"
-"¤Ş¤»¤ó¡£¤â¤·¤½¤¦¤·¤¿¤¤¤Î¤Ê¤é¡¢Parted(¤¢¤ë¤¤¤Ï distribution) ¤Î¥Ş¥Ë¥å¥¢¥ë¤ò¤è"
-"¤¯ÆÉ¤ó¤Ç¤¯¤À¤µ¤¤¡£"
+"FAT16 ã«å¤‰æ›ã—ã‚ˆã†ã¨ã—ã¦ã„ã¦ã€ã—ã‹ã‚‚ MS Windows ãŒã“ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«ã‚¤ãƒ³ã‚¹"
+"ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹ãªã‚‰ã€MS Windows ã®ãƒ–ãƒ¼ãƒˆãƒ­ãƒ¼ãƒ€ã‚’å†ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ãªã‘ã‚Œã°ãªã‚Š"
+"ã¾ã›ã‚“ã€‚ã‚‚ã—ãã†ã—ãŸã„ã®ãªã‚‰ã€Parted(ã‚ã‚‹ã„ã¯ distribution) ã®ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ã‚’ã‚ˆ"
+"ãèª­ã‚“ã§ãã ã•ã„ã€‚"
 
 #: libparted/fs/fat/resize.c:499
 msgid ""
 "If you leave your file system as FAT32, then you will not introduce any new "
 "problems."
-msgstr "FAT32 ¤Î¤Ş¤Ş¤Ë¤·¤Æ¤ª¤¯¤Ê¤é¡¢²¿¤ÎÌäÂê¤âÀ¸¤¸¤Ş¤»¤ó¡£"
+msgstr "FAT32 ã®ã¾ã¾ã«ã—ã¦ãŠããªã‚‰ã€ä½•ã®å•é¡Œã‚‚ç”Ÿã˜ã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/fat/resize.c:503
 msgid ""
@@ -1967,11 +2029,11 @@ msgid ""
 "converting to FAT32 will make the file system unreadable by MS DOS, MS "
 "Windows 95a, and MS Windows NT."
 msgstr ""
-"FAT32 ¤ËÊÑ´¹¤·¤è¤¦¤È¤·¤Æ¤¤¤Æ¡¢¤·¤«¤â MS Windows ¤¬¤³¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¥¤¥ó¥¹"
-"¥È¡¼¥ë¤µ¤ì¤Æ¤¤¤ë¤Ê¤é¡¢MS Windows ¤Î¥Ö¡¼¥È¥í¡¼¥À¤òºÆ¥¤¥ó¥¹¥È¡¼¥ë¤·¤Ê¤±¤ì¤Ğ¤Ê¤ê"
-"¤Ş¤»¤ó¡£¤â¤·¤½¤¦¤·¤¿¤¤¤Î¤Ê¤é¡¢Parted(¤¢¤ë¤¤¤Ï distribution) ¤Î¥Ş¥Ë¥å¥¢¥ë¤ò¤è"
-"¤¯ÆÉ¤ó¤Ç¤¯¤À¤µ¤¤¡£FAT32 ¤ËÊÑ´¹¤¹¤ë¤È¡¢MS-DOS¡¢MS Windows 95a¡¢MS Windows NT "
-"¤«¤é¤ÏÆÉ¤á¤Ê¤¯¤Ê¤ê¤Ş¤¹¡£"
+"FAT32 ã«å¤‰æ›ã—ã‚ˆã†ã¨ã—ã¦ã„ã¦ã€ã—ã‹ã‚‚ MS Windows ãŒã“ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«ã‚¤ãƒ³ã‚¹"
+"ãƒˆãƒ¼ãƒ«ã•ã‚Œã¦ã„ã‚‹ãªã‚‰ã€MS Windows ã®ãƒ–ãƒ¼ãƒˆãƒ­ãƒ¼ãƒ€ã‚’å†ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ãªã‘ã‚Œã°ãªã‚Š"
+"ã¾ã›ã‚“ã€‚ã‚‚ã—ãã†ã—ãŸã„ã®ãªã‚‰ã€Parted(ã‚ã‚‹ã„ã¯ distribution) ã®ãƒãƒ‹ãƒ¥ã‚¢ãƒ«ã‚’ã‚ˆ"
+"ãèª­ã‚“ã§ãã ã•ã„ã€‚FAT32 ã«å¤‰æ›ã™ã‚‹ã¨ã€MS-DOSã€MS Windows 95aã€MS Windows NT "
+"ã‹ã‚‰ã¯èª­ã‚ãªããªã‚Šã¾ã™ã€‚"
 
 #: libparted/fs/fat/resize.c:517
 #, c-format
@@ -1980,7 +2042,7 @@ msgstr "%s  %s  %s"
 
 #: libparted/fs/fat/resize.c:518
 msgid "Would you like to use FAT32?"
-msgstr "FAT32 ¤ò»È¤¤¤¿¤¤¤Ç¤¹¤«¡©"
+msgstr "FAT32 ã‚’ä½¿ã„ãŸã„ã§ã™ã‹ï¼Ÿ"
 
 #: libparted/fs/fat/resize.c:549 libparted/fs/fat/resize.c:565
 #, c-format
@@ -1990,55 +2052,55 @@ msgstr "%s  %s"
 #: libparted/fs/fat/resize.c:550
 msgid ""
 "The file system can only be resized to this size by converting to FAT16."
-msgstr "¤³¤Î¥µ¥¤¥º¤Ë¥ê¥µ¥¤¥º¤¹¤ë¤Ë¤Ï FAT16 ¤ËÊÑ´¹¤·¤Ê¤±¤ì¤Ğ¤Ê¤ê¤Ş¤»¤ó¡£"
+msgstr "ã“ã®ã‚µã‚¤ã‚ºã«ãƒªã‚µã‚¤ã‚ºã™ã‚‹ã«ã¯ FAT16 ã«å¤‰æ›ã—ãªã‘ã‚Œã°ãªã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/fat/resize.c:566
 msgid ""
 "The file system can only be resized to this size by converting to FAT32."
-msgstr "¤³¤Î¥µ¥¤¥º¤Ë¥ê¥µ¥¤¥º¤¹¤ë¤Ë¤Ï FAT32 ¤ËÊÑ´¹¤·¤Ê¤±¤ì¤Ğ¤Ê¤ê¤Ş¤»¤ó¡£"
+msgstr "ã“ã®ã‚µã‚¤ã‚ºã«ãƒªã‚µã‚¤ã‚ºã™ã‚‹ã«ã¯ FAT32 ã«å¤‰æ›ã—ãªã‘ã‚Œã°ãªã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/fat/resize.c:579
 msgid ""
 "GNU Parted cannot resize this partition to this size.  We're working on it!"
 msgstr ""
-"GNU Parted ¤Ï¤³¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò¤³¤Î¥µ¥¤¥º¤Ë¥ê¥µ¥¤¥º¤¹¤ë¤³¤È¤Ï¤Ç¤­¤Ş¤»¤ó¡£¤Ç"
-"¤­¤ë¤è¤¦¤ËÅØÎÏ¤·¤Æ¤¤¤Ş¤¹¡£"
+"GNU Parted ã¯ã“ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ã“ã®ã‚µã‚¤ã‚ºã«ãƒªã‚µã‚¤ã‚ºã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“ã€‚ã§"
+"ãã‚‹ã‚ˆã†ã«åŠªåŠ›ã—ã¦ã„ã¾ã™ã€‚"
 
-#: libparted/fs/fat/bootsector.c:48 libparted/fs/fat/bootsector.c:55
+#: libparted/fs/fat/bootsector.c:49 libparted/fs/fat/bootsector.c:56
 msgid "File system has an invalid signature for a FAT file system."
 msgstr ""
-"¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¥·¥°¥Í¥Á¥ã¤¬ FAT ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¤â¤Î¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£"
+"ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ã‚·ã‚°ãƒãƒãƒ£ãŒ FAT ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ã‚‚ã®ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
-#: libparted/fs/fat/bootsector.c:63
+#: libparted/fs/fat/bootsector.c:64
 msgid "File system has an invalid sector size for a FAT file system."
 msgstr ""
-"¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¥»¥¯¥¿¥µ¥¤¥º¤¬ FAT ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¤â¤Î¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£"
+"ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚ºãŒ FAT ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ã‚‚ã®ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
-#: libparted/fs/fat/bootsector.c:70
+#: libparted/fs/fat/bootsector.c:71
 msgid "File system has an invalid cluster size for a FAT file system."
 msgstr ""
-"¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¥¯¥é¥¹¥¿¥µ¥¤¥º¤¬ FAT ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¤â¤Î¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£"
+"ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ã‚¯ãƒ©ã‚¹ã‚¿ã‚µã‚¤ã‚ºãŒ FAT ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ã‚‚ã®ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
-#: libparted/fs/fat/bootsector.c:77
+#: libparted/fs/fat/bootsector.c:78
 msgid ""
 "File system has an invalid number of reserved sectors for a FAT file system."
 msgstr ""
-"¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ÎÍ½Ìó¥»¥¯¥¿¤Î¿ô¤¬ FAT ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤È¤·¤Æ¤ÏÉÔÀµ¤Ç¤¹¡£"
+"ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®äºˆç´„ã‚»ã‚¯ã‚¿ã®æ•°ãŒ FAT ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¨ã—ã¦ã¯ä¸æ­£ã§ã™ã€‚"
 
-#: libparted/fs/fat/bootsector.c:84
+#: libparted/fs/fat/bootsector.c:85
 msgid "File system has an invalid number of FATs."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î FAT ¤Î¿ô¤¬ÉÔÀµ¤Ç¤¹¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã® FAT ã®æ•°ãŒä¸æ­£ã§ã™ã€‚"
 
-#: libparted/fs/fat/bootsector.c:138
+#: libparted/fs/fat/bootsector.c:139
 #, c-format
 msgid ""
 "This file system has a logical sector size of %d.  GNU Parted is known not "
 "to work properly with sector sizes other than 512 bytes."
 msgstr ""
-"¤³¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ÎÏÀÍı¥»¥¯¥¿¥µ¥¤¥º¤Ï %d ¤Ç¤¹.  ¥»¥¯¥¿¥µ¥¤¥º¤¬ 512 ¥Ğ¥¤¥È"
-"°Ê³°¤Ç¤Ï GNU Parted ¤Ï¤¦¤Ş¤¯Æ°¤«¤Ê¤¤¤³¤È¤¬ÃÎ¤é¤ì¤Æ¤¤¤Ş¤¹¡£"
+"ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®è«–ç†ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚ºã¯ %d ã§ã™.  ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚ºãŒ 512 ãƒã‚¤ãƒˆ"
+"ä»¥å¤–ã§ã¯ GNU Parted ã¯ã†ã¾ãå‹•ã‹ãªã„ã“ã¨ãŒçŸ¥ã‚‰ã‚Œã¦ã„ã¾ã™ã€‚"
 
-#: libparted/fs/fat/bootsector.c:163
+#: libparted/fs/fat/bootsector.c:164
 #, c-format
 msgid ""
 "The file system's CHS geometry is (%d, %d, %d), which is invalid.  The "
@@ -2047,55 +2109,55 @@ msgid ""
 "file system's CHS geometry will be set to match the partition table's CHS "
 "geometry."
 msgstr ""
-"¤³¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î CHS geometry ¤Ï (%d, %d, %d) ¤ÇÉÔÀµ¤Ç¤¹¡£¥Ñ¡¼¥Æ¥£¥·¥ç"
-"¥ó¥Æ¡¼¥Ö¥ë¤Î CHS geometry ¤Ï (%d, %d, %d) ¤Ç¤¹¡£Ìµ»ë(I)¤òÁª¤Ù¤Ğ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ"
-"¥à¤Î CHS geometry ¤Ï¤½¤Î¤Ş¤Ş¤Ë¤Ê¤ê¤Ş¤¹¡£½¤Àµ(F)¤òÁª¤Ù¤Ğ¡¢¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î "
-"CHS geometry ¤Ï¡¢¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î CHS geometry ¤È¹ç¤¦¤è¤¦½¤Àµ¤µ¤ì¤Ş¤¹¡£"
+"ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã® CHS geometry ã¯ (%d, %d, %d) ã§ä¸æ­£ã§ã™ã€‚ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§"
+"ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã® CHS geometry ã¯ (%d, %d, %d) ã§ã™ã€‚ç„¡è¦–(I)ã‚’é¸ã¹ã°ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†"
+"ãƒ ã® CHS geometry ã¯ãã®ã¾ã¾ã«ãªã‚Šã¾ã™ã€‚ä¿®æ­£(F)ã‚’é¸ã¹ã°ã€ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã® "
+"CHS geometry ã¯ã€ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã® CHS geometry ã¨åˆã†ã‚ˆã†ä¿®æ­£ã•ã‚Œã¾ã™ã€‚"
 
-#: libparted/fs/fat/bootsector.c:212
+#: libparted/fs/fat/bootsector.c:213
 msgid "FAT boot sector says logical sector size is 0.  This is weird. "
 msgstr ""
-"FAT ¤Î¥Ö¡¼¥È¥»¥¯¥¿¤Ë¤ÏÏÀÍı¥»¥¯¥¿¥µ¥¤¥º¤¬ 0 ¤È½ñ¤«¤ì¤Æ¤¤¤Ş¤¹¡¢¤³¤ì¤Ï¤ª¤«¤·¤¤¤Ç"
-"¤¹¡£"
+"FAT ã®ãƒ–ãƒ¼ãƒˆã‚»ã‚¯ã‚¿ã«ã¯è«–ç†ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚ºãŒ 0 ã¨æ›¸ã‹ã‚Œã¦ã„ã¾ã™ã€ã“ã‚Œã¯ãŠã‹ã—ã„ã§"
+"ã™ã€‚"
 
-#: libparted/fs/fat/bootsector.c:218
+#: libparted/fs/fat/bootsector.c:219
 msgid "FAT boot sector says there are no FAT tables.  This is weird. "
-msgstr "FAT ¤Î¥Ö¡¼¥È¥»¥¯¥¿¤Ë FAT ¥Æ¡¼¥Ö¥ë¤¬¤¢¤ê¤Ş¤»¤ó¡£¤³¤ì¤Ï¤ª¤«¤·¤¤¤Ç¤¹¡£"
+msgstr "FAT ã®ãƒ–ãƒ¼ãƒˆã‚»ã‚¯ã‚¿ã« FAT ãƒ†ãƒ¼ãƒ–ãƒ«ãŒã‚ã‚Šã¾ã›ã‚“ã€‚ã“ã‚Œã¯ãŠã‹ã—ã„ã§ã™ã€‚"
 
-#: libparted/fs/fat/bootsector.c:224
+#: libparted/fs/fat/bootsector.c:225
 msgid "FAT boot sector says clusters are 0 sectors.  This is weird. "
 msgstr ""
-"FAT ¤Î¥Ö¡¼¥È¥»¥¯¥¿¤Ë¥¯¥é¥¹¥¿¤Ï 0 ¥»¥¯¥¿¤Ç¤¢¤ë¤È½ñ¤«¤ì¤Æ¤¤¤Ş¤¹¡£¤³¤ì¤Ï¤ª¤«¤·¤¤"
-"¤Ç¤¹¡£"
+"FAT ã®ãƒ–ãƒ¼ãƒˆã‚»ã‚¯ã‚¿ã«ã‚¯ãƒ©ã‚¹ã‚¿ã¯ 0 ã‚»ã‚¯ã‚¿ã§ã‚ã‚‹ã¨æ›¸ã‹ã‚Œã¦ã„ã¾ã™ã€‚ã“ã‚Œã¯ãŠã‹ã—ã„"
+"ã§ã™ã€‚"
 
-#: libparted/fs/fat/bootsector.c:234
+#: libparted/fs/fat/bootsector.c:235
 msgid "File system is FAT12, which is unsupported."
-msgstr "FAT12 ¤Ï¥µ¥İ¡¼¥È¤·¤Æ¤¤¤Ş¤»¤ó¡£"
+msgstr "FAT12 ã¯ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚"
 
-#: libparted/fs/fat/bootsector.c:410
+#: libparted/fs/fat/bootsector.c:411
 #, c-format
 msgid ""
 "The information sector has the wrong signature (%x).  Select cancel for now, "
 "and send in a bug report.  If you're desperate, it's probably safe to ignore."
 msgstr ""
-"information ¥»¥¯¥¿¤Î¥·¥°¥Í¥Á¥ã(%x)¤Ï¤Ş¤Á¤¬¤Ã¤Æ¤¤¤Ş¤¹¡£¼è¾Ã(C) ¤·¤Æ¥Ğ¥°¥ì¥İ¡¼"
-"¥È¤òÁ÷¤Ã¤Æ¤¯¤À¤µ¤¤¡£¤â¤·¤É¤¦¤Ê¤Ã¤Æ¤â¤¤¤¤¤Î¤Ç¤¢¤ì¤Ğ Ìµ»ë(I) ¤·¤Æ¤â¤¤¤¤¤Ç¤·¤ç"
-"¤¦¡£"
+"information ã‚»ã‚¯ã‚¿ã®ã‚·ã‚°ãƒãƒãƒ£(%x)ã¯ã¾ã¡ãŒã£ã¦ã„ã¾ã™ã€‚å–æ¶ˆ(C) ã—ã¦ãƒã‚°ãƒ¬ãƒãƒ¼"
+"ãƒˆã‚’é€ã£ã¦ãã ã•ã„ã€‚ã‚‚ã—ã©ã†ãªã£ã¦ã‚‚ã„ã„ã®ã§ã‚ã‚Œã° ç„¡è¦–(I) ã—ã¦ã‚‚ã„ã„ã§ã—ã‚‡"
+"ã†ã€‚"
 
 #: libparted/fs/fat/count.c:143
 #, c-format
 msgid "Bad directory entry for %s: first cluster is the end of file marker."
 msgstr ""
-"%s ¤Î¥Ç¥£¥ì¥¯¥È¥ê¥¨¥ó¥È¥ê¤¬ÉÔÎÉ¤Ç¤¹: ºÇ½é¤Î¥¯¥é¥¹¥¿¤¬¥Õ¥¡¥¤¥ë¤Î½ªÎ»¤òÉ½¤ï¤¹"
-"¥Ş¡¼¥¯¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹¡£"
+"%s ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚¨ãƒ³ãƒˆãƒªãŒä¸è‰¯ã§ã™: æœ€åˆã®ã‚¯ãƒ©ã‚¹ã‚¿ãŒãƒ•ã‚¡ã‚¤ãƒ«ã®çµ‚äº†ã‚’è¡¨ã‚ã™"
+"ãƒãƒ¼ã‚¯ã«ãªã£ã¦ã„ã¾ã™ã€‚"
 
 #: libparted/fs/fat/count.c:156
 #, c-format
 msgid ""
 "Bad FAT: unterminated chain for %s.  You should run dosfsck or scandisk."
 msgstr ""
-"FAT ¤Ë¤¢¤ä¤Ş¤ê¤¬¤¢¤ê¤Ş¤¹¡£%s ¤Î chain ¤¬½ªÎ»¤·¤Ş¤»¤ó¡£dosfsck ¤ä scandisk ¤ò"
-"¼Â¹Ô¤¹¤ë¤Ù¤­¤Ç¤¹¡£"
+"FAT ã«ã‚ã‚„ã¾ã‚ŠãŒã‚ã‚Šã¾ã™ã€‚%s ã® chain ãŒçµ‚äº†ã—ã¾ã›ã‚“ã€‚dosfsck ã‚„ scandisk ã‚’"
+"å®Ÿè¡Œã™ã‚‹ã¹ãã§ã™ã€‚"
 
 #: libparted/fs/fat/count.c:165
 #, c-format
@@ -2103,8 +2165,8 @@ msgid ""
 "Bad FAT: cluster %d outside file system in chain for %s.  You should run "
 "dosfsck or scandisk."
 msgstr ""
-"FAT ¤Ë¤¢¤ä¤Ş¤ê¤¬¤¢¤ê¤Ş¤¹¡£¥¯¥é¥¹¥¿ %d(%s ¤Î chain)¤Ï¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î³°¤Ë¤¢"
-"¤ê¤Ş¤¹¡£dosfsck ¤ä scandisk ¤ò¼Â¹Ô¤¹¤ë¤Ù¤­¤Ç¤¹¡£"
+"FAT ã«ã‚ã‚„ã¾ã‚ŠãŒã‚ã‚Šã¾ã™ã€‚ã‚¯ãƒ©ã‚¹ã‚¿ %d(%s ã® chain)ã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®å¤–ã«ã‚"
+"ã‚Šã¾ã™ã€‚dosfsck ã‚„ scandisk ã‚’å®Ÿè¡Œã™ã‚‹ã¹ãã§ã™ã€‚"
 
 #: libparted/fs/fat/count.c:175
 #, c-format
@@ -2112,13 +2174,13 @@ msgid ""
 "Bad FAT: cluster %d is cross-linked for %s.  You should run dosfsck or "
 "scandisk."
 msgstr ""
-"FAT¤Ë¤¢¤ä¤Ş¤ê¤¬¤¢¤ê¤Ş¤¹¡£¥¯¥é¥¹¥¿ %d(%s ¤Îchain)¤¬cross-link¤·¤Æ¤¤¤Ş¤¹¡£"
-"dosfsck¤äscandisk¤ò¼Â¹Ô¤¹¤ë¤Ù¤­¤Ç¤¹¡£"
+"FATã«ã‚ã‚„ã¾ã‚ŠãŒã‚ã‚Šã¾ã™ã€‚ã‚¯ãƒ©ã‚¹ã‚¿ %d(%s ã®chain)ãŒcross-linkã—ã¦ã„ã¾ã™ã€‚"
+"dosfsckã‚„scandiskã‚’å®Ÿè¡Œã™ã‚‹ã¹ãã§ã™ã€‚"
 
 #: libparted/fs/fat/count.c:194
 #, c-format
 msgid "%s is %dk, but it has %d clusters (%dk)."
-msgstr "%s ¤Ï %dk ¤Ç¤¹¤¬¡¢%d ¥¯¥é¥¹¥¿(%dk)¤¢¤ê¤Ş¤¹¡£"
+msgstr "%s ã¯ %dk ã§ã™ãŒã€%d ã‚¯ãƒ©ã‚¹ã‚¿(%dk)ã‚ã‚Šã¾ã™ã€‚"
 
 #: libparted/fs/fat/count.c:257
 #, c-format
@@ -2126,8 +2188,8 @@ msgid ""
 "The file %s is marked as a system file.  This means moving it could cause "
 "some programs to stop working."
 msgstr ""
-"¥Õ¥¡¥¤¥ë %s ¤Ï¥·¥¹¥Æ¥à¥Õ¥¡¥¤¥ë¤Ç¤¹¡£¤³¤Î¥Õ¥¡¥¤¥ë¤òÆ°¤«¤·¤Æ¤·¤Ş¤¦¤ÈÆ°¤«¤Ê¤¯¤Ê"
-"¤ë¥×¥í¥°¥é¥à¤¬¤¢¤ê¤Ş¤¹¡£"
+"ãƒ•ã‚¡ã‚¤ãƒ« %s ã¯ã‚·ã‚¹ãƒ†ãƒ ãƒ•ã‚¡ã‚¤ãƒ«ã§ã™ã€‚ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å‹•ã‹ã—ã¦ã—ã¾ã†ã¨å‹•ã‹ãªããª"
+"ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãŒã‚ã‚Šã¾ã™ã€‚"
 
 #: libparted/fs/fat/table.c:136
 #, c-format
@@ -2135,52 +2197,52 @@ msgid ""
 "FAT %d media %x doesn't match the boot sector's media %x.  You should "
 "probably run scandisk."
 msgstr ""
-"FAT %d media %x ¤Ï¥Ö¡¼¥È¥»¥¯¥¿¤Îmedia %x ¤È°ìÃ×¤·¤Ş¤»¤ó¡£scandisk ¤ò¼Â¹Ô¤·¤¿"
-"Êı¤¬¤¤¤¤¤Ç¤·¤ç¤¦¡£"
+"FAT %d media %x ã¯ãƒ–ãƒ¼ãƒˆã‚»ã‚¯ã‚¿ã®media %x ã¨ä¸€è‡´ã—ã¾ã›ã‚“ã€‚scandisk ã‚’å®Ÿè¡Œã—ãŸ"
+"æ–¹ãŒã„ã„ã§ã—ã‚‡ã†ã€‚"
 
 #: libparted/fs/fat/table.c:268
 #, c-format
 msgid "fat_table_set: cluster %ld outside file system"
-msgstr "fat_table_set: ¥¯¥é¥¹¥¿ %ld ¤Ï¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î³°¤Ë¤¢¤ê¤Ş¤¹¡£"
+msgstr "fat_table_set: ã‚¯ãƒ©ã‚¹ã‚¿ %ld ã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®å¤–ã«ã‚ã‚Šã¾ã™ã€‚"
 
 #: libparted/fs/fat/table.c:300
 #, c-format
 msgid "fat_table_get: cluster %ld outside file system"
-msgstr "fat_table_get: ¥¯¥é¥¹¥¿ %ld ¤Ï¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î³°¤Ë¤¢¤ê¤Ş¤¹¡£"
+msgstr "fat_table_get: ã‚¯ãƒ©ã‚¹ã‚¿ %ld ã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®å¤–ã«ã‚ã‚Šã¾ã™ã€‚"
 
 #: libparted/fs/fat/table.c:342
 msgid "fat_table_alloc_cluster: no free clusters"
-msgstr "fat_table_alloc_cluster: ¶õ¤­¥¯¥é¥¹¥¿¤¬¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "fat_table_alloc_cluster: ç©ºãã‚¯ãƒ©ã‚¹ã‚¿ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"
 
-#: libparted/fs/linux_swap/linux_swap.c:282
-#, fuzzy, c-format
+#: libparted/fs/linux_swap/linux_swap.c:287
+#, c-format
 msgid "Unrecognised old style linux swap signature '%10s'."
-msgstr "Linux swap signature '%10s' ¤òÇ§¼±¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "å¤ã„ã‚¿ã‚¤ãƒ—ã® Linux swap signature '%10s' ã‚’èªè­˜ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/fs/linux_swap/linux_swap.c:325
-#, fuzzy, c-format
+#: libparted/fs/linux_swap/linux_swap.c:330
+#, c-format
 msgid "Unrecognised new style linux swap signature '%10s'."
-msgstr "Linux swap signature '%10s' ¤òÇ§¼±¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "æ–°ã—ã„ã‚¿ã‚¤ãƒ—ã® Linux swap signature '%10s' ã‚’èªè­˜ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/fs/linux_swap/linux_swap.c:365
-#, fuzzy, c-format
+#: libparted/fs/linux_swap/linux_swap.c:370
+#, c-format
 msgid "Unrecognised swsusp linux swap signature '%9s'."
-msgstr "Linux swap signature '%10s' ¤òÇ§¼±¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "Linux swsusp signature '%9s' ã‚’èªè­˜ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/fs/linux_swap/linux_swap.c:441
+#: libparted/fs/linux_swap/linux_swap.c:446
 msgid "Too many bad pages."
-msgstr "ÉÔÎÉ¥Ú¡¼¥¸¤¬Â¿¤¹¤®¤Ş¤¹¡£"
+msgstr "ä¸è‰¯ãƒšãƒ¼ã‚¸ãŒå¤šã™ãã¾ã™ã€‚"
 
-#: libparted/fs/hfs/advfs.c:120 libparted/fs/hfs/advfs_plus.c:121
+#: libparted/fs/hfs/advfs.c:120 libparted/fs/hfs/advfs_plus.c:120
 #: libparted/fs/hfs/reloc.c:413 libparted/fs/hfs/reloc.c:507
-#: libparted/fs/hfs/reloc_plus.c:538 libparted/fs/hfs/reloc_plus.c:657
-#: libparted/fs/hfs/reloc_plus.c:771
+#: libparted/fs/hfs/reloc_plus.c:537 libparted/fs/hfs/reloc_plus.c:655
+#: libparted/fs/hfs/reloc_plus.c:768
 msgid "The file system contains errors."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ë¥¨¥é¡¼¤¬¤¢¤ê¤Ş¤¹¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã«ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚Šã¾ã™ã€‚"
 
-#: libparted/fs/hfs/advfs_plus.c:286
+#: libparted/fs/hfs/advfs_plus.c:284
 msgid "Bad blocks could not be read."
-msgstr "ÉÔÀµ¤Ê¥Ö¥í¥Ã¥¯¤ÏÆÉ¤á¤Ş¤»¤ó¤Ç¤·¤¿¡£"
+msgstr "ä¸æ­£ãªãƒ–ãƒ­ãƒƒã‚¯ã¯èª­ã‚ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: libparted/fs/hfs/cache.c:136
 #, c-format
@@ -2188,8 +2250,8 @@ msgid ""
 "Trying to register an extent starting at block 0x%X, but another one already "
 "exists at this position.  You should check the file system!"
 msgstr ""
-"¥Ö¥í¥Ã¥¯ 0x%X ¤«¤é»Ï¤Ş¤ë extent ¤òÅĞÏ¿¤·¤è¤¦¤È¤·¤Ş¤·¤¿¤¬¡¢´û¤ËÂ¾¤Î¤â¤Î¤¬¤³¤Î"
-"¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ËÂ¸ºß¤·¤Ş¤¹¡£¤³¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ò¥Á¥§¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"ãƒ–ãƒ­ãƒƒã‚¯ 0x%X ã‹ã‚‰å§‹ã¾ã‚‹ extent ã‚’ç™»éŒ²ã—ã‚ˆã†ã¨ã—ã¾ã—ãŸãŒã€æ—¢ã«ä»–ã®ã‚‚ã®ãŒã“ã®"
+"ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«å­˜åœ¨ã—ã¾ã™ã€‚ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/hfs/cache.c:213
 #, c-format
@@ -2197,127 +2259,127 @@ msgid ""
 "Trying to move an extent from block Ox%X to block Ox%X, but another one "
 "already exists at this position.  This should not happen!"
 msgstr ""
-"¥Ö¥í¥Ã¥¯ 0x%X ¤«¤é¥Ö¥í¥Ã¥¯ 0x%X¤Ë extent ¤ò°ÜÆ°¤·¤è¤¦¤È¤·¤Ş¤·¤¿¤¬¡¢´û¤ËÂ¾¤Î¤â"
-"¤Î¤¬¤³¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ËÂ¸ºß¤·¤Ş¤¹¡£¤³¤ì¤Ï¤¢¤ê¤¨¤Ş¤»¤ó¡£"
+"ãƒ–ãƒ­ãƒƒã‚¯ 0x%X ã‹ã‚‰ãƒ–ãƒ­ãƒƒã‚¯ 0x%Xã« extent ã‚’ç§»å‹•ã—ã‚ˆã†ã¨ã—ã¾ã—ãŸãŒã€æ—¢ã«ä»–ã®ã‚‚"
+"ã®ãŒã“ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«å­˜åœ¨ã—ã¾ã™ã€‚ã“ã‚Œã¯ã‚ã‚Šãˆã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/file.c:142
 #, c-format
 msgid "Could not update the extent cache for HFS file with CNID %X."
-msgstr "HFS ¥Õ¥¡¥¤¥ë(CNID %X)¤Î extent cache ¤ò¹¹¿·¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿¡£"
+msgstr "HFS ãƒ•ã‚¡ã‚¤ãƒ«(CNID %X)ã® extent cache ã‚’æ›´æ–°ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: libparted/fs/hfs/file.c:179
 #, c-format
 msgid "Trying to read HFS file with CNID %X behind EOF."
-msgstr "EOF ¤ò±Û¤¨¤Æ HFS ¥Õ¥¡¥¤¥ë(CNID %X)¤òÆÉ¤â¤¦¤È¤·¤Ş¤·¤¿¡£"
+msgstr "EOF ã‚’è¶Šãˆã¦ HFS ãƒ•ã‚¡ã‚¤ãƒ«(CNID %X)ã‚’èª­ã‚‚ã†ã¨ã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/file.c:189 libparted/fs/hfs/file.c:219
 #, c-format
 msgid "Could not find sector %lli of HFS file with CNID %X."
-msgstr "¥»¥¯¥¿ %lli (HFS ¥Õ¥¡¥¤¥ë, CNID %X)¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó¡£"
+msgstr "ã‚»ã‚¯ã‚¿ %lli (HFS ãƒ•ã‚¡ã‚¤ãƒ«, CNID %X)ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/file.c:209
 #, c-format
 msgid "Trying to write HFS file with CNID %X behind EOF."
-msgstr "EOF ¤ò±Û¤¨¤Æ HFS ¥Õ¥¡¥¤¥ë(CNID %X)¤Ë½ñ¤­¤³¤â¤¦¤È¤·¤Ş¤·¤¿¡£"
+msgstr "EOF ã‚’è¶Šãˆã¦ HFS ãƒ•ã‚¡ã‚¤ãƒ«(CNID %X)ã«æ›¸ãã“ã‚‚ã†ã¨ã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/file_plus.c:156
 #, c-format
 msgid "Could not update the extent cache for HFS+ file with CNID %X."
-msgstr "HFS+ ¥Õ¥¡¥¤¥ë(CNID %X)¤Î extent cache ¤ò¹¹¿·¤Ç¤­¤Ş¤»¤ó¤Ç¤·¤¿¡£"
+msgstr "HFS+ ãƒ•ã‚¡ã‚¤ãƒ«(CNID %X)ã® extent cache ã‚’æ›´æ–°ã§ãã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: libparted/fs/hfs/file_plus.c:201
 #, c-format
 msgid "Trying to read HFS+ file with CNID %X behind EOF."
-msgstr "EOF ¤ò±Û¤¨¤Æ HFS+ ¥Õ¥¡¥¤¥ë(CNID %X)¤òÆÉ¤â¤¦¤È¤·¤Ş¤·¤¿¡£"
+msgstr "EOF ã‚’è¶Šãˆã¦ HFS+ ãƒ•ã‚¡ã‚¤ãƒ«(CNID %X)ã‚’èª­ã‚‚ã†ã¨ã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/file_plus.c:212 libparted/fs/hfs/file_plus.c:255
 #, c-format
 msgid "Could not find sector %lli of HFS+ file with CNID %X."
-msgstr "¥»¥¯¥¿ %lli (HFS+ ¥Õ¥¡¥¤¥ë, CNID %X)¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó¡£"
+msgstr "ã‚»ã‚¯ã‚¿ %lli (HFS+ ãƒ•ã‚¡ã‚¤ãƒ«, CNID %X)ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/file_plus.c:244
 #, c-format
 msgid "Trying to write HFS+ file with CNID %X behind EOF."
-msgstr "EOF ¤ò±Û¤¨¤Æ HFS+ ¥Õ¥¡¥¤¥ë(CNID %X)¤Ë½ñ¤­¤³¤â¤¦¤È¤·¤Ş¤·¤¿¡£"
+msgstr "EOF ã‚’è¶Šãˆã¦ HFS+ ãƒ•ã‚¡ã‚¤ãƒ«(CNID %X)ã«æ›¸ãã“ã‚‚ã†ã¨ã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/hfs.c:231
 msgid "Sorry, HFS cannot be resized that way yet."
-msgstr "HFS ¤Ï¤Ş¤À¤½¤Î¤è¤¦¤Ë¥ê¥µ¥¤¥º¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "HFS ã¯ã¾ã ãã®ã‚ˆã†ã«ãƒªã‚µã‚¤ã‚ºã§ãã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/hfs.c:261 libparted/fs/hfs/hfs.c:640
 msgid "Data relocation has failed."
-msgstr "¥Ç¡¼¥¿¤ÎºÆÇÛÃÖ¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
+msgstr "ãƒ‡ãƒ¼ã‚¿ã®å†é…ç½®ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/hfs.c:280
 msgid "Data relocation left some data in the end of the volume."
-msgstr "¥Ç¡¼¥¿¤ÎºÆÇÛÃÖ¤ò¤·¤Ş¤·¤¿¤¬¡¢¥Ü¥ê¥å¡¼¥à¤ÎºÇ¸å¤Ë»Ä¤Ã¤¿¥Ç¡¼¥¿¤¬¤¢¤ê¤Ş¤¹¡£"
+msgstr "ãƒ‡ãƒ¼ã‚¿ã®å†é…ç½®ã‚’ã—ã¾ã—ãŸãŒã€ãƒœãƒªãƒ¥ãƒ¼ãƒ ã®æœ€å¾Œã«æ®‹ã£ãŸãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚Šã¾ã™ã€‚"
 
 #: libparted/fs/hfs/hfs.c:319
 msgid "writing HFS Master Directory Block"
-msgstr "HFS ¥Ş¥¹¥¿¥Ç¥£¥ì¥¯¥È¥ê¥Ö¥í¥Ã¥¯¤ò½ñ¤­¤³¤ó¤Ç¤¤¤Ş¤¹"
+msgstr "HFS ãƒã‚¹ã‚¿ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ–ãƒ­ãƒƒã‚¯ã‚’æ›¸ãã“ã‚“ã§ã„ã¾ã™"
 
 #: libparted/fs/hfs/hfs.c:467
 msgid "No valid HFS[+X] signature has been found while opening."
-msgstr "Í­¸ú¤Ê HFS[+X] ¥·¥°¥Í¥Á¥ã¤¬¸«¤Ä¤«¤ê¤Ş¤»¤ó¡£"
+msgstr "æœ‰åŠ¹ãª HFS[+X] ã‚·ã‚°ãƒãƒãƒ£ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/hfs.c:477
 #, c-format
 msgid "Version %d of HFS+ isn't supported."
-msgstr "HFS+ ¤Î¥Ğ¡¼¥¸¥ç¥ó %d ¤Ï¥µ¥İ¡¼¥È¤·¤Æ¤¤¤Ş¤»¤ó¡£"
+msgstr "HFS+ ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ %d ã¯ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/hfs.c:488
 #, c-format
 msgid "Version %d of HFSX isn't supported."
-msgstr "HFSX ¤Î¥Ğ¡¼¥¸¥ç¥ó %d ¤Ï¥µ¥İ¡¼¥È¤·¤Æ¤¤¤Ş¤»¤ó¡£"
+msgstr "HFSX ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ %d ã¯ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/hfs.c:671
 msgid "Data relocation left some data at the end of the volume."
-msgstr "¥Ç¡¼¥¿¤ÎºÆÇÛÃÖ¤ò¤·¤Ş¤·¤¿¤¬¡¢¥Ü¥ê¥å¡¼¥à¤ÎºÇ¸å¤Ë»Ä¤Ã¤¿¥Ç¡¼¥¿¤¬¤¢¤ê¤Ş¤¹¡£"
+msgstr "ãƒ‡ãƒ¼ã‚¿ã®å†é…ç½®ã‚’ã—ã¾ã—ãŸãŒã€ãƒœãƒªãƒ¥ãƒ¼ãƒ ã®æœ€å¾Œã«æ®‹ã£ãŸãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚Šã¾ã™ã€‚"
 
 #: libparted/fs/hfs/hfs.c:719
 msgid "Error while writing the allocation file."
-msgstr "allocation file ¤ò½ñ¤­¤³¤ßÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£"
+msgstr "allocation file ã‚’æ›¸ãã“ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/hfs.c:734
 msgid "Error while writing the compatibility part of the allocation file."
 msgstr ""
-"allocation file ¤Î compatibility part ¤ò½ñ¤­¤³¤ßÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£"
+"allocation file ã® compatibility part ã‚’æ›¸ãã“ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/hfs.c:749
 msgid "writing HFS+ Volume Header"
-msgstr "HFS+ ¥Ü¥ê¥å¡¼¥à¥Ø¥Ã¥À¤ò½ñ¤­¤³¤ßÃæ¤Ç¤¹"
+msgstr "HFS+ ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ˜ãƒƒãƒ€ã‚’æ›¸ãã“ã¿ä¸­ã§ã™"
 
 #: libparted/fs/hfs/hfs.c:849
 msgid "An error occurred while looking for the mandatory bad blocks file."
-msgstr "ÉÔÀµ¥Ö¥í¥Ã¥¯°ìÍ÷¥Õ¥¡¥¤¥ë¤òÃµ¤·¤Æ¤¤¤ë¤È¤­¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Ş¤·¤¿¡£"
+msgstr "ä¸æ­£ãƒ–ãƒ­ãƒƒã‚¯ä¸€è¦§ãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ¢ã—ã¦ã„ã‚‹ã¨ãã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/hfs.c:903
 msgid ""
 "It seems there is an error in the HFS wrapper: the bad blocks file doesn't "
 "contain the embedded HFS+ volume."
 msgstr ""
-"HFS ¥é¥Ã¥Ñ¡¼¤Ë¥¨¥é¡¼¤¬¤¢¤ë¤è¤¦¤Ç¤¹¡£ÉÔÀµ¥Ö¥í¥Ã¥¯°ìÍ÷¥Õ¥¡¥¤¥ë¤ÎÃæ¤Ë¡¢embedded "
-"HFS+ ¥Ü¥ê¥å¡¼¥à¤¬¤¢¤ê¤Ş¤»¤ó¡£"
+"HFS ãƒ©ãƒƒãƒ‘ãƒ¼ã«ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚‹ã‚ˆã†ã§ã™ã€‚ä¸æ­£ãƒ–ãƒ­ãƒƒã‚¯ä¸€è¦§ãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸­ã«ã€embedded "
+"HFS+ ãƒœãƒªãƒ¥ãƒ¼ãƒ ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/hfs.c:939
 msgid "Sorry, HFS+ cannot be resized that way yet."
-msgstr "HFS ¤Ï¤Ş¤À¤½¤Î¤è¤¦¤Ë¥ê¥µ¥¤¥º¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "HFS ã¯ã¾ã ãã®ã‚ˆã†ã«ãƒªã‚µã‚¤ã‚ºã§ãã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/hfs.c:974
 msgid "shrinking embedded HFS+ volume"
-msgstr "embedded HFS+ ¥Ü¥ê¥å¡¼¥à¤ò½Ì¾®¤·¤Æ¤¤¤Ş¤¹"
+msgstr "embedded HFS+ ãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚’ç¸®å°ã—ã¦ã„ã¾ã™"
 
 #: libparted/fs/hfs/hfs.c:990
 msgid "Resizing the HFS+ volume has failed."
-msgstr "HFS+ ¥Ü¥ê¥å¡¼¥à¤Î¥ê¥µ¥¤¥º¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
+msgstr "HFS+ ãƒœãƒªãƒ¥ãƒ¼ãƒ ã®ãƒªã‚µã‚¤ã‚ºã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/hfs.c:997
 msgid "shrinking HFS wrapper"
-msgstr "HFS ¥é¥Ã¥Ñ¡¼¤ò½Ì¾®¤·¤Æ¤¤¤Ş¤¹"
+msgstr "HFS ãƒ©ãƒƒãƒ‘ãƒ¼ã‚’ç¸®å°ã—ã¦ã„ã¾ã™"
 
 #: libparted/fs/hfs/hfs.c:1006
 msgid "Updating the HFS wrapper has failed."
-msgstr "HFS ¥é¥Ã¥Ñ¡¼¤Î¹¹¿·¤Ë¼ºÇÔ¤·¤Ş¤·¤¿¡£"
+msgstr "HFS ãƒ©ãƒƒãƒ‘ãƒ¼ã®æ›´æ–°ã«å¤±æ•—ã—ã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/hfs.c:1108 libparted/fs/hfs/hfs.c:1193
 #, c-format
@@ -2325,75 +2387,75 @@ msgid ""
 "This is not a real %s check.  This is going to extract special low level "
 "files for debugging purposes."
 msgstr ""
-"¤³¤ì¤Ï real %s check ¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£special low level file ¤ò¥Ç¥Ğ¥Ã¥°¤Î¤¿¤á"
-"¤Ë¼è¤ê½Ğ¤·¤Ş¤¹¡£"
+"ã“ã‚Œã¯ real %s check ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚special low level file ã‚’ãƒ‡ãƒãƒƒã‚°ã®ãŸã‚"
+"ã«å–ã‚Šå‡ºã—ã¾ã™ã€‚"
 
 #: libparted/fs/hfs/journal.c:154
 msgid "Bad block list header checksum."
-msgstr "¥Ö¥í¥Ã¥¯¥ê¥¹¥È¥Ø¥Ã¥À¤Î¥Á¥§¥Ã¥¯¥µ¥à¤¬ÉÔÀµ¤Ç¤¹¡£"
+msgstr "ãƒ–ãƒ­ãƒƒã‚¯ãƒªã‚¹ãƒˆãƒ˜ãƒƒãƒ€ã®ãƒã‚§ãƒƒã‚¯ã‚µãƒ ãŒä¸æ­£ã§ã™ã€‚"
 
 #: libparted/fs/hfs/journal.c:167
 #, c-format
 msgid ""
 "Invalid size of a transaction block while replaying the journal (%i bytes)."
 msgstr ""
-"¥¸¥ã¡¼¥Ê¥ë¤Î¥ê¥×¥ì¥¤Ãæ¤Ë¥È¥é¥ó¥¶¥¯¥·¥ç¥ó¥Ö¥í¥Ã¥¯¤Î¥µ¥¤¥º (%i ¥Ğ¥¤¥È) ¤ÎÉÔÀµ¤¬"
-"¤¢¤ê¤Ş¤·¤¿¡£"
+"ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ã®ãƒªãƒ—ãƒ¬ã‚¤ä¸­ã«ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯ã®ã‚µã‚¤ã‚º (%i ãƒã‚¤ãƒˆ) ã®ä¸æ­£ãŒ"
+"ã‚ã‚Šã¾ã—ãŸã€‚"
 
 #: libparted/fs/hfs/journal.c:259
 msgid ""
 "Journal stored outside of the volume are not supported.  Try to desactivate "
 "the journal and run Parted again."
 msgstr ""
-"¥¸¥ã¡¼¥Ê¥ë¤¬ÊÌ¥Ü¥ê¥å¡¼¥à¤Ë¤¢¤ë HFS+ ¤Ï¥µ¥İ¡¼¥È¤·¤Æ¤¤¤Ş¤»¤ó¡£¥¸¥ã¡¼¥Ê¥ë¤òÌµ¸ú"
-"¤Ë¤·¤Æ¤«¤éÁàºî¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£"
+"ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ãŒåˆ¥ãƒœãƒªãƒ¥ãƒ¼ãƒ ã«ã‚ã‚‹ HFS+ ã¯ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ã‚’ç„¡åŠ¹"
+"ã«ã—ã¦ã‹ã‚‰æ“ä½œã‚’è¡Œã£ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/hfs/journal.c:270
 msgid "Journal offset or size is not multiple of the sector size."
-msgstr "¥¸¥ã¡¼¥Ê¥ë¤Î¥ª¥Õ¥»¥Ã¥È¤«¥µ¥¤¥º¤¬¥»¥¯¥¿¥µ¥¤¥º¤ÎÇÜ¿ô¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆã‹ã‚µã‚¤ã‚ºãŒã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚ºã®å€æ•°ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/journal.c:291
 msgid "Incorrect magic values in the journal header."
-msgstr "¥¸¥ã¡¼¥Ê¥ë¥Ø¥Ã¥À¤Î¥Ş¥¸¥Ã¥¯¥Ê¥ó¥Ğ¡¼¤¬ÉÔÀµ¤Ç¤¹¡£"
+msgstr "ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ãƒ˜ãƒƒãƒ€ã®ãƒã‚¸ãƒƒã‚¯ãƒŠãƒ³ãƒãƒ¼ãŒä¸æ­£ã§ã™ã€‚"
 
 #: libparted/fs/hfs/journal.c:301
 msgid "Journal size mismatch between journal info block and journal header."
 msgstr ""
-"¥¸¥ã¡¼¥Ê¥ë¥µ¥¤¥º¤Ë¤Ä¤¤¤Æ¡¢¥¸¥ã¡¼¥Ê¥ë¥¤¥ó¥Õ¥©¥Ö¥í¥Ã¥¯¤È¥¸¥ã¡¼¥Ê¥ë¥Ø¥Ã¥À¤È¤ÇÉÔ"
-"À°¹ç¤¬¤¢¤ê¤Ş¤¹¡£"
+"ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ã‚µã‚¤ã‚ºã«ã¤ã„ã¦ã€ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ã‚¤ãƒ³ãƒ•ã‚©ãƒ–ãƒ­ãƒƒã‚¯ã¨ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ãƒ˜ãƒƒãƒ€ã¨ã§ä¸"
+"æ•´åˆãŒã‚ã‚Šã¾ã™ã€‚"
 
 #: libparted/fs/hfs/journal.c:313
 msgid "Some header fields are not multiple of the sector size."
-msgstr "¥Ø¥Ã¥À¥Õ¥£¡¼¥ë¥É¤ÎÃæ¤Ë¥»¥¯¥¿¥µ¥¤¥º¤ÎÇÜ¿ô¤Ë¤Ê¤Ã¤Æ¤Ê¤¤¤â¤Î¤¬¤¢¤ê¤Ş¤¹¡£"
+msgstr "ãƒ˜ãƒƒãƒ€ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®ä¸­ã«ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚ºã®å€æ•°ã«ãªã£ã¦ãªã„ã‚‚ã®ãŒã‚ã‚Šã¾ã™ã€‚"
 
 #: libparted/fs/hfs/journal.c:322
 msgid ""
 "The sector size stored in the journal is not 512 bytes.  Parted only "
 "supports 512 bytes length sectors."
 msgstr ""
-"¥¸¥ã¡¼¥Ê¥ë¤¬ÊİÂ¸¤µ¤ì¤Æ¤¤¤ë¥»¥¯¥¿¤Î¥µ¥¤¥º¤¬ 512 ¥Ğ¥¤¥È¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£Parted "
-"¤Ç¤Ï 512 ¥Ğ¥¤¥È¤Î¥»¥¯¥¿¤·¤«¥µ¥İ¡¼¥È¤·¤Æ¤¤¤Ş¤»¤ó¡£"
+"ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ãŒä¿å­˜ã•ã‚Œã¦ã„ã‚‹ã‚»ã‚¯ã‚¿ã®ã‚µã‚¤ã‚ºãŒ 512 ãƒã‚¤ãƒˆã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚Parted "
+"ã§ã¯ 512 ãƒã‚¤ãƒˆã®ã‚»ã‚¯ã‚¿ã—ã‹ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/journal.c:334
 msgid "Bad journal checksum."
-msgstr "¥¸¥ã¡¼¥Ê¥ë¤Î¥Á¥§¥Ã¥¯¥µ¥à¤¬ÉÔÀµ¤Ç¤¹¡£"
+msgstr "ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ã®ãƒã‚§ãƒƒã‚¯ã‚µãƒ ãŒä¸æ­£ã§ã™ã€‚"
 
 #: libparted/fs/hfs/journal.c:352
 msgid ""
 "The journal is not empty.  Parted must replay the transactions before "
 "opening the file system.  This will modify the file system."
 msgstr ""
-"¥¸¥ã¡¼¥Ê¥ë¤¬¶õ¤Ç¤Ï¤¢¤ê¤Ş¤»¤ó¡£Parted ¤Ï¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ò¥ª¡¼¥×¥ó¤¹¤ëÁ°¤Ë¥È¥é"
-"¥ó¥¶¥¯¥·¥ç¥ó¤Î¥ê¥×¥ì¥¤¤ò¤·¤Ê¤±¤ì¤Ğ¤Ê¤ê¤Ş¤»¤ó¡£¥ê¥×¥ì¥¤¤¹¤ë¤È¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à"
-"¤ÏÊÑ¹¹¤µ¤ì¤Ş¤¹¡£"
+"ã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ãŒç©ºã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚Parted ã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’ã‚ªãƒ¼ãƒ—ãƒ³ã™ã‚‹å‰ã«ãƒˆãƒ©"
+"ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã®ãƒªãƒ—ãƒ¬ã‚¤ã‚’ã—ãªã‘ã‚Œã°ãªã‚Šã¾ã›ã‚“ã€‚ãƒªãƒ—ãƒ¬ã‚¤ã™ã‚‹ã¨ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ "
+"ã¯å¤‰æ›´ã•ã‚Œã¾ã™ã€‚"
 
 #: libparted/fs/hfs/journal.c:380
 msgid ""
 "The volume header or the master directory block has changed while replaying "
 "the journal.  You should restart Parted."
 msgstr ""
-"¥Ü¥ê¥å¡¼¥à¥Ø¥Ã¥À¤«¥Ş¥¹¥¿¡¼¥Ç¥£¥ì¥¯¥È¥ê¥Ö¥í¥Ã¥¯¤¬¥¸¥ã¡¼¥Ê¥ë¤Î¥ê¥×¥ì¥¤Ãæ¤ËÊÑ¹¹"
-"¤µ¤ì¤Ş¤·¤¿¡£Parted ¤òºÆµ¯Æ°¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"ãƒœãƒªãƒ¥ãƒ¼ãƒ ãƒ˜ãƒƒãƒ€ã‹ãƒã‚¹ã‚¿ãƒ¼ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ–ãƒ­ãƒƒã‚¯ãŒã‚¸ãƒ£ãƒ¼ãƒŠãƒ«ã®ãƒªãƒ—ãƒ¬ã‚¤ä¸­ã«å¤‰æ›´"
+"ã•ã‚Œã¾ã—ãŸã€‚Parted ã‚’å†èµ·å‹•ã—ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/hfs/probe.c:50
 #, c-format
@@ -2401,142 +2463,151 @@ msgid ""
 "Parted can't use HFS file systems on disks with a sector size not equal to %"
 "d bytes."
 msgstr ""
-"Parted ¤Ï¡¢¥»¥¯¥¿¥µ¥¤¥º¤¬ %d ¥Ğ¥¤¥È¤Ç¤Ê¤¤¥Ç¥£¥¹¥¯¤Ç¤Ï HFS ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ò"
-"»È¤¨¤Ş¤»¤ó¡£"
+"Parted ã¯ã€ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚ºãŒ %d ãƒã‚¤ãƒˆã§ãªã„ãƒ‡ã‚£ã‚¹ã‚¯ã§ã¯ HFS ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’"
+"ä½¿ãˆã¾ã›ã‚“ã€‚"
 
 #: libparted/fs/hfs/reloc.c:150 libparted/fs/hfs/reloc_plus.c:154
 msgid "An extent has not been relocated."
-msgstr "extent ¤ÏºÆÇÛÃÖ¤µ¤ì¤Ş¤»¤ó¤Ç¤·¤¿¡£"
+msgstr "extent ã¯å†é…ç½®ã•ã‚Œã¾ã›ã‚“ã§ã—ãŸã€‚"
 
 #: libparted/fs/hfs/reloc.c:250 libparted/fs/hfs/reloc_plus.c:306
 msgid ""
 "A reference to an extent comes from a place it should not.  You should check "
 "the file system!"
 msgstr ""
-"extent ¤Ø¤Î»²¾È¤Ï¤¢¤ê¤¨¤Ê¤¤¤È¤³¤í¤«¤é¤Ê¤µ¤ì¤Æ¤¤¤Ş¤¹¡£¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ò¥Á¥§¥Ã"
-"¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"extent ã¸ã®å‚ç…§ã¯ã‚ã‚Šãˆãªã„ã¨ã“ã‚ã‹ã‚‰ãªã•ã‚Œã¦ã„ã¾ã™ã€‚ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’ãƒã‚§ãƒƒ"
+"ã‚¯ã—ã¦ãã ã•ã„ã€‚"
 
 #: libparted/fs/hfs/reloc.c:380
 msgid "This HFS volume has no catalog file.  This is very unusual!"
 msgstr ""
-"¤³¤Î HFS ¥Ü¥ê¥å¡¼¥à¤Ë¤Ï catalog file ¤¬¤¢¤ê¤Ş¤»¤ó¡£¤³¤ì¤Ï¤¢¤Ş¤ê¤¢¤ê¤¨¤Ê¤¤¤³¤È"
-"¤Ç¤¹¡£"
+"ã“ã® HFS ãƒœãƒªãƒ¥ãƒ¼ãƒ ã«ã¯ catalog file ãŒã‚ã‚Šã¾ã›ã‚“ã€‚ã“ã‚Œã¯ã‚ã¾ã‚Šã‚ã‚Šãˆãªã„ã“ã¨"
+"ã§ã™ã€‚"
 
 #: libparted/fs/hfs/reloc.c:474
 msgid "This HFS volume has no extents overflow file.  This is quite unusual!"
 msgstr ""
-"¤³¤Î HFS ¥Ü¥ê¥å¡¼¥à¤Ë¤Ï extents overflow file ¤¬¤¢¤ê¤Ş¤»¤ó¡£¤³¤ì¤Ï¤Û¤È¤ó¤É¤¢"
-"¤ê¤¨¤Ê¤¤¤³¤È¤Ç¤¹¡£"
+"ã“ã® HFS ãƒœãƒªãƒ¥ãƒ¼ãƒ ã«ã¯ extents overflow file ãŒã‚ã‚Šã¾ã›ã‚“ã€‚ã“ã‚Œã¯ã»ã¨ã‚“ã©ã‚"
+"ã‚Šãˆãªã„ã“ã¨ã§ã™ã€‚"
 
-#: libparted/fs/hfs/reloc.c:516 libparted/fs/hfs/reloc_plus.c:667
+#: libparted/fs/hfs/reloc.c:516 libparted/fs/hfs/reloc_plus.c:665
 msgid ""
 "The extents overflow file should not contain its own extents!  You should "
 "check the file system."
 msgstr ""
-"extents overflow file ¤Ï¼«Ê¬¼«¿È¤Î extent ¤ò´Ş¤ó¤Ç¤Ï¤¤¤±¤Ş¤»¤ó¡£¥Õ¥¡¥¤¥ë¥·¥¹"
-"¥Æ¥à¤ò¥Á¥§¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"extents overflow file ã¯è‡ªåˆ†è‡ªèº«ã® extent ã‚’å«ã‚“ã§ã¯ã„ã‘ã¾ã›ã‚“ã€‚ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹"
+"ãƒ†ãƒ ã‚’ãƒã‚§ãƒƒã‚¯ã—ã¦ãã ã•ã„ã€‚"
 
-#: libparted/fs/hfs/reloc.c:573 libparted/fs/hfs/reloc_plus.c:846
+#: libparted/fs/hfs/reloc.c:573 libparted/fs/hfs/reloc_plus.c:843
 msgid "Could not cache the file system in memory."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ò¥á¥â¥ê¤Ë¥­¥ã¥Ã¥·¥å¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’ãƒ¡ãƒ¢ãƒªã«ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã§ãã¾ã›ã‚“ã€‚"
 
-#: libparted/fs/hfs/reloc.c:634 libparted/fs/hfs/reloc_plus.c:907
+#: libparted/fs/hfs/reloc.c:634 libparted/fs/hfs/reloc_plus.c:904
 msgid "Bad blocks list could not be loaded."
-msgstr "ÉÔÀµ¥Ö¥í¥Ã¥¯°ìÍ÷¥Õ¥¡¥¤¥ë¤¬ÆÉ¤ß¤³¤á¤Ş¤»¤ó¤Ç¤·¤¿¡£"
+msgstr "ä¸æ­£ãƒ–ãƒ­ãƒƒã‚¯ä¸€è¦§ãƒ•ã‚¡ã‚¤ãƒ«ãŒèª­ã¿ã“ã‚ã¾ã›ã‚“ã§ã—ãŸã€‚"
 
-#: libparted/fs/hfs/reloc.c:648 libparted/fs/hfs/reloc_plus.c:923
+#: libparted/fs/hfs/reloc.c:648 libparted/fs/hfs/reloc_plus.c:920
 msgid "An error occurred during extent relocation."
-msgstr "extent ¤ÎºÆÇÛÃÖÃæ¤Ë¥¨¥é¡¼¤ÏÈ¯À¸¤·¤Ş¤·¤¿¡£"
+msgstr "extent ã®å†é…ç½®ä¸­ã«ã‚¨ãƒ©ãƒ¼ã¯ç™ºç”Ÿã—ã¾ã—ãŸã€‚"
 
-#: libparted/fs/hfs/reloc_plus.c:494
+#: libparted/fs/hfs/reloc_plus.c:493
 msgid "This HFS+ volume has no catalog file.  This is very unusual!"
 msgstr ""
-"¤³¤Î HFS+ ¥Ü¥ê¥å¡¼¥à¤Ë¤Ï catalog file ¤¬¤¢¤ê¤Ş¤»¤ó¡£¤³¤ì¤Ï¤¢¤Ş¤ê¤¢¤ê¤¨¤Ê¤¤¤³"
-"¤È¤Ç¤¹¡£"
+"ã“ã® HFS+ ãƒœãƒªãƒ¥ãƒ¼ãƒ ã«ã¯ catalog file ãŒã‚ã‚Šã¾ã›ã‚“ã€‚ã“ã‚Œã¯ã‚ã¾ã‚Šã‚ã‚Šãˆãªã„ã“"
+"ã¨ã§ã™ã€‚"
 
-#: libparted/fs/hfs/reloc_plus.c:618
+#: libparted/fs/hfs/reloc_plus.c:616
 msgid "This HFS+ volume has no extents overflow file.  This is quite unusual!"
 msgstr ""
-"¤³¤Î HFS+ ¥Ü¥ê¥å¡¼¥à¤Ë¤Ï extents overflow file ¤¬¤¢¤ê¤Ş¤»¤ó¡£¤³¤ì¤Ï¤Û¤È¤ó¤É¤¢"
-"¤ê¤¨¤Ê¤¤¤³¤È¤Ç¤¹¡£"
+"ã“ã® HFS+ ãƒœãƒªãƒ¥ãƒ¼ãƒ ã«ã¯ extents overflow file ãŒã‚ã‚Šã¾ã›ã‚“ã€‚ã“ã‚Œã¯ã»ã¨ã‚“ã©ã‚"
+"ã‚Šãˆãªã„ã“ã¨ã§ã™ã€‚"
 
-#: parted/parted.c:95
+#: parted/parted.c:122
 msgid "displays this help message"
-msgstr "¤³¤Î¥Ø¥ë¥×¤òÉ½¼¨¤¹¤ë"
+msgstr "ã“ã®ãƒ˜ãƒ«ãƒ—ã‚’è¡¨ç¤ºã™ã‚‹"
 
-#: parted/parted.c:96
+#: parted/parted.c:123
 msgid "lists partition layout on all block devices"
-msgstr "Á´¥Ö¥í¥Ã¥¯¥Ç¥Ğ¥¤¥¹¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥ì¥¤¥¢¥¦¥È¤òÉ½¼¨"
+msgstr "å…¨ãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒã‚¤ã‚¹ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’è¡¨ç¤º"
 
-#: parted/parted.c:97
+#: parted/parted.c:124
 msgid "displays machine parseable output"
-msgstr "µ¡³£¤¬²ò¼á²ÄÇ½¤Ê½ĞÎÏ¤ò¤¹¤ë"
+msgstr "æ©Ÿæ¢°ãŒè§£é‡ˆå¯èƒ½ãªå‡ºåŠ›ã‚’ã™ã‚‹"
 
-#: parted/parted.c:98
+#: parted/parted.c:125
 msgid "never prompts for user intervention"
-msgstr "¥æ¡¼¥¶¤Ë²ğÆş¤µ¤»¤Ê¤¤"
+msgstr "ãƒ¦ãƒ¼ã‚¶ã«ä»‹å…¥ã•ã›ãªã„"
 
-#: parted/parted.c:99
+#: parted/parted.c:126
 msgid "displays the version"
-msgstr "¥Ğ¡¼¥¸¥ç¥ó¤òÉ½¼¨¤¹¤ë"
+msgstr "ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’è¡¨ç¤ºã™ã‚‹"
 
-#: parted/parted.c:110
+#: parted/parted.c:127
+#, fuzzy
+msgid "alignment for new partitions"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ ã§ãã¾ã›ã‚“ã€‚"
+
+#: parted/parted.c:139
 msgid ""
 "NUMBER is the partition number used by Linux.  On MS-DOS disk labels, the "
 "primary partitions number from 1 to 4, logical partitions from 5 onwards.\n"
 msgstr ""
-"NUMBER ¤Ï Linux ¥«¡¼¥Í¥ë¤Ë¤è¤Ã¤Æ¥Ñ¡¼¥Æ¥£¥·¥ç¥óÈÖ¹æ¤È¤·¤Æ»È¤ï¤ì¤Ş¤¹¡£MS-DOS "
-"¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Ç¤Ï¡¢´ğËÜ¥Ñ¡¼¥Æ¥£¥·¥ç¥óÈÖ¹æ¤Ï 1 ¤«¤é 4 ¤Ş¤Ç¤Ç¡¢ÏÀÍı¥Ñ¡¼¥Æ¥£"
-"¥·¥ç¥ó¤Ï 5 °Ê¹ß¤È¤Ê¤ê¤Ş¤¹¡£\n"
+"NUMBER ã¯ Linux ã‚«ãƒ¼ãƒãƒ«ã«ã‚ˆã£ã¦ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ç•ªå·ã¨ã—ã¦ä½¿ã‚ã‚Œã¾ã™ã€‚MS-DOS "
+"ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã§ã¯ã€åŸºæœ¬ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ç•ªå·ã¯ 1 ã‹ã‚‰ 4 ã¾ã§ã§ã€è«–ç†ãƒ‘ãƒ¼ãƒ†ã‚£"
+"ã‚·ãƒ§ãƒ³ã¯ 5 ä»¥é™ã¨ãªã‚Šã¾ã™ã€‚\n"
 
-#: parted/parted.c:113
+#: parted/parted.c:142
 msgid "LABEL-TYPE is one of: "
-msgstr "¥é¥Ù¥ë¤Î¼ïÎà¤Ï¼¡¤Î¤¦¤Á¤«¤éÁª¤Ó¤Ş¤¹: "
+msgstr "ãƒ©ãƒ™ãƒ«ã®ç¨®é¡ã¯æ¬¡ã®ã†ã¡ã‹ã‚‰é¸ã³ã¾ã™: "
 
-#: parted/parted.c:114
+#: parted/parted.c:143
 msgid "FLAG is one of: "
-msgstr "¥Õ¥é¥°¤Ï¼¡¤Î¤¦¤Á¤«¤éÁª¤Ó¤Ş¤¹: "
+msgstr "ãƒ•ãƒ©ã‚°ã¯æ¬¡ã®ã†ã¡ã‹ã‚‰é¸ã³ã¾ã™: "
 
-#: parted/parted.c:115
+#: parted/parted.c:144
 msgid "UNIT is one of: "
-msgstr "UNIT ¤Ï¼¡¤Î¤¦¤Á¤«¤éÁª¤Ó¤Ş¤¹: "
+msgstr "UNIT ã¯æ¬¡ã®ã†ã¡ã‹ã‚‰é¸ã³ã¾ã™: "
 
-#: parted/parted.c:116
+#: parted/parted.c:145
+msgid "desired alignment: minimum or optimal"
+msgstr ""
+
+#: parted/parted.c:146
 msgid "PART-TYPE is one of: primary, logical, extended\n"
 msgstr ""
-"¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¼ïÎà¤Ï¼¡¤Î¤¦¤Á¤Î¤É¤ì¤«¤È¤Ê¤ê¤Ş¤¹: ¥×¥é¥¤¥Ş¥ê¡¢ÏÀÍı¡¢³ÈÄ¥\n"
+"ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ç¨®é¡ã¯æ¬¡ã®ã†ã¡ã®ã©ã‚Œã‹ã¨ãªã‚Šã¾ã™: ãƒ—ãƒ©ã‚¤ãƒãƒªã€è«–ç†ã€æ‹¡å¼µ\n"
 
-#: parted/parted.c:118
+#: parted/parted.c:148
 msgid "FS-TYPE is one of: "
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¼ïÎà¤Ï¼¡¤Î¤¦¤Á¤«¤éÁª¤Ó¤Ş¤¹: "
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ç¨®é¡ã¯æ¬¡ã®ã†ã¡ã‹ã‚‰é¸ã³ã¾ã™: "
 
-#: parted/parted.c:119
+#: parted/parted.c:149
 msgid ""
 "START and END are disk locations, such as 4GB or 10%.  Negative values count "
 "from the end of the disk.  For example, -1s specifies exactly the last "
 "sector.\n"
 msgstr ""
-"START ¤È END ¤Ï¡¢¥Ç¥£¥¹¥¯¾å¤Î°ÌÃÖ¤ò 4G ¤ä 10% ¤Ê¤É¤ÇÉ½¤ï¤·¤Ş¤¹¡£Éé¤ÎÃÍ¤Ï¥Ç¥£"
-"¥¹¥¯¤Î½ª¤ï¤ê¤«¤é¤ÎÃÍ¤Ë¤Ê¤ê¤Ş¤¹¡£Îã¤¨¤Ğ¡¢-1s ¤Ï¡¢ºÇ¸å¤Î¥»¥¯¥¿¤ò»Ø¤·¤Ş¤¹¡£\n"
+"START ã¨ END ã¯ã€ãƒ‡ã‚£ã‚¹ã‚¯ä¸Šã®ä½ç½®ã‚’ 4G ã‚„ 10% ãªã©ã§è¡¨ã‚ã—ã¾ã™ã€‚è² ã®å€¤ã¯ãƒ‡ã‚£"
+"ã‚¹ã‚¯ã®çµ‚ã‚ã‚Šã‹ã‚‰ã®å€¤ã«ãªã‚Šã¾ã™ã€‚ä¾‹ãˆã°ã€-1s ã¯ã€æœ€å¾Œã®ã‚»ã‚¯ã‚¿ã‚’æŒ‡ã—ã¾ã™ã€‚\n"
 
-#: parted/parted.c:122
+#: parted/parted.c:152
 msgid "STATE is one of: on, off\n"
-msgstr "¾õÂÖ¤Ï on ¤« off ¤Î¤É¤Á¤é¤«\n"
+msgstr "çŠ¶æ…‹ã¯ on ã‹ off ã®ã©ã¡ã‚‰ã‹\n"
 
-#: parted/parted.c:123
+#: parted/parted.c:153
 msgid "DEVICE is usually /dev/hda or /dev/sda\n"
-msgstr "¥Ç¥Ğ¥¤¥¹¤Ï¤¿¤¤¤Æ¤¤ /dev/hda ¤« /dev/sda ¤Ç¤¹¡£\n"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹ã¯ãŸã„ã¦ã„ /dev/hda ã‹ /dev/sda ã§ã™ã€‚\n"
 
-#: parted/parted.c:124
+#: parted/parted.c:154
 msgid "NAME is any word you want\n"
-msgstr "Ì¾Á°¤ÎÉôÊ¬¤ÏÇ¤°Õ¤ÎÃ±¸ì\n"
+msgstr "åå‰ã®éƒ¨åˆ†ã¯ä»»æ„ã®å˜èª\n"
 
-#: parted/parted.c:125
+#: parted/parted.c:155
 msgid "The partition must have one of the following FS-TYPEs: "
 msgstr ""
-"¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ï°Ê²¼¤Î¤¦¤Á¤Î¤¤¤º¤ì¤«¤Ç¤Ê¤±¤ì¤Ğ¤Ê¤ê¤Ş¤»¤ó: "
+"ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯ä»¥ä¸‹ã®ã†ã¡ã®ã„ãšã‚Œã‹ã§ãªã‘ã‚Œã°ãªã‚Šã¾ã›ã‚“: "
 
-#: parted/parted.c:129
+#: parted/parted.c:159
 msgid ""
 "Copyright (C) 1998 - 2006 Free Software Foundation, Inc.\n"
 "This program is free software, covered by the GNU General Public License.\n"
@@ -2548,522 +2619,554 @@ msgid ""
 "\n"
 msgstr ""
 "Copyright (C) 1998 - 2006 Free Software Foundation, Inc.\n"
-"¤³¤Î¥×¥í¥°¥é¥à¤Ï GPL ¤Ë´ğ¤Å¤¤¤¿¥Õ¥ê¡¼¥½¥Õ¥È¥¦¥§¥¢¤Ç¤¹¡£\n"
-"ÆüËÜ¸ìÌõ¤Ë´Ø¤·¤Æ¤Ï Hiroshi Takekawa <sian@big.or.jp> ¤Ş¤Ç¤ª¤Í¤¬¤¤¤·¤Ş¤¹¡£\n"
+"ã“ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ GPL ã«åŸºã¥ã„ãŸãƒ•ãƒªãƒ¼ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢ã§ã™ã€‚\n"
+"æ—¥æœ¬èªè¨³ã«é–¢ã—ã¦ã¯ Hiroshi Takekawa <sian@big.or.jp> ã¾ã§ãŠã­ãŒã„ã—ã¾ã™ã€‚\n"
 "\n"
-"ËÜ¥×¥í¥°¥é¥à¤ÏÍ­ÍÑ¤È¤Ï»×¤¤¤Ş¤¹¤¬¡¢ÈÒÉÛ¤Ë¤¢¤¿¤Ã¤Æ¤Ï¡¢»Ô¾ìÀ­µÚ¤ÓÆÃÄêÌÜÅªÅ¬¹çÀ­"
-"¤Ë¤Ä¤¤¤Æ¤Î°ÅÌÛ¤ÎÊİ¾Ú¤ò´Ş¤á¤Æ¡¢\n"
-"¤¤¤«¤Ê¤ëÊİ¾Ú¤â¹Ô¤Ê¤¤¤Ş¤»¤ó¡£¾ÜºÙ¤Ë¤Ä¤¤¤Æ¤ÏGNU °ìÈÌ¸øÍ­»ÈÍÑµöÂú½ñ¤ò¤ªÆÉ¤ß¤¯¤À"
-"¤µ¤¤¡£\n"
+"æœ¬ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯æœ‰ç”¨ã¨ã¯æ€ã„ã¾ã™ãŒã€é ’å¸ƒã«ã‚ãŸã£ã¦ã¯ã€\n"
+"å¸‚å ´æ€§åŠã³ç‰¹å®šç›®çš„é©åˆæ€§ã«ã¤ã„ã¦ã®æš—é»™ã®ä¿è¨¼ã‚’å«ã‚ã¦ã€\n"
+"ã„ã‹ãªã‚‹ä¿è¨¼ã‚‚è¡Œãªã„ã¾ã›ã‚“ã€‚è©³ç´°ã«ã¤ã„ã¦ã¯GNU ä¸€èˆ¬å…¬æœ‰ä½¿ç”¨è¨±è«¾æ›¸ã‚’ãŠèª­ã¿ãã "
+"ã•ã„ã€‚\n"
 
-#: parted/parted.c:175
+#: parted/parted.c:205
 #, c-format
 msgid "%0.f%%\t(time left %.2d:%.2d)"
-msgstr "%0.f%%\t(»Ä¤ê»ş´Ö %.2d:%.2d)"
+msgstr "%0.f%%\t(æ®‹ã‚Šæ™‚é–“ %.2d:%.2d)"
 
-#: parted/parted.c:194
+#: parted/parted.c:224
 #, c-format
 msgid ""
 "Partition %s is being used. You must unmount it before you modify it with "
 "Parted."
 msgstr ""
-"¥Ñ¡¼¥Æ¥£¥·¥ç¥ó %s ¤Ï»ÈÍÑÃæ¤Ç¤¹¡£Parted ¤ÇÁàºî¤¹¤ëÁ°¤Ë unmount ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+"ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ %s ã¯ä½¿ç”¨ä¸­ã§ã™ã€‚Parted ã§æ“ä½œã™ã‚‹å‰ã« unmount ã—ã¦ãã ã•ã„ã€‚"
 
-#: parted/parted.c:212
+#: parted/parted.c:242
 #, c-format
 msgid "Partition(s) on %s are being used."
-msgstr "%s ¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬»ÈÍÑÃæ¤Ç¤¹¡£"
+msgstr "%s ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒä½¿ç”¨ä¸­ã§ã™ã€‚"
 
-#: parted/parted.c:224
+#: parted/parted.c:254
 msgid ""
 "The existing file system will be destroyed and all data on the partition "
 "will be lost. Do you want to continue?"
 msgstr ""
-"¤¤¤ŞÂ¸ºß¤·¤Æ¤¤¤ë¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ÏÇË²õ¤µ¤ì¡¢¤³¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ÎÁ´¥Ç¡¼¥¿¤¬¼º"
-"¤ï¤ì¤Ş¤¹¡£Â³¹Ô¤·¤Ş¤¹¤«¡©"
+"ã„ã¾å­˜åœ¨ã—ã¦ã„ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯ç ´å£Šã•ã‚Œã€ã“ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®å…¨ãƒ‡ãƒ¼ã‚¿ãŒå¤±"
+"ã‚ã‚Œã¾ã™ã€‚ç¶šè¡Œã—ã¾ã™ã‹ï¼Ÿ"
 
-#: parted/parted.c:236
+#: parted/parted.c:266
 #, c-format
 msgid ""
 "The existing disk label on %s will be destroyed and all data on this disk "
 "will be lost. Do you want to continue?"
 msgstr ""
-"¤¤¤ŞÂ¸ºß¤·¤Æ¤¤¤ë %s ¤Î¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤ÏÇË²õ¤µ¤ì¡¢¤³¤Î¥Ç¥£¥¹¥¯¤ÎÁ´¥Ç¡¼¥¿¤¬¼º¤ï"
-"¤ì¤Ş¤¹¡£Â³¹Ô¤·¤Ş¤¹¤«¡©"
+"ã„ã¾å­˜åœ¨ã—ã¦ã„ã‚‹ %s ã®ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã¯ç ´å£Šã•ã‚Œã€ã“ã®ãƒ‡ã‚£ã‚¹ã‚¯ã®å…¨ãƒ‡ãƒ¼ã‚¿ãŒå¤±ã‚"
+"ã‚Œã¾ã™ã€‚ç¶šè¡Œã—ã¾ã™ã‹ï¼Ÿ"
 
-#: parted/parted.c:459 parted/parted.c:651 parted/parted.c:1051
-#: parted/parted.c:1135 parted/parted.c:1792 parted/parted.c:1873
-#: parted/parted.c:1921
-msgid "Partition number?"
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥óÈÖ¹æ?"
-
-#: parted/parted.c:501
-msgid "Source device?"
-msgstr "Å¾Á÷¸µ¤Î¥Ç¥Ğ¥¤¥¹?"
-
-#: parted/parted.c:505
-msgid "Source partition number?"
-msgstr "Å¾Á÷¸µ¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥óÈÖ¹æ?"
-
-#: parted/parted.c:510
-msgid "Can't copy an extended partition."
-msgstr "³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ï¥³¥Ô¡¼¤Ç¤­¤Ş¤»¤ó¡£"
-
-#: parted/parted.c:516
-msgid "Destination partition number?"
-msgstr "Å¾Á÷Àè¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥óÈÖ¹æ?"
-
-#: parted/parted.c:605
-msgid "New disk label type?"
-msgstr "¿·¤·¤¤¥Ç¥£¥¹¥¯¥é¥Ù¥ë?"
-
-#: parted/parted.c:655 parted/parted.c:732 parted/parted.c:905
-msgid "File system type?"
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¼ïÎà?"
-
-#: parted/parted.c:706 parted/parted.c:888
-msgid "Partition type?"
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¼ïÎà?"
-
-#: parted/parted.c:724 parted/parted.c:895 parted/parted.c:1138
-msgid "Partition name?"
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ÎÌ¾Á°?"
-
-#: parted/parted.c:738 parted/parted.c:907 parted/parted.c:1066
-#: parted/parted.c:1746 parted/parted.c:1801
-msgid "Start?"
-msgstr "³«»Ï?"
-
-#: parted/parted.c:740 parted/parted.c:910 parted/parted.c:1069
-#: parted/parted.c:1748 parted/parted.c:1803
-msgid "End?"
-msgstr "½ªÎ»?"
-
-#: parted/parted.c:791 parted/parted.c:956
+#: parted/parted.c:484
 #, fuzzy, c-format
+msgid ""
+"WARNING: you are attempting to use %s to operate on (%s) a file system.\n"
+"%s's file system manipulation code is not as robust as what you'll find in\n"
+"dedicated, file-system-specific packages like e2fsprogs.  We recommend\n"
+"you use %s only to manipulate partition tables, whenever possible.\n"
+"Support for performing most operations on most types of file systems\n"
+"will be removed in an upcoming release.\n"
+msgstr ""
+"è­¦å‘Š: ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã«å¯¾ã—ã¦ %s ã«ã‚ˆã‚‹æ“ä½œ(%s)ã‚’è¡ŒãŠã†ã¨ã—ã¦ã„ã¾ã™ã€‚\n"
+"%s ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ æ“ä½œã‚³ãƒ¼ãƒ‰ã¯ã€e2fsprogs ã®ã‚ˆã†ãªãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ å°‚\n"
+"ç”¨ã®ã‚‚ã®ã»ã©å …å›ºã«ä½œã‚‰ã‚Œã¦ã„ã¾ã›ã‚“ã€‚å¯èƒ½ãªã‹ãã‚Š %s ã‚’ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼\n"
+"ãƒ–ãƒ«ã®æ“ä½œã ã‘ã«ç”¨ã„ã‚‹ã“ã¨ã‚’ãŠå‹§ã‚ã—ã¾ã™ã€‚ã»ã¨ã‚“ã©ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã«\n"
+"å¯¾ã™ã‚‹ã»ã¨ã‚“ã©ã®æ“ä½œã¯ä»Šå¾Œã®ãƒªãƒªãƒ¼ã‚¹ã§å‰Šé™¤ã•ã‚Œã‚‹äºˆå®šã§ã™ã€‚\n"
+
+#: parted/parted.c:505 parted/parted.c:699 parted/parted.c:1121
+#: parted/parted.c:1205 parted/parted.c:1866 parted/parted.c:1947
+#: parted/parted.c:2018 parted/parted.c:2038
+msgid "Partition number?"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ç•ªå·?"
+
+#: parted/parted.c:548
+msgid "Source device?"
+msgstr "è»¢é€å…ƒã®ãƒ‡ãƒã‚¤ã‚¹?"
+
+#: parted/parted.c:552
+msgid "Source partition number?"
+msgstr "è»¢é€å…ƒã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ç•ªå·?"
+
+#: parted/parted.c:557
+msgid "Can't copy an extended partition."
+msgstr "æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¯ã‚³ãƒ”ãƒ¼ã§ãã¾ã›ã‚“ã€‚"
+
+#: parted/parted.c:563
+msgid "Destination partition number?"
+msgstr "è»¢é€å…ˆã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ç•ªå·?"
+
+#: parted/parted.c:652
+msgid "New disk label type?"
+msgstr "æ–°ã—ã„ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«?"
+
+#: parted/parted.c:703 parted/parted.c:785 parted/parted.c:972
+msgid "File system type?"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ç¨®é¡?"
+
+#: parted/parted.c:759 parted/parted.c:955
+msgid "Partition type?"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ç¨®é¡?"
+
+#: parted/parted.c:777 parted/parted.c:962 parted/parted.c:1208
+msgid "Partition name?"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®åå‰?"
+
+#: parted/parted.c:791 parted/parted.c:974 parted/parted.c:1136
+#: parted/parted.c:1819 parted/parted.c:1875
+msgid "Start?"
+msgstr "é–‹å§‹?"
+
+#: parted/parted.c:793 parted/parted.c:977 parted/parted.c:1139
+#: parted/parted.c:1821 parted/parted.c:1877
+msgid "End?"
+msgstr "çµ‚äº†?"
+
+#: parted/parted.c:854 parted/parted.c:1023
+#, c-format
 msgid ""
 "You requested a partition from %s to %s.\n"
 "The closest location we can manage is %s to %s.%s"
 msgstr ""
-"%s ¤«¤é %s ¤Ş¤Ç¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò»ØÄê¤µ¤ì¤Ş¤·¤¿¡£\n"
-"²ÄÇ½¤ÊÃæ¤ÇºÇ¤â¶á¤¤¤â¤Î¤Ï %s ¤«¤é %s ¤Ş¤Ç¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¤Ê¤ê¤Ş¤¹¡£¤½¤ì¤Ç¤â"
-"¤«¤Ş¤¤¤Ş¤»¤ó¤«¡©"
+"%s ã‹ã‚‰ %s ã¾ã§ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’æŒ‡å®šã•ã‚Œã¾ã—ãŸã€‚\n"
+"å¯èƒ½ãªä¸­ã§æœ€ã‚‚è¿‘ã„ã‚‚ã®ã¯ %s ã‹ã‚‰ %s ã«ãªã‚Šã¾ã™ã€‚%s"
 
-#: parted/parted.c:796 parted/parted.c:961
+#: parted/parted.c:859 parted/parted.c:1028
 msgid ""
 "\n"
 "Is this still acceptable to you?"
 msgstr ""
+"\n"
+"ãã‚Œã§ã‚‚ã‹ã¾ã„ã¾ã›ã‚“ã‹ï¼Ÿ"
 
-#: parted/parted.c:900
+#: parted/parted.c:967
 msgid "An extended partition cannot hold a file system.  Did you want mkpart?"
 msgstr ""
-"³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¤Ï¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ïºî¤ì¤Ş¤»¤ó¡£mkpart ¤ò¤·¤¿¤¤¤Î¤Ç¤¹¤«¡©"
+"æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«ã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯ä½œã‚Œã¾ã›ã‚“ã€‚mkpart ã‚’ã—ãŸã„ã®ã§ã™ã‹ï¼Ÿ"
 
-#: parted/parted.c:1057
+#: parted/parted.c:1127
 msgid "Can't move an extended partition."
-msgstr "³ÈÄ¥¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ï°ÜÆ°¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "æ‹¡å¼µãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¯ç§»å‹•ã§ãã¾ã›ã‚“ã€‚"
 
-#: parted/parted.c:1086
+#: parted/parted.c:1156
 msgid "Can't move a partition onto itself.  Try using resize, perhaps?"
-msgstr "¼«Ê¬¼«¿È¤Î¾å¤Ë¤Ï°ÜÆ°¤Ç¤­¤Ş¤»¤ó¡£¥ê¥µ¥¤¥º¤·¤è¤¦¤È¤·¤Æ¤ë¤Î¤Ç¤¹¤«¡©"
+msgstr "è‡ªåˆ†è‡ªèº«ã®ä¸Šã«ã¯ç§»å‹•ã§ãã¾ã›ã‚“ã€‚ãƒªã‚µã‚¤ã‚ºã—ã‚ˆã†ã¨ã—ã¦ã‚‹ã®ã§ã™ã‹ï¼Ÿ"
 
-#: parted/parted.c:1234
+#: parted/parted.c:1302
 #, c-format
 msgid "Minor: %d\n"
-msgstr "¥Ş¥¤¥Ê¡¼: %d\n"
+msgstr "ãƒã‚¤ãƒŠãƒ¼: %d\n"
 
-#: parted/parted.c:1235
+#: parted/parted.c:1303
 #, c-format
 msgid "Flags: %s\n"
-msgstr "¥Õ¥é¥°: %s\n"
+msgstr "ãƒ•ãƒ©ã‚°: %s\n"
 
-#: parted/parted.c:1236
+#: parted/parted.c:1304
 #, c-format
 msgid "File System: %s\n"
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à: %s\n"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ : %s\n"
 
-#: parted/parted.c:1237
+#: parted/parted.c:1305
 msgid "Size:         "
-msgstr "¥µ¥¤¥º:       "
+msgstr "ã‚µã‚¤ã‚º:       "
 
-#: parted/parted.c:1242
+#: parted/parted.c:1310
 msgid "Minimum size: "
-msgstr "ºÇ¾®¥µ¥¤¥º:   "
+msgstr "æœ€å°ã‚µã‚¤ã‚º:   "
 
-#: parted/parted.c:1245
+#: parted/parted.c:1313
 msgid "Maximum size: "
-msgstr "ºÇÂç¥µ¥¤¥º:   "
+msgstr "æœ€å¤§ã‚µã‚¤ã‚º:   "
 
-#: parted/parted.c:1370
+#: parted/parted.c:1441
 #, c-format
 msgid "Model: %s (%s)\n"
-msgstr "¥â¥Ç¥ë: %s (%s)\n"
+msgstr "ãƒ¢ãƒ‡ãƒ«: %s (%s)\n"
 
-#: parted/parted.c:1372
+#: parted/parted.c:1443
 #, c-format
 msgid "Disk %s: %s\n"
-msgstr "¥Ç¥£¥¹¥¯ %s: %s\n"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚¯ %s: %s\n"
 
-#: parted/parted.c:1373
+#: parted/parted.c:1444
 #, c-format
 msgid "Sector size (logical/physical): %lldB/%lldB\n"
-msgstr "¥»¥¯¥¿¥µ¥¤¥º (ÏÀÍı/ÊªÍı): %lldB/%lldB\n"
+msgstr "ã‚»ã‚¯ã‚¿ã‚µã‚¤ã‚º (è«–ç†/ç‰©ç†): %lldB/%lldB\n"
 
-#: parted/parted.c:1391
+#: parted/parted.c:1462
 #, c-format
 msgid "BIOS cylinder,head,sector geometry: %d,%d,%d.  Each cylinder is %s.\n"
-msgstr "BIOS ¥·¥ê¥ó¥À¡¢¥Ø¥Ã¥É¡¢¥»¥¯¥¿ geometry: %d,%d,%d.  1¥·¥ê¥ó¥À¤Ï %s¡£\n"
+msgstr "BIOS ã‚·ãƒªãƒ³ãƒ€ã€ãƒ˜ãƒƒãƒ‰ã€ã‚»ã‚¯ã‚¿ geometry: %d,%d,%d.  1ã‚·ãƒªãƒ³ãƒ€ã¯ %sã€‚\n"
 
-#: parted/parted.c:1400
+#: parted/parted.c:1471
 #, c-format
 msgid "Partition Table: %s\n"
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë: %s\n"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«: %s\n"
 
-#: parted/parted.c:1415 parted/parted.c:1418
+#: parted/parted.c:1486 parted/parted.c:1489
 msgid "Number"
-msgstr "ÈÖ¹æ"
+msgstr "ç•ªå·"
 
-#: parted/parted.c:1415 parted/parted.c:1418
+#: parted/parted.c:1486 parted/parted.c:1489
 msgid "Start"
-msgstr "³«»Ï"
+msgstr "é–‹å§‹"
 
-#: parted/parted.c:1416 parted/parted.c:1419
+#: parted/parted.c:1487 parted/parted.c:1490
 msgid "End"
-msgstr "½ªÎ»"
+msgstr "çµ‚äº†"
 
-#: parted/parted.c:1419
+#: parted/parted.c:1490
 msgid "Size"
-msgstr "¥µ¥¤¥º"
+msgstr "ã‚µã‚¤ã‚º"
 
-#: parted/parted.c:1423
+#: parted/parted.c:1494
 msgid "Type"
-msgstr "¥¿¥¤¥×"
+msgstr "ã‚¿ã‚¤ãƒ—"
 
-#: parted/parted.c:1425
+#: parted/parted.c:1496
 msgid "File system"
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ "
 
-#: parted/parted.c:1428
+#: parted/parted.c:1499
 msgid "Name"
-msgstr "Ì¾Á°"
+msgstr "åå‰"
 
-#: parted/parted.c:1430
+#: parted/parted.c:1501
 msgid "Flags"
-msgstr "¥Õ¥é¥°"
+msgstr "ãƒ•ãƒ©ã‚°"
 
-#: parted/parted.c:1487
+#: parted/parted.c:1558
 msgid "Free Space"
-msgstr "¶õ¤­ÍÆÎÌ"
+msgstr "ç©ºãå®¹é‡"
 
-#: parted/parted.c:1645
+#: parted/parted.c:1718
 #, c-format
 msgid ""
 "A %s %s partition was found at %s -> %s.  Do you want to add it to the "
 "partition table?"
 msgstr ""
-"%s %s ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬ %s ¢ª %s ¤Î¾ì½ê¤ËÈ¯¸«¤µ¤ì¤Ş¤·¤¿¡£¤³¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò"
-"¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤ËÄÉ²Ã¤·¤Ş¤¹¤«¡©"
+"%s %s ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒ %s â†’ %s ã®å ´æ‰€ã«ç™ºè¦‹ã•ã‚Œã¾ã—ãŸã€‚ã“ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’"
+"ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã«è¿½åŠ ã—ã¾ã™ã‹ï¼Ÿ"
 
-#: parted/parted.c:1684
+#: parted/parted.c:1757
 msgid "searching for file systems"
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤òÃµ¤·¤Æ¤¤¤Ş¤¹"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’æ¢ã—ã¦ã„ã¾ã™"
 
-#: parted/parted.c:1898
+#: parted/parted.c:1972
 msgid "New device?"
-msgstr "¿·¤·¤¤¥Ç¥Ğ¥¤¥¹?"
+msgstr "æ–°ã—ã„ãƒ‡ãƒã‚¤ã‚¹?"
 
-#: parted/parted.c:1923
+#: parted/parted.c:2017
+msgid "alignment type(min/opt)"
+msgstr ""
+
+#: parted/parted.c:2040
 msgid "Flag to Invert?"
-msgstr "È¿Å¾¤¹¤ë¥Õ¥é¥°?"
+msgstr "åè»¢ã™ã‚‹ãƒ•ãƒ©ã‚°?"
 
-#: parted/parted.c:1928
+#: parted/parted.c:2045
 msgid "New state?"
-msgstr "¿·¤·¤¤¾õÂÖ?"
+msgstr "æ–°ã—ã„çŠ¶æ…‹?"
 
-#: parted/parted.c:1965
+#: parted/parted.c:2082
 msgid "Unit?"
-msgstr "Ã±°Ì¤Ï?"
+msgstr "å˜ä½ã¯?"
 
-#: parted/parted.c:2145
+#: parted/parted.c:2263
+#, fuzzy
+msgid "align-check"
+msgstr "check"
+
+#: parted/parted.c:2266
+msgid ""
+"align-check TYPE N                        check partition N for TYPE(min|"
+"opt) alignment"
+msgstr ""
+
+#: parted/parted.c:2274
 msgid "check"
 msgstr "check"
 
-#: parted/parted.c:2148
+#: parted/parted.c:2277
 msgid ""
 "check NUMBER                             do a simple check on the file system"
-msgstr "check NUMBER                  ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î´ÊÃ±¤Ê¥Á¥§¥Ã¥¯¤¹¤ë"
+msgstr "check NUMBER                  ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ç°¡å˜ãªãƒã‚§ãƒƒã‚¯ã™ã‚‹"
 
-#: parted/parted.c:2154
+#: parted/parted.c:2283
 msgid "cp"
 msgstr "cp"
 
-#: parted/parted.c:2157
+#: parted/parted.c:2286
 msgid ""
 "cp [FROM-DEVICE] FROM-NUMBER TO-NUMBER   copy file system to another "
 "partition"
 msgstr ""
-"cp [Å¾Á÷¸µ¥Ç¥Ğ¥¤¥¹] Å¾Á÷¸µNUMBER Å¾Á÷ÀèNUMBER\n"
-"¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤òÂ¾¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¥³¥Ô¡¼¤¹¤ë"
+"cp [è»¢é€å…ƒãƒ‡ãƒã‚¤ã‚¹] è»¢é€å…ƒNUMBER è»¢é€å…ˆNUMBER\n"
+"ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’ä»–ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹"
 
-#: parted/parted.c:2163
+#: parted/parted.c:2292
 msgid "help"
 msgstr "help"
 
-#: parted/parted.c:2166
+#: parted/parted.c:2295
 msgid ""
 "help [COMMAND]                           print general help, or help on "
 "COMMAND"
 msgstr ""
-"help [¥³¥Ş¥ó¥É]               ¥Ø¥ë¥×É½¼¨¡£¥³¥Ş¥ó¥É»ØÄê¤Ç¤½¤Î¥Ø¥ë¥×¤òÉ½¼¨"
+"help [ã‚³ãƒãƒ³ãƒ‰]               ãƒ˜ãƒ«ãƒ—è¡¨ç¤ºã€‚ã‚³ãƒãƒ³ãƒ‰æŒ‡å®šã§ãã®ãƒ˜ãƒ«ãƒ—ã‚’è¡¨ç¤º"
 
-#: parted/parted.c:2172
+#: parted/parted.c:2301
 msgid "mklabel"
 msgstr "mklabel"
 
-#: parted/parted.c:2172
+#: parted/parted.c:2301
 msgid "mktable"
 msgstr "mktable"
 
-#: parted/parted.c:2175
+#: parted/parted.c:2304
 msgid ""
 "mklabel,mktable LABEL-TYPE               create a new disklabel (partition "
 "table)"
 msgstr ""
-"mklabel,mktable ¥é¥Ù¥ë¤Î¼ïÎà  ¿·¤·¤¤¥é¥Ù¥ë(¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë)¤òºî¤ë"
+"mklabel,mktable ãƒ©ãƒ™ãƒ«ã®ç¨®é¡  æ–°ã—ã„ãƒ©ãƒ™ãƒ«(ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«)ã‚’ä½œã‚‹"
 
-#: parted/parted.c:2181
+#: parted/parted.c:2310
 msgid "mkfs"
 msgstr "mkfs"
 
-#: parted/parted.c:2184
+#: parted/parted.c:2313
 msgid ""
 "mkfs NUMBER FS-TYPE                      make a FS-TYPE file system on "
-"partititon NUMBER"
+"partition NUMBER"
 msgstr ""
-"mkfs NUMBER ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¼ïÎà\n"
-"¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡»ØÄê¤·¤¿¼ïÎà¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤òºî¤ë"
+"mkfs NUMBER ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ç¨®é¡\n"
+"ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€æŒ‡å®šã—ãŸç¨®é¡ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’ä½œã‚‹"
 
-#: parted/parted.c:2190
+#: parted/parted.c:2319
 msgid "mkpart"
 msgstr "mkpart"
 
-#: parted/parted.c:2193
+#: parted/parted.c:2322
 msgid "mkpart PART-TYPE [FS-TYPE] START END     make a partition"
 msgstr ""
-"mkpart ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¼ïÎà [¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¼ïÎà] ³«»Ï ½ªÎ»\n"
-"¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òºî¤ë"
+"mkpart ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ç¨®é¡ [ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ç¨®é¡] é–‹å§‹ çµ‚äº†\n"
+"ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ä½œã‚‹"
 
-#: parted/parted.c:2199
+#: parted/parted.c:2328
 msgid ""
 "'mkpart' makes a partition without creating a new file system on the "
 "partition.  FS-TYPE may be specified to set an appropriate partition ID.\n"
 msgstr ""
-"mkpart ¤Ï¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤À¤±ºî¤ê¡¢¿·¤·¤¤¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ïºî¤ê¤Ş¤»¤ó¡£¥Õ¥¡¥¤¥ë"
-"¥·¥¹¥Æ¥à¤Î¼ïÎà¤ò»ØÄê¤¹¤ë¤È¡¢Àµ¤·¤¤ID¤¬ÀßÄê¤µ¤ì¤Ş¤¹¡£\n"
+"mkpart ã¯ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã ã‘ä½œã‚Šã€æ–°ã—ã„ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã¯ä½œã‚Šã¾ã›ã‚“ã€‚ãƒ•ã‚¡ã‚¤ãƒ«"
+"ã‚·ã‚¹ãƒ†ãƒ ã®ç¨®é¡ã‚’æŒ‡å®šã™ã‚‹ã¨ã€æ­£ã—ã„IDãŒè¨­å®šã•ã‚Œã¾ã™ã€‚\n"
 
-#: parted/parted.c:2204
+#: parted/parted.c:2333
 msgid "mkpartfs"
 msgstr "mkpartfs"
 
-#: parted/parted.c:2207
+#: parted/parted.c:2336
 msgid ""
 "mkpartfs PART-TYPE FS-TYPE START END     make a partition with a file system"
 msgstr ""
-"mkpartfs ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¼ïÎà ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¼ïÎà ³«»Ï ½ªÎ»\n"
-"¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤È¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤òºî¤ë"
+"mkpartfs ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ç¨®é¡ ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ç¨®é¡ é–‹å§‹ çµ‚äº†\n"
+"ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¨ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’ä½œã‚‹"
 
-#: parted/parted.c:2213
+#: parted/parted.c:2342
 msgid "move"
 msgstr "move"
 
-#: parted/parted.c:2216
+#: parted/parted.c:2345
 msgid "move NUMBER START END                    move partition NUMBER"
-msgstr "move NUMBER ³«»Ï ½ªÎ»         ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ò°ÜÆ°¤¹¤ë"
+msgstr "move NUMBER é–‹å§‹ çµ‚äº†         ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’ç§»å‹•ã™ã‚‹"
 
-#: parted/parted.c:2221
+#: parted/parted.c:2350
 msgid "name"
 msgstr "name"
 
-#: parted/parted.c:2224
+#: parted/parted.c:2353
 msgid "name NUMBER NAME                         name partition NUMBER as NAME"
-msgstr "name NUMBER Ì¾Á°              ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤ËÌ¾Á°¤ò¤Ä¤±¤ë"
+msgstr "name NUMBER åå‰              ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«åå‰ã‚’ã¤ã‘ã‚‹"
 
-#: parted/parted.c:2229
+#: parted/parted.c:2358
 msgid "print"
 msgstr "print"
 
-#: parted/parted.c:2232
+#: parted/parted.c:2361
 msgid ""
 "print [devices|free|list,all|NUMBER]     display the partition table, "
 "available devices, free space, all found partitions, or a particular "
 "partition"
 msgstr ""
 "print [devices|free|list,all|NUMBER]\n"
-"¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡  ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤ä¡¢ÍøÍÑ²ÄÇ½¤Ê¥Ç¥Ğ¥¤¥¹¡¢¶õ¤­ÎÎ"
-"°è¡¢\n"
-"¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡  ¸«¤Ä¤«¤Ã¤¿Á´¤Æ¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¡¢¤¢¤ë¤¤¤ÏÆÃÄê¤Î¥Ñ¡¼"
-"¥Æ¥£¥·¥ç¥ó¤Ë¤Ä¤¤¤ÆÉ½¼¨¤¹¤ë"
+"ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€  ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã‚„ã€åˆ©ç”¨å¯èƒ½ãªãƒ‡ãƒã‚¤ã‚¹ã€ç©ºãé ˜"
+"åŸŸã€\n"
+"ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€  è¦‹ã¤ã‹ã£ãŸå…¨ã¦ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã€ã‚ã‚‹ã„ã¯ç‰¹å®šã®ãƒ‘ãƒ¼"
+"ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«ã¤ã„ã¦è¡¨ç¤ºã™ã‚‹"
 
-#: parted/parted.c:2237
+#: parted/parted.c:2366
 msgid ""
 "Without arguments, 'print' displays the entire partition table. However with "
 "the following arguments it performs various other actions.\n"
 msgstr ""
-"°ú¿ô¤ò¤Ä¤±¤Ê¤¤¾ì¹ç¡¢'print' ¥³¥Ş¥ó¥É¤Ï¡¢Á´¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤òÉ½¼¨¤·¤Ş"
-"¤¹¡£¼¡¤Î°ú¿ô¤ò¤Ä¤±¤ë¤³¤È¤¬²ÄÇ½¤Ç¤¹¡£\n"
+"å¼•æ•°ã‚’ã¤ã‘ãªã„å ´åˆã€'print' ã‚³ãƒãƒ³ãƒ‰ã¯ã€å…¨ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’è¡¨ç¤ºã—ã¾"
+"ã™ã€‚æ¬¡ã®å¼•æ•°ã‚’ã¤ã‘ã‚‹ã“ã¨ãŒå¯èƒ½ã§ã™ã€‚\n"
 
-#: parted/parted.c:2239
+#: parted/parted.c:2368
 msgid "  devices   : display all active block devices\n"
-msgstr "  devices   : Á´¤Æ¤Î¥¢¥¯¥Æ¥£¥Ö¤Ê¥Ö¥í¥Ã¥¯¥Ç¥Ğ¥¤¥¹¤òÉ½¼¨\n"
+msgstr "  devices   : å…¨ã¦ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒã‚¤ã‚¹ã‚’è¡¨ç¤º\n"
 
-#: parted/parted.c:2240
+#: parted/parted.c:2369
 msgid ""
 "  free      : display information about free unpartitioned space on the "
 "current block device\n"
 msgstr ""
-"  free      : ¥«¥ì¥ó¥È¥Ö¥í¥Ã¥¯¥Ç¥Ğ¥¤¥¹¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë´Ş¤Ş¤ì¤Æ¤¤¤Ê¤¤¶õ¤­ÎÎ"
-"°è¾ğÊó¤òÉ½¼¨\n"
+"  free      : ã‚«ãƒ¬ãƒ³ãƒˆãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒã‚¤ã‚¹ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«å«ã¾ã‚Œã¦ã„ãªã„ç©ºãé ˜"
+"åŸŸæƒ…å ±ã‚’è¡¨ç¤º\n"
 
-#: parted/parted.c:2242
+#: parted/parted.c:2371
 msgid ""
 "  list, all : display the partition tables of all active block devices\n"
 msgstr ""
-"  list, all : ¥¢¥¯¥Æ¥£¥Ö¤ÊÁ´¥Ö¥í¥Ã¥¯¥Ç¥Ğ¥¤¥¹¤Î¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¥Æ¡¼¥Ö¥ë¤òÉ½¼¨\n"
+"  list, all : ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªå…¨ãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒã‚¤ã‚¹ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’è¡¨ç¤º\n"
 
-#: parted/parted.c:2243
+#: parted/parted.c:2372
 msgid ""
 "  NUMBER    : display more detailed information about this particular "
 "partition\n"
-msgstr "  NUMBER    : »ØÄê¤·¤¿¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Ë¤Ä¤¤¤Æ¤è¤ê¾Ü¤·¤¤¾ğÊó¤òÉ½¼¨\n"
+msgstr "  NUMBER    : æŒ‡å®šã—ãŸãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã«ã¤ã„ã¦ã‚ˆã‚Šè©³ã—ã„æƒ…å ±ã‚’è¡¨ç¤º\n"
 
-#: parted/parted.c:2248
+#: parted/parted.c:2377
 msgid "quit"
 msgstr "quit"
 
-#: parted/parted.c:2251
+#: parted/parted.c:2380
 msgid "quit                                     exit program"
-msgstr "quit                          ¥×¥í¥°¥é¥à¤ò½ªÎ»¤¹¤ë"
+msgstr "quit                          ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’çµ‚äº†ã™ã‚‹"
 
-#: parted/parted.c:2256
+#: parted/parted.c:2385
 msgid "rescue"
 msgstr "rescue"
 
-#: parted/parted.c:2259
+#: parted/parted.c:2388
 msgid ""
 "rescue START END                         rescue a lost partition near START "
 "and END"
 msgstr ""
-"rescue ³«»Ï ½ªÎ»              ³«»Ï¡¢½ªÎ»¤Ç»ØÄê¤·¤¿ÈÏ°ÏÉÕ¶á¤Ë¤¢¤ë¥Ñ¡¼¥Æ¥£¥·¥ç"
-"¥ó¤òÉü³è¤µ¤»¤ë"
+"rescue é–‹å§‹ çµ‚äº†              é–‹å§‹ã€çµ‚äº†ã§æŒ‡å®šã—ãŸç¯„å›²ä»˜è¿‘ã«ã‚ã‚‹ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§"
+"ãƒ³ã‚’å¾©æ´»ã•ã›ã‚‹"
 
-#: parted/parted.c:2265
+#: parted/parted.c:2394
 msgid "resize"
 msgstr "resize"
 
-#: parted/parted.c:2268
+#: parted/parted.c:2397
 msgid ""
 "resize NUMBER START END                  resize partition NUMBER and its "
 "file system"
 msgstr ""
-"resize NUMBER ³«»Ï ½ªÎ»       ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤È¤½¤ÎÃæ¤Î¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤ò¥ê¥µ"
-"¥¤¥º¤¹¤ë"
+"resize NUMBER é–‹å§‹ çµ‚äº†       ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã¨ãã®ä¸­ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚’ãƒªã‚µ"
+"ã‚¤ã‚ºã™ã‚‹"
 
-#: parted/parted.c:2276
+#: parted/parted.c:2405
 msgid "rm"
 msgstr "rm"
 
-#: parted/parted.c:2279
+#: parted/parted.c:2408
 msgid "rm NUMBER                                delete partition NUMBER"
-msgstr "rm NUMBER                     ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òºï½ü¤¹¤ë"
+msgstr "rm NUMBER                     ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’å‰Šé™¤ã™ã‚‹"
 
-#: parted/parted.c:2284
+#: parted/parted.c:2413
 msgid "select"
 msgstr "select"
 
-#: parted/parted.c:2287
+#: parted/parted.c:2416
 msgid "select DEVICE                            choose the device to edit"
-msgstr "select ¥Ç¥Ğ¥¤¥¹               Áàºî¤¹¤ë¥Ç¥Ğ¥¤¥¹¤òÁªÂò"
+msgstr "select ãƒ‡ãƒã‚¤ã‚¹               æ“ä½œã™ã‚‹ãƒ‡ãƒã‚¤ã‚¹ã‚’é¸æŠ"
 
-#: parted/parted.c:2292
+#: parted/parted.c:2421
 msgid "set"
 msgstr "set"
 
-#: parted/parted.c:2295
+#: parted/parted.c:2424
 msgid ""
 "set NUMBER FLAG STATE                    change the FLAG on partition NUMBER"
-msgstr "set NUMBER ¥Õ¥é¥° ¾õÂÖ        ¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¥Õ¥é¥°¤È¾õÂÖ¤òÀßÄê¤¹¤ë"
+msgstr "set NUMBER ãƒ•ãƒ©ã‚° çŠ¶æ…‹        ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ãƒ•ãƒ©ã‚°ã¨çŠ¶æ…‹ã‚’è¨­å®šã™ã‚‹"
 
-#: parted/parted.c:2301
+#: parted/parted.c:2430
 msgid "toggle"
 msgstr "toggle"
 
-#: parted/parted.c:2304
+#: parted/parted.c:2433
 msgid ""
 "toggle [NUMBER [FLAG]]                   toggle the state of FLAG on "
 "partition NUMBER"
-msgstr "toggle [NUMBER [FLAG]]        ¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¥Õ¥é¥°¤Î¾õÂÖ¤òÈ¿Å¾¤¹¤ë"
+msgstr "toggle [NUMBER [FLAG]]        ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ãƒ•ãƒ©ã‚°ã®çŠ¶æ…‹ã‚’åè»¢ã™ã‚‹"
 
-#: parted/parted.c:2310
+#: parted/parted.c:2439
 msgid "unit"
 msgstr "unit"
 
-#: parted/parted.c:2313
+#: parted/parted.c:2442
 msgid "unit UNIT                                set the default unit to UNIT"
-msgstr "unit UNIT                     ¥Ç¥Õ¥©¥ë¥È¤ÎÃ±°Ì¤ò UNIT ¤Ë¤¹¤ë"
+msgstr "unit UNIT                     ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å˜ä½ã‚’ UNIT ã«ã™ã‚‹"
 
-#: parted/parted.c:2318
+#: parted/parted.c:2447
 msgid "version"
 msgstr "version"
 
-#: parted/parted.c:2321
+#: parted/parted.c:2450
 msgid ""
 "version                                  display the version number and "
 "copyright information of GNU Parted"
 msgstr ""
-"version                       GNU Parted ¤Î¥Ğ¡¼¥¸¥ç¥ó¤ÈÃøºî¸¢¾ğÊó¤òÉ½¼¨"
+"version                       GNU Parted ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¨è‘—ä½œæ¨©æƒ…å ±ã‚’è¡¨ç¤º"
 
-#: parted/parted.c:2325
+#: parted/parted.c:2454
 msgid ""
 "'version' displays copyright and version information corresponding to this "
 "copy of GNU Parted\n"
 msgstr ""
-"version ¤Ï¡¢¼Â¹ÔÃæ¤Î GNU Parted ¤Î¥Ğ¡¼¥¸¥ç¥ó¤ÈÃøºî¸¢¾ğÊó¤òÉ½¼¨¤·¤Ş¤¹¡£\n"
+"version ã¯ã€å®Ÿè¡Œä¸­ã® GNU Parted ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¨è‘—ä½œæ¨©æƒ…å ±ã‚’è¡¨ç¤ºã—ã¾ã™ã€‚\n"
 
-#: parted/parted.c:2387
-#, c-format
-msgid "Usage: %s [-hlmsv] [DEVICE [COMMAND [PARAMETERS]]...]\n"
-msgstr "»È¤¤Êı: %s [-hlmsv] [¥Ç¥Ğ¥¤¥¹ [¥³¥Ş¥ó¥É [¥Ñ¥é¥á¡¼¥¿]]...]\n"
+#: parted/parted.c:2522
+#, fuzzy, c-format
+msgid "Usage: %s [-hlmsv] [-a<align>] [DEVICE [COMMAND [PARAMETERS]]...]\n"
+msgstr "ä½¿ã„æ–¹: %s [-hlmsv] [ãƒ‡ãƒã‚¤ã‚¹ [ã‚³ãƒãƒ³ãƒ‰ [ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿]]...]\n"
 
-#: parted/parted.c:2431
+#: parted/parted.c:2566
 msgid "No device found"
-msgstr "¥Ç¥Ğ¥¤¥¹¤¬¤ß¤Ä¤«¤ê¤Ş¤»¤ó¡£"
+msgstr "ãƒ‡ãƒã‚¤ã‚¹ãŒã¿ã¤ã‹ã‚Šã¾ã›ã‚“ã€‚"
 
-#: parted/parted.c:2464
+#: parted/parted.c:2603
 msgid "WARNING: You are not superuser.  Watch out for permissions."
-msgstr "·Ù¹ğ: ´ÉÍı¼Ô¸¢¸Â¤¬¤¢¤ê¤Ş¤»¤ó¡£¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó¤ËÃí°Õ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+msgstr "è­¦å‘Š: ç®¡ç†è€…æ¨©é™ãŒã‚ã‚Šã¾ã›ã‚“ã€‚ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã«æ³¨æ„ã—ã¦ãã ã•ã„ã€‚"
 
-#: parted/parted.c:2502
+#: parted/parted.c:2641
 msgid "You may need to update /etc/fstab.\n"
-msgstr "É¬Í×¤Ç¤¢¤ì¤Ğ /etc/fstab ¤ò¹¹¿·¤¹¤ë¤Î¤òËº¤ì¤Ê¤¤¤è¤¦¤Ë¤·¤Æ¤¯¤À¤µ¤¤¡£\n"
+msgstr "å¿…è¦ã§ã‚ã‚Œã° /etc/fstab ã‚’æ›´æ–°ã™ã‚‹ã®ã‚’å¿˜ã‚Œãªã„ã‚ˆã†ã«ã—ã¦ãã ã•ã„ã€‚\n"
 
-#: parted/ui.c:161
+#: parted/ui.c:162
 msgid "Welcome to GNU Parted! Type 'help' to view a list of commands.\n"
 msgstr ""
-"GNU Parted ¤Ø¤è¤¦¤³¤½¡ª ¥³¥Ş¥ó¥É°ìÍ÷¤ò¸«¤ë¤Ë¤Ï 'help' ¤ÈÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£\n"
+"GNU Parted ã¸ã‚ˆã†ã“ãï¼ ã‚³ãƒãƒ³ãƒ‰ä¸€è¦§ã‚’è¦‹ã‚‹ã«ã¯ 'help' ã¨å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚\n"
 
-#: parted/ui.c:164
+#: parted/ui.c:165
 msgid ""
 "Usage: parted [OPTION]... [DEVICE [COMMAND [PARAMETERS]...]...]\n"
 "Apply COMMANDs with PARAMETERS to DEVICE.  If no COMMAND(s) are given, run "
 "in\n"
 "interactive mode.\n"
 msgstr ""
-"»È¤¤Êı: parted [¥ª¥×¥·¥ç¥ó]... [¥Ç¥Ğ¥¤¥¹ [¥³¥Ş¥ó¥É [¥Ñ¥é¥á¡¼¥¿]...]...]\n"
-"¥Ç¥Ğ¥¤¥¹¤ËÂĞ¤·¤Æ¥Ñ¥é¥á¡¼¥¿¤Ë½¾¤Ã¤Æ¥³¥Ş¥ó¥É¤ò¼Â¹Ô¤·¤Ş¤¹¡£¤â¤·¥³¥Ş¥ó¥É¤¬»ØÄê¤µ"
-"¤ì¤Ê¤±¤ì¤Ğ¡¢ÂĞÏÃ¥â¡¼¥É¤ËÆş¤ê¤Ş¤¹¡£\n"
+"ä½¿ã„æ–¹: parted [ã‚ªãƒ—ã‚·ãƒ§ãƒ³]... [ãƒ‡ãƒã‚¤ã‚¹ [ã‚³ãƒãƒ³ãƒ‰ [ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿]...]...]\n"
+"ãƒ‡ãƒã‚¤ã‚¹ã«å¯¾ã—ã¦ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã«å¾“ã£ã¦ã‚³ãƒãƒ³ãƒ‰ã‚’å®Ÿè¡Œã—ã¾ã™ã€‚ã‚‚ã—ã‚³ãƒãƒ³ãƒ‰ãŒæŒ‡å®šã•"
+"ã‚Œãªã‘ã‚Œã°ã€å¯¾è©±ãƒ¢ãƒ¼ãƒ‰ã«å…¥ã‚Šã¾ã™ã€‚\n"
 
-#: parted/ui.c:169
+#: parted/ui.c:170
 #, c-format
 msgid ""
 "\n"
@@ -3098,270 +3201,289 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"GNU Parted ¤Î¥Ğ¥°¤òÈ¯¸«¤·¤Ş¤·¤¿¡ª\n"
+"GNU Parted ã®ãƒã‚°ã‚’ç™ºè¦‹ã—ã¾ã—ãŸï¼\n"
 "\n"
-"¥Ñ¥Ë¥Ã¥¯¤òµ¯¤³¤µ¤Ê¤¤¤Ç¤¯¤À¤µ¤¤¡ª ¤³¤Î¥Ğ¥°¤Ï¤ª¤½¤é¤¯¥Ç¡¼¥¿¤Ë¤Ï±Æ¶Á¤¢¤ê¤Ş¤»"
-"¤ó¡£\n"
-"¼¡¤Î¤³¤È¤ò¤·¤Æ¤³¤Î¥Ğ¥°¤Î½¤Àµ¤Ë¤´¶¨ÎÏ¤¯¤À¤µ¤¤¡£\n"
+"ãƒ‘ãƒ‹ãƒƒã‚¯ã‚’èµ·ã“ã•ãªã„ã§ãã ã•ã„ï¼ ã“ã®ãƒã‚°ã¯ãŠãã‚‰ããƒ‡ãƒ¼ã‚¿ã«ã¯å½±éŸ¿ã‚ã‚Šã¾ã›"
+"ã‚“ã€‚\n"
+"æ¬¡ã®ã“ã¨ã‚’ã—ã¦ã“ã®ãƒã‚°ã®ä¿®æ­£ã«ã”å”åŠ›ãã ã•ã„ã€‚\n"
 "\n"
-"¼¡¤Î¥µ¥¤¥È¤ËºÇ¿·¥Ğ¡¼¥¸¥ç¥ó¤¬¤¢¤ê¤Ş¤¹¡£\n"
-"´û¤Ë¤³¤Î¥Ğ¥°¤¬½¤Àµ¤µ¤ì¤Æ¤¤¤Ê¤¤¤«³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£\n"
+"æ¬¡ã®ã‚µã‚¤ãƒˆã«æœ€æ–°ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒã‚ã‚Šã¾ã™ã€‚\n"
+"æ—¢ã«ã“ã®ãƒã‚°ãŒä¿®æ­£ã•ã‚Œã¦ã„ãªã„ã‹ç¢ºèªã—ã¦ãã ã•ã„ã€‚\n"
 "\n"
 "\thttp://ftp.gnu.org/gnu/parted/\n"
 "\n"
-"¥Ğ¥°¥ì¥İ¡¼¥È¤ò¤¹¤ëÁ°¤ËºÇ¿·¥Ğ¡¼¥¸¥ç¥ó¤Ç³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£\n"
+"ãƒã‚°ãƒ¬ãƒãƒ¼ãƒˆã‚’ã™ã‚‹å‰ã«æœ€æ–°ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§ç¢ºèªã—ã¦ãã ã•ã„ã€‚\n"
 "\n"
-"¤Ş¤À¥Ğ¥°¤¬½¤Àµ¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¡¢³ÎÇ§¤Î»ÅÊı¤¬¤ï¤«¤é¤Ê¤¤¾ì¹ç¡¢\n"
-"GNU Parted ¤Î web ¥µ¥¤¥È\n"
+"ã¾ã ãƒã‚°ãŒä¿®æ­£ã•ã‚Œã¦ã„ãªã„ã‹ã€ç¢ºèªã®ä»•æ–¹ãŒã‚ã‹ã‚‰ãªã„å ´åˆã€\n"
+"GNU Parted ã® web ã‚µã‚¤ãƒˆ\n"
 "\n"
 "\thttp://www.gnu.org/software/parted\n"
 "\n"
-"¤ò³«¤¤¤Æ¡¢¾Ü¤·¤¤¾ğÊó¤òÄ´¤Ù¤Æ¤¯¤À¤µ¤¤¡£\n"
+"ã‚’é–‹ã„ã¦ã€è©³ã—ã„æƒ…å ±ã‚’èª¿ã¹ã¦ãã ã•ã„ã€‚\n"
 "\n"
-"¥ì¥İ¡¼¥È¤Ë¤Ï¡¢¤³¤Î Parted ¤Î¥Ğ¡¼¥¸¥ç¥ó¾ğÊó (%s) ¤È¡¢\n"
-"²¼¤ËÉ½¼¨¤µ¤ì¤Æ¤¤¤ë¥¨¥é¡¼¥á¥Ã¥»¡¼¥¸¡¢¼¡¤Î¥³¥Ş¥ó¥É\n"
+"ãƒ¬ãƒãƒ¼ãƒˆã«ã¯ã€ã“ã® Parted ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³æƒ…å ± (%s) ã¨ã€\n"
+"ä¸‹ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã€æ¬¡ã®ã‚³ãƒãƒ³ãƒ‰\n"
 "\n"
 "\tparted DEVICE unit co print unit s print\n"
 "\n"
-"¤Î½ĞÎÏ¤È¡¢¥³¥Ş¥ó¥ÉÍúÎò¡¢\n"
-"¤½¤ÎÂ¾½ÅÍ×¤È»×¤¦¾ğÊó¤òµ­½Ò¤·¤Æ¤¯¤À¤µ¤¤¡£\n"
+"ã®å‡ºåŠ›ã¨ã€ã‚³ãƒãƒ³ãƒ‰å±¥æ­´ã€\n"
+"ãã®ä»–é‡è¦ã¨æ€ã†æƒ…å ±ã‚’è¨˜è¿°ã—ã¦ãã ã•ã„ã€‚\n"
 "\n"
 
-#: parted/ui.c:285
+#: parted/ui.c:291
 msgid ""
 "\n"
 "Command History:\n"
 msgstr ""
 "\n"
-"¥³¥Ş¥ó¥ÉÍúÎò:\n"
+"ã‚³ãƒãƒ³ãƒ‰å±¥æ­´:\n"
 
-#: parted/ui.c:348
+#: parted/ui.c:354
 msgid ""
 "\n"
 "Error: SEGV_MAPERR (Address not mapped to object)\n"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: SEGV_MAPERR (¥¢¥É¥ì¥¹¤¬¥ª¥Ö¥¸¥§¥¯¥È¤ËÊÑ´¹¤µ¤ì¤Ş¤»¤ó¤Ç¤·¤¿)\n"
+"ã‚¨ãƒ©ãƒ¼: SEGV_MAPERR (ã‚¢ãƒ‰ãƒ¬ã‚¹ãŒã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«å¤‰æ›ã•ã‚Œã¾ã›ã‚“ã§ã—ãŸ)\n"
 
-#: parted/ui.c:354
+#: parted/ui.c:360
 msgid ""
 "\n"
 "Error: SEGV_ACCERR (Invalid permissions for mapped object)\n"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: SEGV_ACCERR (¥Ş¥Ã¥×¤µ¤ì¤¿¥ª¥Ö¥¸¥§¥¯¥È¤Î¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó¤¬ÉÔÀµ¤Ç¤¹)\n"
+"ã‚¨ãƒ©ãƒ¼: SEGV_ACCERR (ãƒãƒƒãƒ—ã•ã‚ŒãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ãŒä¸æ­£ã§ã™)\n"
 
-#: parted/ui.c:359
+#: parted/ui.c:365
 msgid ""
 "\n"
 "Error: A general SIGSEGV signal was encountered.\n"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: SIGSEGV ¥·¥°¥Ê¥ë¤ò¼õ¤±¤È¤ê¤Ş¤·¤¿¡£\n"
+"ã‚¨ãƒ©ãƒ¼: SIGSEGV ã‚·ã‚°ãƒŠãƒ«ã‚’å—ã‘ã¨ã‚Šã¾ã—ãŸã€‚\n"
 
-#: parted/ui.c:383
+#: parted/ui.c:389
 msgid ""
 "\n"
 "Error: FPE_INTDIV (Integer: divide by zero)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: FPE_INTDIV (À°¿ô: 0¤Ë¤è¤ë½ü»»)"
+"ã‚¨ãƒ©ãƒ¼: FPE_INTDIV (æ•´æ•°: 0ã«ã‚ˆã‚‹é™¤ç®—)"
 
-#: parted/ui.c:388
+#: parted/ui.c:394
 msgid ""
 "\n"
 "Error: FPE_INTOVF (Integer: overflow)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: FPE_INTOVF (À°¿ô: ¥ª¡¼¥Ğ¡¼¥Õ¥í¡¼)"
+"ã‚¨ãƒ©ãƒ¼: FPE_INTOVF (æ•´æ•°: ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼)"
 
-#: parted/ui.c:393
+#: parted/ui.c:399
 msgid ""
 "\n"
 "Error: FPE_FLTDIV (Float: divide by zero)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: FPE_FLTDIV (ÉâÆ°¾®¿ôÅÀ: 0¤Ë¤è¤ë½ü»»)"
+"ã‚¨ãƒ©ãƒ¼: FPE_FLTDIV (æµ®å‹•å°æ•°ç‚¹: 0ã«ã‚ˆã‚‹é™¤ç®—)"
 
-#: parted/ui.c:398
+#: parted/ui.c:404
 msgid ""
 "\n"
 "Error: FPE_FLTOVF (Float: overflow)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: FPE_FLTOVF (ÉâÆ°¾®¿ôÅÀ: ¥ª¡¼¥Ğ¡¼¥Õ¥í¡¼)"
+"ã‚¨ãƒ©ãƒ¼: FPE_FLTOVF (æµ®å‹•å°æ•°ç‚¹: ã‚ªãƒ¼ãƒãƒ¼ãƒ•ãƒ­ãƒ¼)"
 
-#: parted/ui.c:403
+#: parted/ui.c:409
 msgid ""
 "\n"
 "Error: FPE_FLTUND (Float: underflow)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: FPE_FLTUND (ÉâÆ°¾®¿ôÅÀ: ¥¢¥ó¥À¡¼¥Õ¥í¡¼)"
+"ã‚¨ãƒ©ãƒ¼: FPE_FLTUND (æµ®å‹•å°æ•°ç‚¹: ã‚¢ãƒ³ãƒ€ãƒ¼ãƒ•ãƒ­ãƒ¼)"
 
-#: parted/ui.c:408
+#: parted/ui.c:414
 msgid ""
 "\n"
 "Error: FPE_FLTRES (Float: inexact result)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: FPE_FLTRES (ÉâÆ°¾®¿ôÅÀ: Àµ¤·¤¯¤Ê¤¤·ë²Ì)"
+"ã‚¨ãƒ©ãƒ¼: FPE_FLTRES (æµ®å‹•å°æ•°ç‚¹: æ­£ã—ããªã„çµæœ)"
 
-#: parted/ui.c:413
+#: parted/ui.c:419
 msgid ""
 "\n"
 "Error: FPE_FLTINV (Float: invalid operation)"
 msgstr ""
 "\n"
 "\n"
-"¥¨¥é¡¼: FPE_FLTINV (ÉâÆ°¾®¿ôÅÀ: ÉÔÀµ¤ÊÁàºî)"
+"ã‚¨ãƒ©ãƒ¼: FPE_FLTINV (æµ®å‹•å°æ•°ç‚¹: ä¸æ­£ãªæ“ä½œ)"
 
-#: parted/ui.c:418
+#: parted/ui.c:424
 msgid ""
 "\n"
 "Error: FPE_FLTSUB (Float: subscript out of range)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: FPE_FLTSUB (ÉâÆ°¾®¿ôÅÀ: Åº»ú¤¬ÈÏ°Ï¤ò±Û¤¨¤Ş¤·¤¿)"
+"ã‚¨ãƒ©ãƒ¼: FPE_FLTSUB (æµ®å‹•å°æ•°ç‚¹: æ·»å­—ãŒç¯„å›²ã‚’è¶Šãˆã¾ã—ãŸ)"
 
-#: parted/ui.c:423
+#: parted/ui.c:429
 msgid ""
 "\n"
 "Error: A general SIGFPE signal was encountered."
 msgstr ""
 "\n"
-"¥¨¥é¡¼: SIGFPE ¥·¥°¥Ê¥ë¤ò¼õ¤±¤È¤ê¤Ş¤·¤¿¡£"
+"ã‚¨ãƒ©ãƒ¼: SIGFPE ã‚·ã‚°ãƒŠãƒ«ã‚’å—ã‘ã¨ã‚Šã¾ã—ãŸã€‚"
 
-#: parted/ui.c:447
+#: parted/ui.c:453
 msgid ""
 "\n"
 "Error: ILL_ILLOPC (Illegal Opcode)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: ILL_ILLOPC (ÉÔÀµ¤Ê¥ª¥Ú¥³¡¼¥É)"
+"ã‚¨ãƒ©ãƒ¼: ILL_ILLOPC (ä¸æ­£ãªã‚ªãƒšã‚³ãƒ¼ãƒ‰)"
 
-#: parted/ui.c:452
+#: parted/ui.c:458
 msgid ""
 "\n"
 "Error: ILL_ILLOPN (Illegal Operand)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: ILL_ILLOPN (ÉÔÀµ¤Ê¥ª¥Ú¥é¥ó¥É)"
+"ã‚¨ãƒ©ãƒ¼: ILL_ILLOPN (ä¸æ­£ãªã‚ªãƒšãƒ©ãƒ³ãƒ‰)"
 
-#: parted/ui.c:457
+#: parted/ui.c:463
 msgid ""
 "\n"
 "Error: ILL_ILLADR (Illegal addressing mode)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: ILL_ILLADR (ÉÔÀµ¤Ê¥¢¥É¥ì¥¹¥â¡¼¥É)"
+"ã‚¨ãƒ©ãƒ¼: ILL_ILLADR (ä¸æ­£ãªã‚¢ãƒ‰ãƒ¬ã‚¹ãƒ¢ãƒ¼ãƒ‰)"
 
-#: parted/ui.c:462
+#: parted/ui.c:468
 msgid ""
 "\n"
 "Error: ILL_ILLTRP (Illegal Trap)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: ILL_ILLTRP (ÉÔÀµ¤Ê¥È¥é¥Ã¥×)"
+"ã‚¨ãƒ©ãƒ¼: ILL_ILLTRP (ä¸æ­£ãªãƒˆãƒ©ãƒƒãƒ—)"
 
-#: parted/ui.c:467
+#: parted/ui.c:473
 msgid ""
 "\n"
 "Error: ILL_PRVOPC (Privileged Opcode)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: ILL_PRVOPC (ÆÃ¸¢¤¬É¬Í×¤Ê¥ª¥Ú¥³¡¼¥É)"
+"ã‚¨ãƒ©ãƒ¼: ILL_PRVOPC (ç‰¹æ¨©ãŒå¿…è¦ãªã‚ªãƒšã‚³ãƒ¼ãƒ‰)"
 
-#: parted/ui.c:472
+#: parted/ui.c:478
 msgid ""
 "\n"
 "Error: ILL_PRVREG (Privileged Register)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: ILL_PRVREG (ÆÃ¸¢¤¬É¬Í×¤Ê¥ì¥¸¥¹¥¿)"
+"ã‚¨ãƒ©ãƒ¼: ILL_PRVREG (ç‰¹æ¨©ãŒå¿…è¦ãªãƒ¬ã‚¸ã‚¹ã‚¿)"
 
-#: parted/ui.c:477
+#: parted/ui.c:483
 msgid ""
 "\n"
 "Error: ILL_COPROC (Coprocessor Error)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: ILL_COPROC (¥³¥×¥í¥»¥Ã¥µ¥¨¥é¡¼)"
+"ã‚¨ãƒ©ãƒ¼: ILL_COPROC (ã‚³ãƒ—ãƒ­ã‚»ãƒƒã‚µã‚¨ãƒ©ãƒ¼)"
 
-#: parted/ui.c:482
+#: parted/ui.c:488
 msgid ""
 "\n"
 "Error: ILL_BADSTK (Internal Stack Error)"
 msgstr ""
 "\n"
-"¥¨¥é¡¼: ILL_BADSTK (¥¤¥ó¥¿¡¼¥Ê¥ë¥¹¥¿¥Ã¥¯¥¨¥é¡¼)"
+"ã‚¨ãƒ©ãƒ¼: ILL_BADSTK (ã‚¤ãƒ³ã‚¿ãƒ¼ãƒŠãƒ«ã‚¹ã‚¿ãƒƒã‚¯ã‚¨ãƒ©ãƒ¼)"
 
-#: parted/ui.c:487
+#: parted/ui.c:493
 msgid ""
 "\n"
 "Error: A general SIGILL signal was encountered."
 msgstr ""
 "\n"
-"¥¨¥é¡¼: SIGILL ¥·¥°¥Ê¥ë¤ò¼õ¤±¤È¤ê¤Ş¤·¤¿¡£"
+"ã‚¨ãƒ©ãƒ¼: SIGILL ã‚·ã‚°ãƒŠãƒ«ã‚’å—ã‘ã¨ã‚Šã¾ã—ãŸã€‚"
 
-#: parted/ui.c:882
+#: parted/ui.c:892
 #, c-format
 msgid "invalid token: %s"
-msgstr "ÉÔÀµ¤Ê¥È¡¼¥¯¥ó¤Ç¤¹: %s"
+msgstr "ä¸æ­£ãªãƒˆãƒ¼ã‚¯ãƒ³ã§ã™: %s"
 
-#: parted/ui.c:1040
+#: parted/ui.c:1048
 msgid "Expecting a partition number."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥óÈÖ¹æ¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ç•ªå·ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚"
 
-#: parted/ui.c:1049
+#: parted/ui.c:1057
 msgid "Partition doesn't exist."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤¬¤¢¤ê¤Ş¤»¤ó¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãŒã‚ã‚Šã¾ã›ã‚“ã€‚"
 
-#: parted/ui.c:1069
+#: parted/ui.c:1077
 msgid "Expecting a file system type."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¼ïÎà¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ç¨®é¡ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚"
 
-#: parted/ui.c:1076
+#: parted/ui.c:1084
 #, c-format
 msgid "Unknown file system type \"%s\"."
-msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Î¼ïÎà \"%s\" ¤ÏÉÔÌÀ¤Ç¤¹¡£"
+msgstr "ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã®ç¨®é¡ \"%s\" ã¯ä¸æ˜ã§ã™ã€‚"
 
-#: parted/ui.c:1096
+#: parted/ui.c:1104
 msgid "Expecting a disk label type."
-msgstr "¥Ç¥£¥¹¥¯¥é¥Ù¥ë¤Î¼ïÎà¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+msgstr "ãƒ‡ã‚£ã‚¹ã‚¯ãƒ©ãƒ™ãƒ«ã®ç¨®é¡ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚"
 
-#: parted/ui.c:1194
+#: parted/ui.c:1202
 msgid "Can't create any more partitions."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤òÄÉ²Ã¤Ç¤­¤Ş¤»¤ó¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ ã§ãã¾ã›ã‚“ã€‚"
 
-#: parted/ui.c:1204
+#: parted/ui.c:1212
 msgid "Expecting a partition type."
-msgstr "¥Ñ¡¼¥Æ¥£¥·¥ç¥ó¤Î¼ïÎà¤òÆşÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£"
+msgstr "ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ã®ç¨®é¡ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„ã€‚"
 
-#: parted/ui.c:1331
+#: parted/ui.c:1360
 msgid "on"
 msgstr "on"
 
-#: parted/ui.c:1332
+#: parted/ui.c:1361
 msgid "off"
 msgstr "off"
 
-#: parted/ui.c:1456
+#: parted/ui.c:1378
+msgid "optimal"
+msgstr ""
+
+#: parted/ui.c:1379
+msgid "minimal"
+msgstr ""
+
+#: parted/ui.c:1512
 msgid "OPTIONs:"
-msgstr "¥ª¥×¥·¥ç¥ó"
+msgstr "ã‚ªãƒ—ã‚·ãƒ§ãƒ³"
 
-#: parted/ui.c:1461
+#: parted/ui.c:1517
 msgid "COMMANDs:"
-msgstr "¥³¥Ş¥ó¥É:"
+msgstr "ã‚³ãƒãƒ³ãƒ‰:"
 
-#: parted/ui.c:1470
+#: parted/ui.c:1526
 #, c-format
 msgid "Using %s\n"
-msgstr "%s ¤ò»ÈÍÑ\n"
+msgstr "%s ã‚’ä½¿ç”¨\n"
 
-#: parted/ui.c:1544
+#: parted/ui.c:1600
 msgid "This command does not make sense in non-interactive mode.\n"
-msgstr "¤³¤Î¥³¥Ş¥ó¥É¤ÏÂĞÏÃÁàºî¥â¡¼¥É¤Ç¤Ê¤±¤ì¤Ğ°ÕÌ£¤¬¤¢¤ê¤Ş¤»¤ó¡£\n"
+msgstr "ã“ã®ã‚³ãƒãƒ³ãƒ‰ã¯å¯¾è©±æ“ä½œãƒ¢ãƒ¼ãƒ‰ã§ãªã‘ã‚Œã°æ„å‘³ãŒã‚ã‚Šã¾ã›ã‚“ã€‚\n"
 
-#~ msgid "File system has an incompatible feature enabled."
-#~ msgstr "¥Õ¥¡¥¤¥ë¥·¥¹¥Æ¥à¤Ï¸ß´¹À­¤Î¤Ê¤¤µ¡Ç½¤¬Í­¸ú¤Ë¤Ê¤Ã¤Æ¤¤¤Ş¤¹¡£"
+#~ msgid "Unable to determine the block size of this dasd"
+#~ msgstr "ã“ã® dasd ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºã‚’æ±ºå®šã§ãã¾ã›ã‚“"
+
+#~ msgid ""
+#~ "The kernel was unable to re-read the partition table on %s (%s).  This "
+#~ "means Linux won't know anything about the modifications you made until "
+#~ "you reboot.  You should reboot your computer before doing anything with %"
+#~ "s."
+#~ msgstr ""
+#~ "ã‚«ãƒ¼ãƒãƒ«ã¯ %s ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚·ãƒ§ãƒ³ãƒ†ãƒ¼ãƒ–ãƒ«ã®å†…å®¹ã‚’å†èª­ã¿è¾¼ã¿ã§ãã¾ã›ã‚“(%s)ã€‚ã“"
+#~ "ã‚Œã¯å†èµ·å‹•ã™ã‚‹ã¾ã§ Linux ã‚«ãƒ¼ãƒãƒ«ã¯ã‚ãªãŸãŒè¡Œã£ãŸå¤‰æ›´ã‚’é–¢çŸ¥ã—ã¦ã„ãªã„ã“ã¨"
+#~ "ã‚’æ„å‘³ã—ã¦ã„ã¾ã™ã€‚%s ã«å¯¾ã—ã¦ä½•ã‹æ“ä½œã‚’ã™ã‚‹å‰ã«ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ã‚’å†èµ·å‹•ã™ã‚‹ã¹"
+#~ "ãã§ã™ã€‚"

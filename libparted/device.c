@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999 - 2001, 2005, 2007-2008 Free Software Foundation, Inc.
+    Copyright (C) 1999 - 2001, 2005, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@
 
 #include <limits.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <errno.h>
 
 #include "architecture.h"
@@ -49,37 +50,6 @@
 static PedDevice*	devices; /* legal advice says: initialized to NULL,
 				    under section 6.7.8 part 10
 				    of ISO/EIC 9899:1999 */
-
-#ifndef HAVE_CANONICALIZE_FILE_NAME
-char *
-canonicalize_file_name (const char *name)
-{
-	char *	buf;
-	int	size;
-	char *	result;
-
-#ifdef PATH_MAX
-	size = PATH_MAX;
-#else
-	/* Bigger is better; realpath has no way todo bounds checking.  */
-	size = 4096;
-#endif
-
-	/* Just in case realpath does not NULL terminate the string
-	 * or it just fits in SIZE without a NULL terminator.  */
-	buf = calloc (size + 1, sizeof(char));
-	if (! buf) {
-		errno = ENOMEM;
-		return NULL;
-	}
-
-	result = realpath (name, buf);
-	if (! result)
-		free (buf);
-
-	return result;
-}
-#endif /* !HAVE_CANONICALIZE_FILE_NAME */
 
 static void
 _device_register (PedDevice* dev)
@@ -416,33 +386,145 @@ ped_device_sync_fast (PedDevice* dev)
 }
 
 /**
- * Get a constraint that represents hardware requirements on alignment and
- * geometry.
- * This is, for example, important for media that have a physical sector
- * size that is a multiple of the logical sector size.
+ * Get a constraint that represents hardware requirements on geometry.
+ * This function will return a constraint representing the limits imposed
+ * by the size of the disk, it will *not* provide any alignment constraints.
  *
- * \warning This function is experimental for physical sector sizes not equal to
- *          2^9.
+ * Alignment constraints may be desirable when using media that have a physical
+ * sector size that is a multiple of the logical sector size, as in this case
+ * proper partition alignment can benefit disk performance signigicantly.
+ * When you want a constraint with alignment info, use
+ * ped_device_get_minimal_aligned_constraint() or
+ * ped_device_get_optimal_aligned_constraint().
+ *
+ * \return NULL on error, otherwise a pointer to a dynamically allocated
+ *         constraint.
  */
 PedConstraint*
 ped_device_get_constraint (PedDevice* dev)
 {
-        int multiplier = dev->phys_sector_size / dev->sector_size;
-
-        PedAlignment* start_align = ped_alignment_new (multiplier, multiplier);
-
         PedGeometry *s, *e;
         PedConstraint* c = ped_constraint_new (
-                                start_align, ped_alignment_any,
+                                ped_alignment_any, ped_alignment_any,
                                 s = ped_geometry_new (dev, 0, dev->length),
                                 e = ped_geometry_new (dev, 0, dev->length),
                                 1, dev->length);
 
         free (s);
         free (e);
+        return c;
+}
+
+static PedConstraint*
+_ped_device_get_aligned_constraint(const PedDevice *dev,
+                                   PedAlignment* start_align)
+{
+        PedAlignment *end_align = NULL;
+        PedGeometry *whole_dev_geom = NULL;
+        PedConstraint *c = NULL;
+
+        if (start_align) {
+                end_align = ped_alignment_new(start_align->offset - 1,
+                                              start_align->grain_size);
+                if (!end_align)
+                        goto free_start_align;
+        }
+
+        whole_dev_geom = ped_geometry_new (dev, 0, dev->length);
+
+        if (start_align)
+                c =  ped_constraint_new (start_align, end_align,
+                                         whole_dev_geom, whole_dev_geom,
+                                         1, dev->length);
+        else
+                c =  ped_constraint_new (ped_alignment_any, ped_alignment_any,
+                                         whole_dev_geom, whole_dev_geom,
+                                         1, dev->length);
+
+        free (whole_dev_geom);
+        free (end_align);
+free_start_align:
         free (start_align);
         return c;
 }
 
-/** @} */
+/**
+ * Get a constraint that represents hardware requirements on geometry and
+ * alignment.
+ *
+ * This function will return a constraint representing the limits imposed
+ * by the size of the disk and the minimal alignment requirements for proper
+ * performance of the disk.
+ *
+ * \return NULL on error, otherwise a pointer to a dynamically allocated
+ *         constraint.
+ */
+PedConstraint*
+ped_device_get_minimal_aligned_constraint(const PedDevice *dev)
+{
+        return _ped_device_get_aligned_constraint(dev,
+                                         ped_device_get_minimum_alignment(dev));
+}
 
+/**
+ * Get a constraint that represents hardware requirements on geometry and
+ * alignment.
+ *
+ * This function will return a constraint representing the limits imposed
+ * by the size of the disk and the alignment requirements for optimal
+ * performance of the disk.
+ *
+ * \return NULL on error, otherwise a pointer to a dynamically allocated
+ *         constraint.
+ */
+PedConstraint*
+ped_device_get_optimal_aligned_constraint(const PedDevice *dev)
+{
+        return _ped_device_get_aligned_constraint(dev,
+                                         ped_device_get_optimum_alignment(dev));
+}
+
+/**
+ * Get an alignment that represents minimum hardware requirements on alignment.
+ * When for example using media that has a physical sector size that is a
+ * multiple of the logical sector size, it is desirable to have disk accesses
+ * (and thus partitions) properly aligned. Having partitions not aligned to
+ * the minimum hardware requirements may lead to a performance penalty.
+ *
+ * The returned alignment describes the alignment for the start sector of the
+ * partition, the end sector should be aligned too, to get the end sector
+ * alignment decrease the returned alignment's offset by 1.
+ *
+ * \return the minimum alignment of partition start sectors, or NULL if this
+ *         information is not available.
+ */
+PedAlignment*
+ped_device_get_minimum_alignment(const PedDevice *dev)
+{
+        if (ped_architecture->dev_ops->get_minimum_alignment)
+                return ped_architecture->dev_ops->get_minimum_alignment(dev);
+
+        return NULL; /* ped_alignment_none */
+}
+
+/**
+ * Get an alignment that represents the hardware requirements for optimal
+ * performance.
+ *
+ * The returned alignment describes the alignment for the start sector of the
+ * partition, the end sector should be aligned too, to get the end sector
+ * alignment decrease the returned alignment's offset by 1.
+ *
+ * \return the optimal alignment of partition start sectors, or NULL if this
+ *         information is not available.
+ */
+PedAlignment*
+ped_device_get_optimum_alignment(const PedDevice *dev)
+{
+        if (ped_architecture->dev_ops->get_optimum_alignment)
+                return ped_architecture->dev_ops->get_optimum_alignment(dev);
+
+        return NULL; /* ped_alignment_none */
+}
+
+/** @} */

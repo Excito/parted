@@ -1,6 +1,6 @@
 /*
     ext2_mkfs.c -- ext2 fs creator
-    Copyright (C) 1999, 2000, 2001, 2007-2008 Free Software Foundation, Inc.
+    Copyright (C) 1999-2001, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -313,6 +313,7 @@ static int ext2_mkfs_create_lost_and_found_inode(struct ext2_fs *fs)
 			     11, ".", EXT2_FT_DIR);
 	offset = _set_dirent(bh->data, offset, fs->blocksize, 1,
 			     EXT2_ROOT_INO, "..", EXT2_FT_DIR);
+	(void) offset;
 	bh->dirty = 1;
 	ext2_brelse(bh, 1);
 

@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999, 2000, 2001, 2007-2008 Free Software Foundation, Inc.
+    Copyright (C) 1999-2001, 2007-2009 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,9 +21,16 @@
 
 #include "strlist.h"
 
+enum AlignmentType
+  {
+    PA_MINIMUM = 1,
+    PA_OPTIMUM
+  };
+
 extern const char *prog_name;
 
 extern int init_ui ();
+extern int init_readline ();
 extern int non_interactive_mode (PedDevice** dev, Command* cmd_list[],
 				 int argc, char* argv[]);
 extern int interactive_mode (PedDevice** dev, Command* cmd_list[]);
@@ -48,7 +55,8 @@ extern int command_line_get_sector (const char* prompt, PedDevice* dev,
 				    PedSector* value, PedGeometry** range);
 extern int command_line_get_state (const char* prompt, int* value);
 extern int command_line_get_device (const char* prompt, PedDevice** value);
-extern int command_line_get_disk (const char* prompt, PedDisk** value);
+extern int command_line_get_disk (const char* prompt, PedDisk** value)
+  __attribute__((__nonnull__(2)));
 extern int command_line_get_partition (const char* prompt, PedDisk* disk,
 				       PedPartition** value);
 extern int command_line_get_fs_type (const char* prompt,
@@ -63,6 +71,8 @@ extern int command_line_get_part_type (const char* prompt, const PedDisk* disk,
 extern PedExceptionOption command_line_get_ex_opt (const char* prompt,
 						   PedExceptionOption options);
 extern int command_line_get_unit (const char* prompt, PedUnit* unit);
+extern int command_line_get_align_type (const char *prompt,
+					enum AlignmentType *align_type);
 
 extern int command_line_is_integer ();
 extern int command_line_is_sector ();
@@ -77,6 +87,5 @@ extern int	pretend_input_tty;
 
 extern void print_options_help ();
 extern void print_commands_help ();
-
 
 #endif /* UI_H_INCLUDED */

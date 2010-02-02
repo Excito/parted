@@ -1,4 +1,5 @@
 #!/bin/sh
+# Preserve first 446B of the Protected MBR for gpt partitions.
 
 # Copyright (C) 2009 Free Software Foundation, Inc.
 
@@ -15,32 +16,41 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-test_description='Preserve first 446B of the Protected MBR for gpt partitions.'
+if test "$VERBOSE" = yes; then
+  set -x
+  parted --version
+fi
 
 : ${srcdir=.}
-. $srcdir/test-lib.sh
+. $srcdir/t-lib.sh
 
 dev=loop-file
-test_expect_success \
-    'Create a 100k test file with random content' \
-    'dd if=/dev/urandom of=$dev bs=1c count=446 &&
-     dd if=/dev/zero of=$dev bs=1c seek=446 count=101954 > /dev/null 2>&1'
+bootcode_size=446
 
-test_expect_success \
-    'Extract the first 446 Bytes before GPT creation' \
-    'dd if=$dev of=before bs=1c count=446 > /dev/null 2>&1'
+fail=0
+dd if=/dev/null of=$dev bs=1 seek=1M || framework_failure
 
-test_expect_success \
-    'create a GPT partition table' \
-    'parted -s $dev mklabel gpt > out 2>&1'
-test_expect_success 'expect no output' 'compare out /dev/null'
+# create a GPT partition table
+parted -s $dev mklabel gpt > out 2>&1 || fail=1
+# expect no output
+compare out /dev/null
 
-test_expect_success \
-    'Extract the first 446 Bytes after GPT creation' \
-    'dd if=$dev of=after bs=1c count=446 > /dev/null 2>&1'
+# Fill the first $bootcode_size bytes with 0's.
+# This affects only the protective MBR, so doesn't affect validity of gpt table.
+printf %0${bootcode_size}d 0 > in || fail=1
+dd of=$dev bs=1 seek=0 count=$bootcode_size conv=notrunc < in || fail=1
 
-test_expect_success \
-    'Compare the before and after' \
-    'compare before after'
+parted -s $dev p || fail=1
 
-test_done
+# create a GPT partition table on top of the existing one.
+parted -s $dev mklabel gpt > out 2>&1 || fail=1
+# expect no output
+compare out /dev/null
+
+# Extract the first $bootcode_size Bytes after GPT creation
+dd if=$dev of=after bs=1c count=$bootcode_size > /dev/null 2>&1 || fail=1
+
+# Compare the before and after
+compare in after || fail=1
+
+Exit $fail
