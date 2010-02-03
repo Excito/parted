@@ -14,6 +14,8 @@ parted (2.1-1) UNRELEASED; urgency=low
   * rules: Cell partition tables are misdetected as pc98, so disable pc98
     support on powerpc (closes: #487833).
   * control.in: Don't build-depend on libdevmapper-dev on hurd-i386.
+  * control.in: Build-depend on libdevmapper-dev (>= 1.02.33), for
+    dm_task_set_major_minor.
 
   [ Xavier Oswald ]
   * debian/control.in: 
