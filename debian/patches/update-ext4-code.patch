@@ -269,13 +269,13 @@ Description: Improve ext4 code
 -			if (is_ext4)
 -				is_ext3 = 0;
 -		}
-+		is_ext4 = ((EXT2_SUPER_FEATURE_RO_COMPAT (sb)
++		is_ext4 = ((EXT2_SUPER_FEATURE_RO_COMPAT (*sb)
 +			    & EXT4_FEATURE_RO_COMPAT_HUGE_FILE)
-+			   || (EXT2_SUPER_FEATURE_RO_COMPAT (sb)
++			   || (EXT2_SUPER_FEATURE_RO_COMPAT (*sb)
 +			       & EXT4_FEATURE_RO_COMPAT_DIR_NLINK)
-+			   || (EXT2_SUPER_FEATURE_INCOMPAT (sb)
++			   || (EXT2_SUPER_FEATURE_INCOMPAT (*sb)
 +			       & EXT4_FEATURE_INCOMPAT_EXTENTS)
-+			   || (EXT2_SUPER_FEATURE_INCOMPAT (sb)
++			   || (EXT2_SUPER_FEATURE_INCOMPAT (*sb)
 +			       & EXT4_FEATURE_INCOMPAT_64BIT));
  		free (sb);
  

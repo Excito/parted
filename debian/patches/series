@@ -3,7 +3,7 @@ doc-package.patch
 
 # For upstream merging
 preserve-hidden-parts.patch
-#update-ext4-code.patch
+update-ext4-code.patch
 #unblacklist-md.patch
 
 # Symbols for this ABI (amd64 as reference)

@@ -23,7 +23,6 @@ parted (2.1-1) UNRELEASED; urgency=low
     - Bump Standards-Version to 3.8.3
     - Update Build-Depends on debhelper 7
   * debian/compat: update version to 7
-  * Refresh update-ext4-code.patch
   * Parted not informing the kernel of changes to the partition table 
     (Closes: #557044), fixed upstream
 
@@ -36,6 +35,8 @@ parted (2.1-1) UNRELEASED; urgency=low
     - devfs.dpatch, drop (devfs is not used)
     - reiserfs-libname.dpatch, drop (referenced library is unavailable)
 
+  [ Xavier Oswald, Colin Watson ]
+  * Refresh update-ext4-code.patch
 
  -- Otavio Salvador <otavio@debian.org>  Mon, 14 Sep 2009 13:54:18 -0300
 
