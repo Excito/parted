@@ -38,6 +38,9 @@ parted (2.1-1) UNRELEASED; urgency=low
   [ Xavier Oswald, Colin Watson ]
   * Refresh update-ext4-code.patch
 
+  [ Otavio Salvador ]
+  * Fix parted-doc info files installation
+
  -- Otavio Salvador <otavio@debian.org>  Mon, 14 Sep 2009 13:54:18 -0300
 
 parted (1.8.8.git.2009.07.19-5) unstable; urgency=low

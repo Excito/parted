@@ -163,7 +163,7 @@ Package: libparted-@LIBPKGVER@-dev
 Architecture: any
 Section: libdevel
 Depends: libc6-dev, libparted-@SHAREDLIBPKGVER@ (= ${binary:Version}), ${misc:Depends}
-Suggests: parted@BINPKGVER@ (= ${binary:Version}), parted-doc
+Suggests: parted@BINPKGVER@ (= ${binary:Version}), parted@BINPKGVER@-doc
 Conflicts: libparted-dev, parted (<< 1.2.11)
 Replaces: libparted-dev, libparted0-dev, libparted2-dev
 Provides: libparted-dev
@@ -234,7 +234,7 @@ Section: doc
 Suggests: parted@BINPKGVER@ | libparted-@LIBPKGVER@-dev
 Conflicts: parted1.6-doc
 Replaces: parted1.6-doc
-Depends: ${misc:Depends}
+Depends: ${misc:Depends}, install-info
 Description: The GNU Parted disk partition resizing program documentation
  GNU Parted is a program that allows you to create, destroy,
  resize, move and copy hard disk partitions. This is useful
