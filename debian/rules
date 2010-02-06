@@ -269,7 +269,7 @@ clean: unpatch packaging-files
 	   case "$$file" in \
 	   libparted.*|libparted-dev.*|libparted-i18n.*|\
 	   libparted-$(LIBPKGVER).*|libparted-$(LIBPKGVER)-dev.*|\
-	   libparted-$(LIBPKGVER)-i18n.*|libparted-$(LIBPKGVER)-udeb.*) \
+	   libparted-$(LIBPKGVER)-i18n.*|libparted-$(SHAREDLIBPKGVER)-udeb.*) \
 	      ;; \
 	   *) \
 	      echo "rm -rf \"debian/$$file\""; \
@@ -279,7 +279,7 @@ clean: unpatch packaging-files
 
 	dh_clean
 
-install: DH_OPTIONS=-Nparted$(BINPKGVER)-udeb -Nlibparted-$(LIBPKGVER)-udeb -Nlibparted-$(LIBPKGVER)-dbg
+install: DH_OPTIONS=-Nparted$(BINPKGVER)-udeb -Nlibparted-$(SHAREDLIBPKGVER)-udeb -Nlibparted-$(LIBPKGVER)-dbg
 install: build packaging-files
 	dh_testdir
 	dh_testroot
@@ -328,8 +328,8 @@ install: build packaging-files
 	   echo " *** Maybe the debian/*.files files need updating ..." >&2; \
 	 fi
 
-install-udeb: DH_OPTIONS=-pparted$(BINPKGVER)-udeb -plibparted-$(LIBPKGVER)-udeb
-install-udeb: LIBPARTED_UDEB=$(shell dh_listpackages | grep -E '^libparted-$(LIBPKGVER)-udeb$$')
+install-udeb: DH_OPTIONS=-pparted$(BINPKGVER)-udeb -plibparted-$(SHAREDLIBPKGVER)-udeb
+install-udeb: LIBPARTED_UDEB=$(shell dh_listpackages | grep -E '^libparted-$(SHAREDLIBPKGVER)-udeb$$')
 install-udeb: PARTED_UDEB=$(shell dh_listpackages | grep -E '^parted$(BINPKGVER)-udeb$$')
 install-udeb: build-udeb
 	dh_testdir
@@ -339,11 +339,11 @@ install-udeb: build-udeb
 
 	[ -z "$(LIBPARTED_UDEB)" ] || \
 	   $(MAKE) -C build-udeb/libparted install \
-			DESTDIR=$(CURDIR)/debian/libparted-$(LIBPKGVER)-udeb
+			DESTDIR=$(CURDIR)/debian/libparted-$(SHAREDLIBPKGVER)-udeb
 
 	[ -z "$(LIBPARTED_UDEB)" ] || \
-	   rm -f debian/libparted-$(LIBPKGVER)-udeb/lib/libparted.so \
-	         debian/libparted-$(LIBPKGVER)-udeb/lib/libparted.la
+	   rm -f debian/libparted-$(SHAREDLIBPKGVER)-udeb/lib/libparted.so \
+	         debian/libparted-$(SHAREDLIBPKGVER)-udeb/lib/libparted.la
 
 	[ -z "$(PARTED_UDEB)" ] || $(MAKE) -C build-udeb/parted install \
 			DESTDIR=$(CURDIR)/debian/parted$(BINPKGVER)-udeb
@@ -377,7 +377,7 @@ binary-common:
 	dh_compress
 	dh_fixperms
 	dh_makeshlibs -V'libparted-$(SHAREDLIBPKGVER) (>= $(DEPVER))' \
-		--add-udeb=$(shell dh_listpackages | grep -E '^libparted-$(LIBPKGVER)-udeb$$')
+		--add-udeb=$(shell dh_listpackages | grep -E '^libparted-$(SHAREDLIBPKGVER)-udeb$$')
 	dh_shlibdeps -Llibparted-$(SHAREDLIBPKGVER) \
 		-l/debian/libparted-$(SHAREDLIBPKGVER)/lib
 	dh_installdeb

@@ -93,7 +93,7 @@ Description: The GNU Parted disk partitioning shared library
  they could exist, so please back up all important files before
  running it, and do so at your own risk.
 
-Package: libparted-@LIBPKGVER@-udeb
+Package: libparted-@SHAREDLIBPKGVER@-udeb
 XC-Package-Type: udeb
 Architecture: any
 Section: debian-installer
