@@ -40,6 +40,7 @@ parted (2.1-1) UNRELEASED; urgency=low
 
   [ Otavio Salvador ]
   * Fix parted-doc info files installation
+  * Add lintian overrides for parted package
 
  -- Otavio Salvador <otavio@debian.org>  Mon, 14 Sep 2009 13:54:18 -0300
 
