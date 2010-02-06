@@ -1,4 +1,4 @@
-parted (2.1-1) UNRELEASED; urgency=low
+parted (2.1-1) experimental; urgency=low
 
   * New upstream release
 
@@ -43,7 +43,7 @@ parted (2.1-1) UNRELEASED; urgency=low
   * Add lintian overrides for parted package
   * Use soname in libparted udeb name
 
- -- Otavio Salvador <otavio@debian.org>  Mon, 14 Sep 2009 13:54:18 -0300
+ -- Otavio Salvador <otavio@ossystems.com.br>  Sat, 06 Feb 2010 16:39:19 -0200
 
 parted (1.8.8.git.2009.07.19-5) unstable; urgency=low
 
