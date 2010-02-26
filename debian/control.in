@@ -17,6 +17,7 @@ Build-Depends:
  texinfo (>= 4.2),
  debianutils (>= 1.13.1),
  libgeom-dev [kfreebsd-i386 kfreebsd-amd64],
+ libblkid-dev,
  po4a,
  pkg-config
 
