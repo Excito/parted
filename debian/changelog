@@ -1,3 +1,10 @@
+parted (2.1-3) UNRELEASED; urgency=low
+
+  * linux-exports.patch: Don't export linux_get_minimum_alignment or
+    linux_get_optimum_alignment functions.
+
+ -- Colin Watson <cjwatson@debian.org>  Fri, 26 Feb 2010 15:18:04 +0000
+
 parted (2.1-2) experimental; urgency=low
 
   * Build-depend on libblkid-dev, since otherwise we don't get
