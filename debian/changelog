@@ -1,7 +1,7 @@
 parted (2.1-4) UNRELEASED; urgency=low
 
   * Make libparted-2.1-dev depend on packages that deliver other libraries
-    listed in libparted.la.
+    listed in libparted.la (closes: #526896).
 
  -- Colin Watson <cjwatson@debian.org>  Mon, 01 Mar 2010 14:40:41 +0000
 
