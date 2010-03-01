@@ -163,7 +163,7 @@ Description: The GNU Parted disk partitioning library i18n support
 Package: libparted-@LIBPKGVER@-dev
 Architecture: any
 Section: libdevel
-Depends: libc6-dev, libparted-@SHAREDLIBPKGVER@ (= ${binary:Version}), ${misc:Depends}
+Depends: libc6-dev, libparted-@SHAREDLIBPKGVER@ (= ${binary:Version}), libdevmapper-dev (>= 1.02.33) [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64], uuid-dev, libblkid-dev, ${misc:Depends}
 Suggests: parted@BINPKGVER@ (= ${binary:Version}), parted@BINPKGVER@-doc
 Conflicts: libparted-dev, parted (<< 1.2.11)
 Replaces: libparted-dev, libparted0-dev, libparted2-dev
