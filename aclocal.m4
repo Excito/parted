@@ -1,7 +1,7 @@
 # generated automatically by aclocal 1.11a -*- Autoconf -*-
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
-# 2005, 2006, 2007, 2008, 2009  Free Software Foundation, Inc.
+# 2005, 2006, 2007, 2008, 2009, 2010  Free Software Foundation, Inc.
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -13,8 +13,8 @@
 
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
-m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.65.8-b4f0a],,
-[m4_warning([this file was generated for autoconf 2.65.8-b4f0a.
+m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.65.36-64dee],,
+[m4_warning([this file was generated for autoconf 2.65.36-64dee.
 You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically `autoreconf'.])])
@@ -300,14 +300,14 @@ AC_CONFIG_COMMANDS_PRE(
 Usually this means the macro was only invoked conditionally.]])
 fi])])
 
-# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2009
-# Free Software Foundation, Inc.
+# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2009,
+# 2010  Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-# serial 10
+# serial 11
 
 # There are a few dirty hacks below to avoid letting `AC_PROG_CC' be
 # written in clear, in which case automake, when reading aclocal.m4,
@@ -476,10 +476,13 @@ AC_DEFUN([AM_DEP_TRACK],
 if test "x$enable_dependency_tracking" != xno; then
   am_depcomp="$ac_aux_dir/depcomp"
   AMDEPBACKSLASH='\'
+  am__nodep='_no'
 fi
 AM_CONDITIONAL([AMDEP], [test "x$enable_dependency_tracking" != xno])
 AC_SUBST([AMDEPBACKSLASH])dnl
 _AM_SUBST_NOTMAKE([AMDEPBACKSLASH])dnl
+AC_SUBST([am__nodep])dnl
+_AM_SUBST_NOTMAKE([am__nodep])dnl
 ])
 
 # Generate code to set up dependency tracking.              -*- Autoconf -*-
@@ -1186,6 +1189,7 @@ m4_include([m4/config-h.m4])
 m4_include([m4/dirname.m4])
 m4_include([m4/dos.m4])
 m4_include([m4/double-slash-root.m4])
+m4_include([m4/dup2.m4])
 m4_include([m4/eealloc.m4])
 m4_include([m4/environ.m4])
 m4_include([m4/errno_h.m4])
@@ -1193,6 +1197,7 @@ m4_include([m4/error.m4])
 m4_include([m4/exitfail.m4])
 m4_include([m4/extensions.m4])
 m4_include([m4/fclose.m4])
+m4_include([m4/fcntl-o.m4])
 m4_include([m4/fcntl_h.m4])
 m4_include([m4/fpending.m4])
 m4_include([m4/fsync.m4])
@@ -1208,6 +1213,7 @@ m4_include([m4/inline.m4])
 m4_include([m4/intlmacosx.m4])
 m4_include([m4/inttypes-pri.m4])
 m4_include([m4/inttypes.m4])
+m4_include([m4/langinfo_h.m4])
 m4_include([m4/lib-ignore.m4])
 m4_include([m4/lib-ld.m4])
 m4_include([m4/lib-link.m4])
@@ -1216,6 +1222,7 @@ m4_include([m4/libtool.m4])
 m4_include([m4/localcharset.m4])
 m4_include([m4/locale-fr.m4])
 m4_include([m4/locale-ja.m4])
+m4_include([m4/locale-tr.m4])
 m4_include([m4/locale-zh.m4])
 m4_include([m4/long-options.m4])
 m4_include([m4/longlong.m4])
@@ -1234,9 +1241,12 @@ m4_include([m4/mbstate_t.m4])
 m4_include([m4/memchr.m4])
 m4_include([m4/mkstemp.m4])
 m4_include([m4/mmap-anon.m4])
+m4_include([m4/mode_t.m4])
 m4_include([m4/multiarch.m4])
+m4_include([m4/nl_langinfo.m4])
 m4_include([m4/nls.m4])
 m4_include([m4/o-direct.m4])
+m4_include([m4/open.m4])
 m4_include([m4/pathmax.m4])
 m4_include([m4/po.m4])
 m4_include([m4/priv-set.m4])
@@ -1272,6 +1282,7 @@ m4_include([m4/unistd_h.m4])
 m4_include([m4/unlink.m4])
 m4_include([m4/unlinkdir.m4])
 m4_include([m4/version-etc.m4])
+m4_include([m4/warn-on-use.m4])
 m4_include([m4/warnings.m4])
 m4_include([m4/wchar.m4])
 m4_include([m4/wchar_t.m4])

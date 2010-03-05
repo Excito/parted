@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Provide a more complete sys/time.h.
 
-   Copyright (C) 2007-2009 Free Software Foundation, Inc.
+   Copyright (C) 2007-2010 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -43,6 +43,8 @@
 
 /* The definition of _GL_ARG_NONNULL is copied here.  */
 
+/* The definition of _GL_WARN_ON_USE is copied here.  */
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -55,11 +57,21 @@ struct timeval
 };
 # endif
 
-# if @REPLACE_GETTIMEOFDAY@
-#  undef gettimeofday
-#  define gettimeofday rpl_gettimeofday
+# if @GNULIB_GETTIMEOFDAY@
+#  if @REPLACE_GETTIMEOFDAY@
+#   undef gettimeofday
+#   define gettimeofday rpl_gettimeofday
+#  endif
+#  if @REPLACE_GETTIMEOFDAY@ || !@HAVE_GETTIMEOFDAY@
 extern int gettimeofday (struct timeval *restrict, void *restrict)
      _GL_ARG_NONNULL ((1));
+#  endif
+# elif defined GNULIB_POSIXCHECK
+#  undef gettimeofday
+#  if HAVE_RAW_DECL_GETTIMEOFDAY
+_GL_WARN_ON_USE (gettimeofday, "gettimeofday is unportable - "
+		 "use gnulib module gettimeofday for portability");
+#  endif
 # endif
 
 #ifdef __cplusplus

@@ -1,14 +1,14 @@
 # Slovak translation of parted.
 # Copyright (C) 2001, 2004, 2005 Free Software Foundation, Inc.
 # This file is distributed under the same license as the parted package.
-# Ivan Masár <helix84@centrum.sk>, 2007, 2008.
+# Ivan Masár <helix84@centrum.sk>, 2007, 2008, 2009.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: parted 1.8.8\n"
+"Project-Id-Version: parted 2.1\n"
 "Report-Msgid-Bugs-To: bug-parted@gnu.org\n"
-"POT-Creation-Date: 2009-12-20 11:51+0100\n"
-"PO-Revision-Date: 2008-04-03 12:08+0100\n"
+"POT-Creation-Date: 2010-02-26 15:19+0100\n"
+"PO-Revision-Date: 2009-12-31 04:29+0100\n"
 "Last-Translator: Ivan Masár <helix84@centrum.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -16,19 +16,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: lib/argmatch.c:133
-#, fuzzy, c-format
+#, c-format
 msgid "invalid argument %s for %s"
-msgstr "neplatný token: %s"
+msgstr "neplatný argument %s pre %s"
 
 #: lib/argmatch.c:134
 #, c-format
 msgid "ambiguous argument %s for %s"
-msgstr ""
+msgstr "nejednoznačný argument %s pre %s"
 
 #: lib/argmatch.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "Valid arguments are:"
-msgstr "neplatný token: %s"
+msgstr "Platné argumenty sú:"
 
 #: lib/closeout.c:112 libparted/labels/fdasd.c:107
 msgid "write error"
@@ -38,59 +38,54 @@ msgstr "chyba zápisu"
 msgid "Unknown system error"
 msgstr "Neznáma systémová chyba"
 
-#: lib/getopt.c:527 lib/getopt.c:543
-#, c-format
-msgid "%s: option `%s' is ambiguous\n"
+#: lib/getopt.c:529 lib/getopt.c:545
+#, fuzzy, c-format
+msgid "%s: option '%s' is ambiguous\n"
 msgstr "%s: voľba „%s“ je nejednoznačná\n"
 
-#: lib/getopt.c:576 lib/getopt.c:580
-#, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
+#: lib/getopt.c:578 lib/getopt.c:582
+#, fuzzy, c-format
+msgid "%s: option '--%s' doesn't allow an argument\n"
 msgstr "%s: voľba „--%s“ nepovoľuje argument\n"
 
-#: lib/getopt.c:589 lib/getopt.c:594
-#, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
+#: lib/getopt.c:591 lib/getopt.c:596
+#, fuzzy, c-format
+msgid "%s: option '%c%s' doesn't allow an argument\n"
 msgstr "%s: voľba „%c%s“ nepovoľuje argument\n"
 
-#: lib/getopt.c:637 lib/getopt.c:656 lib/getopt.c:972 lib/getopt.c:991
-#, c-format
-msgid "%s: option `%s' requires an argument\n"
+#: lib/getopt.c:639 lib/getopt.c:658 lib/getopt.c:961 lib/getopt.c:980
+#, fuzzy, c-format
+msgid "%s: option '%s' requires an argument\n"
 msgstr "%s: voľba „%s“ vyžaduje argument\n"
 
-#: lib/getopt.c:694 lib/getopt.c:697
-#, c-format
-msgid "%s: unrecognized option `--%s'\n"
+#: lib/getopt.c:696 lib/getopt.c:699
+#, fuzzy, c-format
+msgid "%s: unrecognized option '--%s'\n"
 msgstr "%s: nerozpoznaná voľba „--%s“\n"
 
-#: lib/getopt.c:705 lib/getopt.c:708
-#, c-format
-msgid "%s: unrecognized option `%c%s'\n"
+#: lib/getopt.c:707 lib/getopt.c:710
+#, fuzzy, c-format
+msgid "%s: unrecognized option '%c%s'\n"
 msgstr "%s: nerozpoznaná voľba „%c%s“\n"
 
-#: lib/getopt.c:760 lib/getopt.c:763
-#, c-format
-msgid "%s: illegal option -- %c\n"
-msgstr "%s: neprípustná voľba -- %c\n"
-
-#: lib/getopt.c:769 lib/getopt.c:772
-#, c-format
-msgid "%s: invalid option -- %c\n"
+#: lib/getopt.c:759 lib/getopt.c:762
+#, fuzzy, c-format
+msgid "%s: invalid option -- '%c'\n"
 msgstr "%s: neplatná voľba -- %c\n"
 
-#: lib/getopt.c:824 lib/getopt.c:840 lib/getopt.c:1044 lib/getopt.c:1062
-#, c-format
-msgid "%s: option requires an argument -- %c\n"
+#: lib/getopt.c:812 lib/getopt.c:829 lib/getopt.c:1032 lib/getopt.c:1050
+#, fuzzy, c-format
+msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: voľba vyžaduje -- %c\n"
 
-#: lib/getopt.c:893 lib/getopt.c:909
-#, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
+#: lib/getopt.c:882 lib/getopt.c:898
+#, fuzzy, c-format
+msgid "%s: option '-W %s' is ambiguous\n"
 msgstr "%s: voľba „-W %s“ je nejednoznačná\n"
 
-#: lib/getopt.c:933 lib/getopt.c:951
-#, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
+#: lib/getopt.c:922 lib/getopt.c:940
+#, fuzzy, c-format
+msgid "%s: option '-W %s' doesn't allow an argument\n"
 msgstr "%s: voľba „-W %s“ nepovoľuje argument\n"
 
 #. TRANSLATORS:
@@ -215,12 +210,12 @@ msgstr "^[nN]"
 #: lib/version-etc.c:74
 #, c-format
 msgid "Packaged by %s (%s)\n"
-msgstr ""
+msgstr "Balík vytvoril %s (%s)\n"
 
 #: lib/version-etc.c:77
 #, c-format
 msgid "Packaged by %s\n"
-msgstr ""
+msgstr "Balík vytvoril %s\n"
 
 #. TRANSLATORS: Translate "(C)" to the copyright symbol
 #. (C-in-a-circle), if this symbol is available in the user's
@@ -230,7 +225,6 @@ msgid "(C)"
 msgstr "©"
 
 #: lib/version-etc.c:86
-#, fuzzy
 msgid ""
 "\n"
 "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl."
@@ -242,7 +236,7 @@ msgstr ""
 "\n"
 "Licencia GPLv3+: GNU GPL verzie 3 alebo neskoršia <http://gnu.org/licenses/"
 "gpl.html>\n"
-"Toto je slobodný softvér: môžete ho meniť a redistribuovať.\n"
+"Toto je slobodný softvér: môžete ho slobodne meniť a redistribuovať.\n"
 "Neexistuje ŽIADNA ZÁRUKA do rozsahu, aký pripúšťa zákon.\n"
 "\n"
 
@@ -359,7 +353,7 @@ msgstr ""
 #. "Report translation bugs to <...>\n" with the address for translation
 #. bugs (typically your translation team's web or email address).
 #: lib/version-etc.c:245
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Report bugs to: %s\n"
@@ -368,88 +362,87 @@ msgstr ""
 "Chyby hláste <%s>.\n"
 
 #: lib/version-etc.c:247
-#, fuzzy, c-format
+#, c-format
 msgid "Report %s bugs to: %s\n"
-msgstr ""
-"\n"
-"Chyby hláste <%s>.\n"
+msgstr "Chyby %s hláste %s\n"
 
 #: lib/version-etc.c:251
 #, c-format
 msgid "%s home page: <%s>\n"
-msgstr ""
+msgstr "Domovská stránka %s: <%s>\n"
 
 #: lib/version-etc.c:253
 #, c-format
 msgid "%s home page: <http://www.gnu.org/software/%s/>\n"
-msgstr ""
+msgstr "Domovská stránka %s: <http://www.gnu.org/software/%s/>\n"
 
 #: lib/version-etc.c:256
 msgid "General help using GNU software: <http://www.gnu.org/gethelp/>\n"
 msgstr ""
+"Všeobecná pomoc s použitím softvéru GNU: <http://www.gnu.org/gethelp/>\n"
 
 #: lib/xalloc-die.c:34
 msgid "memory exhausted"
 msgstr "pamäť je vyčerpaná"
 
 #: lib/xstrtol-error.c:63
-#, fuzzy, c-format
+#, c-format
 msgid "invalid %s%s argument `%s'"
-msgstr "neplatný token: %s"
+msgstr "neplatný %s%s argument „%s“"
 
 #: lib/xstrtol-error.c:68
-#, fuzzy, c-format
+#, c-format
 msgid "invalid suffix in %s%s argument `%s'"
-msgstr "neplatný token: %s"
+msgstr "neplatná prípona v %s%s argument „%s“"
 
 #: lib/xstrtol-error.c:72
-#, fuzzy, c-format
+#, c-format
 msgid "%s%s argument `%s' too large"
-msgstr "neplatný token: %s"
+msgstr "%s%s argument „%s“ príliš veľký"
 
 #: libparted/arch/beos.c:245
 msgid "Disk Image"
 msgstr "Obraz disku"
 
-#: libparted/arch/beos.c:346 libparted/arch/gnu.c:276
-#: libparted/arch/linux.c:1510
+#: libparted/arch/beos.c:346 libparted/arch/gnu.c:277
+#: libparted/arch/linux.c:1513
 #, c-format
 msgid "Error opening %s: %s"
 msgstr "Chyba pri otváraní %s: %s"
 
-#: libparted/arch/beos.c:357 libparted/arch/gnu.c:286
-#: libparted/arch/linux.c:1521
+#: libparted/arch/beos.c:357 libparted/arch/gnu.c:287
+#: libparted/arch/linux.c:1524
 #, c-format
 msgid "Unable to open %s read-write (%s).  %s has been opened read-only."
 msgstr ""
 "Nemôžem otvoriť %s na čítanie/zápis (%s). %s bol otvorený len na čítanie."
 
-#: libparted/arch/beos.c:419 libparted/arch/linux.c:1679
+#: libparted/arch/beos.c:419 libparted/arch/linux.c:1682
 #, c-format
 msgid "%s during seek for read on %s"
 msgstr "%s pri vyhľadávaní pre čítanie na %s"
 
-#: libparted/arch/beos.c:452 libparted/arch/gnu.c:464 libparted/arch/gnu.c:563
-#: libparted/arch/gnu.c:691 libparted/arch/linux.c:1639
-#: libparted/arch/linux.c:1720
+#: libparted/arch/beos.c:452 libparted/arch/gnu.c:465 libparted/arch/gnu.c:564
+#: libparted/arch/gnu.c:692 libparted/arch/linux.c:1642
+#: libparted/arch/linux.c:1723
 #, c-format
 msgid "%s during read on %s"
 msgstr "%s pri čítaní %s"
 
-#: libparted/arch/beos.c:488 libparted/arch/gnu.c:524
-#: libparted/arch/linux.c:1796
+#: libparted/arch/beos.c:488 libparted/arch/gnu.c:525
+#: libparted/arch/linux.c:1799
 #, c-format
 msgid "Can't write to %s, because it is opened read-only."
 msgstr "Nemôžem zapisovať na %s, pretože je tvorený len na čítanie."
 
-#: libparted/arch/beos.c:504 libparted/arch/linux.c:1821
+#: libparted/arch/beos.c:504 libparted/arch/linux.c:1824
 #, c-format
 msgid "%s during seek for write on %s"
 msgstr "%s pri pri vyhľadávaní pre zápis na %s"
 
-#: libparted/arch/beos.c:541 libparted/arch/gnu.c:600 libparted/arch/gnu.c:645
-#: libparted/arch/gnu.c:722 libparted/arch/linux.c:1769
-#: libparted/arch/linux.c:1863 libparted/arch/linux.c:1935
+#: libparted/arch/beos.c:541 libparted/arch/gnu.c:601 libparted/arch/gnu.c:646
+#: libparted/arch/gnu.c:723 libparted/arch/linux.c:1772
+#: libparted/arch/linux.c:1866 libparted/arch/linux.c:1938
 #, c-format
 msgid "%s during write on %s"
 msgstr "%s pri zápise na %s"
@@ -505,9 +498,9 @@ msgid "too many arguments"
 msgstr "príliš veľa argumentov"
 
 #: debug/clearfat/clearfat.c:297
-#, fuzzy, c-format
+#, c-format
 msgid "invalid minor device number: %s"
-msgstr "neplatný token: %s"
+msgstr "neplatn0 vedľajšie číslo zariadenia: %s"
 
 #: partprobe/partprobe.c:141
 #, c-format
@@ -523,7 +516,7 @@ msgid ""
 "  -h, --help       display this help and exit\n"
 "  -v, --version    output version information and exit\n"
 msgstr ""
-"Informovať OS o zmenách tabuľky oddielov.\n"
+"Informovať OS o zmenách tabuľky oblastí.\n"
 "\n"
 "  -d, --no-update  v skutočnosti neinformovať OS\n"
 "  -s, --summary    vypísať zhrnutie obsahu\n"
@@ -536,18 +529,18 @@ msgid ""
 "When no DEVICE is given, probe all partitions.\n"
 msgstr ""
 "\n"
-"Bez zadaného ZARIADENIA skúsi všetky oddiely.\n"
+"Bez zadaného ZARIADENIA skúsi všetky oblasti.\n"
 
-#: libparted/arch/gnu.c:109
+#: libparted/arch/gnu.c:110
 #, c-format
 msgid "Unable to open %s."
 msgstr "Nemôžem otvoriť %s."
 
-#: libparted/arch/gnu.c:129
+#: libparted/arch/gnu.c:130
 msgid "Unable to probe store."
 msgstr "Nemôžem preskúmať úložný priestor."
 
-#: libparted/arch/gnu.c:367
+#: libparted/arch/gnu.c:368
 msgid ""
 "The partition table cannot be re-read.  This means you need to reboot before "
 "mounting any modified partitions.  You also need to reinstall your boot "
@@ -556,26 +549,26 @@ msgid ""
 "and reinstall your boot loader from the rescue disk.  Read section 4 of the "
 "Parted User documentation for more information."
 msgstr ""
-"Nebolo možné znovu načítať tabuľku oddielov, takže budete musieť pred "
-"pripojením zmenených oddielov reštartovať počítač. Tiež musíte pred "
-"reštartom znovu nainštalovať svoj zavádzač systému (čo môže vyžadovať "
-"pripojenie zmenených oddielov). Nie je možné vykonať oboje! Takže budete "
-"musieť zaviesť systém zo záchranného disku a znovu nainštalovať svoj "
-"zavádzač systému odtiaľ. Podrobnejšie informácie sa dočítate v kapitole 4 "
-"Používateľskej dokumentácie Parted."
+"Nebolo možné znovu načítať tabuľku oblastí, takže budete musieť pred "
+"pripojením zmenených oblastí reštartovať počítač. Tiež musíte pred reštartom "
+"znovu nainštalovať svoj zavádzač systému (čo môže vyžadovať pripojenie "
+"zmenených oblastí). Nie je možné vykonať oboje! Takže budete musieť zaviesť "
+"systém zo záchranného disku a znovu nainštalovať svoj zavádzač systému "
+"odtiaľ. Podrobnejšie informácie sa dočítate v kapitole 4 Používateľskej "
+"dokumentácie Parted."
 
-#: libparted/arch/gnu.c:384
+#: libparted/arch/gnu.c:385
 #, c-format
 msgid ""
 "The partition table on %s cannot be re-read (%s).  This means the Hurd knows "
 "nothing about any modifications you made.  You should reboot your computer "
 "before doing anything with %s."
 msgstr ""
-"Tabuľku oddielov na %s nie je možné znovu načítať (%s). To znamená, že Hurd "
+"Tabuľku oblastí na %s nie je možné znovu načítať (%s). To znamená, že Hurd "
 "nevie nič o zmenách, ktoré ste vykonali. Než budete čokoľvek robiť s %s, "
-"mali by ste reštartovat svoj počítač."
+"mali by ste reštartovať svoj počítač."
 
-#: libparted/arch/gnu.c:395 parted/parted.c:2634
+#: libparted/arch/gnu.c:396 parted/parted.c:2701
 msgid ""
 "You should reinstall your boot loader before rebooting.  Read section 4 of "
 "the Parted User documentation for more information."
@@ -583,23 +576,23 @@ msgstr ""
 "Pred reštartom by ste mali reinštalovať svoj zavádzač systému. Viac "
 "informáci nájdete v kapitole 4 Používateľskej dokumentácie Parted."
 
-#: libparted/arch/gnu.c:787
+#: libparted/arch/gnu.c:788
 #, c-format
 msgid "%s trying to sync %s to disk"
 msgstr "%s pri pokuse o sync %s na disk"
 
-#: libparted/arch/linux.c:508
+#: libparted/arch/linux.c:507
 #, c-format
 msgid "Could not stat device %s - %s."
 msgstr "Nemôžem získať stat zariadenia %s - %s."
 
-#: libparted/arch/linux.c:563
-#, fuzzy, c-format
+#: libparted/arch/linux.c:562
+#, c-format
 msgid "Unable to determine the dm type of %s."
-msgstr "Nepodarilo sa určiť veľkosť %s (%s)"
+msgstr "Nepodarilo sa určiť typ dm %s"
 
-#: libparted/arch/linux.c:653
-#, fuzzy, c-format
+#: libparted/arch/linux.c:652
+#, c-format
 msgid ""
 "Could not determine sector size for %s: %s.\n"
 "Using the default sector size (%lld)."
@@ -607,16 +600,16 @@ msgstr ""
 "Nebolo možné určiť veľkosť sektora %s: %s.\n"
 "Používam štandardnú veľkosť sektora (%lld)."
 
-#: libparted/arch/linux.c:666
+#: libparted/arch/linux.c:673
 #, fuzzy, c-format
 msgid ""
-"Could not determine minimum io size for %s: %s.\n"
-"Using the default size (%lld)."
+"Could not determine physical sector size for %s.\n"
+"Using the logical sector size (%lld)."
 msgstr ""
 "Nebolo možné určiť veľkosť sektora %s: %s.\n"
 "Používam štandardnú veľkosť sektora (%lld)."
 
-#: libparted/arch/linux.c:689
+#: libparted/arch/linux.c:692
 #, c-format
 msgid ""
 "Device %s has a logical sector size of %lld.  Not all parts of GNU Parted "
@@ -625,21 +618,21 @@ msgstr ""
 "Zariadenie %s má veľkosť logického sektora %lld.  Nie všetky časti GNU "
 "Parted to momentálne podporujú a pracovný kód je VYSOKO EXPERIMENTÁLNY.\n"
 
-#: libparted/arch/linux.c:729
+#: libparted/arch/linux.c:732
 #, c-format
 msgid "Unable to determine the size of %s (%s)."
 msgstr "Nepodarilo sa určiť veľkosť %s (%s)"
 
-#: libparted/arch/linux.c:815
+#: libparted/arch/linux.c:818
 #, c-format
 msgid "Could not get identity of device %s - %s"
 msgstr "Nemôžem získat identitu zariadenia %s - %s"
 
-#: libparted/arch/linux.c:824
+#: libparted/arch/linux.c:827
 msgid "Generic IDE"
 msgstr "Všeobecný IDE"
 
-#: libparted/arch/linux.c:845
+#: libparted/arch/linux.c:848
 #, c-format
 msgid ""
 "Device %s has multiple (%d) logical sectors per physical sector.\n"
@@ -652,21 +645,21 @@ msgstr ""
 "zväzkov/súborových systémov, napr. GPT a ext2/3.\n"
 "Prosím, pozrite si aktuálne informácie na webe."
 
-#: libparted/arch/linux.c:1020
+#: libparted/arch/linux.c:1023
 #, c-format
 msgid "Error initialising SCSI device %s - %s"
 msgstr "Chyba pri inicializácii zariadenia SCSI %s - %s"
 
-#: libparted/arch/linux.c:1084
+#: libparted/arch/linux.c:1087
 #, c-format
 msgid ""
 "The device %s has zero length, and can't possibly store a file system or "
 "partition table.  Perhaps you selected the wrong device?"
 msgstr ""
-"Zariadenie %s má nulovou dĺžku a nemôže obsahovať systém súborov ani tabuľku "
-"oddielov. Možno ste vybrali chybné zariadenie?"
+"Zariadenie %s má nulovú dĺžku a nemôže obsahovať systém súborov ani tabuľku "
+"oblastí. Možno ste vybrali chybné zariadenie?"
 
-#: libparted/arch/linux.c:1191
+#: libparted/arch/linux.c:1194
 #, c-format
 msgid ""
 "Unable to determine geometry of file/device %s.  You should not use Parted "
@@ -675,124 +668,126 @@ msgstr ""
 "Nemôžem určiť geometriu súboru/zariadenia %s. Nemali by ste používať Parted, "
 "ak NAOZAJ neviete, čo robíte!"
 
-#: libparted/arch/linux.c:1251
+#: libparted/arch/linux.c:1254
 msgid "Generic SD/MMC Storage Card"
-msgstr ""
+msgstr "Všeobecná úložná karta SD/MMC"
 
-#: libparted/arch/linux.c:1304
+#: libparted/arch/linux.c:1307
 msgid "DAC960 RAID controller"
 msgstr "radič RAID DAC960"
 
-#: libparted/arch/linux.c:1309
+#: libparted/arch/linux.c:1312
 msgid "Promise SX8 SATA Device"
 msgstr "Promise SX8 zariadenie SATA"
 
-#: libparted/arch/linux.c:1315
+#: libparted/arch/linux.c:1318
 msgid "IBM S390 DASD drive"
 msgstr "jednotka IBM S390 DASD"
 
-#: libparted/arch/linux.c:1321
+#: libparted/arch/linux.c:1324
 msgid "IBM iSeries Virtual DASD"
 msgstr "IBM iSeries Virtual DASD"
 
-#: libparted/arch/linux.c:1326
+#: libparted/arch/linux.c:1329
 msgid "Compaq Smart Array"
 msgstr "Compaq Smart Array"
 
-#: libparted/arch/linux.c:1331
+#: libparted/arch/linux.c:1334
 msgid "ATARAID Controller"
 msgstr "radič ATARAID"
 
-#: libparted/arch/linux.c:1336
+#: libparted/arch/linux.c:1339
 msgid "I2O Controller"
 msgstr "radič I2O"
 
-#: libparted/arch/linux.c:1341
+#: libparted/arch/linux.c:1344
 msgid "User-Mode Linux UBD"
 msgstr "User-Mode Linux UBD"
 
-#: libparted/arch/linux.c:1354
-#, fuzzy, c-format
+#: libparted/arch/linux.c:1357
+#, c-format
 msgid "Linux device-mapper (%s)"
-msgstr "mapovač zariadení Linux"
+msgstr "mapovač zariadení Linux (%s)"
 
-#: libparted/arch/linux.c:1365
+#: libparted/arch/linux.c:1368
 msgid "Xen Virtual Block Device"
 msgstr "Virtuálne blokové zariadenie Xen"
 
-#: libparted/arch/linux.c:1370
+#: libparted/arch/linux.c:1373
 msgid "Unknown"
 msgstr "Neznámy"
 
-#: libparted/arch/linux.c:1379
-#, fuzzy
+#: libparted/arch/linux.c:1382
 msgid "Virtio Block Device"
-msgstr "Virtuálne blokové zariadenie Xen"
+msgstr "Blokové zariadenie Vistio"
 
-#: libparted/arch/linux.c:1386
+#: libparted/arch/linux.c:1389
 msgid "ped_device_new()  Unsupported device type"
 msgstr "ped_device_new()  Nepodporovaný typ zariadenia"
 
-#: libparted/arch/linux.c:1483 libparted/arch/linux.c:1555
-#, fuzzy, c-format
+#: libparted/arch/linux.c:1486 libparted/arch/linux.c:1558
+#, c-format
 msgid "Error fsyncing/closing %s: %s"
-msgstr "Chyba pri otváraní %s: %s"
+msgstr "Chyba pri fsync/zatváraní %s: %s"
 
-#: libparted/arch/linux.c:1719
+#: libparted/arch/linux.c:1722
 #, c-format
 msgid "end of file while reading %s"
-msgstr ""
+msgstr "koniec súboru počas čítania %s"
 
-#: libparted/arch/linux.c:2416
+#: libparted/arch/linux.c:2419
 #, c-format
 msgid ""
 "parted was unable to re-read the partition table on %s (%s).  This means "
 "Linux won't know anything about the modifications you made. "
 msgstr ""
-"Jádro nedokázal znovu načítať tabuľku oddielov na %s (%s). To znamená, že "
+"Jádro nedokázalo znovu načítať tabuľku oblastí na %s (%s). To znamená, že "
 "Linux vedieť o zmenách, ktoré ste vykonali."
 
-#: libparted/arch/linux.c:2531
+#: libparted/arch/linux.c:2537
 #, c-format
 msgid ""
 "WARNING: the kernel failed to re-read the partition table on %s (%s).  As a "
 "result, it may not reflect all of your changes until after reboot."
 msgstr ""
+"UPOZORNENIE: jadru sa nepodarilo znova načítať tabuľku oblastí na %s (%s). V "
+"dôsledku toho menusí reflektovať všetky vaše zmeny dovtedy, kým nevykonáte "
+"reštart."
 
-#: libparted/cs/geom.c:161
-#, fuzzy, c-format
+#: libparted/cs/geom.c:162
+#, c-format
 msgid "Can't have the end before the start! (start sector=%jd length=%jd)"
-msgstr "Nemôžem mať konie pred začiatkom!"
+msgstr "Nemožno mať koniec pred začiatkom! (počiat. sektor=%jd dĺžka=%jd)"
 
-#: libparted/cs/geom.c:169
+#: libparted/cs/geom.c:170
 msgid "Can't have a partition outside the disk!"
-msgstr "Nemôžem mať oddiel mimo disku!"
+msgstr "Nemožno mať oblasť mimo disku!"
 
-#: libparted/cs/geom.c:384
+#: libparted/cs/geom.c:385
 #, c-format
 msgid "Attempt to write sectors %ld-%ld outside of partition on %s."
-msgstr "Pokus o zápis sektorov %ld-%ld mimo oddielu na %s"
+msgstr "Pokus o zápis sektorov %ld-%ld mimo oblasti na %s"
 
-#: libparted/cs/geom.c:424 libparted/fs/linux_swap/linux_swap.c:487
+#: libparted/cs/geom.c:425 libparted/fs/linux_swap/linux_swap.c:488
 msgid "checking for bad blocks"
 msgstr "hľadám chybné bloky"
 
-#: libparted/debug.c:96
+#: libparted/debug.c:97
 #, c-format
 msgid "Backtrace has %d calls on stack:\n"
 msgstr "Backtrace: %d volaní na zásobníku:\n"
 
-#: libparted/debug.c:109
+#: libparted/debug.c:110
 #, c-format
 msgid "Assertion (%s) at %s:%d in function %s() failed."
 msgstr "Zlyhal predpoklad (%s) v %s:%d vo funkcii %s()."
 
-#: libparted/disk.c:193
+#: libparted/disk.c:194
 #, c-format
 msgid "%s: unrecognised disk label"
 msgstr "%s: nerozpoznaná menovka disku."
 
-#: libparted/disk.c:484
+#: libparted/disk.c:487
 #, c-format
 msgid ""
 "This libparted doesn't have write support for %s.  Perhaps it was compiled "
@@ -801,139 +796,139 @@ msgstr ""
 "Táto libparted nemá podporu pre zápis na %s. Možno bola skompilovaná len na "
 "čítanie."
 
-#: libparted/disk.c:629
+#: libparted/disk.c:632
 #, c-format
 msgid "Partition %d is %s, but the file system is %s."
-msgstr "Oddiel %d má %s, ale systém súborov má %s."
+msgstr "Oblasť %d má %s, ale systém súborov má %s."
 
-#: libparted/disk.c:837
+#: libparted/disk.c:842
 msgid "cylinder_alignment"
-msgstr ""
+msgstr "cylinder_alignment"
 
-#: libparted/disk.c:843
-#, fuzzy, c-format
+#: libparted/disk.c:848
+#, c-format
 msgid "Unknown disk flag, %d."
-msgstr "Neznámý príznak oddielu, %d."
+msgstr "Neznámý príznak disku, %d."
 
-#: libparted/disk.c:1282
+#: libparted/disk.c:1287
 #, c-format
 msgid "%s disk labels do not support extended partitions."
-msgstr "Menovky disku %s nepodporujú rozšírené oddiely."
+msgstr "Menovky disku %s nepodporujú rozšírené oblasti."
 
-#: libparted/disk.c:1861
+#: libparted/disk.c:1866
 #, c-format
 msgid "%s disk labels don't support logical or extended partitions."
-msgstr "Menovky disku %s nepodporujú logické alebo rozšírené oddiely."
+msgstr "Menovky disku %s nepodporujú logické alebo rozšírené oblasti."
 
-#: libparted/disk.c:1874
+#: libparted/disk.c:1879
 msgid "Too many primary partitions."
-msgstr "Príliš veľa primárnych oddielov."
+msgstr "Príliš veľa primárnych oblastí."
 
-#: libparted/disk.c:1883
+#: libparted/disk.c:1888
 #, c-format
 msgid ""
 "Can't add a logical partition to %s, because there is no extended partition."
 msgstr ""
-"Nemôžem pridať logický oddiel do %s, pretože neexistuje rozšírený oddiel."
+"Nemožno pridať logickú oblasť do %s, pretože neexistuje rozšírená oblasť."
 
-#: libparted/disk.c:1907
+#: libparted/disk.c:1912
 #, c-format
 msgid "Can't have more than one extended partition on %s."
-msgstr "Nie je možné mať na %s viac než jeden rozšírený oddiel."
+msgstr "Nie je možné mať na %s viac než jednu rozšírenú oblasť."
 
-#: libparted/disk.c:1917
+#: libparted/disk.c:1922
 msgid "Can't have logical partitions outside of the extended partition."
-msgstr "Logické oddiely nemôžu byť mimo rozšíreného oddielu."
+msgstr "Logické oblasti nemôžu byť mimo rozšírenej oblasti."
 
-#: libparted/disk.c:1942
+#: libparted/disk.c:1947
 #, c-format
 msgid "Can't have a logical partition outside of the extended partition on %s."
-msgstr "Logický oddiel nemôže byť mimo rozšíreného oddielu na %s."
+msgstr "Logická oblasť nemôže byť mimo rozšírenej oblasti na %s."
 
-#: libparted/disk.c:1952 libparted/disk.c:2011 libparted/disk.c:2189
+#: libparted/disk.c:1957 libparted/disk.c:2016 libparted/disk.c:2194
 msgid "Can't have overlapping partitions."
-msgstr "Nie je možné mať prekrývajúce se oddiely."
+msgstr "Nie je možné mať prekrývajúce se oblasti."
 
-#: libparted/disk.c:1960
+#: libparted/disk.c:1965
 msgid "Can't have a primary partition inside an extended partition."
-msgstr "Primárny oddiel nemôže byť vnútri rozšíreného oddielu."
+msgstr "Primárna oblasť nemôže byť vnútri rozšírenej oblasti."
 
-#: libparted/disk.c:2391
+#: libparted/disk.c:2396
 msgid "metadata"
 msgstr "metadáta"
 
-#: libparted/disk.c:2393
+#: libparted/disk.c:2398
 msgid "free"
 msgstr "voľné"
 
-#: libparted/disk.c:2395 parted/ui.c:1193 parted/ui.c:1221
+#: libparted/disk.c:2400 parted/ui.c:1193 parted/ui.c:1221
 msgid "extended"
 msgstr "rozšírený"
 
-#: libparted/disk.c:2397 parted/ui.c:1197 parted/ui.c:1225
+#: libparted/disk.c:2402 parted/ui.c:1197 parted/ui.c:1225
 msgid "logical"
 msgstr "logický"
 
-#: libparted/disk.c:2399 parted/ui.c:1189 parted/ui.c:1217
+#: libparted/disk.c:2404 parted/ui.c:1189 parted/ui.c:1217
 msgid "primary"
 msgstr "primárny"
 
-#: libparted/disk.c:2415
+#: libparted/disk.c:2420
 msgid "boot"
 msgstr "zavádzací"
 
-#: libparted/disk.c:2417
+#: libparted/disk.c:2422
 msgid "bios_grub"
-msgstr ""
+msgstr "bios_grub"
 
-#: libparted/disk.c:2419
+#: libparted/disk.c:2424
 msgid "root"
 msgstr "koreňový"
 
-#: libparted/disk.c:2421
+#: libparted/disk.c:2426
 msgid "swap"
 msgstr "odkladací"
 
-#: libparted/disk.c:2423
+#: libparted/disk.c:2428
 msgid "hidden"
 msgstr "skrytý"
 
-#: libparted/disk.c:2425
+#: libparted/disk.c:2430
 msgid "raid"
 msgstr "RAID"
 
-#: libparted/disk.c:2427
+#: libparted/disk.c:2432
 msgid "lvm"
 msgstr "LVM"
 
-#: libparted/disk.c:2429
+#: libparted/disk.c:2434
 msgid "lba"
 msgstr "LBA"
 
-#: libparted/disk.c:2431
+#: libparted/disk.c:2436
 msgid "hp-service"
 msgstr "hp-service"
 
-#: libparted/disk.c:2433
+#: libparted/disk.c:2438
 msgid "palo"
 msgstr "palo"
 
-#: libparted/disk.c:2435
+#: libparted/disk.c:2440
 msgid "prep"
 msgstr "prep"
 
-#: libparted/disk.c:2437
+#: libparted/disk.c:2442
 msgid "msftres"
 msgstr "msftres"
 
-#: libparted/disk.c:2439
+#: libparted/disk.c:2444
 msgid "atvrecv"
-msgstr ""
+msgstr "atvrecv"
 
-#: libparted/disk.c:2445
+#: libparted/disk.c:2450
 #, c-format
 msgid "Unknown partition flag, %d."
-msgstr "Neznámý príznak oddielu, %d."
+msgstr "Neznámy príznak oblasti, %d."
 
 #: libparted/exception.c:77
 msgid "Information"
@@ -988,10 +983,10 @@ msgid "Cancel"
 msgstr "Zrušiť"
 
 #: libparted/exception.c:132
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "A bug has been detected in GNU Parted.  Refer to the web site of parted "
-"http://www.gnu.org/software/parted/parted.html for more informations of what "
+"http://www.gnu.org/software/parted/parted.html for more information of what "
 "could be useful for bug submitting!  Please email a bug report to bug-"
 "parted@gnu.org containing at least the version (%s) and the following "
 "message:  "
@@ -1037,7 +1032,7 @@ msgstr "zväčšovanie systému súborov"
 
 #: libparted/filesys.c:700
 msgid "Can't copy onto an overlapping partition."
-msgstr "Nemôžem kopírovať do prekrývajúceho sa oddielu."
+msgstr "Nemožno kopírovať do prekrývajúcej sa oblasti."
 
 #: libparted/filesys.c:722
 #, c-format
@@ -1050,9 +1045,9 @@ msgid ""
 msgstr ""
 "Priama podpora pre kopírovanie súborových systémov zatiaľ nie je "
 "implementovaná pre %s. Ale je implementovaná podpora zmeny veľkosti. Preto "
-"nie je možné skopírovať súborový systém ak je nový oddiel najmenej taký "
-"veľký ako ten starý. Takže buď zmenšite oddiel, ktorý sa pokúšate kopírovať "
-"alebo kopírujte na väčšá oddiel."
+"nie je možné skopírovať súborový systém ak je nová oblasť najmenej taká "
+"veľká ako tá stará. Takže buď zmenšite oblasť, ktorú sa pokúšate kopírovať "
+"alebo kopírujte na väčšiu oblasť."
 
 #: libparted/filesys.c:736
 #, c-format
@@ -1067,32 +1062,32 @@ msgstr ""
 "Podpora pre zmenu veľikosti súborových systémov %s ešte nie je "
 "implementovaná."
 
-#: libparted/fs/reiserfs/reiserfs.c:314
+#: libparted/fs/reiserfs/reiserfs.c:315
 msgid "creating"
 msgstr "vytvára sa"
 
-#: libparted/fs/reiserfs/reiserfs.c:401
+#: libparted/fs/reiserfs/reiserfs.c:402
 msgid "The file system is in an invalid state.  Perhaps it is mounted?"
 msgstr "Systém súborov je v neplatnom stave. Že by bol pripojený?"
 
-#: libparted/fs/reiserfs/reiserfs.c:409
+#: libparted/fs/reiserfs/reiserfs.c:410
 msgid "The file system is in old (unresizeable) format."
 msgstr "Súborový systém má starý formát (nie je možné meniť jeho veľkosť)."
 
-#: libparted/fs/reiserfs/reiserfs.c:415
+#: libparted/fs/reiserfs/reiserfs.c:416
 msgid "Invalid free blocks count.  Run reiserfsck --check first."
 msgstr "Neplatný počet voľných blokov.  Najprv spustite reiserfsck --check."
 
-#: libparted/fs/reiserfs/reiserfs.c:430
+#: libparted/fs/reiserfs/reiserfs.c:431
 msgid "checking"
 msgstr "kontroluje sa"
 
-#: libparted/fs/reiserfs/reiserfs.c:436
+#: libparted/fs/reiserfs/reiserfs.c:437
 msgid "Reiserfs tree seems to be corrupted.  Run reiserfsck --check first."
 msgstr ""
 "Zdá sa, že Reiserfs strom je poškodený.  Najpv spustite reiserfsck --check."
 
-#: libparted/fs/reiserfs/reiserfs.c:448
+#: libparted/fs/reiserfs/reiserfs.c:449
 msgid ""
 "The reiserfs file system passed a basic check.  For a more comprehensive "
 "check, run reiserfsck --check."
@@ -1100,47 +1095,47 @@ msgstr ""
 "Systém súborov reiserfs absolvoval základnú kontrolu. Pre podrobnejšiu "
 "kontrolu použite reiserfsck --check."
 
-#: libparted/fs/reiserfs/reiserfs.c:473
+#: libparted/fs/reiserfs/reiserfs.c:474
 msgid "Sorry, can't move the start of reiserfs partitions yet."
-msgstr "Ľutujem, zatiaľ nedokážem presunúť začiatok oddielov reiserfs."
+msgstr "Ľutujem, zatiaľ nie je možné presúvať začiatok oblastí reiserfs."
 
-#: libparted/fs/reiserfs/reiserfs.c:489
+#: libparted/fs/reiserfs/reiserfs.c:490
 msgid "Couldn't reopen device abstraction layer for read/write."
 msgstr ""
 "Nebolo možné znovu otvoriť abstrakčnú vrstvu zariadenia pre čítanie/zápis."
 
-#: libparted/fs/reiserfs/reiserfs.c:507 libparted/fs/ext2/ext2_resize.c:551
-#: libparted/fs/hfs/hfs.c:249 libparted/fs/hfs/hfs.c:628
+#: libparted/fs/reiserfs/reiserfs.c:508 libparted/fs/ext2/ext2_resize.c:552
+#: libparted/fs/hfs/hfs.c:250 libparted/fs/hfs/hfs.c:629
 msgid "shrinking"
 msgstr "zmenšujem"
 
-#: libparted/fs/reiserfs/reiserfs.c:519
+#: libparted/fs/reiserfs/reiserfs.c:520
 msgid "expanding"
 msgstr "zväčšuje sa"
 
-#: libparted/fs/reiserfs/reiserfs.c:591
+#: libparted/fs/reiserfs/reiserfs.c:592
 msgid "Couldn't create reiserfs device abstraction handler."
 msgstr "Nebolo možné vytvoriť abstrakčnú vrstvu reiserfs zariadenia."
 
-#: libparted/fs/reiserfs/reiserfs.c:605
+#: libparted/fs/reiserfs/reiserfs.c:606
 #, c-format
 msgid "Device is too small for %lu blocks."
 msgstr "Systém súborov je príliš malý na %lu blokov."
 
-#: libparted/fs/reiserfs/reiserfs.c:614
+#: libparted/fs/reiserfs/reiserfs.c:615
 msgid "copying"
 msgstr "kopíruje sa"
 
-#: libparted/fs/reiserfs/reiserfs.c:681
+#: libparted/fs/reiserfs/reiserfs.c:682
 #, c-format
 msgid "Couldn't resolve symbol %s.  Error: %s."
 msgstr "Nebolo možné preložiť symbol %s.  Chyba: %s."
 
-#: libparted/fs/reiserfs/reiserfs.c:703
+#: libparted/fs/reiserfs/reiserfs.c:704
 msgid "GNU Parted found an invalid libreiserfs library."
 msgstr "GNU Parted našiel neplatnú knižnicu libreiserfs."
 
-#: libparted/fs/reiserfs/reiserfs.c:714
+#: libparted/fs/reiserfs/reiserfs.c:715
 #, c-format
 msgid ""
 "GNU Parted has detected libreiserfs interface version mismatch.  Found %d-%"
@@ -1149,107 +1144,108 @@ msgstr ""
 "GNU Parted zistil nezhodu verzií rozhrania libreiserfs.  Nájdená %d-%d, "
 "požadovaná %d. Podpora ReiserFS bude vypnutá."
 
-#: libparted/labels/aix.c:123
+#: libparted/labels/aix.c:103
 msgid "Support for reading AIX disk labels is is not implemented yet."
 msgstr "Podpora čítania menoviek disku AIX ešte nie je implementovaná."
 
-#: libparted/labels/aix.c:134
+#: libparted/labels/aix.c:114
 msgid "Support for writing AIX disk labels is is not implemented yet."
 msgstr "Podpora zápisu menoviek disku AIX ešte nie je implementovaná."
 
-#: libparted/labels/aix.c:147
+#: libparted/labels/aix.c:127
 msgid ""
 "Support for adding partitions to AIX disk labels is not implemented yet."
 msgstr ""
-"Podpora pridávania oddielov do menoviek disku AIX ešte nie je implementovaná."
+"Podpora pridávania oblastí do menoviek disku AIX ešte nie je implementovaná."
 
-#: libparted/labels/aix.c:157
+#: libparted/labels/aix.c:137
 msgid ""
 "Support for duplicating partitions in AIX disk labels is not implemented yet."
 msgstr ""
-"Podpora kopírovania oddielov v menovkách disku AIX ešte nie je "
-"implementovaná."
+"Podpora kopírovania oblastí v menovkách disku AIX ešte nie je implementovaná."
 
-#: libparted/labels/aix.c:175
+#: libparted/labels/aix.c:155
 msgid ""
 "Support for setting system type of partitions in AIX disk labels is not "
 "implemented yet."
 msgstr ""
-"Podpora nastavovania typu systému oddielov v menovkách disku AIX ešte nie je "
+"Podpora nastavovania typu systému oblastí v menovkách disku AIX ešte nie je "
 "implementovaná."
 
-#: libparted/labels/aix.c:185
+#: libparted/labels/aix.c:165
 msgid "Support for setting flags in AIX disk labels is not implemented yet."
 msgstr ""
 "Podpora nastavovania príznakov v menovkách disku AIX ešte nie je "
 "implementovaná."
 
-#: libparted/labels/bsd.c:583 libparted/labels/dasd.c:805
-#: libparted/labels/dos.c:2064 libparted/labels/dvh.c:795
-#: libparted/labels/gpt.c:1726 libparted/labels/loop.c:254
-#: libparted/labels/mac.c:1474 libparted/labels/pc98.c:773
-#: libparted/labels/rdb.c:1073 libparted/labels/sun.c:823
+#: libparted/labels/bsd.c:568 libparted/labels/dasd.c:783
+#: libparted/labels/dos.c:2051 libparted/labels/dvh.c:788
+#: libparted/labels/gpt.c:1715 libparted/labels/loop.c:245
+#: libparted/labels/mac.c:1424 libparted/labels/pc98.c:749
+#: libparted/labels/rdb.c:1051 libparted/labels/sun.c:821
 msgid "Unable to satisfy all constraints on the partition."
-msgstr "Nemôžem splniť všetky obmedzenia na oddiel."
+msgstr "Nemožno splniť všetky obmedzenia na oddiel."
 
-#: libparted/labels/bsd.c:608
+#: libparted/labels/bsd.c:593
 msgid "Unable to allocate a bsd disklabel slot."
 msgstr "Nie je možné alokovať položku menovky disku BSD."
 
-#: libparted/labels/dasd.c:831
+#: libparted/labels/dasd.c:809
 msgid "Unable to allocate a dasd disklabel slot"
 msgstr "Nie je možné alokovať položku menovky disku dasd."
 
-#: libparted/labels/dos.c:895
+#: libparted/labels/dos.c:877
 #, c-format
 msgid "Invalid partition table on %s -- wrong signature %x."
-msgstr "Neplatná tabuľka oddielov na %s - nesprávny podpis %x"
+msgstr "Neplatná tabuľka oblastí na %s - nesprávny podpis %x"
 
-#: libparted/labels/dos.c:923
+#: libparted/labels/dos.c:905
 #, c-format
 msgid "Invalid partition table - recursive partition on %s."
-msgstr "Neplatná tabuľka oddielov - rekurzívny oddiel na %s."
+msgstr "Neplatná tabuľka oblastí - rekurzívna oblasť na %s."
 
-#: libparted/labels/dos.c:1405
+#: libparted/labels/dos.c:1392
 msgid "Extended partitions cannot be hidden on msdos disk labels."
-msgstr "Rozšírené oddiely nie je možné skryť na štítkoch diskov msdos."
+msgstr "Rozšírené oblasti nie je možné skryť na štítkoch diskov msdos."
 
-#: libparted/labels/dos.c:2046
+#: libparted/labels/dos.c:2033
 msgid "Parted can't resize partitions managed by Windows Dynamic Disk."
 msgstr ""
-"Parted nemôže zmeniť veľkosť oddielov, ktoré spravuje Windows Dynamic Disk."
+"Parted nemôže zmeniť veľkosť oblastí, ktoré spravuje Windows Dynamic Disk."
 
-#: libparted/labels/dvh.c:208
+#: libparted/labels/dvh.c:201
 #, c-format
 msgid "%s has no extended partition (volume header partition)."
-msgstr "%s nemá rozšírený oddiel (oddiel hlavičky zväzku)."
+msgstr "%s nemá rozšírenú oblasť (oblasť hlavičky zväzku)."
 
-#: libparted/labels/dvh.c:334
+#: libparted/labels/dvh.c:327
 msgid "Checksum is wrong, indicating the partition table is corrupt."
-msgstr "Kontrolný súčet je zlý, čo indikuje, že tabuľka oddielov je poškodená."
+msgstr "Kontrolný súčet je zlý, čo indikuje, že tabuľka oblastí je poškodená."
 
-#: libparted/labels/dvh.c:639
+#: libparted/labels/dvh.c:632
 msgid "Only primary partitions can be root partitions."
-msgstr "Iba primárne oddiely môžu byť koreňové oddiely."
+msgstr "Iba primárne oblasti môžu byť koreňové oblasti."
 
-#: libparted/labels/dvh.c:653
+#: libparted/labels/dvh.c:646
 msgid "Only primary partitions can be swap partitions."
-msgstr "Iba primárne oddiely môžu byť odkladacie oddiely."
+msgstr "Iba primárne oblasti môžu byť odkladacie oblasti."
 
-#: libparted/labels/dvh.c:667
+#: libparted/labels/dvh.c:660
 msgid "Only logical partitions can be a boot file."
-msgstr "Iba logické oddiely môžu býť zavázací súbor."
+msgstr "Iba logické oblasti môžu býť zavázací súbor."
 
-#: libparted/labels/dvh.c:744
-#, fuzzy, c-format
+#: libparted/labels/dvh.c:737
+#, c-format
 msgid ""
 "failed to set dvh partition name to %s:\n"
 "Only logical partitions (boot files) have a name."
-msgstr "Iba logické oddiely (zavádzacie súbory) mají název."
+msgstr ""
+"nepodarilo sa nastaviť názov dvh oblasti na %s:\n"
+"Iba logické oblasti (zavádzacie súbory) majú název."
 
-#: libparted/labels/dvh.c:837
+#: libparted/labels/dvh.c:830
 msgid "Too many primary partitions"
-msgstr "Príliš veľa primárnych oddielov"
+msgstr "Príliš veľa primárnych oblastí"
 
 #: libparted/labels/fdasd.c:98
 msgid "open error"
@@ -1317,7 +1313,7 @@ msgstr "Pre menovku oddielu nie je miesto."
 
 #: libparted/labels/fdasd.c:234
 msgid "No room for partition info."
-msgstr "Pre informácie o oddieloch nie je dostatok miesta."
+msgstr "Na informácie o oblastiach nie je dostatok miesta."
 
 #: libparted/labels/fdasd.c:704
 msgid "Invalid VTOC."
@@ -1358,22 +1354,22 @@ msgid ""
 "tables.  Or perhaps you deleted the GPT table, and are now using an msdos "
 "partition table.  Is this a GPT partition table?"
 msgstr ""
-"%s obsahuje podpisy GPT, což znamená, že obsahuje tabuľku GPT. Nemá ale "
+"%s obsahuje podpisy GPT, čo znamená, že obsahuje tabuľku GPT. Nemá ale "
 "platnú falošnú tabuľku oddielov DOS, ktorú by mal mať. Možno bola poškodená "
-"- napr. programom, ktorý nerozumie tabuľkám oddielov GPT. Alebo ste možno "
-"odstránili tabuľku oddielov GPT a teraz používate tabuľku oddielov DOS. Je "
-"toto tabuľka oddielov GPT?"
+"- napr. programom, ktorý nerozumie tabuľkám oblastí GPT. Alebo ste možno "
+"odstránili tabuľku oblastí GPT a teraz používate tabuľku oblastí DOS. Je "
+"toto tabuľka oblastí GPT?"
 
-#: libparted/labels/gpt.c:689
+#: libparted/labels/gpt.c:675
 #, c-format
 msgid ""
 "The format of the GPT partition table is version %x, which is newer than "
 "what Parted can recognise.  Please tell us!  bug-parted@gnu.org"
 msgstr ""
-"Formát tabuľky oddielov GPT je verzie %x, čo je novší, než ten s ktorým vie "
+"Formát tabuľky oblastí GPT je verzie %x, čo je novší, než ten s ktorým vie "
 "pracovať Parted. Oznámte nám to prosím! bug-parted@gnu.org"
 
-#: libparted/labels/gpt.c:736
+#: libparted/labels/gpt.c:722
 #, c-format
 msgid ""
 "Not all of the space available to %s appears to be used, you can fix the GPT "
@@ -1384,7 +1380,7 @@ msgstr ""
 "aby využívalo všetok dostupný priestor (ďalších %llu blokov) alebo "
 "pokračovať s aktuálnym nastavením? "
 
-#: libparted/labels/gpt.c:942
+#: libparted/labels/gpt.c:928
 msgid ""
 "The backup GPT table is not at the end of the disk, as it should be.  This "
 "might mean that another operating system believes the disk is smaller.  Fix, "
@@ -1394,24 +1390,23 @@ msgstr ""
 "znamená, že iný operačný systém si myslí, že disk je menší. Mám to opraviť "
 "presunutím zálohy na koniec (a odstránením starej zálohy)?"
 
-#: libparted/labels/gpt.c:966
+#: libparted/labels/gpt.c:952
 msgid ""
 "Both the primary and backup GPT tables are corrupt.  Try making a fresh "
 "table, and using Parted's rescue feature to recover partitions."
 msgstr ""
-"Primární aj záložná tabuľka GPT je poškodená. Skúste vytvoriť novú tabuľku a "
-"obnoviť oddiely pomocou možnosti Partedu rescue."
+"Primárna aj záložná tabuľka GPT je poškodená. Skúste vytvoriť novú tabuľku a "
+"obnoviť oblasti pomocou možnosti Partedu rescue."
 
-#: libparted/labels/gpt.c:977
-#, fuzzy
+#: libparted/labels/gpt.c:963
 msgid ""
 "The backup GPT table is corrupt, but the primary appears OK, so that will be "
 "used."
 msgstr ""
-"Primárna tabuľka GPT je poškodená, ale záloha sa zdá byť v poriadku, takže "
-"sa použije záloha."
+"Záložná tabuľka GPT je poškodená, ale primárna sa zdá byť v poriadku, takže "
+"sa použije primárna."
 
-#: libparted/labels/gpt.c:989
+#: libparted/labels/gpt.c:975
 msgid ""
 "The primary GPT table is corrupt, but the backup appears OK, so that will be "
 "used."
@@ -1419,58 +1414,58 @@ msgstr ""
 "Primárna tabuľka GPT je poškodená, ale záloha sa zdá byť v poriadku, takže "
 "sa použije záloha."
 
-#: libparted/labels/gpt.c:1013
+#: libparted/labels/gpt.c:999
 msgid "primary partition table array CRC mismatch"
-msgstr ""
+msgstr "nezodpovedá CRC poľa primárnej tabuľky oblastí"
 
-#: libparted/labels/mac.c:184
+#: libparted/labels/mac.c:185
 #, c-format
 msgid "Invalid signature %x for Mac disk labels."
 msgstr "Neplatný podpis %x pre menovky disku Mac."
 
-#: libparted/labels/mac.c:231
+#: libparted/labels/mac.c:232
 msgid "Partition map has no partition map entry!"
-msgstr "Mapa oddielov nemá žiadnu položku mapy oddielov!"
+msgstr "Mapa oblastí nemá žiadnu položku mapy oblastí!"
 
-#: libparted/labels/mac.c:279
+#: libparted/labels/mac.c:280
 #, c-format
 msgid "%s is too small for a Mac disk label!"
 msgstr "%s je príliš malý pro menovku disku Mac!"
 
-#: libparted/labels/mac.c:559
+#: libparted/labels/mac.c:509
 #, c-format
 msgid "Partition %d has an invalid signature %x."
-msgstr "Oddiel %d má neplatný podpis %x."
+msgstr "Oblasť %d má neplatný podpis %x."
 
-#: libparted/labels/mac.c:577
+#: libparted/labels/mac.c:527
 #, c-format
 msgid "Partition %d has an invalid length of 0 bytes!"
-msgstr "Oddiel %d má neplatnú dĺžku 0 bajtov."
+msgstr "Oblasť %d má neplatnú dĺžku 0 bajtov."
 
-#: libparted/labels/mac.c:608
+#: libparted/labels/mac.c:558
 msgid "The data region doesn't start at the start of the partition."
-msgstr "Datová oblasť nezačína na začiatku oddielu."
+msgstr "Dátová časť nezačína na začiatku oblasti."
 
-#: libparted/labels/mac.c:625
+#: libparted/labels/mac.c:575
 msgid "The boot region doesn't start at the start of the partition."
-msgstr "Štartovacia oblasť nezačína na začiatku oddielu."
+msgstr "Štartovacia oblasť nezačína na začiatku oblasti."
 
-#: libparted/labels/mac.c:639
+#: libparted/labels/mac.c:589
 msgid "The partition's boot region doesn't occupy the entire partition."
-msgstr "Zavádzacia oblasť oddielu nezaberá celý oddiel."
+msgstr "Zavádzacia časť diskovej oblasti nezaberá celú oblasť."
 
-#: libparted/labels/mac.c:650
+#: libparted/labels/mac.c:600
 msgid "The partition's data region doesn't occupy the entire partition."
-msgstr "Datový region oddielu nezabírá celý oddiel."
+msgstr "Dátová časť oblasti nezaberá celú oblasť."
 
-#: libparted/labels/mac.c:703
+#: libparted/labels/mac.c:653
 #, c-format
 msgid ""
 "Weird block size on device descriptor: %d bytes is not divisible by 512."
 msgstr ""
 "Čudná veľkosť bloku v deskriptore zariadenia: %d bajtov nie je deliteľné 512."
 
-#: libparted/labels/mac.c:716
+#: libparted/labels/mac.c:666
 #, c-format
 msgid ""
 "The driver descriptor says the physical block size is %d bytes, but Linux "
@@ -1479,52 +1474,52 @@ msgstr ""
 "Deskriptor ovládača vraví, že fyzická veľkosť bloku je %d bajtov, ale Linux "
 "vraví, že je to %d bajtov."
 
-#: libparted/labels/mac.c:770
+#: libparted/labels/mac.c:720
 msgid "No valid partition map found."
-msgstr "Nebola nájdená platná mapa oddielov."
+msgstr "Nebola nájdená platná mapa oblastí."
 
-#: libparted/labels/mac.c:832
+#: libparted/labels/mac.c:782
 #, c-format
 msgid ""
 "Conflicting partition map entry sizes!  Entry 1 says it is %d, but entry %d "
 "says it is %d!"
 msgstr ""
-"Kolidující velikosti položek mapy oddielov! Položka 1 vraví, že je to %d, "
-"ale položka %d vraví, že je to %d!"
+"Kolidujúce veľkosti položek mapy oblastí! Položka 1 vraví, že je to %d, ale "
+"položka %d vraví, že je to %d!"
 
-#: libparted/labels/mac.c:859
+#: libparted/labels/mac.c:809
 msgid "Weird!  There are 2 partitions map entries!"
-msgstr "Čudné! 2 položky mapy oddielu!"
+msgstr "Čudné! 2 položky mapy oblastí!"
 
-#: libparted/labels/mac.c:1405
+#: libparted/labels/mac.c:1355
 msgid ""
 "Changing the name of a root or swap partition will prevent Linux from "
 "recognising it as such."
 msgstr ""
-"Zmena názvu koreňového alebo odkladacieho oddielu zabráni Linuxu v jeho "
-"rozpoznání."
+"Zmena názvu koreňového alebo odkladacej oblasti zabráni Linuxu v jej "
+"rozpoznaní."
 
-#: libparted/labels/mac.c:1509
+#: libparted/labels/mac.c:1459
 msgid "Can't add another partition -- the partition map is too small!"
-msgstr "Nemôžem pridaž ďalší oddiel - mapa oddielov je príliš malá!"
+msgstr "Nemôžem pridať ďalšiu oblasť - mapa oblastí je príliš malá!"
 
-#: libparted/labels/pc98.c:355
+#: libparted/labels/pc98.c:331
 #, c-format
 msgid "Invalid partition table on %s."
-msgstr "Neplatná tabuľka oddielov na %s."
+msgstr "Neplatná tabuľka oblastí na %s."
 
-#: libparted/labels/pc98.c:408 libparted/labels/pc98.c:486
+#: libparted/labels/pc98.c:384 libparted/labels/pc98.c:462
 #, c-format
 msgid ""
 "Partition %d isn't aligned to cylinder boundaries.  This is still "
 "unsupported."
 msgstr ""
-"Oddiel %d nie je zarovnaný na hranice cylindra. Toto zatiaľ nie je "
+"Oblasť %d nie je zarovnaná na hranice cylindra. Toto zatiaľ nie je "
 "podporované."
 
-#: libparted/labels/pc98.c:805
+#: libparted/labels/pc98.c:781
 msgid "Can't add another partition."
-msgstr "Nemôžem pridať ďalší oddiel."
+msgstr "Nemožno pridať ďalšiu oblasť."
 
 #: libparted/labels/pt-tools.c:125
 #, c-format
@@ -1532,6 +1527,8 @@ msgid ""
 "partition length of %jd sectors exceeds the %s-partition-table-imposed "
 "maximum of %jd"
 msgstr ""
+"dĺžka oblasti of %jd sektorov prekračuje maximum stanovené tabuľkou oblastí %"
+"s v dĺžke %jd"
 
 #: libparted/labels/pt-tools.c:138
 #, c-format
@@ -1539,61 +1536,63 @@ msgid ""
 "starting sector number, %jd exceeds the %s-partition-table-imposed maximum "
 "of %jd"
 msgstr ""
+"číslo počiatočného sektora, %jd prekračuje prekračuje maximum stanovené "
+"tabuľkou oblastí %s %jd"
 
-#: libparted/labels/rdb.c:169
+#: libparted/labels/rdb.c:170
 #, c-format
 msgid "%s : Bad checksum on block %llu of type %s."
 msgstr "%s : Chybný kontrolný súčet na bloku %llu typu %s."
 
-#: libparted/labels/rdb.c:508
+#: libparted/labels/rdb.c:486
 #, c-format
 msgid "%s : Didn't find rdb block, should never happen."
 msgstr "%s : Nebol nájdený rdb blok, toto by sa nemalo nikdy stať."
 
-#: libparted/labels/rdb.c:594
+#: libparted/labels/rdb.c:572
 #, c-format
 msgid "%s : Loop detected at block %d."
 msgstr "%s : Na bloku %d bola detekovaná slučka."
 
-#: libparted/labels/rdb.c:613
+#: libparted/labels/rdb.c:591
 #, c-format
 msgid "%s : The %s list seems bad at block %s."
 msgstr "%s : Zoznam %s sa zdá byť chybný na bloku %s."
 
-#: libparted/labels/rdb.c:712
+#: libparted/labels/rdb.c:690
 #, c-format
 msgid "%s : Failed to list bad blocks."
 msgstr "%s : Nepodarilo sa vypísať zoznam chybných blokov."
 
-#: libparted/labels/rdb.c:720
+#: libparted/labels/rdb.c:698
 #, c-format
 msgid "%s : Failed to list partition blocks."
-msgstr "%s : Nepodarilo sa vypísať zoznam blokov oddielu."
+msgstr "%s : Nepodarilo sa vypísať zoznam blokov oblasti."
 
-#: libparted/labels/rdb.c:728
+#: libparted/labels/rdb.c:706
 #, c-format
 msgid "%s : Failed to list file system blocks."
 msgstr "%s : Nepodarilo sa vypísať zoznam blokov súborového systému."
 
-#: libparted/labels/rdb.c:736
+#: libparted/labels/rdb.c:714
 #, c-format
 msgid "%s : Failed to list boot blocks."
 msgstr "%s : Nepodarilo sa vypísať zoznam zavádzacích blokov."
 
-#: libparted/labels/rdb.c:763
+#: libparted/labels/rdb.c:741
 #, c-format
 msgid "Failed to write partition block at %d."
-msgstr "Nepodarilo sa zapísať blok oddielu na %d."
+msgstr "Nepodarilo sa zapísať blok oblasti na %d."
 
-#: libparted/labels/rdb.c:1101
+#: libparted/labels/rdb.c:1079
 msgid "Unable to allocate a partition number."
-msgstr "Nepodarilo sa alokovať číslo oddielu."
+msgstr "Nepodarilo sa alokovať číslo oblasti."
 
-#: libparted/labels/sun.c:150
+#: libparted/labels/sun.c:163
 msgid "Corrupted Sun disk label detected."
 msgstr "Detekovaná poškodená menovka disku Sun."
 
-#: libparted/labels/sun.c:318
+#: libparted/labels/sun.c:316
 #, c-format
 msgid ""
 "The disk CHS geometry (%d,%d,%d) reported by the operating system does not "
@@ -1602,28 +1601,28 @@ msgstr ""
 "Geometria disku CHS (%d,%d,%d) nezodpovedá geometrii uloženej v menovke "
 "disku (%d,%d,%d)."
 
-#: libparted/labels/sun.c:340
+#: libparted/labels/sun.c:338
 #, c-format
 msgid "The disk label describes a disk bigger than %s."
 msgstr "Menovka disku popisuje disk väčší než %s."
 
-#: libparted/labels/sun.c:512
+#: libparted/labels/sun.c:510
 #, c-format
 msgid "The disk has %d cylinders, which is greater than the maximum of 65536."
 msgstr "Disk má %d cylindrov, čo je viac ako maximálny počet 65536."
 
-#: libparted/labels/sun.c:855
+#: libparted/labels/sun.c:853
 msgid ""
 "The Whole Disk partition is the only available one left.  Generally, it is "
 "not a good idea to overwrite this partition with a real one.  Solaris may "
 "not be able to boot without it, and SILO (the sparc boot loader) appreciates "
 "it as well."
 msgstr ""
-"Jediný zostávajúci oddiel je oddiel Celý disk. Vo všeobecnosti nie je dobrý "
-"nápad tento oddiel prepísať skutočným oddielom. Bez neho možno nebude možné "
-"zaviesť Solaris a SILO (zavádzač systému pre sparc) ho tiež ocení."
+"Jediná zostávajúca oblasť je oblasť Celý disk. Vo všeobecnosti nie je dobrý "
+"nápad túto oblasti prepísať skutočnou oblasťou. Bez nej možno nebude možné "
+"zaviesť Solaris a SILO (zavádzač systému pre sparc) ju  tiež ocení."
 
-#: libparted/labels/sun.c:870
+#: libparted/labels/sun.c:868
 msgid "Sun disk label is full."
 msgstr "Menovka disku Sun je plná."
 
@@ -1723,81 +1722,81 @@ msgstr "Lokácia %s sa nachádza mimo zariadenia %s."
 msgid "Invalid number."
 msgstr "Neplatné číslo."
 
-#: libparted/fs/amiga/affs.c:62 libparted/fs/amiga/apfs.c:55
-#: libparted/fs/amiga/asfs.c:69
+#: libparted/fs/amiga/affs.c:63 libparted/fs/amiga/apfs.c:56
+#: libparted/fs/amiga/asfs.c:70
 #, c-format
 msgid "%s : Failed to allocate partition block\n"
-msgstr "%s : Nepodarilo sa alokovať blok oddielu\n"
+msgstr "%s : Nepodarilo sa alokovať blok oblasti\n"
 
-#: libparted/fs/amiga/affs.c:77 libparted/fs/amiga/apfs.c:68
-#: libparted/fs/amiga/asfs.c:81
+#: libparted/fs/amiga/affs.c:78 libparted/fs/amiga/apfs.c:69
+#: libparted/fs/amiga/asfs.c:82
 #, c-format
 msgid "%s : Failed to allocate block\n"
 msgstr "%s : Nepodarilo sa alokovať blok\n"
 
-#: libparted/fs/amiga/affs.c:82 libparted/fs/amiga/apfs.c:73
+#: libparted/fs/amiga/affs.c:83 libparted/fs/amiga/apfs.c:74
 #, c-format
 msgid "%s : Couldn't read boot block %llu\n"
 msgstr "%s : Nebolo možné prečítať štartovací blok %llu\n"
 
-#: libparted/fs/amiga/affs.c:98 libparted/fs/amiga/apfs.c:84
-#: libparted/fs/amiga/asfs.c:87 libparted/fs/amiga/asfs.c:101
+#: libparted/fs/amiga/affs.c:99 libparted/fs/amiga/apfs.c:85
+#: libparted/fs/amiga/asfs.c:88 libparted/fs/amiga/asfs.c:102
 #, c-format
 msgid "%s : Couldn't read root block %llu\n"
 msgstr "%s : Nebolo možné prečítať koreňový blok %llu\n"
 
-#: libparted/fs/amiga/amiga.c:71
+#: libparted/fs/amiga/amiga.c:72
 #, c-format
 msgid "%s : Failed to allocate id list element\n"
 msgstr "%s : nepodarilo sa alokovať prvok zoznamu ID\n"
 
-#: libparted/fs/amiga/amiga.c:188
+#: libparted/fs/amiga/amiga.c:189
 #, c-format
 msgid "%s : Couldn't read block %llu\n"
 msgstr "%s : Nepodarilo sa prečítať blok %llu\n"
 
-#: libparted/fs/amiga/amiga.c:201
+#: libparted/fs/amiga/amiga.c:202
 #, c-format
 msgid "%s : Bad checksum on block %llu of type %s\n"
 msgstr "%s : Chybný kontrolný súčet bloku %llu typu %s\n"
 
-#: libparted/fs/amiga/amiga.c:211
+#: libparted/fs/amiga/amiga.c:212
 #, c-format
 msgid "%s : Couldn't write block %d\n"
 msgstr "%s : Nepodarilo sa zapísať blok %d\n"
 
-#: libparted/fs/amiga/amiga.c:277
+#: libparted/fs/amiga/amiga.c:278
 #, c-format
 msgid "%s : Failed to allocate disk_specific rdb block\n"
 msgstr "%s : Nepodarilo sa alokovať disk_specific rdb blok\n"
 
-#: libparted/fs/amiga/amiga.c:288
+#: libparted/fs/amiga/amiga.c:289
 #, c-format
 msgid "%s : Didn't find rdb block, should never happen\n"
 msgstr "%s : Nebol nájdený rdb blok, to by sa nikdy nemalo stať\n"
 
-#: libparted/fs/amiga/amiga.c:317
+#: libparted/fs/amiga/amiga.c:318
 #, c-format
 msgid "%s : Failed to read partition block %llu\n"
-msgstr "%s : Nepodarilo sa načítať blok oddielu %llu\n"
+msgstr "%s : Nepodarilo sa načítať blok oblasti %llu\n"
 
-#: libparted/fs/ext2/ext2.c:86 libparted/fs/ext2/ext2.c:111
+#: libparted/fs/ext2/ext2.c:87 libparted/fs/ext2/ext2.c:112
 msgid "Inconsistent group descriptors!"
 msgstr "Nekonzistentné deskriptory skupín!"
 
-#: libparted/fs/ext2/ext2.c:90 libparted/fs/ext2/ext2.c:115
+#: libparted/fs/ext2/ext2.c:91 libparted/fs/ext2/ext2.c:116
 msgid "File system full!"
 msgstr "Súborový systém je plný!"
 
-#: libparted/fs/ext2/ext2.c:685
+#: libparted/fs/ext2/ext2.c:686
 msgid "Invalid superblock.  Are you sure this is an ext2 file system?"
 msgstr "Neplatný superblok. Ste si istý, že toto je systém súborov ext2?"
 
-#: libparted/fs/ext2/ext2.c:699 libparted/fs/ext2/ext2_resize.c:657
+#: libparted/fs/ext2/ext2.c:700 libparted/fs/ext2/ext2_resize.c:658
 msgid "File system has errors!  You should run e2fsck."
 msgstr "Systém súborov má chyby! Mali by ste spustiť e2fsck."
 
-#: libparted/fs/ext2/ext2.c:710
+#: libparted/fs/ext2/ext2.c:711
 msgid ""
 "File system was not cleanly unmounted!  You should run e2fsck.  Modifying an "
 "unclean file system could cause severe corruption."
@@ -1805,50 +1804,53 @@ msgstr ""
 "Systém súborov nebol čisto odpojený! Mali by ste spustiť e2fsck. Úpravy "
 "nečistého systému súborov môžu spôsobiť jeho vážne poškodenie."
 
-#: libparted/fs/ext2/ext2.c:730
+#: libparted/fs/ext2/ext2.c:731
 msgid ""
 "File system has an incompatible feature enabled.  Compatible features are "
 "has_journal, dir_index, filetype, sparse_super and large_file.  Use tune2fs "
 "or debugfs to remove features."
 msgstr ""
+"Súborový systém má zapnutú nekompatibilnú vlastnosť. Kompatibilné vlastnosti "
+"sú has_journal, dir_index, filetype, sparse_super a large_file. Na "
+"odstránenie vlastností použite tune2fs alebo debugfs."
 
-#: libparted/fs/ext2/ext2.c:744
+#: libparted/fs/ext2/ext2.c:745
 msgid "Error allocating buffer cache."
 msgstr "Chyba pri alokácii buffer cache."
 
-#: libparted/fs/ext2/ext2_inode_relocator.c:113
+#: libparted/fs/ext2/ext2_inode_relocator.c:114
 msgid ""
 "Found an inode with a incorrect link count.  Better go run e2fsck first!"
 msgstr ""
 "Bol nájdený inode s nesprávnym počtom odkazov. Radšej najskôr spustite "
 "e2fsck!"
 
-#: libparted/fs/ext2/ext2_inode_relocator.c:486
+#: libparted/fs/ext2/ext2_inode_relocator.c:487
 msgid "Not enough free inodes!"
 msgstr "Nedostatok voľných inodov!"
 
-#: libparted/fs/ext2/ext2_resize.c:222
+#: libparted/fs/ext2/ext2_resize.c:223
 msgid "File system is too full to remove a group!"
 msgstr "Systém súborov je príliš plný na to, aby bolo možné odstrániť skupinu!"
 
-#: libparted/fs/ext2/ext2_resize.c:231
+#: libparted/fs/ext2/ext2_resize.c:232
 msgid "File system has too many allocated inodes to remove a group!"
 msgstr ""
 "Systém súborov má príliš mnoho alokovaných inodov na to, aby bolo možné "
 "odstrániť skupinu!"
 
-#: libparted/fs/ext2/ext2_resize.c:490
+#: libparted/fs/ext2/ext2_resize.c:491
 msgid "adding groups"
 msgstr "pridávam skupiny"
 
-#: libparted/fs/ext2/ext2_resize.c:527
+#: libparted/fs/ext2/ext2_resize.c:528
 #, c-format
 msgid "Your file system is too full to resize it to %i blocks.  Sorry."
 msgstr ""
 "Váš systém súborov je príliš plný na to, aby bolo možné zmeniť jeho veľkosť "
 "na %d blokov. Ľutujem."
 
-#: libparted/fs/ext2/ext2_resize.c:537
+#: libparted/fs/ext2/ext2_resize.c:538
 #, c-format
 msgid ""
 "Your file system has too many occupied inodes to resize it to %i blocks.  "
@@ -1857,11 +1859,11 @@ msgstr ""
 "Váš systém súborov má príliš mnoho použitých inodov na to, aby bolo možné "
 "zmeniť jeho veľkosť na %i blokov. Ľutujem."
 
-#: libparted/fs/ext2/ext2_resize.c:665
+#: libparted/fs/ext2/ext2_resize.c:666
 msgid "File system was not cleanly unmounted!  You should run e2fsck."
 msgstr "Systém súborov nebol správne odpojený! Mali by ste spustiť e2fsck."
 
-#: libparted/fs/ext2/ext2_resize.c:674
+#: libparted/fs/ext2/ext2_resize.c:675
 msgid ""
 "The file system has the 'dir_index' feature enabled.  Parted can only resize "
 "the file system if it disables this feature.  You can enable it later by "
@@ -1871,7 +1873,7 @@ msgstr ""
 "súborového systému, iba ak túto schopnosť zakáže. Môžete ju neskôr povoliť "
 "spustením „tune2fs -O dir_index zariadenie“ a potom „e2fsck -fD zariadenie“."
 
-#: libparted/fs/ext2/ext2_resize.c:690
+#: libparted/fs/ext2/ext2_resize.c:691
 msgid ""
 "A resize operation on this file system will use EXPERIMENTAL code\n"
 "that MAY CORRUPT it (although no one has reported any such damage yet).\n"
@@ -1882,17 +1884,17 @@ msgstr ""
 "Mali by ste predtým minimálne svoje dáta zálohovať a spustiť „e2fsck -f“\n"
 "potom."
 
-#: libparted/fs/ext2/ext2_block_relocator.c:197
+#: libparted/fs/ext2/ext2_block_relocator.c:198
 msgid "Cross-linked blocks found!  Better go run e2fsck first!"
 msgstr ""
 "Boli nájdené bloky s krížovými odkazmi! Radšej najskôr spustite e2fsck!"
 
-#: libparted/fs/ext2/ext2_block_relocator.c:536
+#: libparted/fs/ext2/ext2_block_relocator.c:537
 #, c-format
 msgid "Block %i has no reference?  Weird."
 msgstr "Blok %i nemá odkaz? Čudné."
 
-#: libparted/fs/ext2/ext2_block_relocator.c:737
+#: libparted/fs/ext2/ext2_block_relocator.c:738
 #, c-format
 msgid "Block %i shouldn't have been marked (%d, %d)!"
 msgstr "Blok %i nemal byť označený (%d, %d)!"
@@ -1907,9 +1909,9 @@ msgstr ""
 
 #: libparted/fs/ext2/interface.c:239
 msgid "Sorry, can't move the start of ext2 partitions yet!"
-msgstr "Ľutujem, zatiaľ nedokážem presunúť začiatok oddielov ext2!"
+msgstr "Ľutujem, zatiaľ nie je možné presúvať začiatok oddielov ext2!"
 
-#: libparted/fs/ext2/ext2_buffer.c:81
+#: libparted/fs/ext2/ext2_buffer.c:82
 msgid "Couldn't flush buffer cache!"
 msgstr "Nemôžem vyprázdniť vyrovnávaciu pamäť!"
 
@@ -1921,16 +1923,16 @@ msgstr "zapisujem metadáta skupín"
 msgid "File system too small for ext2."
 msgstr "Systém súborov príliš malý pre ext2."
 
-#: libparted/fs/fat/calc.c:134
+#: libparted/fs/fat/calc.c:135
 #, c-format
 msgid ""
 "You need %s of free disk space to shrink this partition to this size.  "
 "Currently, only %s is free."
 msgstr ""
-"Pre zmenšenie tohoto oddielu na túto veľikosť potrebujete %s voľného miesta "
+"Na zmenšenie tejto oblasti na túto veľkosť potrebujete %s voľného miesta "
 "(momentálne máte voľných iba %s)"
 
-#: libparted/fs/fat/context.c:55
+#: libparted/fs/fat/context.c:56
 #, c-format
 msgid ""
 "Cluster start delta = %d, which is not a multiple of the cluster size %d."
@@ -1939,7 +1941,7 @@ msgstr "Zmena začiatku klastra = %d, čo nie je násobok veľikosti klastra %d.
 #: libparted/fs/fat/fat.c:310
 #, c-format
 msgid "Partition too big/small for a %s file system."
-msgstr "Oddiel je príliš veľký/malý pre súborový systém %s"
+msgstr "Oblasť je príliš veľká/malá pre súborový systém %s"
 
 #: libparted/fs/fat/fat.c:476
 msgid ""
@@ -2002,7 +2004,7 @@ msgid ""
 "you must re-install the MS Windows boot loader.  If you want to do this, you "
 "should consult the Parted manual (or your distribution's manual)."
 msgstr ""
-"Ak prevediete oddiel na FAT16 a sú na ňom nainštalované MS Windows, musíte "
+"Ak prevediete oblasť na FAT16 a sú na nej nainštalované MS Windows, musíte "
 "znova nainštalovať zavádzač systému MS Windows. Ak to chcete urobiť, mali by "
 "ste si prečítať príručku Parted (alebo príručku svojej distribúcie)."
 
@@ -2022,7 +2024,7 @@ msgid ""
 "converting to FAT32 will make the file system unreadable by MS DOS, MS "
 "Windows 95a, and MS Windows NT."
 msgstr ""
-"Ak prevediete oddiel na FAT32 a sú na ňom nainštalované MS Windows, musíte "
+"Ak prevediete oblasť na FAT32 a sú na nej nainštalované MS Windows, musíte "
 "znova nainštalovať zavádzač systému MS Windows. Ak to chcete urobiť, mali by "
 "ste si prečítať príručku Parted (alebo príručku svojej distribúcie). "
 "Prevedenie na FAT32 tiež urobí systém súborov nečitateľný pre MS-DOS, MS "
@@ -2058,7 +2060,7 @@ msgstr ""
 msgid ""
 "GNU Parted cannot resize this partition to this size.  We're working on it!"
 msgstr ""
-"GNU Parted nedokáže zmeniť veľkosť tohoto oddielu na túto hodnotu. Pracujeme "
+"GNU Parted nedokáže zmeniť veľkosť tejto oblasti na túto hodnotu. Pracujeme "
 "na tom!"
 
 #: libparted/fs/fat/bootsector.c:49 libparted/fs/fat/bootsector.c:56
@@ -2105,7 +2107,7 @@ msgstr ""
 "CHS geometria tohto systému je (%d, %d, %d), čo nie je platná hodnota. CHS "
 "geometria tabuľky oddielov je (%d, %d, %d). Ak zvolíte Ignorovať, CHS "
 "geometria systému sa nezmení. Ak zvolíte Opraviť, CHS geometria systému sa "
-"zmení na CHS geometriu tabuľky oddielov."
+"zmení na CHS geometriu tabuľky oblastí."
 
 #: libparted/fs/fat/bootsector.c:213
 msgid "FAT boot sector says logical sector size is 0.  This is weird. "
@@ -2135,12 +2137,12 @@ msgstr ""
 "hlásenie o chybe. Ak ste v úzkych, môžete to pravdepodobne bez obáv "
 "ignorovať."
 
-#: libparted/fs/fat/count.c:143
+#: libparted/fs/fat/count.c:144
 #, c-format
 msgid "Bad directory entry for %s: first cluster is the end of file marker."
 msgstr "Chybná položka adresára pre %s: prvý klaster je značka konca súboru."
 
-#: libparted/fs/fat/count.c:156
+#: libparted/fs/fat/count.c:157
 #, c-format
 msgid ""
 "Bad FAT: unterminated chain for %s.  You should run dosfsck or scandisk."
@@ -2148,7 +2150,7 @@ msgstr ""
 "Chybná FAT: neukončený reťazec pre %s. Mali by ste spustiť dosfsck alebo "
 "scandisk."
 
-#: libparted/fs/fat/count.c:165
+#: libparted/fs/fat/count.c:166
 #, c-format
 msgid ""
 "Bad FAT: cluster %d outside file system in chain for %s.  You should run "
@@ -2157,7 +2159,7 @@ msgstr ""
 "Chybná FAT: klaster %d sa nachádza mimo systému súborov v reťezci pro %s. "
 "Mali by ste spustiť dosfsck alebo scandisk."
 
-#: libparted/fs/fat/count.c:175
+#: libparted/fs/fat/count.c:176
 #, c-format
 msgid ""
 "Bad FAT: cluster %d is cross-linked for %s.  You should run dosfsck or "
@@ -2166,12 +2168,12 @@ msgstr ""
 "Chybná FAT: klaster %d má vymenené odkazy s %s. Mali by ste spustiť dosfsck "
 "alebo scandisk."
 
-#: libparted/fs/fat/count.c:194
+#: libparted/fs/fat/count.c:195
 #, c-format
 msgid "%s is %dk, but it has %d clusters (%dk)."
 msgstr "%s je %dk, ale má %d klastrov (%dk)."
 
-#: libparted/fs/fat/count.c:257
+#: libparted/fs/fat/count.c:258
 #, c-format
 msgid ""
 "The file %s is marked as a system file.  This means moving it could cause "
@@ -2203,37 +2205,37 @@ msgstr "fat_table_get: klaster %ld sa nachádza mimo súborového systému"
 msgid "fat_table_alloc_cluster: no free clusters"
 msgstr "fat_table_alloc_cluster: nie sú voľné klastre"
 
-#: libparted/fs/linux_swap/linux_swap.c:287
-#, fuzzy, c-format
+#: libparted/fs/linux_swap/linux_swap.c:288
+#, c-format
 msgid "Unrecognised old style linux swap signature '%10s'."
-msgstr "Nerozpoznaný podpis odkladacieho oddielu Linuxu '%10s'."
+msgstr "Nerozpoznaný podpis odkladacieho oddielu Linuxu v starom štýle „%10s“."
 
-#: libparted/fs/linux_swap/linux_swap.c:330
-#, fuzzy, c-format
+#: libparted/fs/linux_swap/linux_swap.c:331
+#, c-format
 msgid "Unrecognised new style linux swap signature '%10s'."
-msgstr "Nerozpoznaný podpis odkladacieho oddielu Linuxu '%10s'."
+msgstr "Nerozpoznaný podpis odkladacieho oddielu Linuxu v novom štýle „%10s“."
 
-#: libparted/fs/linux_swap/linux_swap.c:370
-#, fuzzy, c-format
+#: libparted/fs/linux_swap/linux_swap.c:371
+#, c-format
 msgid "Unrecognised swsusp linux swap signature '%9s'."
-msgstr "Nerozpoznaný podpis odkladacieho oddielu Linuxu '%10s'."
+msgstr "Nerozpoznaný podpis odkladacieho oddielu Linuxu swsusp „%10s“."
 
-#: libparted/fs/linux_swap/linux_swap.c:446
+#: libparted/fs/linux_swap/linux_swap.c:447
 msgid "Too many bad pages."
 msgstr "Príliš veľa zlých stránok."
 
-#: libparted/fs/hfs/advfs.c:120 libparted/fs/hfs/advfs_plus.c:120
-#: libparted/fs/hfs/reloc.c:413 libparted/fs/hfs/reloc.c:507
-#: libparted/fs/hfs/reloc_plus.c:537 libparted/fs/hfs/reloc_plus.c:655
-#: libparted/fs/hfs/reloc_plus.c:768
+#: libparted/fs/hfs/advfs.c:121 libparted/fs/hfs/advfs_plus.c:121
+#: libparted/fs/hfs/reloc.c:414 libparted/fs/hfs/reloc.c:508
+#: libparted/fs/hfs/reloc_plus.c:538 libparted/fs/hfs/reloc_plus.c:656
+#: libparted/fs/hfs/reloc_plus.c:769
 msgid "The file system contains errors."
 msgstr "Súborový systém obsahuje chyby."
 
-#: libparted/fs/hfs/advfs_plus.c:284
+#: libparted/fs/hfs/advfs_plus.c:285
 msgid "Bad blocks could not be read."
 msgstr "Nebolo možné prečítať chybné bloky."
 
-#: libparted/fs/hfs/cache.c:136
+#: libparted/fs/hfs/cache.c:137
 #, c-format
 msgid ""
 "Trying to register an extent starting at block 0x%X, but another one already "
@@ -2242,7 +2244,7 @@ msgstr ""
 "Prebieha pokus o registráciu rozsahu počínajúc blokom 0x%X, ale iný už na "
 "tejto pozícii existuje. Mali by ste skontrolovať súborový systém!"
 
-#: libparted/fs/hfs/cache.c:213
+#: libparted/fs/hfs/cache.c:214
 #, c-format
 msgid ""
 "Trying to move an extent from block Ox%X to block Ox%X, but another one "
@@ -2251,99 +2253,99 @@ msgstr ""
 "Prebieha pokus o presunutie rozsahu z bloku 0x%X na blok 0x%X, ale iný už na "
 "tejto pozícii existuje. Toto by sa nemalo stať!"
 
-#: libparted/fs/hfs/file.c:142
+#: libparted/fs/hfs/file.c:143
 #, c-format
 msgid "Could not update the extent cache for HFS file with CNID %X."
 msgstr ""
 "Nebolo možné aktualizovať vyrovnávaciu pamäť rozsahov súboru HFS s CNID %X."
 
-#: libparted/fs/hfs/file.c:179
+#: libparted/fs/hfs/file.c:180
 #, c-format
 msgid "Trying to read HFS file with CNID %X behind EOF."
 msgstr "Pokus o čítanie súboru HFS s CNID %X za znakom konca súboru."
 
-#: libparted/fs/hfs/file.c:189 libparted/fs/hfs/file.c:219
+#: libparted/fs/hfs/file.c:190 libparted/fs/hfs/file.c:220
 #, c-format
 msgid "Could not find sector %lli of HFS file with CNID %X."
 msgstr "Nebol nájdený sektor %lli súboru HFS s CNID %X."
 
-#: libparted/fs/hfs/file.c:209
+#: libparted/fs/hfs/file.c:210
 #, c-format
 msgid "Trying to write HFS file with CNID %X behind EOF."
 msgstr "Pokus o zápis súboru HFS s CNID %X za znakom konca súboru."
 
-#: libparted/fs/hfs/file_plus.c:156
+#: libparted/fs/hfs/file_plus.c:157
 #, c-format
 msgid "Could not update the extent cache for HFS+ file with CNID %X."
 msgstr ""
 "Nebolo možné aktualizovať vyrovnávaciu pamäť rozsahov súboru HFS+ s CNID %X."
 
-#: libparted/fs/hfs/file_plus.c:201
+#: libparted/fs/hfs/file_plus.c:202
 #, c-format
 msgid "Trying to read HFS+ file with CNID %X behind EOF."
 msgstr "Pokus o čítanie súboru HFS+ s CNID %X za znakom konca súboru."
 
-#: libparted/fs/hfs/file_plus.c:212 libparted/fs/hfs/file_plus.c:255
+#: libparted/fs/hfs/file_plus.c:213 libparted/fs/hfs/file_plus.c:256
 #, c-format
 msgid "Could not find sector %lli of HFS+ file with CNID %X."
 msgstr "Nebol nájdený sektor %lli súboru HFS+ s CNID %X."
 
-#: libparted/fs/hfs/file_plus.c:244
+#: libparted/fs/hfs/file_plus.c:245
 #, c-format
 msgid "Trying to write HFS+ file with CNID %X behind EOF."
 msgstr "Pokus o zápis súboru HFS+ s CNID %X za znakom konca súboru."
 
-#: libparted/fs/hfs/hfs.c:231
+#: libparted/fs/hfs/hfs.c:232
 msgid "Sorry, HFS cannot be resized that way yet."
 msgstr "Prepáčte, veľkosť HFS nie je zatiaľ možné týmto spôsobom zmeniť."
 
-#: libparted/fs/hfs/hfs.c:261 libparted/fs/hfs/hfs.c:640
+#: libparted/fs/hfs/hfs.c:262 libparted/fs/hfs/hfs.c:641
 msgid "Data relocation has failed."
 msgstr "Relokácia údajov zlyhala."
 
-#: libparted/fs/hfs/hfs.c:280
+#: libparted/fs/hfs/hfs.c:281
 msgid "Data relocation left some data in the end of the volume."
 msgstr "Relokácia údajov zanechala na konci zväzku nejaké údaje."
 
-#: libparted/fs/hfs/hfs.c:319
+#: libparted/fs/hfs/hfs.c:320
 msgid "writing HFS Master Directory Block"
 msgstr "zapisuje sa HFS Master Directory Block"
 
-#: libparted/fs/hfs/hfs.c:467
+#: libparted/fs/hfs/hfs.c:468
 msgid "No valid HFS[+X] signature has been found while opening."
 msgstr "Počas otvárania nebol nájdený platný podpis HFS[+X]."
 
-#: libparted/fs/hfs/hfs.c:477
+#: libparted/fs/hfs/hfs.c:478
 #, c-format
 msgid "Version %d of HFS+ isn't supported."
 msgstr "Verzia %d HFS+ nie je podporovaná."
 
-#: libparted/fs/hfs/hfs.c:488
+#: libparted/fs/hfs/hfs.c:489
 #, c-format
 msgid "Version %d of HFSX isn't supported."
 msgstr "Verzia %d HFSX nie je podporovaná."
 
-#: libparted/fs/hfs/hfs.c:671
+#: libparted/fs/hfs/hfs.c:672
 msgid "Data relocation left some data at the end of the volume."
 msgstr "Relokácia údajov zanechala na konci zväzku nejaké údaje."
 
-#: libparted/fs/hfs/hfs.c:719
+#: libparted/fs/hfs/hfs.c:720
 msgid "Error while writing the allocation file."
 msgstr "Chyba pri zapisování alokačného súboru."
 
-#: libparted/fs/hfs/hfs.c:734
+#: libparted/fs/hfs/hfs.c:735
 msgid "Error while writing the compatibility part of the allocation file."
 msgstr "Chyba pri zápise do časti pre komaptibilitu alokačného súboru."
 
-#: libparted/fs/hfs/hfs.c:749
+#: libparted/fs/hfs/hfs.c:750
 msgid "writing HFS+ Volume Header"
 msgstr "zapisuje sa Hlavička zväzku HFS+"
 
-#: libparted/fs/hfs/hfs.c:849
+#: libparted/fs/hfs/hfs.c:850
 msgid "An error occurred while looking for the mandatory bad blocks file."
 msgstr "Vyskytla sa chyba pri hľadaní povinného súboru chybných blokov."
 
-#: libparted/fs/hfs/hfs.c:903
+#: libparted/fs/hfs/hfs.c:904
 msgid ""
 "It seems there is an error in the HFS wrapper: the bad blocks file doesn't "
 "contain the embedded HFS+ volume."
@@ -2351,27 +2353,27 @@ msgstr ""
 "Zdá sa, že sa vyskytla chyba v HFS wrapperi: súbor chybných blokov "
 "neobsahuje vnorený zväzok HFS+."
 
-#: libparted/fs/hfs/hfs.c:939
+#: libparted/fs/hfs/hfs.c:940
 msgid "Sorry, HFS+ cannot be resized that way yet."
 msgstr "Prepáčte, veľkosť HFS+ nie je zatiaľ možné týmto spôsobom zmeniť."
 
-#: libparted/fs/hfs/hfs.c:974
+#: libparted/fs/hfs/hfs.c:975
 msgid "shrinking embedded HFS+ volume"
 msgstr "zmenšuje sa vnorený zväzok HFS+"
 
-#: libparted/fs/hfs/hfs.c:990
+#: libparted/fs/hfs/hfs.c:991
 msgid "Resizing the HFS+ volume has failed."
 msgstr "Zmena veľkosti HFS+ zlyhala."
 
-#: libparted/fs/hfs/hfs.c:997
+#: libparted/fs/hfs/hfs.c:998
 msgid "shrinking HFS wrapper"
 msgstr "zmenšuje sa HPS wrapper"
 
-#: libparted/fs/hfs/hfs.c:1006
+#: libparted/fs/hfs/hfs.c:1007
 msgid "Updating the HFS wrapper has failed."
 msgstr "Aktualizácia HFS wrappera zlyhala."
 
-#: libparted/fs/hfs/hfs.c:1108 libparted/fs/hfs/hfs.c:1193
+#: libparted/fs/hfs/hfs.c:1109 libparted/fs/hfs/hfs.c:1194
 #, c-format
 msgid ""
 "This is not a real %s check.  This is going to extract special low level "
@@ -2380,18 +2382,18 @@ msgstr ""
 "Toto nie je skutočná kontrola %s. Týmto sa získajú špeciálne nízkoúrovňové "
 "súbory pre účely ladenia."
 
-#: libparted/fs/hfs/journal.c:154
+#: libparted/fs/hfs/journal.c:155
 msgid "Bad block list header checksum."
 msgstr "Chybný kontrolný súčet zoznamu blokov."
 
-#: libparted/fs/hfs/journal.c:167
+#: libparted/fs/hfs/journal.c:168
 #, c-format
 msgid ""
 "Invalid size of a transaction block while replaying the journal (%i bytes)."
 msgstr ""
 "Neplatná veľkosť bloku transakcií počas prehrávania žurnálu (%i bajtov)."
 
-#: libparted/fs/hfs/journal.c:259
+#: libparted/fs/hfs/journal.c:260
 msgid ""
 "Journal stored outside of the volume are not supported.  Try to desactivate "
 "the journal and run Parted again."
@@ -2399,24 +2401,24 @@ msgstr ""
 "Žurnál uložený mimo zväzku nie je podporovaný. Pokúste sa deaktivovať žurnál "
 "a znova spustiť Parted."
 
-#: libparted/fs/hfs/journal.c:270
+#: libparted/fs/hfs/journal.c:271
 msgid "Journal offset or size is not multiple of the sector size."
 msgstr "Ofset žurnálu nie je násobkom veľkosti sektora."
 
-#: libparted/fs/hfs/journal.c:291
+#: libparted/fs/hfs/journal.c:292
 msgid "Incorrect magic values in the journal header."
 msgstr "Neplatné magické hodnoty v hlavičke žurnálu."
 
-#: libparted/fs/hfs/journal.c:301
+#: libparted/fs/hfs/journal.c:302
 msgid "Journal size mismatch between journal info block and journal header."
 msgstr ""
 "Veľkosť žurnálu sa nezhoduje v info bloku žurnálu a v hlavičke žurnálu."
 
-#: libparted/fs/hfs/journal.c:313
+#: libparted/fs/hfs/journal.c:314
 msgid "Some header fields are not multiple of the sector size."
 msgstr "Niektoré polia hlavičky nie sú násobkom veľkosti sektora."
 
-#: libparted/fs/hfs/journal.c:322
+#: libparted/fs/hfs/journal.c:323
 msgid ""
 "The sector size stored in the journal is not 512 bytes.  Parted only "
 "supports 512 bytes length sectors."
@@ -2424,11 +2426,11 @@ msgstr ""
 "Veľkosť sektora uložená v žurnále nie je 512 bajtov. Parted podporuje iba "
 "sektory s dĺžkou 512 bajtov."
 
-#: libparted/fs/hfs/journal.c:334
+#: libparted/fs/hfs/journal.c:335
 msgid "Bad journal checksum."
 msgstr "Chybný kontrolný súčet žurnálu."
 
-#: libparted/fs/hfs/journal.c:352
+#: libparted/fs/hfs/journal.c:353
 msgid ""
 "The journal is not empty.  Parted must replay the transactions before "
 "opening the file system.  This will modify the file system."
@@ -2436,7 +2438,7 @@ msgstr ""
 "Žurnál nie je prázdny. Parted musí prehrať transakcie pred otvorením "
 "súsborového systému. Týmto sa súborový systém zmení."
 
-#: libparted/fs/hfs/journal.c:380
+#: libparted/fs/hfs/journal.c:381
 msgid ""
 "The volume header or the master directory block has changed while replaying "
 "the journal.  You should restart Parted."
@@ -2444,7 +2446,7 @@ msgstr ""
 "Hlavička zväazku hlavného bloku adresárov sa v dôsledku prehrania žurnálu "
 "zmenila. Mali by ste znova spustiť Parted."
 
-#: libparted/fs/hfs/probe.c:50
+#: libparted/fs/hfs/probe.c:51
 #, c-format
 msgid ""
 "Parted can't use HFS file systems on disks with a sector size not equal to %"
@@ -2453,11 +2455,11 @@ msgstr ""
 "Parted nedokáže používať súborové systémy HFS na diskoch s veľkosťou sektora "
 "inou ako %d bajtov."
 
-#: libparted/fs/hfs/reloc.c:150 libparted/fs/hfs/reloc_plus.c:154
+#: libparted/fs/hfs/reloc.c:151 libparted/fs/hfs/reloc_plus.c:155
 msgid "An extent has not been relocated."
 msgstr "Rozsah nebol premiestnený."
 
-#: libparted/fs/hfs/reloc.c:250 libparted/fs/hfs/reloc_plus.c:306
+#: libparted/fs/hfs/reloc.c:251 libparted/fs/hfs/reloc_plus.c:307
 msgid ""
 "A reference to an extent comes from a place it should not.  You should check "
 "the file system!"
@@ -2465,15 +2467,15 @@ msgstr ""
 "Odkaz na rozsah pochádza z miesta, odkiaľ by nemal. Mali by ste skontrolovať "
 "súborový systém!"
 
-#: libparted/fs/hfs/reloc.c:380
+#: libparted/fs/hfs/reloc.c:381
 msgid "This HFS volume has no catalog file.  This is very unusual!"
 msgstr "Tento zväzok HFS nemá katalógový súbor. To je veľmi nezvyčajné!"
 
-#: libparted/fs/hfs/reloc.c:474
+#: libparted/fs/hfs/reloc.c:475
 msgid "This HFS volume has no extents overflow file.  This is quite unusual!"
 msgstr "Tento zväzok HFS nemá súbor pretečení rozsahov. To je dosť nezvyčajné!"
 
-#: libparted/fs/hfs/reloc.c:516 libparted/fs/hfs/reloc_plus.c:665
+#: libparted/fs/hfs/reloc.c:517 libparted/fs/hfs/reloc_plus.c:666
 msgid ""
 "The extents overflow file should not contain its own extents!  You should "
 "check the file system."
@@ -2481,23 +2483,23 @@ msgstr ""
 "Súbor pretečení rozsahov by nemal obsahovať svoje vlastné rozsahy! Mali by "
 "ste skontrolovať súborový systém!"
 
-#: libparted/fs/hfs/reloc.c:573 libparted/fs/hfs/reloc_plus.c:843
+#: libparted/fs/hfs/reloc.c:574 libparted/fs/hfs/reloc_plus.c:844
 msgid "Could not cache the file system in memory."
 msgstr "Nebolo možné udržiavať kópiu systému súborov v pamäti."
 
-#: libparted/fs/hfs/reloc.c:634 libparted/fs/hfs/reloc_plus.c:904
+#: libparted/fs/hfs/reloc.c:635 libparted/fs/hfs/reloc_plus.c:905
 msgid "Bad blocks list could not be loaded."
 msgstr "Zoznam chybných blokov nebolo možné načítať."
 
-#: libparted/fs/hfs/reloc.c:648 libparted/fs/hfs/reloc_plus.c:920
+#: libparted/fs/hfs/reloc.c:649 libparted/fs/hfs/reloc_plus.c:921
 msgid "An error occurred during extent relocation."
 msgstr "Vyskytla sa chyba pri premiestňovaní rozsahov."
 
-#: libparted/fs/hfs/reloc_plus.c:493
+#: libparted/fs/hfs/reloc_plus.c:494
 msgid "This HFS+ volume has no catalog file.  This is very unusual!"
 msgstr "Tento zväzok HFS+ nemá katalógový súbor. To je veľmi nezvyčajné!"
 
-#: libparted/fs/hfs/reloc_plus.c:616
+#: libparted/fs/hfs/reloc_plus.c:617
 msgid "This HFS+ volume has no extents overflow file.  This is quite unusual!"
 msgstr ""
 "Tento zväzok HFS+ nemá súbor pretečení rozsahov. To je dosť nezvyčajné!"
@@ -2508,7 +2510,7 @@ msgstr "zobrazí túto správu pomocníka"
 
 #: parted/parted.c:123
 msgid "lists partition layout on all block devices"
-msgstr "vypíše rozloženie oddieov na všetkých blokových zariadeniach"
+msgstr "vypíše rozloženie oblastí na všetkých blokových zariadeniach"
 
 #: parted/parted.c:124
 msgid "displays machine parseable output"
@@ -2523,17 +2525,16 @@ msgid "displays the version"
 msgstr "zobrazí verziu"
 
 #: parted/parted.c:127
-#, fuzzy
 msgid "alignment for new partitions"
-msgstr "Nie je možné vytvoriť ďalšie oddiely."
+msgstr "zarovnanie nových oblastí"
 
 #: parted/parted.c:139
 msgid ""
 "NUMBER is the partition number used by Linux.  On MS-DOS disk labels, the "
 "primary partitions number from 1 to 4, logical partitions from 5 onwards.\n"
 msgstr ""
-"ČÍSLO je číslo oddielu, ktorý používa Linux. Na menovkách disku msdos majú "
-"primárne oddiely čísla 1-4 a logické oddiely sú od 5 ďalej.\n"
+"ČÍSLO je číslo oblasti, ktorú používa Linux. Na menovkách disku msdos majú "
+"primárne oblasti čísla 1-4 a logické oblasti sú od 5 ďalej.\n"
 
 #: parted/parted.c:142
 msgid "LABEL-TYPE is one of: "
@@ -2549,7 +2550,7 @@ msgstr "JEDNOTKA je jedno z: "
 
 #: parted/parted.c:145
 msgid "desired alignment: minimum or optimal"
-msgstr ""
+msgstr "požadovan zarovnanie: minimálne alebo optimálne"
 
 #: parted/parted.c:146
 msgid "PART-TYPE is one of: primary, logical, extended\n"
@@ -2582,7 +2583,7 @@ msgstr "NÁZEV je ľubovoľné slovo\n"
 
 #: parted/parted.c:155
 msgid "The partition must have one of the following FS-TYPEs: "
-msgstr "Odiel musí mať jeden z nasledovných TYP-FS: "
+msgstr "Oblasť musí mať jeden z nasledovných TYP-FS: "
 
 #: parted/parted.c:159
 msgid ""
@@ -2604,34 +2605,34 @@ msgstr ""
 "GNU General Public License.\n"
 "\n"
 
-#: parted/parted.c:205
+#: parted/parted.c:207
 #, c-format
 msgid "%0.f%%\t(time left %.2d:%.2d)"
 msgstr "%0.f%%\t(zostávajúci čas %.2d:%.2d)"
 
-#: parted/parted.c:224
+#: parted/parted.c:226
 #, c-format
 msgid ""
 "Partition %s is being used. You must unmount it before you modify it with "
 "Parted."
 msgstr ""
-"Oddiel %s sa používa. predtým, než vykonáte zmeny pomocou Parted ho musíte "
+"Oblasť %s sa používa. Predtým, než vykonáte zmeny pomocou Parted ju musíte "
 "odpojiť."
 
-#: parted/parted.c:242
+#: parted/parted.c:244
 #, c-format
 msgid "Partition(s) on %s are being used."
-msgstr "Oddiel(y) na %s sa používajú."
+msgstr "Oblasti na %s sa používajú."
 
-#: parted/parted.c:254
+#: parted/parted.c:256
 msgid ""
 "The existing file system will be destroyed and all data on the partition "
 "will be lost. Do you want to continue?"
 msgstr ""
-"Existujúci súborový systém sa zničí a všetky dáta na oddiele sa stratia. "
+"Existujúci súborový systém sa zničí a všetky dáta na oblasti sa stratia. "
 "Chcete pokračovať?"
 
-#: parted/parted.c:266
+#: parted/parted.c:268
 #, c-format
 msgid ""
 "The existing disk label on %s will be destroyed and all data on this disk "
@@ -2640,7 +2641,7 @@ msgstr ""
 "Existujúca menovka disku na %s sa zničí a všetky dáta na oddiele sa stratia. "
 "Chcete pokračovať?"
 
-#: parted/parted.c:484
+#: parted/parted.c:486
 #, c-format
 msgid ""
 "WARNING: you are attempting to use %s to operate on (%s) a file system.\n"
@@ -2650,447 +2651,465 @@ msgid ""
 "Support for performing most operations on most types of file systems\n"
 "will be removed in an upcoming release.\n"
 msgstr ""
+"UPOZORNENIE: pokúšate sa použiť %s na pracovanie na (%s) súborovom systéme.\n"
+"manipulácia so súborovým systémom %s nie je taká robustná ako tá, ktorú "
+"nájdete\n"
+"v na to určených balíkoch špecifických pre súborový systém ako e2fsprogs.\n"
+"Odporúčame, aby ste používali %s iba na manipuláciu s tabuľkami oblastí\n"
+"vždy, keď je to možné. Podpora vykonávania väčšiny operácií na väčšine\n"
+"typov súborových systémov bude v nasledovnom vydaní odstránená.\n"
 
-#: parted/parted.c:505 parted/parted.c:699 parted/parted.c:1121
-#: parted/parted.c:1205 parted/parted.c:1866 parted/parted.c:1947
-#: parted/parted.c:2018 parted/parted.c:2038
+#: parted/parted.c:507 parted/parted.c:701 parted/parted.c:1178
+#: parted/parted.c:1262 parted/parted.c:1933 parted/parted.c:2014
+#: parted/parted.c:2085 parted/parted.c:2105
 msgid "Partition number?"
-msgstr "Číslo oddielu?"
+msgstr "Číslo oblasti?"
 
-#: parted/parted.c:548
+#: parted/parted.c:550
 msgid "Source device?"
 msgstr "Zdrojové zariadenie?"
 
-#: parted/parted.c:552
+#: parted/parted.c:554
 msgid "Source partition number?"
-msgstr "Číslo zdrojového oddielu?"
+msgstr "Číslo zdrojovej oblasti?"
 
-#: parted/parted.c:557
+#: parted/parted.c:559
 msgid "Can't copy an extended partition."
-msgstr "Mie je možné kopírovať rozšírené oddiely."
+msgstr "Nie je možné kopírovať rozšírené oblasti."
 
-#: parted/parted.c:563
+#: parted/parted.c:565
 msgid "Destination partition number?"
-msgstr "Číslo cieľového oddielu?"
+msgstr "Číslo cieľovej oblasti?"
 
-#: parted/parted.c:652
+#: parted/parted.c:654
 msgid "New disk label type?"
 msgstr "Typ novej menovky disku?"
 
-#: parted/parted.c:703 parted/parted.c:785 parted/parted.c:972
+#: parted/parted.c:705 parted/parted.c:787 parted/parted.c:999
 msgid "File system type?"
 msgstr "Typ súborového systému?"
 
-#: parted/parted.c:759 parted/parted.c:955
+#: parted/parted.c:761 parted/parted.c:982
 msgid "Partition type?"
-msgstr "Typ oddielu?"
+msgstr "Typ oblasti?"
 
-#: parted/parted.c:777 parted/parted.c:962 parted/parted.c:1208
+#: parted/parted.c:779 parted/parted.c:989 parted/parted.c:1265
 msgid "Partition name?"
-msgstr "Názov oddielu?"
+msgstr "Názov oblasti?"
 
-#: parted/parted.c:791 parted/parted.c:974 parted/parted.c:1136
-#: parted/parted.c:1819 parted/parted.c:1875
+#: parted/parted.c:793 parted/parted.c:1001 parted/parted.c:1193
+#: parted/parted.c:1881 parted/parted.c:1942
 msgid "Start?"
 msgstr "Začiatok?"
 
-#: parted/parted.c:793 parted/parted.c:977 parted/parted.c:1139
-#: parted/parted.c:1821 parted/parted.c:1877
+#: parted/parted.c:795 parted/parted.c:1004 parted/parted.c:1196
+#: parted/parted.c:1883 parted/parted.c:1944
 msgid "End?"
 msgstr "Koniec?"
 
-#: parted/parted.c:854 parted/parted.c:1023
-#, fuzzy, c-format
+#: parted/parted.c:861 parted/parted.c:1065
+#, c-format
 msgid ""
 "You requested a partition from %s to %s.\n"
 "The closest location we can manage is %s to %s.%s"
 msgstr ""
-"Vyžiadali ste oddiel od %s do %s.\n"
-"Najbližšie možné miesto je od %s do %s. Je to pre vás prijateľné?"
+"Vyžiadali ste oblasť od %s do %s.\n"
+"Najbližšie možné miesto je od %s do %s.%s"
 
-#: parted/parted.c:859 parted/parted.c:1028
+#: parted/parted.c:866 parted/parted.c:1070
 msgid ""
 "\n"
 "Is this still acceptable to you?"
 msgstr ""
+"\n"
+"Je to pre vás ešte prijateľné?"
 
-#: parted/parted.c:967
+#: parted/parted.c:888 parted/parted.c:1092
+msgid "The resulting partition is not properly aligned for best performance."
+msgstr ""
+
+#: parted/parted.c:994
 msgid "An extended partition cannot hold a file system.  Did you want mkpart?"
-msgstr "Rozšírené oddiely nemôžu mať súborový systém. Chceli ste mkpart?"
+msgstr "Rozšírené oblasti nemôžu mať súborový systém. Chceli ste mkpart?"
 
-#: parted/parted.c:1127
+#: parted/parted.c:1184
 msgid "Can't move an extended partition."
-msgstr "Nemôžem presunúť rozšírený oddiel."
+msgstr "Nie je možné presunúť rozšírenú oblasť."
 
-#: parted/parted.c:1156
+#: parted/parted.c:1213
 msgid "Can't move a partition onto itself.  Try using resize, perhaps?"
-msgstr "Nemôžem presdunúť oddiel na seba. Možno skúste použiť resize?"
+msgstr "Nie je možné presunúť oblasti na seba. Možno skúste použiť resize?"
 
-#: parted/parted.c:1302
+#: parted/parted.c:1359
 #, c-format
 msgid "Minor: %d\n"
 msgstr "Drobné: %d\n"
 
-#: parted/parted.c:1303
+#: parted/parted.c:1360
 #, c-format
 msgid "Flags: %s\n"
 msgstr "Prepínače: %s\n"
 
-#: parted/parted.c:1304
+#: parted/parted.c:1361
 #, c-format
 msgid "File System: %s\n"
 msgstr "Systém súborov: %s\n"
 
-#: parted/parted.c:1305
+#: parted/parted.c:1362
 msgid "Size:         "
 msgstr "Veľkosť:         "
 
-#: parted/parted.c:1310
+#: parted/parted.c:1367
 msgid "Minimum size: "
 msgstr "Minimálna veľkosť: "
 
-#: parted/parted.c:1313
+#: parted/parted.c:1370
 msgid "Maximum size: "
 msgstr "Maximálna veľkosť: "
 
-#: parted/parted.c:1441
+#: parted/parted.c:1502
 #, c-format
 msgid "Model: %s (%s)\n"
 msgstr "Model: %s (%s)\n"
 
-#: parted/parted.c:1443
+#: parted/parted.c:1504
 #, c-format
 msgid "Disk %s: %s\n"
 msgstr "Disk %s: %s\n"
 
-#: parted/parted.c:1444
+#: parted/parted.c:1505
 #, c-format
 msgid "Sector size (logical/physical): %lldB/%lldB\n"
 msgstr "Veľkosť sektora (logická/fyzická): %lldB/%lldB\n"
 
-#: parted/parted.c:1462
+#: parted/parted.c:1523
 #, c-format
 msgid "BIOS cylinder,head,sector geometry: %d,%d,%d.  Each cylinder is %s.\n"
 msgstr ""
 "BIOS geometria cylinder,hlava,sektor: %d,%d,%d. Každý cylinder má %s.\n"
 
-#: parted/parted.c:1471
+#: parted/parted.c:1532
 #, c-format
 msgid "Partition Table: %s\n"
-msgstr "Tabuľka oddielov: %s\n"
+msgstr "Tabuľka oblastí: %s\n"
 
-#: parted/parted.c:1486 parted/parted.c:1489
+#: parted/parted.c:1547 parted/parted.c:1550
 msgid "Number"
 msgstr "Číslo"
 
-#: parted/parted.c:1486 parted/parted.c:1489
+#: parted/parted.c:1547 parted/parted.c:1550
 msgid "Start"
 msgstr "Začiatok"
 
-#: parted/parted.c:1487 parted/parted.c:1490
+#: parted/parted.c:1548 parted/parted.c:1551
 msgid "End"
 msgstr "Koniec"
 
-#: parted/parted.c:1490
+#: parted/parted.c:1551
 msgid "Size"
 msgstr "Veľkosť"
 
-#: parted/parted.c:1494
+#: parted/parted.c:1555
 msgid "Type"
 msgstr "Typ"
 
-#: parted/parted.c:1496
+#: parted/parted.c:1557
 msgid "File system"
 msgstr "Súborový systém"
 
-#: parted/parted.c:1499
+#: parted/parted.c:1560
 msgid "Name"
 msgstr "Názov"
 
-#: parted/parted.c:1501
+#: parted/parted.c:1562
 msgid "Flags"
 msgstr "Prepínače"
 
-#: parted/parted.c:1558
+#: parted/parted.c:1619
 msgid "Free Space"
 msgstr "Voľné miesto"
 
-#: parted/parted.c:1718
+#: parted/parted.c:1780
 #, c-format
 msgid ""
 "A %s %s partition was found at %s -> %s.  Do you want to add it to the "
 "partition table?"
 msgstr ""
-"Bol nájdený oddiel %s %s na %s -> %s.  Chcete ho pridať do tabuľky oddielov?"
+"Bola nájdená oblasť %s %s na %s -> %s. Chcete ju pridať do tabuľky oblastí?"
 
-#: parted/parted.c:1757
+#: parted/parted.c:1819
 msgid "searching for file systems"
 msgstr "hľadám systémy súborov"
 
-#: parted/parted.c:1972
+#: parted/parted.c:2039
 msgid "New device?"
 msgstr "Nové zariadenie?"
 
-#: parted/parted.c:2017
+#: parted/parted.c:2084
 msgid "alignment type(min/opt)"
-msgstr ""
+msgstr "typ zarovnania(min/opt)"
 
-#: parted/parted.c:2040
+#: parted/parted.c:2107
 msgid "Flag to Invert?"
 msgstr "Prepínač, který sa má zmeniť?"
 
-#: parted/parted.c:2045
+#: parted/parted.c:2112
 msgid "New state?"
 msgstr "Nový stav?"
 
-#: parted/parted.c:2082
+#: parted/parted.c:2149
 msgid "Unit?"
 msgstr "Jednotka?"
 
-#: parted/parted.c:2263
-#, fuzzy
+#: parted/parted.c:2330
 msgid "align-check"
-msgstr "check"
+msgstr "kontrola-zarovnania"
 
-#: parted/parted.c:2266
+#: parted/parted.c:2333
 msgid ""
 "align-check TYPE N                        check partition N for TYPE(min|"
 "opt) alignment"
 msgstr ""
+"align-check TYP N                         skontrolovať zarovnanie TYP(min|"
+"opt) na oblasti N"
 
-#: parted/parted.c:2274
+#: parted/parted.c:2341
 msgid "check"
 msgstr "check"
 
-#: parted/parted.c:2277
+#: parted/parted.c:2344
 msgid ""
 "check NUMBER                             do a simple check on the file system"
 msgstr ""
-"check ČÍSLO                   vykonať jednoduchú kontrolu systému súborov"
+"check ČÍSLO                              vykonať jednoduchú kontrolu systému "
+"súborov"
 
-#: parted/parted.c:2283
+#: parted/parted.c:2350
 msgid "cp"
 msgstr "cp"
 
-#: parted/parted.c:2286
+#: parted/parted.c:2353
 msgid ""
 "cp [FROM-DEVICE] FROM-NUMBER TO-NUMBER   copy file system to another "
 "partition"
 msgstr ""
-"cp [OD-ZARIADENIE] OD-ČÍSLO DO-ČÍSLO        skopírovať systém súborov na iný "
-"oddiel"
+"cp [OD-ZARIADENIE] OD-ČÍSLO DO-ČÍSLO     skopírovať systém súborov na inú "
+"oblasť"
 
-#: parted/parted.c:2292
+#: parted/parted.c:2359
 msgid "help"
 msgstr "help"
 
-#: parted/parted.c:2295
+#: parted/parted.c:2362
 msgid ""
 "help [COMMAND]                           print general help, or help on "
 "COMMAND"
 msgstr ""
-"help [PRÍKAZ]                 vypíše všeobecného pomocníka alebo pomocníka o "
-"PRÍKAZE"
+"help [PRÍKAZ]                            vypíše všeobecného pomocníka alebo "
+"pomocníka o PRÍKAZE"
 
-#: parted/parted.c:2301
+#: parted/parted.c:2368
 msgid "mklabel"
 msgstr "mklabel"
 
-#: parted/parted.c:2301
+#: parted/parted.c:2368
 msgid "mktable"
 msgstr "mktable"
 
-#: parted/parted.c:2304
+#: parted/parted.c:2371
 msgid ""
 "mklabel,mktable LABEL-TYPE               create a new disklabel (partition "
 "table)"
 msgstr ""
-"mklabel TYP-MENOVKY           vytvorí novú menovku disku (tabuľku oddielov)"
+"mklabel TYP-MENOVKY                      vytvorí novú menovku disku (tabuľku "
+"oblastí)"
 
-#: parted/parted.c:2310
+#: parted/parted.c:2377
 msgid "mkfs"
 msgstr "mkfs"
 
-#: parted/parted.c:2313
-#, fuzzy
+#: parted/parted.c:2380
 msgid ""
 "mkfs NUMBER FS-TYPE                      make a FS-TYPE file system on "
 "partition NUMBER"
 msgstr ""
-"mkfs ČÍSLO TYP-FS              vytvorí systém súborov FS-TYPE na oddiele "
-"ČÍSLO"
+"mkfs ČÍSLO TYP-FS                        vytvorí systém súborov FS-TYPE na "
+"oblasti ČÍSLO"
 
-#: parted/parted.c:2319
+#: parted/parted.c:2386
 msgid "mkpart"
 msgstr "mkpart"
 
-#: parted/parted.c:2322
+#: parted/parted.c:2389
 msgid "mkpart PART-TYPE [FS-TYPE] START END     make a partition"
-msgstr "mkpart TYP-ODDIELU [TYP-FS] ZAČIATOK KONIEC  vytvorí oddiel"
+msgstr "mkpart TYP-ODDIELU [TYP-FS] ZAČIATOK KONIEC vytvorí oblasť"
 
-#: parted/parted.c:2328
+#: parted/parted.c:2395
 msgid ""
 "'mkpart' makes a partition without creating a new file system on the "
 "partition.  FS-TYPE may be specified to set an appropriate partition ID.\n"
 msgstr ""
-"„mkpart“ vytvorí oddiel bez toho, aby vytvoril nový systém súborov na ňom. "
-"TYP-FS môže byť špecifikovať zodpovedajúci ID oddielu.\n"
+"„mkpart“ vytvorí oblasť bez toho, aby vytvoril nový systém súborov na nej. "
+"TYP-FS môže špecifikovať zodpovedajúci ID oblasti.\n"
 
-#: parted/parted.c:2333
+#: parted/parted.c:2400
 msgid "mkpartfs"
 msgstr "mkpartfs"
 
-#: parted/parted.c:2336
+#: parted/parted.c:2403
 msgid ""
 "mkpartfs PART-TYPE FS-TYPE START END     make a partition with a file system"
 msgstr ""
-"mkpartfs TYP-ODDIELU TYP-FS ZAČ KONIEC    vytvoriť oddiel se systémom súborov"
+"mkpartfs TYP-ODDIELU TYP-FS ZAČ KONIEC   vytvoriť oblasť se systémom súborov"
 
-#: parted/parted.c:2342
+#: parted/parted.c:2409
 msgid "move"
 msgstr "move"
 
-#: parted/parted.c:2345
+#: parted/parted.c:2412
 msgid "move NUMBER START END                    move partition NUMBER"
-msgstr "move ČÍSLO ZAČIATOK KONIEC                presunúť oddiel ČÍSLO"
+msgstr "move ČÍSLO ZAČIATOK KONIEC               presunúť oblasť ČÍSLO"
 
-#: parted/parted.c:2350
+#: parted/parted.c:2417
 msgid "name"
 msgstr "name"
 
-#: parted/parted.c:2353
+#: parted/parted.c:2420
 msgid "name NUMBER NAME                         name partition NUMBER as NAME"
-msgstr "name MINOR NÁZOV                          nazvať oddiel MINOR NÁZVOM"
+msgstr "name MINOR NÁZOV                         nazvať oblasť MINOR NÁZVOM"
 
-#: parted/parted.c:2358
+#: parted/parted.c:2425
 msgid "print"
 msgstr "print"
 
-#: parted/parted.c:2361
+#: parted/parted.c:2428
 msgid ""
 "print [devices|free|list,all|NUMBER]     display the partition table, "
 "available devices, free space, all found partitions, or a particular "
 "partition"
 msgstr ""
-"print [devices|free|list,all|ČÍSLO]     zobrazí tabuľku oddielov, dostupné "
-"zariadenia, voľné miesto, všetky nájdené oddiely alebo konkrétny oddiel"
+"print [devices|free|list,all|ČÍSLO]      zobrazí tabuľku oblastí, dostupné "
+"zariadenia, voľné miesto, všetky nájdené oblasti alebo konkrétnu oblasť"
 
-#: parted/parted.c:2366
+#: parted/parted.c:2433
 msgid ""
 "Without arguments, 'print' displays the entire partition table. However with "
 "the following arguments it performs various other actions.\n"
 msgstr ""
-"„print“ bez argumentov zobrazí celú tabuľku oddielov. S nasledovnými "
+"„print“ bez argumentov zobrazí celú tabuľku oblastí. S nasledovnými "
 "argumentami však vykoná rôzne iné činnosti.\n"
 
-#: parted/parted.c:2368
+#: parted/parted.c:2435
 msgid "  devices   : display all active block devices\n"
 msgstr "  devices   : zobrazí všetky aktívne blokové zariadenia\n"
 
-#: parted/parted.c:2369
+#: parted/parted.c:2436
 msgid ""
 "  free      : display information about free unpartitioned space on the "
 "current block device\n"
 msgstr ""
-"  free      : zobrazí informácie o voľnom mieste nerozdelenom medzi oddiely "
+"  free      : zobrazí informácie o voľnom mieste nerozdelenom medzi oblasti "
 "na aktuálnom blokovom zariadení\n"
 
-#: parted/parted.c:2371
+#: parted/parted.c:2438
 msgid ""
 "  list, all : display the partition tables of all active block devices\n"
 msgstr ""
-"  list, all : zobrazí tabuľky oddielov všetkých aktívnych blokových "
+"  list, all : zobrazí tabuľky oblastí všetkých aktívnych blokových "
 "zariadení\n"
 
-#: parted/parted.c:2372
+#: parted/parted.c:2439
 msgid ""
 "  NUMBER    : display more detailed information about this particular "
 "partition\n"
 msgstr ""
-"  ČÍSLO     : zobrazí podrobnejšie informácie o tomto konkrétnom oddiele\n"
+"  ČÍSLO     : zobrazí podrobnejšie informácie o tejto konkrétnej oblasti\n"
 
-#: parted/parted.c:2377
+#: parted/parted.c:2444
 msgid "quit"
 msgstr "quit"
 
-#: parted/parted.c:2380
+#: parted/parted.c:2447
 msgid "quit                                     exit program"
-msgstr "quit                          ukončiť program"
+msgstr "quit                                     ukončiť program"
 
-#: parted/parted.c:2385
+#: parted/parted.c:2452
 msgid "rescue"
 msgstr "rescue"
 
-#: parted/parted.c:2388
+#: parted/parted.c:2455
 msgid ""
 "rescue START END                         rescue a lost partition near START "
 "and END"
 msgstr ""
-"rescue ZAČIATOK KONIEC          zachrániť stratený oddiel v blízkosti "
-"ZAČIATKU a KONCA"
+"rescue ZAČIATOK KONIEC                   zachrániť stratenú oblasť v "
+"blízkosti ZAČIATKU a KONCA"
 
-#: parted/parted.c:2394
+#: parted/parted.c:2461
 msgid "resize"
 msgstr "resize"
 
-#: parted/parted.c:2397
+#: parted/parted.c:2464
 msgid ""
 "resize NUMBER START END                  resize partition NUMBER and its "
 "file system"
 msgstr ""
-"rescue ČÍSLO ZAČIATOK KONIEC          zmeniť veľkosť oddielu ČÍSLO a jeho "
+"rescue ČÍSLO ZAČIATOK KONIEC             zmeniť veľkosť oblasti ČÍSLO a jej "
 "súborového systému"
 
-#: parted/parted.c:2405
+#: parted/parted.c:2472
 msgid "rm"
 msgstr "rm"
 
-#: parted/parted.c:2408
+#: parted/parted.c:2475
 msgid "rm NUMBER                                delete partition NUMBER"
-msgstr "rm MINOR                      odstrániť oddiel MINOR"
+msgstr "rm MINOR                                 odstrániť oblasť MINOR"
 
-#: parted/parted.c:2413
+#: parted/parted.c:2480
 msgid "select"
 msgstr "select"
 
-#: parted/parted.c:2416
+#: parted/parted.c:2483
 msgid "select DEVICE                            choose the device to edit"
 msgstr ""
-"select zariadenie               zvoliť zariadenie, ktoré sa má upravovať"
+"select zariadenie                        zvoliť zariadenie, ktoré sa má "
+"upravovať"
 
-#: parted/parted.c:2421
+#: parted/parted.c:2488
 msgid "set"
 msgstr "set"
 
-#: parted/parted.c:2424
+#: parted/parted.c:2491
 msgid ""
 "set NUMBER FLAG STATE                    change the FLAG on partition NUMBER"
-msgstr "set MINOR PREPÍNAČ STAV       zmeniť voľbu na oddiele MINOR"
+msgstr "set MINOR PREPÍNAČ STAV                  zmeniť voľbu na oblasti MINOR"
 
-#: parted/parted.c:2430
+#: parted/parted.c:2497
 msgid "toggle"
 msgstr "toggle"
 
-#: parted/parted.c:2433
+#: parted/parted.c:2500
 msgid ""
 "toggle [NUMBER [FLAG]]                   toggle the state of FLAG on "
 "partition NUMBER"
 msgstr ""
-"toggle [ČÍSLO [PRÍZNAK]]                 prepnúť PRÍZNAK na oddieli ČÍSLO"
+"toggle [ČÍSLO [PRÍZNAK]]                 prepnúť PRÍZNAK na oblasti ČÍSLO"
 
-#: parted/parted.c:2439
+#: parted/parted.c:2506
 msgid "unit"
-msgstr "quit"
+msgstr "unit"
 
-#: parted/parted.c:2442
+#: parted/parted.c:2509
 msgid "unit UNIT                                set the default unit to UNIT"
-msgstr "quit                          ukončiť program"
+msgstr ""
+"unit JEDNOTKA                            nastaviť predvolenú jednotku na "
+"JEDNOTKA"
 
-#: parted/parted.c:2447
+#: parted/parted.c:2514
 msgid "version"
 msgstr "version"
 
-#: parted/parted.c:2450
+#: parted/parted.c:2517
 msgid ""
 "version                                  display the version number and "
 "copyright information of GNU Parted"
@@ -3098,7 +3117,7 @@ msgstr ""
 "version                                  zobrazí verziu a informácie o "
 "autorských právach GNU Parted"
 
-#: parted/parted.c:2454
+#: parted/parted.c:2521
 msgid ""
 "'version' displays copyright and version information corresponding to this "
 "copy of GNU Parted\n"
@@ -3106,20 +3125,21 @@ msgstr ""
 "„version“ zobrazí informácie o autorských právach a verzii tejto kópie GNU "
 "Parted\n"
 
-#: parted/parted.c:2522
-#, fuzzy, c-format
+#: parted/parted.c:2589
+#, c-format
 msgid "Usage: %s [-hlmsv] [-a<align>] [DEVICE [COMMAND [PARAMETERS]]...]\n"
-msgstr "Použitie: %s [-hlmsv] [ZARIADENIE [PRÍKAZ [PARAMETRE]]...]\n"
+msgstr ""
+"Použitie: %s [-hlmsv] [-a<zarovnanie>] [ZARIADENIE [PRÍKAZ [PARAMETRE]]...]\n"
 
-#: parted/parted.c:2566
+#: parted/parted.c:2633
 msgid "No device found"
 msgstr "Nebolo nájdené žiadne zariadenie"
 
-#: parted/parted.c:2603
+#: parted/parted.c:2670
 msgid "WARNING: You are not superuser.  Watch out for permissions."
 msgstr "UPOZORNENIE: Nie ste superpoužívateľ. Dávajte pozor na oprávnenia."
 
-#: parted/parted.c:2641
+#: parted/parted.c:2708
 msgid "You may need to update /etc/fstab.\n"
 msgstr "Môže byť potrebné aktualizovať /etc/fstab.\n"
 
@@ -3382,11 +3402,11 @@ msgstr "neplatný token: %s"
 
 #: parted/ui.c:1048
 msgid "Expecting a partition number."
-msgstr "Očakáva sa číslo oddielu."
+msgstr "Očakáva sa číslo oblasti."
 
 #: parted/ui.c:1057
 msgid "Partition doesn't exist."
-msgstr "Oddiel neexistuje."
+msgstr "Oblasť neexistuje."
 
 #: parted/ui.c:1077
 msgid "Expecting a file system type."
@@ -3403,11 +3423,11 @@ msgstr "Očakáva sa typ menovky disku."
 
 #: parted/ui.c:1202
 msgid "Can't create any more partitions."
-msgstr "Nie je možné vytvoriť ďalšie oddiely."
+msgstr "Nie je možné vytvoriť ďalšie oblasti."
 
 #: parted/ui.c:1212
 msgid "Expecting a partition type."
-msgstr "Očakáva sa typ oddielu."
+msgstr "Očakáva sa typ oblasti."
 
 #: parted/ui.c:1360
 msgid "on"
@@ -3419,11 +3439,11 @@ msgstr "vyp"
 
 #: parted/ui.c:1378
 msgid "optimal"
-msgstr ""
+msgstr "optimálne"
 
 #: parted/ui.c:1379
 msgid "minimal"
-msgstr ""
+msgstr "minimálne"
 
 #: parted/ui.c:1512
 msgid "OPTIONs:"
@@ -3442,8 +3462,25 @@ msgstr "Používa sa %s\n"
 msgid "This command does not make sense in non-interactive mode.\n"
 msgstr "Príkaz nedáva zmysel v neinteraktívnom režime.\n"
 
-#~ msgid "Unable to determine the block size of this dasd"
-#~ msgstr "Nie je možné určiť veľkosť bloku tohto dasd."
+#~ msgid ""
+#~ "Could not determine minimum io size for %s: %s.\n"
+#~ "Using the default size (%lld)."
+#~ msgstr ""
+#~ "Nebolo možné určiť minimálnu veľkosť io pre %s: %s.\n"
+#~ "Používa sa štandardná veľkosť sektora (%lld)."
+
+#~ msgid "%s: illegal option -- %c\n"
+#~ msgstr "%s: neprípustná voľba -- %c\n"
+
+#~ msgid ""
+#~ "Error informing the kernel about modifications to partition %s -- %s.  "
+#~ "This means Linux won't know about any changes you made to %s until you "
+#~ "reboot -- so you shouldn't mount it or use it in any way before rebooting."
+#~ msgstr ""
+#~ "Chyba pri informování jadra o zmenách oddielu %s - %s. To znamená, že "
+#~ "Linux nebude vedieť o zmenách, ktoré ste na %s vykonali, pokým "
+#~ "nereštartujete systém - takže by ste ho nemali pripájať ani ho pred "
+#~ "reštartom akokoľvek používať."
 
 #~ msgid ""
 #~ "The kernel was unable to re-read the partition table on %s (%s).  This "
@@ -3456,23 +3493,8 @@ msgstr "Príkaz nedáva zmysel v neinteraktívnom režime.\n"
 #~ "systém - takže by ste nemali %s pripájať ani ho pred reštartom akokoľvek "
 #~ "používať."
 
-#~ msgid ""
-#~ "Error informing the kernel about modifications to partition %s -- %s.  "
-#~ "This means Linux won't know about any changes you made to %s until you "
-#~ "reboot -- so you shouldn't mount it or use it in any way before rebooting."
-#~ msgstr ""
-#~ "Chyba pri informování jadra o zmenách oddielu %s - %s. To znamená, že "
-#~ "Linux nebude vedieť o zmenách, ktoré ste na %s vykonali, pokým "
-#~ "nereštartujete systém - takže by ste ho nemali pripájať ani ho pred "
-#~ "reštartom akokoľvek používať."
-
-#, fuzzy
-#~ msgid ""
-#~ "Could not determine physical sector size for %s: %s.\n"
-#~ "Using the default physical sector size (%lld)."
-#~ msgstr ""
-#~ "Nebolo možné určiť veľkosť sektora %s: %s.\n"
-#~ "Používam štandardnú veľkosť sektora (%lld)."
+#~ msgid "Unable to determine the block size of this dasd"
+#~ msgstr "Nie je možné určiť veľkosť bloku tohto dasd."
 
 #~ msgid "File system has an incompatible feature enabled."
 #~ msgstr "Systém súborov má povolenou nekompatibilnú vlastnosť."

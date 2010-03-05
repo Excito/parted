@@ -1,4 +1,389 @@
+2010-02-26  Jim Meyering  <meyering@redhat.com>
+
+	version 2.2
+	* NEWS: Record release date.
+
+2010-02-26  Curtis  Gedak  <gedakc@gmail.com>
+
+	dos: set HFS/HFS+ partition identifier to proper value
+	The correct value for an "hfs" partition identifier is 0xAF.
+	Previously the partition identifier was incorrectly set to 0x83.
+	* libparted/labels/dos.c (PARTITION_HFS): Define.
+	(msdos_partition_set_system): Use it.
+
+2010-02-26  Jim Meyering  <meyering@redhat.com>
+
+	tests: exercise today's HFS partition type fix
+	* tests/t2400-dos-hfs-partition-type.sh: New script.
+	* tests/Makefile.am: Add it.
+	* NEWS (Bug fixes): Mention it.
+
+	tests: gpt-pmbr: don't ignore stdout comparison result
+	* tests/t0202-gpt-pmbr.sh: Fail if we get unexpected output.
+
+2010-02-25  Jim Meyering  <meyering@redhat.com>
+
+	build: update gnulib submodule to latest
+	* bootstrap: Copy from gnulib.
+
+	tests: convert t4001 to use the new framework
+	* tests/t4001-sun-vtoc.sh: Convert.
+	* tests/Makefile.am (TESTS): Add it to the list.
+
+2010-02-25  Karel Zak  <kzak@redhat.com>
+
+	sun: initialize basic partition table fields
+	libparted completely ignores basic fields (version, nparts and sanity)
+	in the sun VTOC, then for example fdisk prints warnings for such
+	partition table:
+
+		# fdisk -lu /dev/sdb
+		Detected sun disklabel with wrong version [0x00000000].
+		Detected sun disklabel with wrong sanity [0x00000000].
+		Detected sun disklabel with wrong num_partitions [0].
+
+	It seems that the current libparted sun support follows old Linux
+	kernel code, but the code was changed 3 years ago (see kernel commit
+	3961bae0ac030a70ae2e0578270203889021f1a1).
+
+	Note that the number of partitions (nparts) is optional for Linux
+	kernel, but fdisk(8) strictly requires SUN_DISK_MAXPARTITIONS (=8)
+	there. This patch sets nparts to SUN_DISK_MAXPARTITIONS rather then
+	use a real number of partitions.
+
+	* NEWS (Bug fixes): Mention it.
+	* libparted/labels/sun.c: Update from kernel.
+	* tests/t4001-sun-vtoc.sh: New file.  Test for this.
+
+2010-02-25  Jim Meyering  <meyering@redhat.com>
+
+	tests: wrap the dup-clobber test in a script, ...
+	so that its artifacts are created in the usual temporary subdir
+	* tests/Makefile.am (TESTS): Remove dup-clobber, and instead...
+	Add t0500-dup-clobber.sh.
+	* tests/t0500-dup-clobber.sh: New script.
+
+2010-02-23  Jim Meyering  <meyering@redhat.com>
+
+	build: update gnulib submodule to latest
+
+	tests: test for the ped_disk_duplicate needs_clobber fix
+	* tests/dup-clobber.c: New file.
+	Exercise the fix in commit jabb411b, "libparted: copy the
+	needs_clobber value in ped_disk_duplicate()".
+	* tests/Makefile.am (TESTS, check_PROGRAMS): Add dup-clobber.
+
+2010-02-22  Hans de Goede  <hdegoede@redhat.com>
+
+	libparted: copy the needs_clobber value in ped_disk_duplicate()
+	Most duplicate disk_ops use ped_disk_new_fresh, which sets needs_clobber
+	to 1. This would lead to clobbering the disk when committing a duplicate
+	disk even when the original disk was not made with ped_disk_new_fresh.
+	* libparted/disk.c (ped_disk_duplicate): Copy the needs_clobber member.
+	* NEWS (Bug fixes): Describe it.
+
+2010-02-22  Curtis Gedak  <gedakc@gmail.com>
+
+	linux: add wait time and retries to kernel partition reread
+	Occasionally when using parted with newer GNU/Linux kernels (2.6.31)
+	and udev (145), the kernel would fail to reread the partition table.
+	This could lead to problems with subsequent actions such as formatting
+	the partition.
+
+	Basically this patch increases the retry_count, and adds one sleep(1)
+	function call prior to the the last few ioctl() calls.
+
+	This patch might not be a perfect solution to this problem of "failure
+	to inform kernel of partition changes", but it does significantly
+	reduce the likelihood of encountering the problem.
+
+	Details on the testing results and procedures used can be found at
+	the following link:
+	https://bugzilla.gnome.org/show_bug.cgi?id=604298#c9
+
+	* libparted/arch/linux.c (_kernel_reread_part_table): Sleep for a
+	full second if retry_count makes it down to "3".  Start it at 9
+	rather than at 5.
+	* NEWS (Bug fixes):
+
+2010-02-20  Jim Meyering  <meyering@redhat.com>
+
+	maint: remove now-unused <partition_table_type>_clobber functions
+	All of these functions were rendered unused by commit 376b143045,
+	"ped_disk_clobber: change semantics" on 2009-11-13.
+	Also, Update each <...>_disk_ops "clobber:" member to be NULL.
+	* libparted/labels/aix.c (aix_clobber): Remove function.
+	* libparted/labels/bsd.c (bsd_clobber): Likewise.
+	* libparted/labels/dasd.c (dasd_clobber): Likewise.
+	* libparted/labels/dos.c (msdos_clobber): Likewise.
+	* libparted/labels/dvh.c (dvh_clobber): Likewise.
+	* libparted/labels/gpt.c (gpt_clobber): Likewise.
+	* libparted/labels/loop.c (loop_clobber): Likewise.
+	* libparted/labels/mac.c (_clobber_part_map, mac_clobber): Likewise.
+	* libparted/labels/pc98.c (pc98_clobber): Likewise.
+	* libparted/labels/rdb.c (amiga_clobber): Likewise.
+	* libparted/labels/sun.c (sun_clobber): Likewise.
+	Suggested by Hans De Goede.
+
+2010-02-13  Jim Meyering  <meyering@redhat.com>
+
+	doc: update release procedure to account for soname version number
+	* README-release: Add a step "0", and update step 3 to match reality.
+
+	libparted: set the shared library version number manually
+	* libparted/Makefile.am (CURRENT, REVISION, AGE): Define here.
+	(libparted_la_LDFLAGS): Use them, rather than using the
+	automatically-defined LT_-prefixed variables.
+	Stop using the "-release" option.
+	Hans De Goede pointed out that the build process was automatically
+	changing the shared library name.
+
+2010-02-12  Jim Meyering  <meyering@redhat.com>
+
+	gpt: clean-up wrt write_back (no semantic change)
+	* libparted/labels/gpt.c (gpt_read): Initialize write_back to 0
+	once again, and set it to 1 on the sole path that requires that.
+
+2010-02-10  Jim Meyering  <meyering@redhat.com>
+
+	gpt: "read-only" operation could clobber the pMBR in another way
+	A read-only operation like "parted $dev print" would overwrite $dev's
+	pMBR when exactly one of the primary and backup tables was corrupt.
+	* libparted/labels/gpt.c (gpt_read): Clear "write_back" in those
+	two cases.  Hans De Goede spotted this bug by inspection.
+	* NEWS (Bug fixes): Mention it.
+	* tests/t0206-gpt-print-with-corrupt-primary-clobbers-pmbr.sh: New test.
+	* tests/Makefile.am (TESTS): Add
+	t0206-gpt-print-with-corrupt-primary-clobbers-pmbr.sh.
+
+	tests: factor utility functions into "library"
+	...since we're about to use them from a second test.
+	* tests/t-local.sh (peek_, poke_, gpt1_pte_name_offset_): New functions.
+	(gpt_corrupt_primary_table_, gpt_restore_primary_table_): New functions.
+	* tests/t0280-gpt-corrupt.sh: Remove local copies of those functions.
+	Use the new ones.
+
+2010-02-10  Hans de Goede  <hdegoede@redhat.com>
+
+	dasd: don't dereference a NULL pointer in dasd_read
+	* libparted/labels/dasd.c (dasd_read): Avoid NULL pointer dereference.
+
+	parted: change default alignment to "optimal"
+	* NEWS (Changes in behavior): Mention it.
+	* parted/parted.c: Change --align default value to optimal.
+	* tests/t2100-mkswap.sh: Adjust for alignment changes where necessary.
+	* tests/t0220-gpt-msftres.sh: Likewise.
+	* tests/t0280-gpt-corrupt.sh: Likewise.
+	* tests/t2200-dos-label-recog.sh: Likewise.
+	* tests/t2300-dos-label-extended-bootcode.sh: Likewise.
+	* tests/t3000-resize-fs.sh: Likewise.
+	* tests/t4100-msdos-partition-limits.sh: Likewise.
+	* tests/t4100-msdos-starting-sector.sh: Likewise.
+	* tests/t5000-tags.sh: Likewise.
+	* tests/t8000-loop.sh: Likewise.
+	* tests/t9021-maxima.sh: Likewise.
+
+	parted: change warnings when initial constrained mkpart fails
+	In do_mkpart we first try to create a partition using a constraint
+	derived from the user input intersected with the devices alignment
+	needs. And if that fails we try again without any constraint.
+
+	However the warning given when this happens only takes into account
+	the user not getting what he asked for, while the alignment might be
+	a problem too (or even the only problem). So this patch adds a check
+	to see if the user really did not get what he asked before giving that
+	warning, and adds a new check + warning to see if the created partition
+	is properly aligned.
+	*parted/parted.c (do_mkpart,do_mkpartfs): change warnings when initial
+	constrained mkpart fails.
+
+	parted: honor --align option also in mkpartfs, resize and print cmds
+	* parted/parted.c (do_mkpartfs,do_print,do_resize): Honor --align.
+
+	linux: handle incomplete topology information
+	The topology information returned by libblkid is not always complete
+	(as the kernel does not always have complete information).
+	This patch makes the linux_get_*_alignment() alignment functions handle
+	this. The algorithm used for linux_get_optimum_alignment is:
+	1) Always use the reported aligment offset as offset
+	2a)If optimal io size is present in the topology info use that as grain
+	2b)If optimal io size is not present in topology info and aligment
+	   offset is 0 and minimum io size is a power of 2, use the device.c
+	   default optimal alignment (grain 1MiB).
+	2c) If neither 2a and 2b, use the minimum io size, or if that is not
+	   defined, use the physical sector size as grain (iow the minimum
+	   alignment).
+	The algorithm used for linux_get_minimum_alignment is:
+	1) Always use the reported aligment offset as offset
+	2) Use the minimum io size, or if that is not defined the physical
+	   sector size as grain.
+	* libparted/arch/linux.c (linux_get_*_alignment): Handle incomplete
+	topology information.
+
+	libparted: Give device_get_*_alignment sane defaults
+	When the topology info is incomplete or non existent, return something
+	more sensible than NULL (which ends up being interpreted as
+	PedAlignmentAny in most cases). The default minimum alignment aligns to
+	physical sector size, the default optimal alignment is 1 MiB, which is
+	what vista and windows 7 do.
+	* libparted/device.c (device_get_*_alignment): Add default aligments.
+	* NEWS (New features): Mention it.
+
+	linux: correct phys_sector_size setting
+	1) Use the logical sector size as physical sector size instead of 512
+	   when not compiled with libblkid support, this fixes problems
+	   with logical sector size > physical sector size.
+	2) blkid_topology_get_physical_sector_size() returns 0 when it fails
+	   to determine the physical sector size, handle this.
+	* libparted/arch/linux.c (_device_set_sector_size): Correct
+	phys_sector_size setting.
+	* NEWS (Bug fixes): Mention it.
+
+2010-02-09  Jim Meyering  <meyering@redhat.com>
+
+	build: update gnulib submodule to latest
+
+	doc: NEWS: mention the install-related bug fix
+	* NEWS (Bug fixes): Mention the fix.
+
+	gpt: read-only operation could clobber MBR part of hybrid GPT+MBR table
+	* libparted/labels/gpt.c (gpt_read): Fix a bug introduced by me in
+	commit 7f753b1b, "gpt: rewrite GPT header-reading code".
+	Set write_back=0 in one more code path.
+	* tests/Makefile.am (TESTS): Add t0205-gpt-list-clobbers-pmbr.sh.
+	* tests/t0205-gpt-list-clobbers-pmbr.sh: New test.
+	* NEWS (Bug fixes): Mention this.
+	Reported by aix27249 in
+	http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/250
+
+2010-02-08  Peter Breitenlohner  <peb@mppmu.mpg.de>
+
+	do not install the test programs disk and label
+
+2010-02-04  Otavio Salvador  <otavio@ossystems.com.br>
+
+	Fix minor spelling errors
+	This fixes minor spelling errors in the source code. Basically:
+
+	 s/informations/information/g
+	 s/prefered/preferred/g
+
+2010-02-04  Jim Meyering  <meyering@redhat.com>
+
+	tests: avoid another spurious test failure with newer xfsprogs
+	* tests/t4100-msdos-partition-limits.sh: Likewise.
+
+	tests: avoid spurious test failure with newer xfsprogs
+	* tests/t4100-dvh-partition-limits.sh: Use mkfs.xfs' -f (force)
+	option.  It is required at least for xfsprogs-3.1.0.
+
+2010-01-31  Hans de Goede  <hdegoede@redhat.com>
+
+	build: fix check-other-sector_sizes
+	"make check-other-sector_sizes" was running tests of 512-byte sectors
+	four times, rather than simulating larger sector-sizes for the latter
+	three iterations.
+	* Makefile.am (ss-1024 ss-2048 ss-4096): Fix the typo (missing "subst").
+
+2010-01-31  Jim Meyering  <meyering@redhat.com>
+
+	tests: adjust t9021-maxima not to fail with 2048-byte sectors
+	* tests/t9021-maxima.sh: At 10,000*512 bytes, the backing file
+	was too small to support a test simulating a sector size of 2048 bytes.
+	Use 10,000*$sector_size bytes instead.
+
+	build: avoid -Wshadow warnings
+	* parted/parted.c (do_print): Avoid two shadowing warnings.
+
+2010-01-29  Hans de Goede  <hdegoede@redhat.com>
+
+	linux: remove PED_DEVICE_FILE check from _device_set_sector_size
+	_device_set_sector_size is never called for devices with a type of
+	PED_DEVICE_FILE.
+	* libparted/arch/linux.c (_device_set_sector_size): Remove
+	PED_DEVICE_FILE check.
+
+	linux: remove unused blkpg.h header file
+	* libparted/arch/linux.c: Don't include blkpg.h.
+	* libparted/arch/blkpg.h: Deleted.
+	* libparted/Makefile.am (libparted_la_SOURCES): Remove arch/blkpg.h.
+
+	linux: use blkid_topology_get_physical_sector_size
+	The official 2.17 release of util-linux-ng, has added a function to
+	get the physical sector size.  Use that instead of getting the
+	minimum io size.
+	* libparted/arch/linux.c (_device_set_sector_size): Use
+	blkid_topology_get_physical_sector_size.
+
+2010-01-18  Jim Meyering  <meyering@redhat.com>
+
+	maint: remove unreachable code
+	* parted/parted.c (do_print): Remove unreachable ped_disk_destroy call.
+
+2010-01-15  Jim Meyering  <meyering@redhat.com>
+
+	build: update gnulib submodule to latest
+
+	dos: don't leak a constraint upon partition-add failure
+	* libparted/labels/dos.c (read_table): Free constraint upon failure.
+
+	gpt: don't leak a constraint upon partition-add failure
+	* libparted/labels/gpt.c (gpt_read): Free constraint upon failure.
+
+	gpt: do not leak a GPT header on an error path
+	* libparted/labels/gpt.c (gpt_write): Avoid a leak by freeing the
+	header buffer after pth_get_raw call where it's used, but before
+	checking whether that pth_get_raw call succeeded.
+	Avoid another leak in identical just 10 lines down.
+	Add "FIXME: caution..." comments to warn about the duplication.
+
+	libparted: remove unreachable code
+	* libparted/labels/gpt.c (gpt_write): Remove dead code.
+	* libparted/labels/bsd.c (bsd_partition_new): Likewise.
+	* libparted/disk.c (_ped_disk_alloc): Likewise.
+
+	libparted: avoid double-free on an OOM failure path
+	* libparted/disk.c (ped_disk_check): Don't double-free "fs_size".
+
+2010-01-08  Jim Meyering  <meyering@redhat.com>
+
+	build: update gnulib submodule to latest
+
+	maint: update old_NEWS_hash
+	* cfg.mk (old_NEWS_hash): Update for GFDL license update.
+
+	maint: update all GFDL licenses to version 1.3
+	* NEWS: Use 1.3, not 1.2.
+	* doc/API: Use 1.3, not 1.1.
+	* doc/FAT: Likewise.
+	* doc/USER.jp: Likewise.
+	* doc/fdl.texi: Likewise.
+	* doc/parted-pt_BR.texi: Likewise.
+	* doc/parted.texi: Likewise.
+
+	maint: update all FSF copyright year lists to include 2010
+	Run this command: make update-copyright
+
+	maint: record update-copyright options for this package
+	* cfg.mk: Next time, just run "make update-copyright".
+
+2009-12-31  Jim Meyering  <meyering@redhat.com>
+
+	maint: newer gnulib; don't hard-code my GPG key ID
+	* cfg.mk (gpg_key_ID): Remove definition, now that maint.mk automates it.
+	* gnulib: Update to latest.
+
 2009-12-20  Jim Meyering  <meyering@redhat.com>
+
+	maint: make build-aux/gnu-web-doc-update work
+	* cfg.mk (manual_title): Define.
+	* doc/parted.texi (Concept index): Rename from "Index".
+	Remove @ifnotplaintext..@end around its menu entry.
+
+	post-release administrivia
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* cfg.mk (old_NEWS_hash): Auto-update.
 
 	version 2.1
 	* NEWS: Record release date.

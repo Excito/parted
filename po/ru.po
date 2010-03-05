@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parted 1.8.8\n"
 "Report-Msgid-Bugs-To: bug-parted@gnu.org\n"
-"POT-Creation-Date: 2009-12-20 11:51+0100\n"
+"POT-Creation-Date: 2010-02-26 15:19+0100\n"
 "PO-Revision-Date: 2008-02-16 14:02+0200\n"
 "Last-Translator: Pavel Maryanov <acid_jack@ukr.net>\n"
 "Language-Team: Russian <gnu@mx.ru>\n"
@@ -42,59 +42,54 @@ msgstr "ошибка записи"
 msgid "Unknown system error"
 msgstr "Неизвестная системная ошибка"
 
-#: lib/getopt.c:527 lib/getopt.c:543
-#, c-format
-msgid "%s: option `%s' is ambiguous\n"
+#: lib/getopt.c:529 lib/getopt.c:545
+#, fuzzy, c-format
+msgid "%s: option '%s' is ambiguous\n"
 msgstr "%s: неоднозначный параметр `%s'\n"
 
-#: lib/getopt.c:576 lib/getopt.c:580
-#, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
+#: lib/getopt.c:578 lib/getopt.c:582
+#, fuzzy, c-format
+msgid "%s: option '--%s' doesn't allow an argument\n"
 msgstr "%s: параметр `--%s' не позволяет аргументы\n"
 
-#: lib/getopt.c:589 lib/getopt.c:594
-#, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
+#: lib/getopt.c:591 lib/getopt.c:596
+#, fuzzy, c-format
+msgid "%s: option '%c%s' doesn't allow an argument\n"
 msgstr "%s: параметр `%c%s' не позволяет аргументы\n"
 
-#: lib/getopt.c:637 lib/getopt.c:656 lib/getopt.c:972 lib/getopt.c:991
-#, c-format
-msgid "%s: option `%s' requires an argument\n"
+#: lib/getopt.c:639 lib/getopt.c:658 lib/getopt.c:961 lib/getopt.c:980
+#, fuzzy, c-format
+msgid "%s: option '%s' requires an argument\n"
 msgstr "%s: параметр `%s' требует аргументы\n"
 
-#: lib/getopt.c:694 lib/getopt.c:697
-#, c-format
-msgid "%s: unrecognized option `--%s'\n"
+#: lib/getopt.c:696 lib/getopt.c:699
+#, fuzzy, c-format
+msgid "%s: unrecognized option '--%s'\n"
 msgstr "%s: неопознанный параметр `--%s'\n"
 
-#: lib/getopt.c:705 lib/getopt.c:708
-#, c-format
-msgid "%s: unrecognized option `%c%s'\n"
+#: lib/getopt.c:707 lib/getopt.c:710
+#, fuzzy, c-format
+msgid "%s: unrecognized option '%c%s'\n"
 msgstr "%s: неопознанный параметр `%c%s'\n"
 
-#: lib/getopt.c:760 lib/getopt.c:763
-#, c-format
-msgid "%s: illegal option -- %c\n"
+#: lib/getopt.c:759 lib/getopt.c:762
+#, fuzzy, c-format
+msgid "%s: invalid option -- '%c'\n"
 msgstr "%s: неправильный параметр -- %c\n"
 
-#: lib/getopt.c:769 lib/getopt.c:772
-#, c-format
-msgid "%s: invalid option -- %c\n"
-msgstr "%s: неправильный параметр -- %c\n"
-
-#: lib/getopt.c:824 lib/getopt.c:840 lib/getopt.c:1044 lib/getopt.c:1062
-#, c-format
-msgid "%s: option requires an argument -- %c\n"
+#: lib/getopt.c:812 lib/getopt.c:829 lib/getopt.c:1032 lib/getopt.c:1050
+#, fuzzy, c-format
+msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: параметр требует аргумент -- %c\n"
 
-#: lib/getopt.c:893 lib/getopt.c:909
-#, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
+#: lib/getopt.c:882 lib/getopt.c:898
+#, fuzzy, c-format
+msgid "%s: option '-W %s' is ambiguous\n"
 msgstr "%s: пераметр `-W %s' неоднозначен\n"
 
-#: lib/getopt.c:933 lib/getopt.c:951
-#, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
+#: lib/getopt.c:922 lib/getopt.c:940
+#, fuzzy, c-format
+msgid "%s: option '-W %s' doesn't allow an argument\n"
 msgstr "%s: параметр `-W %s' не позволяет аргумент\n"
 
 #. TRANSLATORS:
@@ -415,45 +410,45 @@ msgstr "Не правильный ключ: %s"
 msgid "Disk Image"
 msgstr "Образ диска"
 
-#: libparted/arch/beos.c:346 libparted/arch/gnu.c:276
-#: libparted/arch/linux.c:1510
+#: libparted/arch/beos.c:346 libparted/arch/gnu.c:277
+#: libparted/arch/linux.c:1513
 #, c-format
 msgid "Error opening %s: %s"
 msgstr "Ошибка открытия %s: %s"
 
-#: libparted/arch/beos.c:357 libparted/arch/gnu.c:286
-#: libparted/arch/linux.c:1521
+#: libparted/arch/beos.c:357 libparted/arch/gnu.c:287
+#: libparted/arch/linux.c:1524
 #, c-format
 msgid "Unable to open %s read-write (%s).  %s has been opened read-only."
 msgstr ""
 "Не удалось открыть %s на чтение-запись (%s).  %s открыт только для чтения."
 
-#: libparted/arch/beos.c:419 libparted/arch/linux.c:1679
+#: libparted/arch/beos.c:419 libparted/arch/linux.c:1682
 #, c-format
 msgid "%s during seek for read on %s"
 msgstr "%s во время позиционирования для чтения на %s"
 
-#: libparted/arch/beos.c:452 libparted/arch/gnu.c:464 libparted/arch/gnu.c:563
-#: libparted/arch/gnu.c:691 libparted/arch/linux.c:1639
-#: libparted/arch/linux.c:1720
+#: libparted/arch/beos.c:452 libparted/arch/gnu.c:465 libparted/arch/gnu.c:564
+#: libparted/arch/gnu.c:692 libparted/arch/linux.c:1642
+#: libparted/arch/linux.c:1723
 #, c-format
 msgid "%s during read on %s"
 msgstr "%s во время чтения на %s"
 
-#: libparted/arch/beos.c:488 libparted/arch/gnu.c:524
-#: libparted/arch/linux.c:1796
+#: libparted/arch/beos.c:488 libparted/arch/gnu.c:525
+#: libparted/arch/linux.c:1799
 #, c-format
 msgid "Can't write to %s, because it is opened read-only."
 msgstr "Нельзя записать на %s, так как он открыт только для чтения."
 
-#: libparted/arch/beos.c:504 libparted/arch/linux.c:1821
+#: libparted/arch/beos.c:504 libparted/arch/linux.c:1824
 #, c-format
 msgid "%s during seek for write on %s"
 msgstr "%s во время позиционирования для записи на %s"
 
-#: libparted/arch/beos.c:541 libparted/arch/gnu.c:600 libparted/arch/gnu.c:645
-#: libparted/arch/gnu.c:722 libparted/arch/linux.c:1769
-#: libparted/arch/linux.c:1863 libparted/arch/linux.c:1935
+#: libparted/arch/beos.c:541 libparted/arch/gnu.c:601 libparted/arch/gnu.c:646
+#: libparted/arch/gnu.c:723 libparted/arch/linux.c:1772
+#: libparted/arch/linux.c:1866 libparted/arch/linux.c:1938
 #, c-format
 msgid "%s during write on %s"
 msgstr "%s во время записи на %s"
@@ -542,16 +537,16 @@ msgstr ""
 "\n"
 "Когда УСТРОЙСТВО вы указано, проверять все разделы.\n"
 
-#: libparted/arch/gnu.c:109
+#: libparted/arch/gnu.c:110
 #, c-format
 msgid "Unable to open %s."
 msgstr "Не удалось открыть %s."
 
-#: libparted/arch/gnu.c:129
+#: libparted/arch/gnu.c:130
 msgid "Unable to probe store."
 msgstr "Не удалось проверить хранение."
 
-#: libparted/arch/gnu.c:367
+#: libparted/arch/gnu.c:368
 msgid ""
 "The partition table cannot be re-read.  This means you need to reboot before "
 "mounting any modified partitions.  You also need to reinstall your boot "
@@ -568,7 +563,7 @@ msgstr ""
 "переустановить загрузчик с его помощью. Прочтите раздел 4 Руководства "
 "пользователя Parted для дополнительной информации."
 
-#: libparted/arch/gnu.c:384
+#: libparted/arch/gnu.c:385
 #, c-format
 msgid ""
 "The partition table on %s cannot be re-read (%s).  This means the Hurd knows "
@@ -579,7 +574,7 @@ msgstr ""
 "сделанные вами изменения недоступны для ядра.  Вы должны перезагрузить ваш "
 "компьютер до того, как что-либо делать с %s."
 
-#: libparted/arch/gnu.c:395 parted/parted.c:2634
+#: libparted/arch/gnu.c:396 parted/parted.c:2701
 msgid ""
 "You should reinstall your boot loader before rebooting.  Read section 4 of "
 "the Parted User documentation for more information."
@@ -587,22 +582,22 @@ msgstr ""
 "Нужно переустановить загрузчик перед  перезагрузкой. Прочтите раздел 4 "
 "Руководства пользователя Parted для дополнительной информации."
 
-#: libparted/arch/gnu.c:787
+#: libparted/arch/gnu.c:788
 #, c-format
 msgid "%s trying to sync %s to disk"
 msgstr "%s пытается записать %s на диск"
 
-#: libparted/arch/linux.c:508
+#: libparted/arch/linux.c:507
 #, c-format
 msgid "Could not stat device %s - %s."
 msgstr "Не удаётся получить статус устройства %s - %s."
 
-#: libparted/arch/linux.c:563
+#: libparted/arch/linux.c:562
 #, fuzzy, c-format
 msgid "Unable to determine the dm type of %s."
 msgstr "Не удаётся определить размер %s (%s)."
 
-#: libparted/arch/linux.c:653
+#: libparted/arch/linux.c:652
 #, fuzzy, c-format
 msgid ""
 "Could not determine sector size for %s: %s.\n"
@@ -611,16 +606,16 @@ msgstr ""
 "Не удалось определить размер сектора для %s: %s.\n"
 "Использую стандартный размер сектора (%lld)."
 
-#: libparted/arch/linux.c:666
+#: libparted/arch/linux.c:673
 #, fuzzy, c-format
 msgid ""
-"Could not determine minimum io size for %s: %s.\n"
-"Using the default size (%lld)."
+"Could not determine physical sector size for %s.\n"
+"Using the logical sector size (%lld)."
 msgstr ""
 "Не удалось определить размер сектора для %s: %s.\n"
 "Использую стандартный размер сектора (%lld)."
 
-#: libparted/arch/linux.c:689
+#: libparted/arch/linux.c:692
 #, c-format
 msgid ""
 "Device %s has a logical sector size of %lld.  Not all parts of GNU Parted "
@@ -630,21 +625,21 @@ msgstr ""
 "программы GNU Parted поддерживают это сейчас, и рабочий код ОЧЕНЬ "
 "ЭКСПЕРИМЕНТАЛЬНЫЙ.\n"
 
-#: libparted/arch/linux.c:729
+#: libparted/arch/linux.c:732
 #, c-format
 msgid "Unable to determine the size of %s (%s)."
 msgstr "Не удаётся определить размер %s (%s)."
 
-#: libparted/arch/linux.c:815
+#: libparted/arch/linux.c:818
 #, c-format
 msgid "Could not get identity of device %s - %s"
 msgstr "Не удаётся получить идентификатор устройства %s - %s"
 
-#: libparted/arch/linux.c:824
+#: libparted/arch/linux.c:827
 msgid "Generic IDE"
 msgstr "Обычный IDE"
 
-#: libparted/arch/linux.c:845
+#: libparted/arch/linux.c:848
 #, c-format
 msgid ""
 "Device %s has multiple (%d) logical sectors per physical sector.\n"
@@ -658,12 +653,12 @@ msgstr ""
 "комбинаций меток/файловых систем, например GPT и ext2/3.\n"
 "За дополнительной информацией обращайтесь на сайт программы."
 
-#: libparted/arch/linux.c:1020
+#: libparted/arch/linux.c:1023
 #, c-format
 msgid "Error initialising SCSI device %s - %s"
 msgstr "Ошибка инициализации SCSI-устройства %s - %s"
 
-#: libparted/arch/linux.c:1084
+#: libparted/arch/linux.c:1087
 #, c-format
 msgid ""
 "The device %s has zero length, and can't possibly store a file system or "
@@ -672,7 +667,7 @@ msgstr ""
 "Устройство %s имеет нулевую длину и не может содержать файловую систему или "
 "таблицу разделов.  Возможно вы выбрали неправильное устройство?"
 
-#: libparted/arch/linux.c:1191
+#: libparted/arch/linux.c:1194
 #, c-format
 msgid ""
 "Unable to determine geometry of file/device %s.  You should not use Parted "
@@ -681,75 +676,75 @@ msgstr ""
 "Не удаётся определить геометрию файла/устройства %s.  Вы не должны "
 "использовать Parted, если вы не знаете НАВЕРНЯКА, что делаете!"
 
-#: libparted/arch/linux.c:1251
+#: libparted/arch/linux.c:1254
 msgid "Generic SD/MMC Storage Card"
 msgstr ""
 
-#: libparted/arch/linux.c:1304
+#: libparted/arch/linux.c:1307
 msgid "DAC960 RAID controller"
 msgstr "DAC960 RAID контроллер"
 
-#: libparted/arch/linux.c:1309
+#: libparted/arch/linux.c:1312
 msgid "Promise SX8 SATA Device"
 msgstr "SATA устройство Promise SX8"
 
-#: libparted/arch/linux.c:1315
+#: libparted/arch/linux.c:1318
 msgid "IBM S390 DASD drive"
 msgstr "IBM S390 DASD привод"
 
-#: libparted/arch/linux.c:1321
+#: libparted/arch/linux.c:1324
 msgid "IBM iSeries Virtual DASD"
 msgstr "IBM iSeries Virtual DASD"
 
-#: libparted/arch/linux.c:1326
+#: libparted/arch/linux.c:1329
 msgid "Compaq Smart Array"
 msgstr "Compaq Smart Array"
 
-#: libparted/arch/linux.c:1331
+#: libparted/arch/linux.c:1334
 msgid "ATARAID Controller"
 msgstr "ATARAID Контроллер"
 
-#: libparted/arch/linux.c:1336
+#: libparted/arch/linux.c:1339
 msgid "I2O Controller"
 msgstr "I2O Контроллер"
 
-#: libparted/arch/linux.c:1341
+#: libparted/arch/linux.c:1344
 msgid "User-Mode Linux UBD"
 msgstr "User-Mode Linux UBD"
 
-#: libparted/arch/linux.c:1354
+#: libparted/arch/linux.c:1357
 #, fuzzy, c-format
 msgid "Linux device-mapper (%s)"
 msgstr "Linux device-mapper"
 
-#: libparted/arch/linux.c:1365
+#: libparted/arch/linux.c:1368
 msgid "Xen Virtual Block Device"
 msgstr "Виртуальное блочное устройство Xen"
 
-#: libparted/arch/linux.c:1370
+#: libparted/arch/linux.c:1373
 msgid "Unknown"
 msgstr "Неизвестный"
 
-#: libparted/arch/linux.c:1379
+#: libparted/arch/linux.c:1382
 #, fuzzy
 msgid "Virtio Block Device"
 msgstr "Виртуальное блочное устройство Xen"
 
-#: libparted/arch/linux.c:1386
+#: libparted/arch/linux.c:1389
 msgid "ped_device_new()  Unsupported device type"
 msgstr "ped_device_new()  Не поддерживаемый тип устройства"
 
-#: libparted/arch/linux.c:1483 libparted/arch/linux.c:1555
+#: libparted/arch/linux.c:1486 libparted/arch/linux.c:1558
 #, fuzzy, c-format
 msgid "Error fsyncing/closing %s: %s"
 msgstr "Ошибка открытия %s: %s"
 
-#: libparted/arch/linux.c:1719
+#: libparted/arch/linux.c:1722
 #, c-format
 msgid "end of file while reading %s"
 msgstr ""
 
-#: libparted/arch/linux.c:2416
+#: libparted/arch/linux.c:2419
 #, c-format
 msgid ""
 "parted was unable to re-read the partition table on %s (%s).  This means "
@@ -758,47 +753,47 @@ msgstr ""
 "parted не смог считать таблицу разделов на %s (%s).  Это значит, что "
 "сделанные вами изменения будут недоступны для Linux. "
 
-#: libparted/arch/linux.c:2531
+#: libparted/arch/linux.c:2537
 #, c-format
 msgid ""
 "WARNING: the kernel failed to re-read the partition table on %s (%s).  As a "
 "result, it may not reflect all of your changes until after reboot."
 msgstr ""
 
-#: libparted/cs/geom.c:161
+#: libparted/cs/geom.c:162
 #, fuzzy, c-format
 msgid "Can't have the end before the start! (start sector=%jd length=%jd)"
 msgstr "Невозможно переместить конец раздела за начало!"
 
-#: libparted/cs/geom.c:169
+#: libparted/cs/geom.c:170
 msgid "Can't have a partition outside the disk!"
 msgstr "Невозможно создать раздел за пределами устройства!"
 
-#: libparted/cs/geom.c:384
+#: libparted/cs/geom.c:385
 #, c-format
 msgid "Attempt to write sectors %ld-%ld outside of partition on %s."
 msgstr "Попытка записи секторов %ld-%ld за пределы раздела на %s."
 
-#: libparted/cs/geom.c:424 libparted/fs/linux_swap/linux_swap.c:487
+#: libparted/cs/geom.c:425 libparted/fs/linux_swap/linux_swap.c:488
 msgid "checking for bad blocks"
 msgstr "проверка на плохие блоки"
 
-#: libparted/debug.c:96
+#: libparted/debug.c:97
 #, c-format
 msgid "Backtrace has %d calls on stack:\n"
 msgstr "Backtrace имеет %d вызовов из стека:\n"
 
-#: libparted/debug.c:109
+#: libparted/debug.c:110
 #, c-format
 msgid "Assertion (%s) at %s:%d in function %s() failed."
 msgstr "Проверка условия (%s) на %s:%d в функции %s() не удалась."
 
-#: libparted/disk.c:193
+#: libparted/disk.c:194
 #, c-format
 msgid "%s: unrecognised disk label"
 msgstr "%s: метка диска не определена"
 
-#: libparted/disk.c:484
+#: libparted/disk.c:487
 #, c-format
 msgid ""
 "This libparted doesn't have write support for %s.  Perhaps it was compiled "
@@ -807,36 +802,36 @@ msgstr ""
 "Эта библиотеке libparted не содержит поддержки записи для %s.  Наверное "
 "скомпилирована только для чтения."
 
-#: libparted/disk.c:629
+#: libparted/disk.c:632
 #, c-format
 msgid "Partition %d is %s, but the file system is %s."
 msgstr "Раздел %d содержит %s, но файловая система %s."
 
-#: libparted/disk.c:837
+#: libparted/disk.c:842
 msgid "cylinder_alignment"
 msgstr ""
 
-#: libparted/disk.c:843
+#: libparted/disk.c:848
 #, fuzzy, c-format
 msgid "Unknown disk flag, %d."
 msgstr "Неизвестный флаг раздела, %d."
 
-#: libparted/disk.c:1282
+#: libparted/disk.c:1287
 #, c-format
 msgid "%s disk labels do not support extended partitions."
 msgstr "Подписи к дискам %s не поддерживают расширенные разделы."
 
-#: libparted/disk.c:1861
+#: libparted/disk.c:1866
 #, c-format
 msgid "%s disk labels don't support logical or extended partitions."
 msgstr ""
 "Подписи к дискам %s не поддерживают логические или расширенные разделы."
 
-#: libparted/disk.c:1874
+#: libparted/disk.c:1879
 msgid "Too many primary partitions."
 msgstr "Слишком много основных разделов."
 
-#: libparted/disk.c:1883
+#: libparted/disk.c:1888
 #, c-format
 msgid ""
 "Can't add a logical partition to %s, because there is no extended partition."
@@ -844,102 +839,102 @@ msgstr ""
 "Невозможно добавить логический раздел на %s, потому что нет расширенного "
 "раздела."
 
-#: libparted/disk.c:1907
+#: libparted/disk.c:1912
 #, c-format
 msgid "Can't have more than one extended partition on %s."
 msgstr "Невозможно создать больше одного расширенного раздела на %s."
 
-#: libparted/disk.c:1917
+#: libparted/disk.c:1922
 msgid "Can't have logical partitions outside of the extended partition."
 msgstr "Невозможно создать логический раздел больше расширенного раздела."
 
-#: libparted/disk.c:1942
+#: libparted/disk.c:1947
 #, c-format
 msgid "Can't have a logical partition outside of the extended partition on %s."
 msgstr ""
 "Невозможно создать логический раздел больше расширенного раздела на %s."
 
-#: libparted/disk.c:1952 libparted/disk.c:2011 libparted/disk.c:2189
+#: libparted/disk.c:1957 libparted/disk.c:2016 libparted/disk.c:2194
 msgid "Can't have overlapping partitions."
 msgstr "Невозможно создавать пересекающиеся разделы."
 
-#: libparted/disk.c:1960
+#: libparted/disk.c:1965
 msgid "Can't have a primary partition inside an extended partition."
 msgstr "Невозможно создать основной раздел внутри расширенного."
 
-#: libparted/disk.c:2391
+#: libparted/disk.c:2396
 msgid "metadata"
 msgstr "метаданные"
 
-#: libparted/disk.c:2393
+#: libparted/disk.c:2398
 msgid "free"
 msgstr "свободно"
 
-#: libparted/disk.c:2395 parted/ui.c:1193 parted/ui.c:1221
+#: libparted/disk.c:2400 parted/ui.c:1193 parted/ui.c:1221
 msgid "extended"
 msgstr "расширенный"
 
-#: libparted/disk.c:2397 parted/ui.c:1197 parted/ui.c:1225
+#: libparted/disk.c:2402 parted/ui.c:1197 parted/ui.c:1225
 msgid "logical"
 msgstr "логический"
 
-#: libparted/disk.c:2399 parted/ui.c:1189 parted/ui.c:1217
+#: libparted/disk.c:2404 parted/ui.c:1189 parted/ui.c:1217
 msgid "primary"
 msgstr "основной"
 
-#: libparted/disk.c:2415
+#: libparted/disk.c:2420
 msgid "boot"
 msgstr "загрузочный"
 
-#: libparted/disk.c:2417
+#: libparted/disk.c:2422
 msgid "bios_grub"
 msgstr ""
 
-#: libparted/disk.c:2419
+#: libparted/disk.c:2424
 msgid "root"
 msgstr "корневой"
 
-#: libparted/disk.c:2421
+#: libparted/disk.c:2426
 msgid "swap"
 msgstr "подкачка"
 
-#: libparted/disk.c:2423
+#: libparted/disk.c:2428
 msgid "hidden"
 msgstr "скрытый"
 
-#: libparted/disk.c:2425
+#: libparted/disk.c:2430
 msgid "raid"
 msgstr "raid"
 
-#: libparted/disk.c:2427
+#: libparted/disk.c:2432
 msgid "lvm"
 msgstr "lvm"
 
-#: libparted/disk.c:2429
+#: libparted/disk.c:2434
 msgid "lba"
 msgstr "lba"
 
-#: libparted/disk.c:2431
+#: libparted/disk.c:2436
 msgid "hp-service"
 msgstr "hp-service"
 
-#: libparted/disk.c:2433
+#: libparted/disk.c:2438
 msgid "palo"
 msgstr "palo"
 
-#: libparted/disk.c:2435
+#: libparted/disk.c:2440
 msgid "prep"
 msgstr "prep"
 
-#: libparted/disk.c:2437
+#: libparted/disk.c:2442
 msgid "msftres"
 msgstr "msftres"
 
-#: libparted/disk.c:2439
+#: libparted/disk.c:2444
 msgid "atvrecv"
 msgstr ""
 
-#: libparted/disk.c:2445
+#: libparted/disk.c:2450
 #, c-format
 msgid "Unknown partition flag, %d."
 msgstr "Неизвестный флаг раздела, %d."
@@ -997,10 +992,10 @@ msgid "Cancel"
 msgstr "Отменить"
 
 #: libparted/exception.c:132
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "A bug has been detected in GNU Parted.  Refer to the web site of parted "
-"http://www.gnu.org/software/parted/parted.html for more informations of what "
+"http://www.gnu.org/software/parted/parted.html for more information of what "
 "could be useful for bug submitting!  Please email a bug report to bug-"
 "parted@gnu.org containing at least the version (%s) and the following "
 "message:  "
@@ -1071,34 +1066,34 @@ msgstr "Поддержка копирования файловой систем�
 msgid "Support for resizing %s file systems is not implemented yet."
 msgstr "Поддержка изменения размера файловой системы %s пока не реализована."
 
-#: libparted/fs/reiserfs/reiserfs.c:314
+#: libparted/fs/reiserfs/reiserfs.c:315
 msgid "creating"
 msgstr "создание"
 
-#: libparted/fs/reiserfs/reiserfs.c:401
+#: libparted/fs/reiserfs/reiserfs.c:402
 msgid "The file system is in an invalid state.  Perhaps it is mounted?"
 msgstr "Файловая система в неправильном состоянии.  Возможно примонтирована?"
 
-#: libparted/fs/reiserfs/reiserfs.c:409
+#: libparted/fs/reiserfs/reiserfs.c:410
 msgid "The file system is in old (unresizeable) format."
 msgstr "Файловая система в старом (не позволяющем изменение размера) формате."
 
-#: libparted/fs/reiserfs/reiserfs.c:415
+#: libparted/fs/reiserfs/reiserfs.c:416
 msgid "Invalid free blocks count.  Run reiserfsck --check first."
 msgstr ""
 "Неправильное количество свободных блоков.  Запустите сначала reiserfsck --"
 "check."
 
-#: libparted/fs/reiserfs/reiserfs.c:430
+#: libparted/fs/reiserfs/reiserfs.c:431
 msgid "checking"
 msgstr "проверка"
 
-#: libparted/fs/reiserfs/reiserfs.c:436
+#: libparted/fs/reiserfs/reiserfs.c:437
 msgid "Reiserfs tree seems to be corrupted.  Run reiserfsck --check first."
 msgstr ""
 "Дерево reiserfs похоже повреждено.  Запустите сначала reiserfsck --check."
 
-#: libparted/fs/reiserfs/reiserfs.c:448
+#: libparted/fs/reiserfs/reiserfs.c:449
 msgid ""
 "The reiserfs file system passed a basic check.  For a more comprehensive "
 "check, run reiserfsck --check."
@@ -1106,46 +1101,46 @@ msgstr ""
 "Файловая система прошла базовую проверку.  Для более полной проверки, "
 "используйте программу reiserfsck --check."
 
-#: libparted/fs/reiserfs/reiserfs.c:473
+#: libparted/fs/reiserfs/reiserfs.c:474
 msgid "Sorry, can't move the start of reiserfs partitions yet."
 msgstr "К сожалению, перемещение начала разделов reiserfs пока невозможно."
 
-#: libparted/fs/reiserfs/reiserfs.c:489
+#: libparted/fs/reiserfs/reiserfs.c:490
 msgid "Couldn't reopen device abstraction layer for read/write."
 msgstr "Не удалось переоткрыть уровень абстракции устройств для чтения/записи."
 
-#: libparted/fs/reiserfs/reiserfs.c:507 libparted/fs/ext2/ext2_resize.c:551
-#: libparted/fs/hfs/hfs.c:249 libparted/fs/hfs/hfs.c:628
+#: libparted/fs/reiserfs/reiserfs.c:508 libparted/fs/ext2/ext2_resize.c:552
+#: libparted/fs/hfs/hfs.c:250 libparted/fs/hfs/hfs.c:629
 msgid "shrinking"
 msgstr "сужение"
 
-#: libparted/fs/reiserfs/reiserfs.c:519
+#: libparted/fs/reiserfs/reiserfs.c:520
 msgid "expanding"
 msgstr "расширение"
 
-#: libparted/fs/reiserfs/reiserfs.c:591
+#: libparted/fs/reiserfs/reiserfs.c:592
 msgid "Couldn't create reiserfs device abstraction handler."
 msgstr "Не удалось создать инструктор абстракции устройства reiserfs."
 
-#: libparted/fs/reiserfs/reiserfs.c:605
+#: libparted/fs/reiserfs/reiserfs.c:606
 #, c-format
 msgid "Device is too small for %lu blocks."
 msgstr "Устройство слишком маленькое для %lu блоков."
 
-#: libparted/fs/reiserfs/reiserfs.c:614
+#: libparted/fs/reiserfs/reiserfs.c:615
 msgid "copying"
 msgstr "копирование"
 
-#: libparted/fs/reiserfs/reiserfs.c:681
+#: libparted/fs/reiserfs/reiserfs.c:682
 #, c-format
 msgid "Couldn't resolve symbol %s.  Error: %s."
 msgstr "Не удалось получить символ %s.  Ошибка: %s."
 
-#: libparted/fs/reiserfs/reiserfs.c:703
+#: libparted/fs/reiserfs/reiserfs.c:704
 msgid "GNU Parted found an invalid libreiserfs library."
 msgstr "GNU Parted обнаружил неправильную библиотеку libreiserfs."
 
-#: libparted/fs/reiserfs/reiserfs.c:714
+#: libparted/fs/reiserfs/reiserfs.c:715
 #, c-format
 msgid ""
 "GNU Parted has detected libreiserfs interface version mismatch.  Found %d-%"
@@ -1154,100 +1149,100 @@ msgstr ""
 "GNU Parted обнаружил несоответствие версий интерфейса libreiserfs.  "
 "Обнаружена %d-%d, требуется %d. Поддержка ReiserFS будет отключена."
 
-#: libparted/labels/aix.c:123
+#: libparted/labels/aix.c:103
 msgid "Support for reading AIX disk labels is is not implemented yet."
 msgstr "Поддержка чтения меток диска AIX пока не реализована."
 
-#: libparted/labels/aix.c:134
+#: libparted/labels/aix.c:114
 msgid "Support for writing AIX disk labels is is not implemented yet."
 msgstr "Поддержка записи меток диска AIX пока не реализована."
 
-#: libparted/labels/aix.c:147
+#: libparted/labels/aix.c:127
 msgid ""
 "Support for adding partitions to AIX disk labels is not implemented yet."
 msgstr "Поддержка добавления разделов к меткам диска AIX пока не реализована."
 
-#: libparted/labels/aix.c:157
+#: libparted/labels/aix.c:137
 msgid ""
 "Support for duplicating partitions in AIX disk labels is not implemented yet."
 msgstr ""
 "Поддержка дублирования разделов в метках диска AIX пока не реализована."
 
-#: libparted/labels/aix.c:175
+#: libparted/labels/aix.c:155
 msgid ""
 "Support for setting system type of partitions in AIX disk labels is not "
 "implemented yet."
 msgstr ""
 "Поддержка задания типа системы на метках диска AIX пока не реализована."
 
-#: libparted/labels/aix.c:185
+#: libparted/labels/aix.c:165
 msgid "Support for setting flags in AIX disk labels is not implemented yet."
 msgstr "Поддержка записи флагов на метках диска AIX пока не реализована."
 
-#: libparted/labels/bsd.c:583 libparted/labels/dasd.c:805
-#: libparted/labels/dos.c:2064 libparted/labels/dvh.c:795
-#: libparted/labels/gpt.c:1726 libparted/labels/loop.c:254
-#: libparted/labels/mac.c:1474 libparted/labels/pc98.c:773
-#: libparted/labels/rdb.c:1073 libparted/labels/sun.c:823
+#: libparted/labels/bsd.c:568 libparted/labels/dasd.c:783
+#: libparted/labels/dos.c:2051 libparted/labels/dvh.c:788
+#: libparted/labels/gpt.c:1715 libparted/labels/loop.c:245
+#: libparted/labels/mac.c:1424 libparted/labels/pc98.c:749
+#: libparted/labels/rdb.c:1051 libparted/labels/sun.c:821
 msgid "Unable to satisfy all constraints on the partition."
 msgstr "Не удалось удовлетворить все ограничения целостности раздела."
 
-#: libparted/labels/bsd.c:608
+#: libparted/labels/bsd.c:593
 msgid "Unable to allocate a bsd disklabel slot."
 msgstr "Не удалось назначить слот подписи к диску bsd."
 
-#: libparted/labels/dasd.c:831
+#: libparted/labels/dasd.c:809
 msgid "Unable to allocate a dasd disklabel slot"
 msgstr "Не удалось назначить слот подписи к диску dasd"
 
-#: libparted/labels/dos.c:895
+#: libparted/labels/dos.c:877
 #, c-format
 msgid "Invalid partition table on %s -- wrong signature %x."
 msgstr "Неверная таблица разделов на %s -- неправильная сигнатура %x."
 
-#: libparted/labels/dos.c:923
+#: libparted/labels/dos.c:905
 #, c-format
 msgid "Invalid partition table - recursive partition on %s."
 msgstr "Неверная таблица разделов - рекурсивный раздел на %s."
 
-#: libparted/labels/dos.c:1405
+#: libparted/labels/dos.c:1392
 msgid "Extended partitions cannot be hidden on msdos disk labels."
 msgstr "Расширенные разделы не могут быть скрыты при msdos метках диска."
 
-#: libparted/labels/dos.c:2046
+#: libparted/labels/dos.c:2033
 msgid "Parted can't resize partitions managed by Windows Dynamic Disk."
 msgstr ""
 "Parted не может изменять размер разделов управляемых Windows Dynamic Disk."
 
-#: libparted/labels/dvh.c:208
+#: libparted/labels/dvh.c:201
 #, c-format
 msgid "%s has no extended partition (volume header partition)."
 msgstr "%s не содержит расширенного раздела (заголовка расширенного раздела)."
 
-#: libparted/labels/dvh.c:334
+#: libparted/labels/dvh.c:327
 msgid "Checksum is wrong, indicating the partition table is corrupt."
 msgstr "Неправильная контрольная сумма, значит таблица разделов испорчена."
 
-#: libparted/labels/dvh.c:639
+#: libparted/labels/dvh.c:632
 msgid "Only primary partitions can be root partitions."
 msgstr "Только основные разделы могут быть root разделами."
 
-#: libparted/labels/dvh.c:653
+#: libparted/labels/dvh.c:646
 msgid "Only primary partitions can be swap partitions."
 msgstr "Только основные разделы могут быть swap разделами."
 
-#: libparted/labels/dvh.c:667
+#: libparted/labels/dvh.c:660
 msgid "Only logical partitions can be a boot file."
 msgstr "Только логические разделы могут быть загрузочными файлами."
 
-#: libparted/labels/dvh.c:744
+#: libparted/labels/dvh.c:737
 #, fuzzy, c-format
 msgid ""
 "failed to set dvh partition name to %s:\n"
 "Only logical partitions (boot files) have a name."
 msgstr "Только логические разделы  (загрузочные файлы) могут иметь имя."
 
-#: libparted/labels/dvh.c:837
+#: libparted/labels/dvh.c:830
 msgid "Too many primary partitions"
 msgstr "Слишком много основных разделов"
 
@@ -1365,7 +1360,7 @@ msgstr ""
 "разделов GPT.  Или возможно вы удалили таблицу GPT и теперь используете "
 "таблицу разделов msdos.  Это таблица разделов GPT?"
 
-#: libparted/labels/gpt.c:689
+#: libparted/labels/gpt.c:675
 #, c-format
 msgid ""
 "The format of the GPT partition table is version %x, which is newer than "
@@ -1374,7 +1369,7 @@ msgstr ""
 "Формат таблицы разделов GPT версии %x, которая новее, чем Parted может "
 "распознать.  Расскажите нам об этом!  bug-parted@gnu.org"
 
-#: libparted/labels/gpt.c:736
+#: libparted/labels/gpt.c:722
 #, c-format
 msgid ""
 "Not all of the space available to %s appears to be used, you can fix the GPT "
@@ -1385,7 +1380,7 @@ msgstr ""
 "таблицу GPT для использования всего места (дополнительно %llu блоков) или "
 "продолжить с текущими настройками? "
 
-#: libparted/labels/gpt.c:942
+#: libparted/labels/gpt.c:928
 msgid ""
 "The backup GPT table is not at the end of the disk, as it should be.  This "
 "might mean that another operating system believes the disk is smaller.  Fix, "
@@ -1395,7 +1390,7 @@ msgstr ""
 "Это может означать, что другая операционная система верит, что диск меньше.  "
 "Исправить это, передвинув резервную копию в конец диска (и удалив старую)?"
 
-#: libparted/labels/gpt.c:966
+#: libparted/labels/gpt.c:952
 msgid ""
 "Both the primary and backup GPT tables are corrupt.  Try making a fresh "
 "table, and using Parted's rescue feature to recover partitions."
@@ -1403,7 +1398,7 @@ msgstr ""
 "Обе - и главная, и резервная таблицы GPT повреждены.  Попробуйте создать "
 "новую и использовать функцию Parted восстановить для восстановления разделов."
 
-#: libparted/labels/gpt.c:977
+#: libparted/labels/gpt.c:963
 #, fuzzy
 msgid ""
 "The backup GPT table is corrupt, but the primary appears OK, so that will be "
@@ -1412,7 +1407,7 @@ msgstr ""
 "Главная таблица GPT повреждена, но резервная копия вроде нормальная, поэтому "
 "она и будет использоваться."
 
-#: libparted/labels/gpt.c:989
+#: libparted/labels/gpt.c:975
 msgid ""
 "The primary GPT table is corrupt, but the backup appears OK, so that will be "
 "used."
@@ -1420,57 +1415,57 @@ msgstr ""
 "Главная таблица GPT повреждена, но резервная копия вроде нормальная, поэтому "
 "она и будет использоваться."
 
-#: libparted/labels/gpt.c:1013
+#: libparted/labels/gpt.c:999
 msgid "primary partition table array CRC mismatch"
 msgstr ""
 
-#: libparted/labels/mac.c:184
+#: libparted/labels/mac.c:185
 #, c-format
 msgid "Invalid signature %x for Mac disk labels."
 msgstr "Неправильная сигнатура %x для меток дисков Mac."
 
-#: libparted/labels/mac.c:231
+#: libparted/labels/mac.c:232
 msgid "Partition map has no partition map entry!"
 msgstr "Карта разделов не содержит элемента карты!"
 
-#: libparted/labels/mac.c:279
+#: libparted/labels/mac.c:280
 #, c-format
 msgid "%s is too small for a Mac disk label!"
 msgstr "%s слишком меленький для метки диска Mac!"
 
-#: libparted/labels/mac.c:559
+#: libparted/labels/mac.c:509
 #, c-format
 msgid "Partition %d has an invalid signature %x."
 msgstr "Раздел %d содержит неправильную сигнатуру %x."
 
-#: libparted/labels/mac.c:577
+#: libparted/labels/mac.c:527
 #, c-format
 msgid "Partition %d has an invalid length of 0 bytes!"
 msgstr "Раздел %d имеет неправильную длину 0 байт!"
 
-#: libparted/labels/mac.c:608
+#: libparted/labels/mac.c:558
 msgid "The data region doesn't start at the start of the partition."
 msgstr "Область данных не начинается в начале раздела."
 
-#: libparted/labels/mac.c:625
+#: libparted/labels/mac.c:575
 msgid "The boot region doesn't start at the start of the partition."
 msgstr "Область загрузки не начинается в начале раздела."
 
-#: libparted/labels/mac.c:639
+#: libparted/labels/mac.c:589
 msgid "The partition's boot region doesn't occupy the entire partition."
 msgstr "Область загрузки не покрывает весь раздел."
 
-#: libparted/labels/mac.c:650
+#: libparted/labels/mac.c:600
 msgid "The partition's data region doesn't occupy the entire partition."
 msgstr "Область данных не покрывает весь раздел."
 
-#: libparted/labels/mac.c:703
+#: libparted/labels/mac.c:653
 #, c-format
 msgid ""
 "Weird block size on device descriptor: %d bytes is not divisible by 512."
 msgstr "Неправильный размер блока на устройстве: %d байт не делится на 512."
 
-#: libparted/labels/mac.c:716
+#: libparted/labels/mac.c:666
 #, c-format
 msgid ""
 "The driver descriptor says the physical block size is %d bytes, but Linux "
@@ -1479,11 +1474,11 @@ msgstr ""
 "Драйвер говорит,что размер физического блока равен %d байт, но Linux "
 "говорит, что он %d байт."
 
-#: libparted/labels/mac.c:770
+#: libparted/labels/mac.c:720
 msgid "No valid partition map found."
 msgstr "Не найдено правильной карты разделов."
 
-#: libparted/labels/mac.c:832
+#: libparted/labels/mac.c:782
 #, c-format
 msgid ""
 "Conflicting partition map entry sizes!  Entry 1 says it is %d, but entry %d "
@@ -1492,34 +1487,34 @@ msgstr ""
 "Конфликт размеров элементов карты разделов!  Элемент 1 говорит %d, но %d "
 "говорит %d!"
 
-#: libparted/labels/mac.c:859
+#: libparted/labels/mac.c:809
 msgid "Weird!  There are 2 partitions map entries!"
 msgstr "Ужас!  Содержится 2 элемента таблицы разделов!"
 
-#: libparted/labels/mac.c:1405
+#: libparted/labels/mac.c:1355
 msgid ""
 "Changing the name of a root or swap partition will prevent Linux from "
 "recognising it as such."
 msgstr ""
 "Изменив имя root или swap раздела заставит Linux перестать понимать их."
 
-#: libparted/labels/mac.c:1509
+#: libparted/labels/mac.c:1459
 msgid "Can't add another partition -- the partition map is too small!"
 msgstr "Не удалось создать другой раздел -- слишком маленькая карта разделов!"
 
-#: libparted/labels/pc98.c:355
+#: libparted/labels/pc98.c:331
 #, c-format
 msgid "Invalid partition table on %s."
 msgstr "Неверная таблица разделов на %s."
 
-#: libparted/labels/pc98.c:408 libparted/labels/pc98.c:486
+#: libparted/labels/pc98.c:384 libparted/labels/pc98.c:462
 #, c-format
 msgid ""
 "Partition %d isn't aligned to cylinder boundaries.  This is still "
 "unsupported."
 msgstr "Раздел %d не выровнен к краю цилиндра.  Это всё ещё не поддерживается."
 
-#: libparted/labels/pc98.c:805
+#: libparted/labels/pc98.c:781
 msgid "Can't add another partition."
 msgstr "Невозможно добавить другой раздел."
 
@@ -1537,60 +1532,60 @@ msgid ""
 "of %jd"
 msgstr ""
 
-#: libparted/labels/rdb.c:169
+#: libparted/labels/rdb.c:170
 #, c-format
 msgid "%s : Bad checksum on block %llu of type %s."
 msgstr "%s : Неправильная контрольная сумма %llu типа %s."
 
-#: libparted/labels/rdb.c:508
+#: libparted/labels/rdb.c:486
 #, c-format
 msgid "%s : Didn't find rdb block, should never happen."
 msgstr "%s : Не найден rdb блок, такого не должно было случиться."
 
-#: libparted/labels/rdb.c:594
+#: libparted/labels/rdb.c:572
 #, c-format
 msgid "%s : Loop detected at block %d."
 msgstr "%s : Обнаружено кольцо на блоке %d."
 
-#: libparted/labels/rdb.c:613
+#: libparted/labels/rdb.c:591
 #, c-format
 msgid "%s : The %s list seems bad at block %s."
 msgstr "%s : Список %s похож на плохой на блоке %s."
 
-#: libparted/labels/rdb.c:712
+#: libparted/labels/rdb.c:690
 #, c-format
 msgid "%s : Failed to list bad blocks."
 msgstr "%s : Не удалось вывести список плохих блоков."
 
-#: libparted/labels/rdb.c:720
+#: libparted/labels/rdb.c:698
 #, c-format
 msgid "%s : Failed to list partition blocks."
 msgstr "%s : Не удалось вывести список блоков раздела."
 
-#: libparted/labels/rdb.c:728
+#: libparted/labels/rdb.c:706
 #, c-format
 msgid "%s : Failed to list file system blocks."
 msgstr "%s : Не удалось вывести блоков файловой системы."
 
-#: libparted/labels/rdb.c:736
+#: libparted/labels/rdb.c:714
 #, c-format
 msgid "%s : Failed to list boot blocks."
 msgstr "%s : Не удалось вывести список загрузочных блоков."
 
-#: libparted/labels/rdb.c:763
+#: libparted/labels/rdb.c:741
 #, c-format
 msgid "Failed to write partition block at %d."
 msgstr "Не удалось записать блок раздела на %d."
 
-#: libparted/labels/rdb.c:1101
+#: libparted/labels/rdb.c:1079
 msgid "Unable to allocate a partition number."
 msgstr "Не удалось назначить номер раздела."
 
-#: libparted/labels/sun.c:150
+#: libparted/labels/sun.c:163
 msgid "Corrupted Sun disk label detected."
 msgstr "Обнаружена повреждённая метка диска Sun."
 
-#: libparted/labels/sun.c:318
+#: libparted/labels/sun.c:316
 #, c-format
 msgid ""
 "The disk CHS geometry (%d,%d,%d) reported by the operating system does not "
@@ -1599,17 +1594,17 @@ msgstr ""
 "CHS геометрия диска (%d,%d,%d) предоставленная операционной системой не "
 "совпадает с геометрией, которая содержится в метке диска (%d,%d,%d)."
 
-#: libparted/labels/sun.c:340
+#: libparted/labels/sun.c:338
 #, c-format
 msgid "The disk label describes a disk bigger than %s."
 msgstr "Метка диска указывает на диск больший чем %s."
 
-#: libparted/labels/sun.c:512
+#: libparted/labels/sun.c:510
 #, c-format
 msgid "The disk has %d cylinders, which is greater than the maximum of 65536."
 msgstr "Диск содержит %d цилиндров, что больше максимума 65536."
 
-#: libparted/labels/sun.c:855
+#: libparted/labels/sun.c:853
 msgid ""
 "The Whole Disk partition is the only available one left.  Generally, it is "
 "not a good idea to overwrite this partition with a real one.  Solaris may "
@@ -1620,7 +1615,7 @@ msgstr ""
 "переписывать этот раздел реальным.  Solaris, возможно, может не загрузиться "
 "без него и SILO (загрузчик sparc) оценивает это также."
 
-#: libparted/labels/sun.c:870
+#: libparted/labels/sun.c:868
 msgid "Sun disk label is full."
 msgstr "Метка диска Sun переполнена."
 
@@ -1721,81 +1716,81 @@ msgstr "Расположение %s вне устройства %s."
 msgid "Invalid number."
 msgstr "Неправильный номер."
 
-#: libparted/fs/amiga/affs.c:62 libparted/fs/amiga/apfs.c:55
-#: libparted/fs/amiga/asfs.c:69
+#: libparted/fs/amiga/affs.c:63 libparted/fs/amiga/apfs.c:56
+#: libparted/fs/amiga/asfs.c:70
 #, c-format
 msgid "%s : Failed to allocate partition block\n"
 msgstr "%s : Не удалось выделить блок раздела\n"
 
-#: libparted/fs/amiga/affs.c:77 libparted/fs/amiga/apfs.c:68
-#: libparted/fs/amiga/asfs.c:81
+#: libparted/fs/amiga/affs.c:78 libparted/fs/amiga/apfs.c:69
+#: libparted/fs/amiga/asfs.c:82
 #, c-format
 msgid "%s : Failed to allocate block\n"
 msgstr "%s : Не удалось выделить блок\n"
 
-#: libparted/fs/amiga/affs.c:82 libparted/fs/amiga/apfs.c:73
+#: libparted/fs/amiga/affs.c:83 libparted/fs/amiga/apfs.c:74
 #, c-format
 msgid "%s : Couldn't read boot block %llu\n"
 msgstr "%s : Не удалось прочесть загрузочный блок %llu\n"
 
-#: libparted/fs/amiga/affs.c:98 libparted/fs/amiga/apfs.c:84
-#: libparted/fs/amiga/asfs.c:87 libparted/fs/amiga/asfs.c:101
+#: libparted/fs/amiga/affs.c:99 libparted/fs/amiga/apfs.c:85
+#: libparted/fs/amiga/asfs.c:88 libparted/fs/amiga/asfs.c:102
 #, c-format
 msgid "%s : Couldn't read root block %llu\n"
 msgstr "%s : Не удалось прочесть корневой блок %llu\n"
 
-#: libparted/fs/amiga/amiga.c:71
+#: libparted/fs/amiga/amiga.c:72
 #, c-format
 msgid "%s : Failed to allocate id list element\n"
 msgstr "%s : Не удалось выделить элемент списка идентификаторов\n"
 
-#: libparted/fs/amiga/amiga.c:188
+#: libparted/fs/amiga/amiga.c:189
 #, c-format
 msgid "%s : Couldn't read block %llu\n"
 msgstr "%s : Не удалось прочесть блок %llu\n"
 
-#: libparted/fs/amiga/amiga.c:201
+#: libparted/fs/amiga/amiga.c:202
 #, c-format
 msgid "%s : Bad checksum on block %llu of type %s\n"
 msgstr "%s : Неправильная контрольная сумма блока %llu типа %s\n"
 
-#: libparted/fs/amiga/amiga.c:211
+#: libparted/fs/amiga/amiga.c:212
 #, c-format
 msgid "%s : Couldn't write block %d\n"
 msgstr "%s : Не удалось записать блок %d.\n"
 
-#: libparted/fs/amiga/amiga.c:277
+#: libparted/fs/amiga/amiga.c:278
 #, c-format
 msgid "%s : Failed to allocate disk_specific rdb block\n"
 msgstr "%s : Не удалось выделить специфичный_для_диска блок rdb\n"
 
-#: libparted/fs/amiga/amiga.c:288
+#: libparted/fs/amiga/amiga.c:289
 #, c-format
 msgid "%s : Didn't find rdb block, should never happen\n"
 msgstr "%s : Не найден rdb блок, такого не должно было случиться\n"
 
-#: libparted/fs/amiga/amiga.c:317
+#: libparted/fs/amiga/amiga.c:318
 #, c-format
 msgid "%s : Failed to read partition block %llu\n"
 msgstr "%s : Не удалось прочесть блок раздела %llu\n"
 
-#: libparted/fs/ext2/ext2.c:86 libparted/fs/ext2/ext2.c:111
+#: libparted/fs/ext2/ext2.c:87 libparted/fs/ext2/ext2.c:112
 msgid "Inconsistent group descriptors!"
 msgstr "Противоречивая группа дескрипторов!"
 
-#: libparted/fs/ext2/ext2.c:90 libparted/fs/ext2/ext2.c:115
+#: libparted/fs/ext2/ext2.c:91 libparted/fs/ext2/ext2.c:116
 msgid "File system full!"
 msgstr "Файловая система заполнена!"
 
-#: libparted/fs/ext2/ext2.c:685
+#: libparted/fs/ext2/ext2.c:686
 msgid "Invalid superblock.  Are you sure this is an ext2 file system?"
 msgstr "Неверный суперблок.  Вы уверены, что это файловая система ext2?"
 
-#: libparted/fs/ext2/ext2.c:699 libparted/fs/ext2/ext2_resize.c:657
+#: libparted/fs/ext2/ext2.c:700 libparted/fs/ext2/ext2_resize.c:658
 msgid "File system has errors!  You should run e2fsck."
 msgstr "Файловая система содержит ошибки!  Запустите сначала e2fsck."
 
-#: libparted/fs/ext2/ext2.c:710
+#: libparted/fs/ext2/ext2.c:711
 msgid ""
 "File system was not cleanly unmounted!  You should run e2fsck.  Modifying an "
 "unclean file system could cause severe corruption."
@@ -1803,48 +1798,48 @@ msgstr ""
 "Файловая система не была правильно размонтирована!  Запустите e2fsck. "
 "Изменение неочищенной файловой системы может привести к её повреждению."
 
-#: libparted/fs/ext2/ext2.c:730
+#: libparted/fs/ext2/ext2.c:731
 msgid ""
 "File system has an incompatible feature enabled.  Compatible features are "
 "has_journal, dir_index, filetype, sparse_super and large_file.  Use tune2fs "
 "or debugfs to remove features."
 msgstr ""
 
-#: libparted/fs/ext2/ext2.c:744
+#: libparted/fs/ext2/ext2.c:745
 msgid "Error allocating buffer cache."
 msgstr "Ошибка размещения буфера кэша."
 
-#: libparted/fs/ext2/ext2_inode_relocator.c:113
+#: libparted/fs/ext2/ext2_inode_relocator.c:114
 msgid ""
 "Found an inode with a incorrect link count.  Better go run e2fsck first!"
 msgstr ""
 "Найден inode с неправильным числом ссылок.  Лучше запустите сначала e2fsck!"
 
-#: libparted/fs/ext2/ext2_inode_relocator.c:486
+#: libparted/fs/ext2/ext2_inode_relocator.c:487
 msgid "Not enough free inodes!"
 msgstr "Недостаточно свободных inode!"
 
-#: libparted/fs/ext2/ext2_resize.c:222
+#: libparted/fs/ext2/ext2_resize.c:223
 msgid "File system is too full to remove a group!"
 msgstr "Файловая система слишком заполнена, чтобы удалить группу!"
 
-#: libparted/fs/ext2/ext2_resize.c:231
+#: libparted/fs/ext2/ext2_resize.c:232
 msgid "File system has too many allocated inodes to remove a group!"
 msgstr ""
 "Файловая система имеет слишком много выделенных inode, чтобы удалить группу!"
 
-#: libparted/fs/ext2/ext2_resize.c:490
+#: libparted/fs/ext2/ext2_resize.c:491
 msgid "adding groups"
 msgstr "добавление групп"
 
-#: libparted/fs/ext2/ext2_resize.c:527
+#: libparted/fs/ext2/ext2_resize.c:528
 #, c-format
 msgid "Your file system is too full to resize it to %i blocks.  Sorry."
 msgstr ""
 "Файловая система слишком заполнена, чтобы изменить её размер до %i блоков.  "
 "Простите."
 
-#: libparted/fs/ext2/ext2_resize.c:537
+#: libparted/fs/ext2/ext2_resize.c:538
 #, c-format
 msgid ""
 "Your file system has too many occupied inodes to resize it to %i blocks.  "
@@ -1853,12 +1848,12 @@ msgstr ""
 "Ваша файловая система имеет слишком много занятых inode, чтобы изменить её "
 "размер до %i блоков.  Простите."
 
-#: libparted/fs/ext2/ext2_resize.c:665
+#: libparted/fs/ext2/ext2_resize.c:666
 msgid "File system was not cleanly unmounted!  You should run e2fsck."
 msgstr ""
 "Файловая система не была правильно размонтирована!  Запустите сначала e2fsck."
 
-#: libparted/fs/ext2/ext2_resize.c:674
+#: libparted/fs/ext2/ext2_resize.c:675
 msgid ""
 "The file system has the 'dir_index' feature enabled.  Parted can only resize "
 "the file system if it disables this feature.  You can enable it later by "
@@ -1869,7 +1864,7 @@ msgstr ""
 "его после этого запустите 'tune2fs -O dir_index УСТРОЙСТВО' и потом 'e2fsck -"
 "fD УСТРОЙСТВО'."
 
-#: libparted/fs/ext2/ext2_resize.c:690
+#: libparted/fs/ext2/ext2_resize.c:691
 msgid ""
 "A resize operation on this file system will use EXPERIMENTAL code\n"
 "that MAY CORRUPT it (although no one has reported any such damage yet).\n"
@@ -1881,17 +1876,17 @@ msgstr ""
 "Вы должны хотя бы сделать резервную копию данных и запустить\n"
 "'e2fsck -f' после."
 
-#: libparted/fs/ext2/ext2_block_relocator.c:197
+#: libparted/fs/ext2/ext2_block_relocator.c:198
 msgid "Cross-linked blocks found!  Better go run e2fsck first!"
 msgstr ""
 "Найдены блоки с перекрестными ссылками!  Лучше сначала запустите e2fsck!"
 
-#: libparted/fs/ext2/ext2_block_relocator.c:536
+#: libparted/fs/ext2/ext2_block_relocator.c:537
 #, c-format
 msgid "Block %i has no reference?  Weird."
 msgstr "Блок %i не имеет ссылки?  Странно."
 
-#: libparted/fs/ext2/ext2_block_relocator.c:737
+#: libparted/fs/ext2/ext2_block_relocator.c:738
 #, c-format
 msgid "Block %i shouldn't have been marked (%d, %d)!"
 msgstr "Блок %i не должен быть помеченным (%d, %d)!"
@@ -1908,7 +1903,7 @@ msgstr ""
 msgid "Sorry, can't move the start of ext2 partitions yet!"
 msgstr "К сожалению, перемещение начала разделов ext2 пока невозможно!"
 
-#: libparted/fs/ext2/ext2_buffer.c:81
+#: libparted/fs/ext2/ext2_buffer.c:82
 msgid "Couldn't flush buffer cache!"
 msgstr "Не удаётся очистить буфер кэша!"
 
@@ -1920,7 +1915,7 @@ msgstr "запись метаданных групп"
 msgid "File system too small for ext2."
 msgstr "Слишком маленькая файловая система для ext2."
 
-#: libparted/fs/fat/calc.c:134
+#: libparted/fs/fat/calc.c:135
 #, c-format
 msgid ""
 "You need %s of free disk space to shrink this partition to this size.  "
@@ -1929,7 +1924,7 @@ msgstr ""
 "Вам требуется %s свободного пространства, чтобы уменьшить данный раздел до "
 "такого размера.  Сейчас свободно только %s."
 
-#: libparted/fs/fat/context.c:55
+#: libparted/fs/fat/context.c:56
 #, c-format
 msgid ""
 "Cluster start delta = %d, which is not a multiple of the cluster size %d."
@@ -2144,13 +2139,13 @@ msgstr ""
 "пошлите сообщение об ошибке.  Если вы уже отчаялись, то, вероятно, можно "
 "проигнорировать."
 
-#: libparted/fs/fat/count.c:143
+#: libparted/fs/fat/count.c:144
 #, c-format
 msgid "Bad directory entry for %s: first cluster is the end of file marker."
 msgstr ""
 "Плохой элемент каталога для %s: первый кластер является концом маркера файла."
 
-#: libparted/fs/fat/count.c:156
+#: libparted/fs/fat/count.c:157
 #, c-format
 msgid ""
 "Bad FAT: unterminated chain for %s.  You should run dosfsck or scandisk."
@@ -2158,7 +2153,7 @@ msgstr ""
 "Ошибка в FAT: незавершённая цепочка для %s.  Вы должны запустить dosfsck или "
 "scandisk."
 
-#: libparted/fs/fat/count.c:165
+#: libparted/fs/fat/count.c:166
 #, c-format
 msgid ""
 "Bad FAT: cluster %d outside file system in chain for %s.  You should run "
@@ -2167,7 +2162,7 @@ msgstr ""
 "Ошибка в FAT: кластер %d находится вне файловой системы в цепочке для %s.  "
 "Вы должны запустить dosfsck или scandisk."
 
-#: libparted/fs/fat/count.c:175
+#: libparted/fs/fat/count.c:176
 #, c-format
 msgid ""
 "Bad FAT: cluster %d is cross-linked for %s.  You should run dosfsck or "
@@ -2176,12 +2171,12 @@ msgstr ""
 "Ошибка в FAT: кластер %d имеет ссылку на %s.  Вы должны запустить dosfsck "
 "или scandisk."
 
-#: libparted/fs/fat/count.c:194
+#: libparted/fs/fat/count.c:195
 #, c-format
 msgid "%s is %dk, but it has %d clusters (%dk)."
 msgstr "%s является %dk, но он содержит %d кластеров (%dk)."
 
-#: libparted/fs/fat/count.c:257
+#: libparted/fs/fat/count.c:258
 #, c-format
 msgid ""
 "The file %s is marked as a system file.  This means moving it could cause "
@@ -2213,37 +2208,37 @@ msgstr "fat_table_get: кластер %ld находится вне файлов
 msgid "fat_table_alloc_cluster: no free clusters"
 msgstr "fat_table_alloc_cluster: нет свободных кластеров"
 
-#: libparted/fs/linux_swap/linux_swap.c:287
+#: libparted/fs/linux_swap/linux_swap.c:288
 #, fuzzy, c-format
 msgid "Unrecognised old style linux swap signature '%10s'."
 msgstr "Не распознанная сигнатура linux swap '%10s'."
 
-#: libparted/fs/linux_swap/linux_swap.c:330
+#: libparted/fs/linux_swap/linux_swap.c:331
 #, fuzzy, c-format
 msgid "Unrecognised new style linux swap signature '%10s'."
 msgstr "Не распознанная сигнатура linux swap '%10s'."
 
-#: libparted/fs/linux_swap/linux_swap.c:370
+#: libparted/fs/linux_swap/linux_swap.c:371
 #, fuzzy, c-format
 msgid "Unrecognised swsusp linux swap signature '%9s'."
 msgstr "Не распознанная сигнатура linux swap '%10s'."
 
-#: libparted/fs/linux_swap/linux_swap.c:446
+#: libparted/fs/linux_swap/linux_swap.c:447
 msgid "Too many bad pages."
 msgstr "Слишком много плохих страниц."
 
-#: libparted/fs/hfs/advfs.c:120 libparted/fs/hfs/advfs_plus.c:120
-#: libparted/fs/hfs/reloc.c:413 libparted/fs/hfs/reloc.c:507
-#: libparted/fs/hfs/reloc_plus.c:537 libparted/fs/hfs/reloc_plus.c:655
-#: libparted/fs/hfs/reloc_plus.c:768
+#: libparted/fs/hfs/advfs.c:121 libparted/fs/hfs/advfs_plus.c:121
+#: libparted/fs/hfs/reloc.c:414 libparted/fs/hfs/reloc.c:508
+#: libparted/fs/hfs/reloc_plus.c:538 libparted/fs/hfs/reloc_plus.c:656
+#: libparted/fs/hfs/reloc_plus.c:769
 msgid "The file system contains errors."
 msgstr "Файловая система содержит ошибки."
 
-#: libparted/fs/hfs/advfs_plus.c:284
+#: libparted/fs/hfs/advfs_plus.c:285
 msgid "Bad blocks could not be read."
 msgstr "Плохие блоки не могут быть прочитаны."
 
-#: libparted/fs/hfs/cache.c:136
+#: libparted/fs/hfs/cache.c:137
 #, c-format
 msgid ""
 "Trying to register an extent starting at block 0x%X, but another one already "
@@ -2252,7 +2247,7 @@ msgstr ""
 "Пытаюсь зарегистрировать начало блока на 0x%X, но другой уже существует на "
 "этой позиции.  Вам нужно проверить файловую ситему на ошибки!"
 
-#: libparted/fs/hfs/cache.c:213
+#: libparted/fs/hfs/cache.c:214
 #, c-format
 msgid ""
 "Trying to move an extent from block Ox%X to block Ox%X, but another one "
@@ -2261,97 +2256,97 @@ msgstr ""
 "Пытаюсь переместить расширение из блока Ox%X в блок Ox%X, но другой уже "
 "содержится на этой позиции.  Это не должно было случиться!"
 
-#: libparted/fs/hfs/file.c:142
+#: libparted/fs/hfs/file.c:143
 #, c-format
 msgid "Could not update the extent cache for HFS file with CNID %X."
 msgstr "Не удалось обновить кэш расширений для HFS файла с CNID %X."
 
-#: libparted/fs/hfs/file.c:179
+#: libparted/fs/hfs/file.c:180
 #, c-format
 msgid "Trying to read HFS file with CNID %X behind EOF."
 msgstr "Пытаюсь прочесть HFS файл с CNID %X за EOF."
 
-#: libparted/fs/hfs/file.c:189 libparted/fs/hfs/file.c:219
+#: libparted/fs/hfs/file.c:190 libparted/fs/hfs/file.c:220
 #, c-format
 msgid "Could not find sector %lli of HFS file with CNID %X."
 msgstr "Не удалось найти сектор %lli для HFS файла с CNID %X."
 
-#: libparted/fs/hfs/file.c:209
+#: libparted/fs/hfs/file.c:210
 #, c-format
 msgid "Trying to write HFS file with CNID %X behind EOF."
 msgstr "Пытаюсь записать HFS файл с CNID %X за EOF."
 
-#: libparted/fs/hfs/file_plus.c:156
+#: libparted/fs/hfs/file_plus.c:157
 #, c-format
 msgid "Could not update the extent cache for HFS+ file with CNID %X."
 msgstr "Не удалось обновить кэш расширений для HFS+ файла с CNID %X."
 
-#: libparted/fs/hfs/file_plus.c:201
+#: libparted/fs/hfs/file_plus.c:202
 #, c-format
 msgid "Trying to read HFS+ file with CNID %X behind EOF."
 msgstr "Пытаюсь прочесть HFS+ файл с CNID %X за EOF."
 
-#: libparted/fs/hfs/file_plus.c:212 libparted/fs/hfs/file_plus.c:255
+#: libparted/fs/hfs/file_plus.c:213 libparted/fs/hfs/file_plus.c:256
 #, c-format
 msgid "Could not find sector %lli of HFS+ file with CNID %X."
 msgstr "Не удалось найти сектор %lli для HFS+ файла с CNID %X."
 
-#: libparted/fs/hfs/file_plus.c:244
+#: libparted/fs/hfs/file_plus.c:245
 #, c-format
 msgid "Trying to write HFS+ file with CNID %X behind EOF."
 msgstr "Пытаюсь записать HFS+ файл с CNID %X за EOF."
 
-#: libparted/fs/hfs/hfs.c:231
+#: libparted/fs/hfs/hfs.c:232
 msgid "Sorry, HFS cannot be resized that way yet."
 msgstr "Простите, размер HFS не может быть изменён таким образом пока что."
 
-#: libparted/fs/hfs/hfs.c:261 libparted/fs/hfs/hfs.c:640
+#: libparted/fs/hfs/hfs.c:262 libparted/fs/hfs/hfs.c:641
 msgid "Data relocation has failed."
 msgstr "Ошибка перераспределения данных."
 
-#: libparted/fs/hfs/hfs.c:280
+#: libparted/fs/hfs/hfs.c:281
 msgid "Data relocation left some data in the end of the volume."
 msgstr "Перераспределение данных оставило некоторые данные в конце раздела."
 
-#: libparted/fs/hfs/hfs.c:319
+#: libparted/fs/hfs/hfs.c:320
 msgid "writing HFS Master Directory Block"
 msgstr "запись HFS Master Directory Block (Главный блок каталога)"
 
-#: libparted/fs/hfs/hfs.c:467
+#: libparted/fs/hfs/hfs.c:468
 msgid "No valid HFS[+X] signature has been found while opening."
 msgstr "Не найдено правильной HFS[+X] сигнатуры при открытии."
 
-#: libparted/fs/hfs/hfs.c:477
+#: libparted/fs/hfs/hfs.c:478
 #, c-format
 msgid "Version %d of HFS+ isn't supported."
 msgstr "Версия %d файловой системы HFS+ не поддерживается."
 
-#: libparted/fs/hfs/hfs.c:488
+#: libparted/fs/hfs/hfs.c:489
 #, c-format
 msgid "Version %d of HFSX isn't supported."
 msgstr "Версия %d файловой системы HFSX не поддерживается."
 
-#: libparted/fs/hfs/hfs.c:671
+#: libparted/fs/hfs/hfs.c:672
 msgid "Data relocation left some data at the end of the volume."
 msgstr "Перераспределение данных оставило некоторые данные в конце раздела."
 
-#: libparted/fs/hfs/hfs.c:719
+#: libparted/fs/hfs/hfs.c:720
 msgid "Error while writing the allocation file."
 msgstr "Ошибка записи файла распределения."
 
-#: libparted/fs/hfs/hfs.c:734
+#: libparted/fs/hfs/hfs.c:735
 msgid "Error while writing the compatibility part of the allocation file."
 msgstr "Ошибка записи совместимой части файла распределения."
 
-#: libparted/fs/hfs/hfs.c:749
+#: libparted/fs/hfs/hfs.c:750
 msgid "writing HFS+ Volume Header"
 msgstr "запись HFS+ Volume Header (Заголовка раздела)"
 
-#: libparted/fs/hfs/hfs.c:849
+#: libparted/fs/hfs/hfs.c:850
 msgid "An error occurred while looking for the mandatory bad blocks file."
 msgstr "Ошибка при поиске обязательного файла плохих блоков."
 
-#: libparted/fs/hfs/hfs.c:903
+#: libparted/fs/hfs/hfs.c:904
 msgid ""
 "It seems there is an error in the HFS wrapper: the bad blocks file doesn't "
 "contain the embedded HFS+ volume."
@@ -2359,27 +2354,27 @@ msgstr ""
 "Похоже ошибка в оболочке HFS: файл плохих блоков не содержит встроенный HFS+ "
 "раздел."
 
-#: libparted/fs/hfs/hfs.c:939
+#: libparted/fs/hfs/hfs.c:940
 msgid "Sorry, HFS+ cannot be resized that way yet."
 msgstr "Простите, размер HFS+ не может быть изменён таким образом пока что."
 
-#: libparted/fs/hfs/hfs.c:974
+#: libparted/fs/hfs/hfs.c:975
 msgid "shrinking embedded HFS+ volume"
 msgstr "уменьшаю размер встроенного HFS+ раздела"
 
-#: libparted/fs/hfs/hfs.c:990
+#: libparted/fs/hfs/hfs.c:991
 msgid "Resizing the HFS+ volume has failed."
 msgstr "Ошибка изменения размера раздела HFS+."
 
-#: libparted/fs/hfs/hfs.c:997
+#: libparted/fs/hfs/hfs.c:998
 msgid "shrinking HFS wrapper"
 msgstr "уменьшаю размер оболочки HFS"
 
-#: libparted/fs/hfs/hfs.c:1006
+#: libparted/fs/hfs/hfs.c:1007
 msgid "Updating the HFS wrapper has failed."
 msgstr "Ошибка обновления оболочки HFS+."
 
-#: libparted/fs/hfs/hfs.c:1108 libparted/fs/hfs/hfs.c:1193
+#: libparted/fs/hfs/hfs.c:1109 libparted/fs/hfs/hfs.c:1194
 #, c-format
 msgid ""
 "This is not a real %s check.  This is going to extract special low level "
@@ -2388,17 +2383,17 @@ msgstr ""
 "Это не настоящая %s проверка.  Это делается для извлечения специальных "
 "низкоуровневых файлов для отладки."
 
-#: libparted/fs/hfs/journal.c:154
+#: libparted/fs/hfs/journal.c:155
 msgid "Bad block list header checksum."
 msgstr "Неправильная контрольная сумма заголовка списка блоков."
 
-#: libparted/fs/hfs/journal.c:167
+#: libparted/fs/hfs/journal.c:168
 #, c-format
 msgid ""
 "Invalid size of a transaction block while replaying the journal (%i bytes)."
 msgstr "Неправильный размер блока транзакций при повторении журнала (%i байт)."
 
-#: libparted/fs/hfs/journal.c:259
+#: libparted/fs/hfs/journal.c:260
 msgid ""
 "Journal stored outside of the volume are not supported.  Try to desactivate "
 "the journal and run Parted again."
@@ -2406,25 +2401,25 @@ msgstr ""
 "Журнал, хранящийся вне раздела не поддерживается.  Попробуйте отключить "
 "журнал и запустить Parted снова."
 
-#: libparted/fs/hfs/journal.c:270
+#: libparted/fs/hfs/journal.c:271
 msgid "Journal offset or size is not multiple of the sector size."
 msgstr "Смещение журнала или его размер не делится на размер сектора."
 
-#: libparted/fs/hfs/journal.c:291
+#: libparted/fs/hfs/journal.c:292
 msgid "Incorrect magic values in the journal header."
 msgstr "Неправильный заголовок журнала."
 
-#: libparted/fs/hfs/journal.c:301
+#: libparted/fs/hfs/journal.c:302
 msgid "Journal size mismatch between journal info block and journal header."
 msgstr ""
 "Не найден размер журнала между блоком информации журнала и заголовком "
 "журнала."
 
-#: libparted/fs/hfs/journal.c:313
+#: libparted/fs/hfs/journal.c:314
 msgid "Some header fields are not multiple of the sector size."
 msgstr "Некоторые поля заголовка не делятся на размер сектора."
 
-#: libparted/fs/hfs/journal.c:322
+#: libparted/fs/hfs/journal.c:323
 msgid ""
 "The sector size stored in the journal is not 512 bytes.  Parted only "
 "supports 512 bytes length sectors."
@@ -2432,11 +2427,11 @@ msgstr ""
 "Размер сектора, хранящийся в журнале не 512 байт.  Parted может работать "
 "только с секторами размером 512 байт."
 
-#: libparted/fs/hfs/journal.c:334
+#: libparted/fs/hfs/journal.c:335
 msgid "Bad journal checksum."
 msgstr "Неправильная контрольная сумма журнала."
 
-#: libparted/fs/hfs/journal.c:352
+#: libparted/fs/hfs/journal.c:353
 msgid ""
 "The journal is not empty.  Parted must replay the transactions before "
 "opening the file system.  This will modify the file system."
@@ -2444,7 +2439,7 @@ msgstr ""
 "Журнал не пустой.  Parted должен повторить транзакции перед открытие "
 "раздела.  Это изменит файловую систему."
 
-#: libparted/fs/hfs/journal.c:380
+#: libparted/fs/hfs/journal.c:381
 msgid ""
 "The volume header or the master directory block has changed while replaying "
 "the journal.  You should restart Parted."
@@ -2452,7 +2447,7 @@ msgstr ""
 "Заголовок раздела или блок главного каталога был изменён при повторении "
 "журнала.  Вы должны перезапустить Parted."
 
-#: libparted/fs/hfs/probe.c:50
+#: libparted/fs/hfs/probe.c:51
 #, c-format
 msgid ""
 "Parted can't use HFS file systems on disks with a sector size not equal to %"
@@ -2461,11 +2456,11 @@ msgstr ""
 "Parted не может работать с файловыми системами HFS, на дисках с размером "
 "сектора не равным %d байт."
 
-#: libparted/fs/hfs/reloc.c:150 libparted/fs/hfs/reloc_plus.c:154
+#: libparted/fs/hfs/reloc.c:151 libparted/fs/hfs/reloc_plus.c:155
 msgid "An extent has not been relocated."
 msgstr "Расширение не было перемещено."
 
-#: libparted/fs/hfs/reloc.c:250 libparted/fs/hfs/reloc_plus.c:306
+#: libparted/fs/hfs/reloc.c:251 libparted/fs/hfs/reloc_plus.c:307
 msgid ""
 "A reference to an extent comes from a place it should not.  You should check "
 "the file system!"
@@ -2473,16 +2468,16 @@ msgstr ""
 "Ссылка на расширение указывает на место, где оно быть не должно.  Вам "
 "следует проверить файловую систему!"
 
-#: libparted/fs/hfs/reloc.c:380
+#: libparted/fs/hfs/reloc.c:381
 msgid "This HFS volume has no catalog file.  This is very unusual!"
 msgstr "Этот раздел HFS не содержит файла каталога.  Очень необычно!"
 
-#: libparted/fs/hfs/reloc.c:474
+#: libparted/fs/hfs/reloc.c:475
 msgid "This HFS volume has no extents overflow file.  This is quite unusual!"
 msgstr ""
 "Этот раздел HFS не содержит файла размеров перегрузки.  Достаточно необычно!"
 
-#: libparted/fs/hfs/reloc.c:516 libparted/fs/hfs/reloc_plus.c:665
+#: libparted/fs/hfs/reloc.c:517 libparted/fs/hfs/reloc_plus.c:666
 msgid ""
 "The extents overflow file should not contain its own extents!  You should "
 "check the file system."
@@ -2490,23 +2485,23 @@ msgstr ""
 "Файл размеров перегрузки не должен содержать свои размеры!  Вам следует "
 "проверить файловую систему."
 
-#: libparted/fs/hfs/reloc.c:573 libparted/fs/hfs/reloc_plus.c:843
+#: libparted/fs/hfs/reloc.c:574 libparted/fs/hfs/reloc_plus.c:844
 msgid "Could not cache the file system in memory."
 msgstr "Не удалось кэшировать файловую систему в памяти."
 
-#: libparted/fs/hfs/reloc.c:634 libparted/fs/hfs/reloc_plus.c:904
+#: libparted/fs/hfs/reloc.c:635 libparted/fs/hfs/reloc_plus.c:905
 msgid "Bad blocks list could not be loaded."
 msgstr "Не удалось загрузить список плохих блоков."
 
-#: libparted/fs/hfs/reloc.c:648 libparted/fs/hfs/reloc_plus.c:920
+#: libparted/fs/hfs/reloc.c:649 libparted/fs/hfs/reloc_plus.c:921
 msgid "An error occurred during extent relocation."
 msgstr "Ошибка при перераспределении размеров."
 
-#: libparted/fs/hfs/reloc_plus.c:493
+#: libparted/fs/hfs/reloc_plus.c:494
 msgid "This HFS+ volume has no catalog file.  This is very unusual!"
 msgstr "Этот раздел HFS+ не содержит файла каталога.  Очень необычно!"
 
-#: libparted/fs/hfs/reloc_plus.c:616
+#: libparted/fs/hfs/reloc_plus.c:617
 msgid "This HFS+ volume has no extents overflow file.  This is quite unusual!"
 msgstr ""
 "Этот раздел HFS+ не содержит файла размеров перегрузки.  Достаточно необычно!"
@@ -2613,12 +2608,12 @@ msgstr ""
 "или ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ.  Для получения более подробной "
 "информации смотрите Универсальную Общественную Лицензию GNU.\n"
 
-#: parted/parted.c:205
+#: parted/parted.c:207
 #, c-format
 msgid "%0.f%%\t(time left %.2d:%.2d)"
 msgstr "%0.f%%\t(времени прошло %.2d:%.2d)"
 
-#: parted/parted.c:224
+#: parted/parted.c:226
 #, c-format
 msgid ""
 "Partition %s is being used. You must unmount it before you modify it with "
@@ -2627,12 +2622,12 @@ msgstr ""
 "Раздел %s используется.  Вы должны отмонтировать его перед изменением  с "
 "помощью Parted."
 
-#: parted/parted.c:242
+#: parted/parted.c:244
 #, c-format
 msgid "Partition(s) on %s are being used."
 msgstr "Разделы на %s используются."
 
-#: parted/parted.c:254
+#: parted/parted.c:256
 msgid ""
 "The existing file system will be destroyed and all data on the partition "
 "will be lost. Do you want to continue?"
@@ -2640,7 +2635,7 @@ msgstr ""
 "Существующая файловая система будет уничтожена и все данные на разделе будут "
 "утеряны. Вы хотите продолжить?"
 
-#: parted/parted.c:266
+#: parted/parted.c:268
 #, c-format
 msgid ""
 "The existing disk label on %s will be destroyed and all data on this disk "
@@ -2649,7 +2644,7 @@ msgstr ""
 "Существующая метка диска на  %s будет уничтожена и все данные на этом диске "
 "будут утеряны. Вы хотите продолжить?"
 
-#: parted/parted.c:484
+#: parted/parted.c:486
 #, c-format
 msgid ""
 "WARNING: you are attempting to use %s to operate on (%s) a file system.\n"
@@ -2660,55 +2655,55 @@ msgid ""
 "will be removed in an upcoming release.\n"
 msgstr ""
 
-#: parted/parted.c:505 parted/parted.c:699 parted/parted.c:1121
-#: parted/parted.c:1205 parted/parted.c:1866 parted/parted.c:1947
-#: parted/parted.c:2018 parted/parted.c:2038
+#: parted/parted.c:507 parted/parted.c:701 parted/parted.c:1178
+#: parted/parted.c:1262 parted/parted.c:1933 parted/parted.c:2014
+#: parted/parted.c:2085 parted/parted.c:2105
 msgid "Partition number?"
 msgstr "Номер раздела?"
 
-#: parted/parted.c:548
+#: parted/parted.c:550
 msgid "Source device?"
 msgstr "Устройство источник?"
 
-#: parted/parted.c:552
+#: parted/parted.c:554
 msgid "Source partition number?"
 msgstr "Исходный номер раздела?"
 
-#: parted/parted.c:557
+#: parted/parted.c:559
 msgid "Can't copy an extended partition."
 msgstr "Невозможно скопировать расширенный раздел."
 
-#: parted/parted.c:563
+#: parted/parted.c:565
 msgid "Destination partition number?"
 msgstr "Раздел назначения?"
 
-#: parted/parted.c:652
+#: parted/parted.c:654
 msgid "New disk label type?"
 msgstr "Новый тип метки диска?"
 
-#: parted/parted.c:703 parted/parted.c:785 parted/parted.c:972
+#: parted/parted.c:705 parted/parted.c:787 parted/parted.c:999
 msgid "File system type?"
 msgstr "Тип файловой системы?"
 
-#: parted/parted.c:759 parted/parted.c:955
+#: parted/parted.c:761 parted/parted.c:982
 msgid "Partition type?"
 msgstr "Тип раздела?"
 
-#: parted/parted.c:777 parted/parted.c:962 parted/parted.c:1208
+#: parted/parted.c:779 parted/parted.c:989 parted/parted.c:1265
 msgid "Partition name?"
 msgstr "Имя раздела?"
 
-#: parted/parted.c:791 parted/parted.c:974 parted/parted.c:1136
-#: parted/parted.c:1819 parted/parted.c:1875
+#: parted/parted.c:793 parted/parted.c:1001 parted/parted.c:1193
+#: parted/parted.c:1881 parted/parted.c:1942
 msgid "Start?"
 msgstr "Начало?"
 
-#: parted/parted.c:793 parted/parted.c:977 parted/parted.c:1139
-#: parted/parted.c:1821 parted/parted.c:1877
+#: parted/parted.c:795 parted/parted.c:1004 parted/parted.c:1196
+#: parted/parted.c:1883 parted/parted.c:1944
 msgid "End?"
 msgstr "Конец?"
 
-#: parted/parted.c:854 parted/parted.c:1023
+#: parted/parted.c:861 parted/parted.c:1065
 #, fuzzy, c-format
 msgid ""
 "You requested a partition from %s to %s.\n"
@@ -2718,117 +2713,121 @@ msgstr ""
 "Ближайшие точки с которыми мы можем работать от %s до %s.  Это подходит для "
 "вас?"
 
-#: parted/parted.c:859 parted/parted.c:1028
+#: parted/parted.c:866 parted/parted.c:1070
 msgid ""
 "\n"
 "Is this still acceptable to you?"
 msgstr ""
 
-#: parted/parted.c:967
+#: parted/parted.c:888 parted/parted.c:1092
+msgid "The resulting partition is not properly aligned for best performance."
+msgstr ""
+
+#: parted/parted.c:994
 msgid "An extended partition cannot hold a file system.  Did you want mkpart?"
 msgstr ""
 "Расширенный раздел не может содержать файловую систему.  Запустить mkpart?"
 
-#: parted/parted.c:1127
+#: parted/parted.c:1184
 msgid "Can't move an extended partition."
 msgstr "Невозможно переместить расширенный раздел."
 
-#: parted/parted.c:1156
+#: parted/parted.c:1213
 msgid "Can't move a partition onto itself.  Try using resize, perhaps?"
 msgstr ""
 "Невозможно переместить раздел в самого себя.  Использовать вместо этого "
 "изменение размера?"
 
-#: parted/parted.c:1302
+#: parted/parted.c:1359
 #, c-format
 msgid "Minor: %d\n"
 msgstr "Вторичн.: %d\n"
 
-#: parted/parted.c:1303
+#: parted/parted.c:1360
 #, c-format
 msgid "Flags: %s\n"
 msgstr "Флаги: %s\n"
 
-#: parted/parted.c:1304
+#: parted/parted.c:1361
 #, c-format
 msgid "File System: %s\n"
 msgstr "Файловая система: %s\n"
 
-#: parted/parted.c:1305
+#: parted/parted.c:1362
 msgid "Size:         "
 msgstr "Размер:           "
 
-#: parted/parted.c:1310
+#: parted/parted.c:1367
 msgid "Minimum size: "
 msgstr "Минимальный размер: "
 
-#: parted/parted.c:1313
+#: parted/parted.c:1370
 msgid "Maximum size: "
 msgstr "Максимальный размер: "
 
-#: parted/parted.c:1441
+#: parted/parted.c:1502
 #, c-format
 msgid "Model: %s (%s)\n"
 msgstr "Модель: %s (%s)\n"
 
-#: parted/parted.c:1443
+#: parted/parted.c:1504
 #, c-format
 msgid "Disk %s: %s\n"
 msgstr "Диск %s: %s\n"
 
-#: parted/parted.c:1444
+#: parted/parted.c:1505
 #, c-format
 msgid "Sector size (logical/physical): %lldB/%lldB\n"
 msgstr "Размер сектора (логич./физич.): %lldB/%lldB\n"
 
-#: parted/parted.c:1462
+#: parted/parted.c:1523
 #, c-format
 msgid "BIOS cylinder,head,sector geometry: %d,%d,%d.  Each cylinder is %s.\n"
 msgstr ""
 "Геометрия цилиндров, головок, секторов BIOS: %d,%d,%d.  Каждый цилиндр %s.\n"
 
-#: parted/parted.c:1471
+#: parted/parted.c:1532
 #, c-format
 msgid "Partition Table: %s\n"
 msgstr "Таблица разделов: %s\n"
 
-#: parted/parted.c:1486 parted/parted.c:1489
+#: parted/parted.c:1547 parted/parted.c:1550
 msgid "Number"
 msgstr "Номер"
 
-#: parted/parted.c:1486 parted/parted.c:1489
+#: parted/parted.c:1547 parted/parted.c:1550
 msgid "Start"
 msgstr "Начало"
 
-#: parted/parted.c:1487 parted/parted.c:1490
+#: parted/parted.c:1548 parted/parted.c:1551
 msgid "End"
 msgstr "Конец"
 
-#: parted/parted.c:1490
+#: parted/parted.c:1551
 msgid "Size"
 msgstr "Размер"
 
-#: parted/parted.c:1494
+#: parted/parted.c:1555
 msgid "Type"
 msgstr "Тип"
 
-#: parted/parted.c:1496
+#: parted/parted.c:1557
 msgid "File system"
 msgstr "Файловая система"
 
-#: parted/parted.c:1499
+#: parted/parted.c:1560
 msgid "Name"
 msgstr "Имя"
 
-#: parted/parted.c:1501
+#: parted/parted.c:1562
 msgid "Flags"
 msgstr "Флаги"
 
-#: parted/parted.c:1558
+#: parted/parted.c:1619
 msgid "Free Space"
 msgstr "Свободное место"
 
-#: parted/parted.c:1718
+#: parted/parted.c:1780
 #, c-format
 msgid ""
 "A %s %s partition was found at %s -> %s.  Do you want to add it to the "
@@ -2836,67 +2835,67 @@ msgid ""
 msgstr ""
 "Раздел %s %s найден на %s -> %s.  Вы хотите добавить его в таблицу разделов?"
 
-#: parted/parted.c:1757
+#: parted/parted.c:1819
 msgid "searching for file systems"
 msgstr "поиск файловых систем"
 
-#: parted/parted.c:1972
+#: parted/parted.c:2039
 msgid "New device?"
 msgstr "Новое устройство?"
 
-#: parted/parted.c:2017
+#: parted/parted.c:2084
 msgid "alignment type(min/opt)"
 msgstr ""
 
-#: parted/parted.c:2040
+#: parted/parted.c:2107
 msgid "Flag to Invert?"
 msgstr "Флаг для инвертации?"
 
-#: parted/parted.c:2045
+#: parted/parted.c:2112
 msgid "New state?"
 msgstr "Новое состояние?"
 
-#: parted/parted.c:2082
+#: parted/parted.c:2149
 msgid "Unit?"
 msgstr "Устройство?"
 
-#: parted/parted.c:2263
+#: parted/parted.c:2330
 #, fuzzy
 msgid "align-check"
 msgstr "check"
 
-#: parted/parted.c:2266
+#: parted/parted.c:2333
 msgid ""
 "align-check TYPE N                        check partition N for TYPE(min|"
 "opt) alignment"
 msgstr ""
 
-#: parted/parted.c:2274
+#: parted/parted.c:2341
 msgid "check"
 msgstr "check"
 
-#: parted/parted.c:2277
+#: parted/parted.c:2344
 msgid ""
 "check NUMBER                             do a simple check on the file system"
 msgstr ""
 "check НОМЕР                      производит простую проверку файловой системы"
 
-#: parted/parted.c:2283
+#: parted/parted.c:2350
 msgid "cp"
 msgstr "cp"
 
-#: parted/parted.c:2286
+#: parted/parted.c:2353
 msgid ""
 "cp [FROM-DEVICE] FROM-NUMBER TO-NUMBER   copy file system to another "
 "partition"
 msgstr ""
 "cp [ИЗ_УСТРОЙСТВА] ИЗ_НОМ В_НОМ скопировать файловую систему на другой раздел"
 
-#: parted/parted.c:2292
+#: parted/parted.c:2359
 msgid "help"
 msgstr "help"
 
-#: parted/parted.c:2295
+#: parted/parted.c:2362
 msgid ""
 "help [COMMAND]                           print general help, or help on "
 "COMMAND"
@@ -2904,15 +2903,15 @@ msgstr ""
 "help [КОМАНДА]                   распечатать общую справку или справку по "
 "КОМАНДЕ"
 
-#: parted/parted.c:2301
+#: parted/parted.c:2368
 msgid "mklabel"
 msgstr "mklabel"
 
-#: parted/parted.c:2301
+#: parted/parted.c:2368
 msgid "mktable"
 msgstr "mktable"
 
-#: parted/parted.c:2304
+#: parted/parted.c:2371
 msgid ""
 "mklabel,mktable LABEL-TYPE               create a new disklabel (partition "
 "table)"
@@ -2920,11 +2919,11 @@ msgstr ""
 "mklabel,mktable ТИП_МЕТКИ         создать новую метку диска (таблицу "
 "раздела) "
 
-#: parted/parted.c:2310
+#: parted/parted.c:2377
 msgid "mkfs"
 msgstr "mkfs"
 
-#: parted/parted.c:2313
+#: parted/parted.c:2380
 #, fuzzy
 msgid ""
 "mkfs NUMBER FS-TYPE                      make a FS-TYPE file system on "
@@ -2933,15 +2932,15 @@ msgstr ""
 "mkfs НОМЕР ТИП_ФС                создать файловую систему ТИП_ФС на разделе "
 "НОМЕР"
 
-#: parted/parted.c:2319
+#: parted/parted.c:2386
 msgid "mkpart"
 msgstr "mkpart"
 
-#: parted/parted.c:2322
+#: parted/parted.c:2389
 msgid "mkpart PART-TYPE [FS-TYPE] START END     make a partition"
 msgstr "mkpart ТИП_РАЗД [ТИП_ФС] НАЧ КОН создать раздел"
 
-#: parted/parted.c:2328
+#: parted/parted.c:2395
 msgid ""
 "'mkpart' makes a partition without creating a new file system on the "
 "partition.  FS-TYPE may be specified to set an appropriate partition ID.\n"
@@ -2949,36 +2948,36 @@ msgstr ""
 "mkpart делает раздел без создания на нем новой файловой системы.  ТИП_ФС "
 "должен быть указан для записи идентификатора раздела\n"
 
-#: parted/parted.c:2333
+#: parted/parted.c:2400
 msgid "mkpartfs"
 msgstr "mkpartfs"
 
-#: parted/parted.c:2336
+#: parted/parted.c:2403
 msgid ""
 "mkpartfs PART-TYPE FS-TYPE START END     make a partition with a file system"
 msgstr "mkpartfs ТИП_РАЗД ТИП_ФС НАЧ КОН создать раздел с файловой системой"
 
-#: parted/parted.c:2342
+#: parted/parted.c:2409
 msgid "move"
 msgstr "move"
 
-#: parted/parted.c:2345
+#: parted/parted.c:2412
 msgid "move NUMBER START END                    move partition NUMBER"
 msgstr "move НОМЕР НАЧ КОН               переместить файловую систему НОМЕР"
 
-#: parted/parted.c:2350
+#: parted/parted.c:2417
 msgid "name"
 msgstr "name"
 
-#: parted/parted.c:2353
+#: parted/parted.c:2420
 msgid "name NUMBER NAME                         name partition NUMBER as NAME"
 msgstr "name НОМЕР ИМЯ                   назначает имя разделу НОМЕР на ИМЯ"
 
-#: parted/parted.c:2358
+#: parted/parted.c:2425
 msgid "print"
 msgstr "print"
 
-#: parted/parted.c:2361
+#: parted/parted.c:2428
 msgid ""
 "print [devices|free|list,all|NUMBER]     display the partition table, "
 "available devices, free space, all found partitions, or a particular "
@@ -2988,7 +2987,7 @@ msgstr ""
 "доступные устройства, свободное место, все найденные разделы или "
 "определённый раздел"
 
-#: parted/parted.c:2366
+#: parted/parted.c:2433
 msgid ""
 "Without arguments, 'print' displays the entire partition table. However with "
 "the following arguments it performs various other actions.\n"
@@ -2996,11 +2995,11 @@ msgstr ""
 "Без параметров, 'print' отображает всю таблицу разделов. Но с параметрами "
 "могут выполняться и некоторые другие действия.\n"
 
-#: parted/parted.c:2368
+#: parted/parted.c:2435
 msgid "  devices   : display all active block devices\n"
 msgstr "  devices   : отобразить все активные блочные устройства\n"
 
-#: parted/parted.c:2369
+#: parted/parted.c:2436
 msgid ""
 "  free      : display information about free unpartitioned space on the "
 "current block device\n"
@@ -3008,33 +3007,33 @@ msgstr ""
 "  free      : отображает информацию о свободное не разбитом пространстве на "
 "текущем блочном устройстве\n"
 
-#: parted/parted.c:2371
+#: parted/parted.c:2438
 msgid ""
 "  list, all : display the partition tables of all active block devices\n"
 msgstr ""
 "  list, all : отображает таблицы разделов на всех активных блочных "
 "устройствах\n"
 
-#: parted/parted.c:2372
+#: parted/parted.c:2439
 msgid ""
 "  NUMBER    : display more detailed information about this particular "
 "partition\n"
 msgstr ""
 "  НОМЕР    : отображает более детальную информацию о требуемом разделе\n"
 
-#: parted/parted.c:2377
+#: parted/parted.c:2444
 msgid "quit"
 msgstr "quit"
 
-#: parted/parted.c:2380
+#: parted/parted.c:2447
 msgid "quit                                     exit program"
 msgstr "quit                             выйти из программы"
 
-#: parted/parted.c:2385
+#: parted/parted.c:2452
 msgid "rescue"
 msgstr "resize"
 
-#: parted/parted.c:2388
+#: parted/parted.c:2455
 msgid ""
 "rescue START END                         rescue a lost partition near START "
 "and END"
@@ -3042,11 +3041,11 @@ msgstr ""
 "rescue НАЧАЛО КОНЕЦ              восстановить потерянный раздел в промежутке "
 "от НАЧАЛА до КОНЦА"
 
-#: parted/parted.c:2394
+#: parted/parted.c:2461
 msgid "resize"
 msgstr "resize"
 
-#: parted/parted.c:2397
+#: parted/parted.c:2464
 msgid ""
 "resize NUMBER START END                  resize partition NUMBER and its "
 "file system"
@@ -3054,57 +3053,57 @@ msgstr ""
 "resize НОМЕР НАЧ КОН             изменить размер файловой системы на разделе "
 "НОМЕР"
 
-#: parted/parted.c:2405
+#: parted/parted.c:2472
 msgid "rm"
 msgstr "rm"
 
-#: parted/parted.c:2408
+#: parted/parted.c:2475
 msgid "rm NUMBER                                delete partition NUMBER"
 msgstr "rm НОМЕР                         удалить раздел НОМЕР"
 
-#: parted/parted.c:2413
+#: parted/parted.c:2480
 msgid "select"
 msgstr "select"
 
-#: parted/parted.c:2416
+#: parted/parted.c:2483
 msgid "select DEVICE                            choose the device to edit"
 msgstr "select УСТРОЙСТВО                выбор устройства для редактирования"
 
-#: parted/parted.c:2421
+#: parted/parted.c:2488
 msgid "set"
 msgstr "set"
 
-#: parted/parted.c:2424
+#: parted/parted.c:2491
 msgid ""
 "set NUMBER FLAG STATE                    change the FLAG on partition NUMBER"
 msgstr "set НОМЕР ФЛАГ СОСТОЯНИЯ         изменить ФЛАГ на разделе НОМЕР"
 
-#: parted/parted.c:2430
+#: parted/parted.c:2497
 msgid "toggle"
 msgstr "toggle"
 
-#: parted/parted.c:2433
+#: parted/parted.c:2500
 msgid ""
 "toggle [NUMBER [FLAG]]                   toggle the state of FLAG on "
 "partition NUMBER"
 msgstr ""
 "toggle [НОМЕР [ФЛАГ]]            переключает состояния ФЛАГА на разделе НОМЕР"
 
-#: parted/parted.c:2439
+#: parted/parted.c:2506
 msgid "unit"
 msgstr "unit"
 
-#: parted/parted.c:2442
+#: parted/parted.c:2509
 msgid "unit UNIT                                set the default unit to UNIT"
 msgstr ""
 "unit УСТРОЙСТВО                  установить устройство по умолчанию на "
 "УСТРОЙСТВО"
 
-#: parted/parted.c:2447
+#: parted/parted.c:2514
 msgid "version"
 msgstr "version"
 
-#: parted/parted.c:2450
+#: parted/parted.c:2517
 msgid ""
 "version                                  display the version number and "
 "copyright information of GNU Parted"
@@ -3112,27 +3111,27 @@ msgstr ""
 "version                                  отображает текущую версию GNU "
 "Parted и информацию о лицензии"
 
-#: parted/parted.c:2454
+#: parted/parted.c:2521
 msgid ""
 "'version' displays copyright and version information corresponding to this "
 "copy of GNU Parted\n"
 msgstr ""
 "version отображает информацию о лицензии и версии этой копии GNU Parted\n"
 
-#: parted/parted.c:2522
+#: parted/parted.c:2589
 #, fuzzy, c-format
 msgid "Usage: %s [-hlmsv] [-a<align>] [DEVICE [COMMAND [PARAMETERS]]...]\n"
 msgstr "Использование: %s [-hlmsv] [УСТРОЙСТВО [КОМАНДА [ПАРАМЕТРЫ]]...]\n"
 
-#: parted/parted.c:2566
+#: parted/parted.c:2633
 msgid "No device found"
 msgstr "Устройство не найдено"
 
-#: parted/parted.c:2603
+#: parted/parted.c:2670
 msgid "WARNING: You are not superuser.  Watch out for permissions."
 msgstr "ВНИМАНИЕ: Вы не администратор.  Следите за правами."
 
-#: parted/parted.c:2641
+#: parted/parted.c:2708
 msgid "You may need to update /etc/fstab.\n"
 msgstr "Не забудьте обновить /etc/fstab.\n"
 
@@ -3460,6 +3459,17 @@ msgstr "Используется %s\n"
 msgid "This command does not make sense in non-interactive mode.\n"
 msgstr "Эта команда ничего не делает в не-интерактивном режиме.\n"
 
+#, fuzzy
+#~ msgid ""
+#~ "Could not determine minimum io size for %s: %s.\n"
+#~ "Using the default size (%lld)."
+#~ msgstr ""
+#~ "Не удалось определить размер сектора для %s: %s.\n"
+#~ "Использую стандартный размер сектора (%lld)."
+
+#~ msgid "%s: illegal option -- %c\n"
+#~ msgstr "%s: неправильный параметр -- %c\n"
+
 #~ msgid "Unable to determine the block size of this dasd"
 #~ msgstr "Не удаётся определить размер блока для этого dasd"
 
@@ -3481,14 +3491,6 @@ msgstr "Эта команда ничего не делает в не-интер�
 #~ "Не удалось сообщить ядру об изменениях раздела %s -- %s.  Это означает, "
 #~ "что Linux не узнает об изменениях %s до перезагрузки -- поэтому не "
 #~ "пытайтесь примонтировать или как либо использовать его до перезагрузки."
-
-#, fuzzy
-#~ msgid ""
-#~ "Could not determine physical sector size for %s: %s.\n"
-#~ "Using the default physical sector size (%lld)."
-#~ msgstr ""
-#~ "Не удалось определить размер сектора для %s: %s.\n"
-#~ "Использую стандартный размер сектора (%lld)."
 
 #~ msgid "File system has an incompatible feature enabled."
 #~ msgstr "Файловая система имеет включённое несовместимое свойство."

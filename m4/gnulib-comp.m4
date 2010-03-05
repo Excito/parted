@@ -1,7 +1,7 @@
 # -*- buffer-read-only: t -*- vi: set ro:
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2009 Free Software Foundation, Inc.
+# Copyright (C) 2002-2010 Free Software Foundation, Inc.
 #
 # This file is free software, distributed under the terms of the GNU
 # General Public License.  As a special exception to the GNU General
@@ -93,6 +93,7 @@ AC_SUBST([LTALLOCA])
   AC_SUBST([LIBINTL])
   AC_SUBST([LTLIBINTL])
   gl_FUNC_GETTIMEOFDAY
+  gl_SYS_TIME_MODULE_INDICATOR([gettimeofday])
   # Autoconf 2.61a.99 and earlier don't support linking a file only
   # in VPATH builds.  But since GNUmakefile is for maintainer use
   # only, it does not matter if we skip the link with older autoconf.
@@ -105,6 +106,7 @@ AC_SUBST([LTALLOCA])
   	[GNUmakefile=$GNUmakefile])])
   gl_INLINE
   gl_INTTYPES_H
+  gl_LANGINFO_H
   gl_IGNORE_UNUSED_LIBRARIES
   gl_LOCALCHARSET
   LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(top_builddir)/$gl_source_base\""
@@ -114,6 +116,8 @@ AC_SUBST([LTALLOCA])
   gl_UNISTD_MODULE_INDICATOR([lseek])
   gl_FUNC_LSTAT
   gl_SYS_STAT_MODULE_INDICATOR([lstat])
+  AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
+    [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
   AC_FUNC_MALLOC
   AC_DEFINE([GNULIB_MALLOC_GNU], 1, [Define to indicate the 'malloc' module.])
   gl_FUNC_MALLOC_POSIX
@@ -128,6 +132,8 @@ AC_SUBST([LTALLOCA])
   gl_FUNC_MKSTEMP
   gl_STDLIB_MODULE_INDICATOR([mkstemp])
   gl_MULTIARCH
+  gl_FUNC_NL_LANGINFO
+  gl_LANGINFO_MODULE_INDICATOR([nl_langinfo])
   gl_PATHMAX
   AC_CHECK_DECLS([program_invocation_name], [], [], [#include <errno.h>])
   AC_CHECK_DECLS([program_invocation_short_name], [], [], [#include <errno.h>])
@@ -220,13 +226,24 @@ AC_SUBST([LTALLOCA])
   gl_source_base='gnulib-tests'
   gt_LOCALE_FR
   gt_LOCALE_FR_UTF8
+  gt_LOCALE_FR
+  gt_LOCALE_TR_UTF8
+  gl_FUNC_DUP2
+  gl_UNISTD_MODULE_INDICATOR([dup2])
   gl_ENVIRON
   gl_UNISTD_MODULE_INDICATOR([environ])
+  gl_FCNTL_H
+  AC_REQUIRE([AC_C_INLINE])
   gt_LOCALE_FR
   gt_LOCALE_FR_UTF8
   gt_LOCALE_JA
   gt_LOCALE_ZH_CN
   gt_LOCALE_FR_UTF8
+  gt_LOCALE_FR
+  gt_LOCALE_FR_UTF8
+  gl_FUNC_OPEN
+  gl_MODULE_INDICATOR([open])
+  gl_FCNTL_MODULE_INDICATOR([open])
   gl_PRIV_SET
   gl_FUNC_PUTENV
   gl_STDLIB_MODULE_INDICATOR([putenv])
@@ -350,11 +367,11 @@ AC_DEFUN([gl_FILE_LIST], [
   build-aux/gitlog-to-changelog
   build-aux/gnu-web-doc-update
   build-aux/gnupload
-  build-aux/link-warning.h
   build-aux/mktempd
   build-aux/update-copyright
   build-aux/useless-if-before-free
   build-aux/vc-list-files
+  build-aux/warn-on-use.h
   doc/fdl.texi
   doc/gendocs_template
   lib/alloca.c
@@ -394,6 +411,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/gettimeofday.c
   lib/intprops.h
   lib/inttypes.in.h
+  lib/langinfo.in.h
   lib/localcharset.c
   lib/localcharset.h
   lib/long-options.c
@@ -409,6 +427,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/memchr.c
   lib/memchr.valgrind
   lib/mkstemp.c
+  lib/nl_langinfo.c
   lib/pathmax.h
   lib/progname.c
   lib/progname.h
@@ -482,6 +501,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/dirname.m4
   m4/dos.m4
   m4/double-slash-root.m4
+  m4/dup2.m4
   m4/eealloc.m4
   m4/environ.m4
   m4/errno_h.m4
@@ -489,6 +509,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/exitfail.m4
   m4/extensions.m4
   m4/fclose.m4
+  m4/fcntl-o.m4
   m4/fcntl_h.m4
   m4/fpending.m4
   m4/fsync.m4
@@ -509,6 +530,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/inttypes-pri.m4
   m4/inttypes.m4
   m4/inttypes_h.m4
+  m4/langinfo_h.m4
   m4/lcmessage.m4
   m4/lib-ignore.m4
   m4/lib-ld.m4
@@ -517,6 +539,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/localcharset.m4
   m4/locale-fr.m4
   m4/locale-ja.m4
+  m4/locale-tr.m4
   m4/locale-zh.m4
   m4/lock.m4
   m4/long-options.m4
@@ -532,8 +555,11 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/memchr.m4
   m4/mkstemp.m4
   m4/mmap-anon.m4
+  m4/mode_t.m4
   m4/multiarch.m4
+  m4/nl_langinfo.m4
   m4/nls.m4
+  m4/open.m4
   m4/pathmax.m4
   m4/po.m4
   m4/printf-posix.m4
@@ -575,6 +601,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/unlinkdir.m4
   m4/version-etc.m4
   m4/visibility.m4
+  m4/warn-on-use.m4
   m4/warnings.m4
   m4/wchar.m4
   m4/wchar_t.m4
@@ -589,15 +616,25 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/init.sh
   tests/locale/fr/LC_MESSAGES/test-quotearg.mo
   tests/locale/fr/LC_MESSAGES/test-quotearg.po
+  tests/macros.h
+  tests/signature.h
   tests/test-alloca-opt.c
   tests/test-argmatch.c
+  tests/test-binary-io.c
+  tests/test-binary-io.sh
   tests/test-btowc.c
   tests/test-btowc1.sh
   tests/test-btowc2.sh
+  tests/test-c-ctype.c
+  tests/test-c-strcase.sh
+  tests/test-c-strcasecmp.c
+  tests/test-c-strncasecmp.c
   tests/test-canonicalize-lgpl.c
   tests/test-dirname.c
+  tests/test-dup2.c
   tests/test-environ.c
   tests/test-errno.c
+  tests/test-fcntl-h.c
   tests/test-fpending.c
   tests/test-fpending.sh
   tests/test-fsync.c
@@ -606,6 +643,7 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-getopt_long.h
   tests/test-gettimeofday.c
   tests/test-inttypes.c
+  tests/test-langinfo.c
   tests/test-lseek.c
   tests/test-lseek.sh
   tests/test-lstat.c
@@ -619,6 +657,10 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-mbsinit.c
   tests/test-mbsinit.sh
   tests/test-memchr.c
+  tests/test-nl_langinfo.c
+  tests/test-nl_langinfo.sh
+  tests/test-open.c
+  tests/test-open.h
   tests/test-priv-set.c
   tests/test-quotearg.c
   tests/test-quotearg.sh
@@ -658,6 +700,16 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-xstrtol.sh
   tests/test-xstrtoul.c
   tests/zerosize-ptr.h
+  tests=lib/binary-io.h
+  tests=lib/c-ctype.c
+  tests=lib/c-ctype.h
+  tests=lib/c-strcase.h
+  tests=lib/c-strcasecmp.c
+  tests=lib/c-strncasecmp.c
+  tests=lib/dup2.c
+  tests=lib/fcntl.in.h
+  tests=lib/ignore-value.h
+  tests=lib/open.c
   tests=lib/priv-set.c
   tests=lib/priv-set.h
   tests=lib/putenv.c
