@@ -9,18 +9,23 @@ TESTS = \
   t0200-gpt.sh \
   t0201-gpt.sh \
   t0202-gpt-pmbr.sh \
+  t0205-gpt-list-clobbers-pmbr.sh \
+  t0206-gpt-print-with-corrupt-primary-clobbers-pmbr.sh \
   t0220-gpt-msftres.sh \
   t0250-gpt.sh \
   t0280-gpt-corrupt.sh \
   t0300-dos-on-gpt.sh \
   t0400-loop-clobber-infloop.sh \
+  t0500-dup-clobber.sh \
   t1100-busy-label.sh \
   t1700-ext-probe.sh \
   t2100-mkswap.sh \
   t2200-dos-label-recog.sh \
   t2300-dos-label-extended-bootcode.sh \
+  t2400-dos-hfs-partition-type.sh \
   t3000-resize-fs.sh \
   t4000-sun-raid-type.sh \
+  t4001-sun-vtoc.sh \
   t4100-msdos-partition-limits.sh \
   t4100-dvh-partition-limits.sh \
   t4100-msdos-starting-sector.sh \
@@ -37,7 +42,7 @@ TESTS = \
 EXTRA_DIST = \
   $(TESTS) test-lib.sh t-lib.sh lvm-utils.sh t-local.sh t-lvm.sh
 
-check_PROGRAMS = print-align print-max
+check_PROGRAMS = print-align print-max dup-clobber
 LDADD = \
   $(top_builddir)/libparted/libparted.la
 AM_CPPFLAGS = \

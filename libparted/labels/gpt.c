@@ -4,7 +4,7 @@
     original version by Matt Domsch <Matt_Domsch@dell.com>
     Disclaimed into the Public Domain
 
-    Portions Copyright (C) 2001-2003, 2005-2009 Free Software Foundation, Inc.
+    Portions Copyright (C) 2001-2003, 2005-2010 Free Software Foundation, Inc.
 
     EFI GUID Partition Table handling
     Per Intel EFI Specification v1.02
@@ -494,20 +494,6 @@ gpt_probe (const PedDevice *dev)
   return ok;
 }
 
-#ifndef DISCOVER_ONLY
-/* writes zeros to the PMBR and the primary GPTH, and to the final sector */
-static int
-gpt_clobber (PedDevice *dev)
-{
-  PED_ASSERT (dev != NULL, return 0);
-
-  return (ptt_clear_sectors (dev, GPT_PMBR_LBA, GPT_PMBR_SECTORS)
-          && ptt_clear_sectors (dev, GPT_PRIMARY_HEADER_LBA, GPT_HEADER_SECTORS)
-          && ptt_clear_sectors (dev, dev->length - GPT_HEADER_SECTORS,
-                                GPT_HEADER_SECTORS));
-}
-#endif /* !DISCOVER_ONLY */
-
 static PedDisk *
 gpt_alloc (const PedDevice *dev)
 {
@@ -898,7 +884,7 @@ gpt_read (PedDisk *disk)
   GPTDiskData *gpt_disk_data = disk->disk_specific;
   int i;
 #ifndef DISCOVER_ONLY
-  int write_back = 1;
+  int write_back = 0;
 #endif
 
   ped_disk_delete_all (disk);
@@ -932,9 +918,9 @@ gpt_read (PedDisk *disk)
   if (primary_gpt && backup_gpt)
     {
       /* Both are valid.  */
+#ifndef DISCOVER_ONLY
       if (PED_LE64_TO_CPU (primary_gpt->AlternateLBA) < disk->dev->length - 1)
         {
-#ifndef DISCOVER_ONLY
           switch (ped_exception_throw
                   (PED_EXCEPTION_ERROR,
                    (PED_EXCEPTION_FIX | PED_EXCEPTION_CANCEL
@@ -949,13 +935,13 @@ gpt_read (PedDisk *disk)
             case PED_EXCEPTION_FIX:
               ptt_clear_sectors (disk->dev,
                                  PED_LE64_TO_CPU (primary_gpt->AlternateLBA), 1);
+              write_back = 1;
               break;
             default:
-              write_back = 0;
               break;
             }
-#endif /* !DISCOVER_ONLY */
         }
+#endif /* !DISCOVER_ONLY */
       gpt = primary_gpt;
       pth_free (backup_gpt);
     }
@@ -1020,7 +1006,6 @@ gpt_read (PedDisk *disk)
       GuidPartitionEntry_t *pte
         = (GuidPartitionEntry_t *) ((char *) ptes + i * p_ent_size);
       PedPartition *part;
-      PedConstraint *constraint_exact;
 
       if (!guid_cmp (pte->PartitionTypeGuid, UNUSED_ENTRY_GUID))
         continue;
@@ -1032,9 +1017,10 @@ gpt_read (PedDisk *disk)
       part->fs_type = ped_file_system_probe (&part->geom);
       part->num = i + 1;
 
-      constraint_exact = ped_constraint_exact (&part->geom);
+      PedConstraint *constraint_exact = ped_constraint_exact (&part->geom);
       if (!ped_disk_add_partition (disk, part, constraint_exact))
         {
+          ped_constraint_destroy (constraint_exact);
           ped_partition_destroy (part);
           goto error_delete_all;
         }
@@ -1208,11 +1194,13 @@ gpt_write (const PedDisk *disk)
     goto error_free_ptes;
 
   /* Write PTH and PTEs */
+  /* FIXME: Caution: this code is nearly identical to what's just below. */
   if (_generate_header (disk, 0, ptes_crc, &gpt) != 0)
     goto error_free_ptes;
-  if ((pth_raw = pth_get_raw (disk->dev, gpt)) == NULL)
-    goto error_free_ptes;
+  pth_raw = pth_get_raw (disk->dev, gpt);
   pth_free (gpt);
+  if (pth_raw == NULL)
+    goto error_free_ptes;
   int write_ok = ped_device_write (disk->dev, pth_raw, 1, 1);
   free (pth_raw);
   if (!write_ok)
@@ -1222,11 +1210,13 @@ gpt_write (const PedDisk *disk)
     goto error_free_ptes;
 
   /* Write Alternate PTH & PTEs */
+  /* FIXME: Caution: this code is nearly identical to what's just above. */
   if (_generate_header (disk, 1, ptes_crc, &gpt) != 0)
     goto error_free_ptes;
-  if ((pth_raw = pth_get_raw (disk->dev, gpt)) == NULL)
-    goto error_free_ptes;
+  pth_raw = pth_get_raw (disk->dev, gpt);
   pth_free (gpt);
+  if (pth_raw == NULL)
+    goto error_free_ptes;
   write_ok = ped_device_write (disk->dev, pth_raw, disk->dev->length - 1, 1);
   free (pth_raw);
   if (!write_ok)
@@ -1240,7 +1230,6 @@ gpt_write (const PedDisk *disk)
   free (ptes);
   return ped_device_sync (disk->dev);
 
-  free (pth_raw);
 error_free_ptes:
   free (ptes);
 error:
@@ -1733,7 +1722,7 @@ PT_define_limit_functions (gpt)
 
 static PedDiskOps gpt_disk_ops =
 {
-  clobber:			NULL_IF_DISCOVER_ONLY (gpt_clobber),
+  clobber:			NULL,
   write:			NULL_IF_DISCOVER_ONLY (gpt_write),
 
   partition_set_name:		gpt_partition_set_name,

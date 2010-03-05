@@ -1,11 +1,11 @@
 # This file is part of GNU Parted
-# Copyright (C) 1999-2001, 2007-2009 Free Software Foundation, Inc.
+# Copyright (C) 1999-2001, 2007-2010 Free Software Foundation, Inc.
 #
 # This file may be modified and/or distributed without restriction.
 
 TESTS = t1000-label.sh t2000-disk.sh
 EXTRA_DIST = $(TESTS)
-bin_PROGRAMS = label disk
+check_PROGRAMS = label disk
 AM_CFLAGS = $(WARN_CFLAGS) $(WERROR_CFLAGS)
 
 LDADD = \

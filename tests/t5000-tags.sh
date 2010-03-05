@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (C) 2007-2009 Free Software Foundation, Inc.
+# Copyright (C) 2007-2010 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,10 +22,10 @@ test_description="test bios_grub flag in gpt labels"
 ss=$sector_size_
 
 dev=loop-file
-N=300 # number of sectors
+N=4200 # number of sectors
 
-part_sectors=128
-start_sector=60
+part_sectors=2048
+start_sector=2048
 end_sector=$(expr $start_sector + $part_sectors - 1)
 
 test_expect_success \

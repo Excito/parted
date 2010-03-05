@@ -1,5 +1,5 @@
 /* libparted - a library for manipulating disk partitions
-    Copyright (C) 1999 - 2005, 2007, 2008, 2009 Free Software Foundation, Inc.
+    Copyright (C) 1999-2010 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -44,7 +44,6 @@
 #include <libdevmapper.h>
 #endif
 
-#include "blkpg.h"
 #include "../architecture.h"
 #include "dirname.h"
 
@@ -655,28 +654,32 @@ _device_set_sector_size (PedDevice* dev)
                         dev->path, strerror (errno), PED_SECTOR_SIZE_DEFAULT);
         } else {
                 dev->sector_size = (long long)sector_size;
+                dev->phys_sector_size = dev->sector_size;
         }
 
 #if USE_BLKID
         get_blkid_topology(arch_specific);
         if (!arch_specific->topology) {
+                dev->phys_sector_size = 0;
+        } else {
+                dev->phys_sector_size =
+                        blkid_topology_get_physical_sector_size(
+                                arch_specific->topology);
+        }
+        if (dev->phys_sector_size == 0) {
                 ped_exception_throw (
                         PED_EXCEPTION_WARNING,
                         PED_EXCEPTION_OK,
-                        _("Could not determine minimum io size for %s: %s.\n"
-                          "Using the default size (%lld)."),
-                        dev->path, strerror (errno), PED_SECTOR_SIZE_DEFAULT);
-        } else {
-                dev->phys_sector_size =
-                        blkid_topology_get_minimum_io_size(
-                                arch_specific->topology);
+                        _("Could not determine physical sector size for %s.\n"
+                          "Using the logical sector size (%lld)."),
+                        dev->path, dev->sector_size);
+                dev->phys_sector_size = dev->sector_size;
         }
 #endif
 
 #if defined __s390__ || defined __s390x__
         /* Return PED_SECTOR_SIZE_DEFAULT for DASDs. */
-        if (dev->type == PED_DEVICE_DASD
-            || dev->type == PED_DEVICE_FILE) {
+        if (dev->type == PED_DEVICE_DASD) {
                 arch_specific->real_sector_size = dev->sector_size;
                 dev->sector_size = PED_SECTOR_SIZE_DEFAULT;
         }
@@ -2518,12 +2521,15 @@ static int
 _kernel_reread_part_table (PedDevice* dev)
 {
         LinuxSpecific*  arch_specific = LINUX_SPECIFIC (dev);
-        int             retry_count = 5;
+        int             retry_count = 9;
 
         sync();
         while (ioctl (arch_specific->fd, BLKRRPART)) {
                 retry_count--;
                 sync();
+                if (retry_count == 3)
+                        sleep(1); /* Pause to allow system to settle */
+
                 if (!retry_count) {
                         ped_exception_throw (
                                 PED_EXCEPTION_WARNING,
@@ -2561,9 +2567,14 @@ PedAlignment*
 linux_get_minimum_alignment(const PedDevice *dev)
 {
         blkid_topology tp = LINUX_SPECIFIC(dev)->topology;
+        if (!tp)
+                return NULL;
 
-        if (!tp || blkid_topology_get_minimum_io_size(tp) == 0)
-                return NULL; /* ped_alignment_none */
+        if (blkid_topology_get_minimum_io_size(tp) == 0)
+                return ped_alignment_new(
+                        blkid_topology_get_alignment_offset(tp) /
+                                dev->sector_size,
+                        dev->phys_sector_size / dev->sector_size);
 
         return ped_alignment_new(
                 blkid_topology_get_alignment_offset(tp) / dev->sector_size,
@@ -2574,9 +2585,21 @@ PedAlignment*
 linux_get_optimum_alignment(const PedDevice *dev)
 {
         blkid_topology tp = LINUX_SPECIFIC(dev)->topology;
+        if (!tp)
+                return NULL;
 
-        if (!tp || blkid_topology_get_optimal_io_size(tp) == 0)
-                return NULL; /* ped_alignment_none */
+        /* If optimal_io_size is 0 _and_ alignment_offset is 0 _and_
+           minimum_io_size is a power of 2 then go with the device.c default */
+        unsigned long minimum_io_size = blkid_topology_get_minimum_io_size(tp);
+        if (blkid_topology_get_optimal_io_size(tp) == 0 &&
+            blkid_topology_get_alignment_offset(tp) == 0 &&
+            (minimum_io_size & (minimum_io_size - 1)) == 0)
+                return NULL;
+
+        /* If optimal_io_size is 0 and we don't meet the other criteria
+           for using the device.c default, return the minimum alignment. */
+        if (blkid_topology_get_optimal_io_size(tp) == 0)
+                return linux_get_minimum_alignment(dev);
 
         return ped_alignment_new(
                 blkid_topology_get_alignment_offset(tp) / dev->sector_size,

@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2000, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 1999-2000, 2007-2010 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -72,15 +72,6 @@ error_destroy_disk:
 error:
 	return 0;
 }
-
-#ifndef DISCOVER_ONLY
-static int
-loop_clobber (PedDevice* dev)
-{
-	PED_ASSERT (dev != NULL, return 0);
-        return ptt_clear_sectors (dev, 0, 1);
-}
-#endif /* !DISCOVER_ONLY */
 
 static PedDisk*
 loop_alloc (const PedDevice* dev)
@@ -297,7 +288,7 @@ loop_get_max_supported_partition_count (const PedDisk* disk, int *max_n)
 PT_define_limit_functions (loop)
 
 static PedDiskOps loop_disk_ops = {
-	clobber:		NULL_IF_DISCOVER_ONLY (loop_clobber),
+	clobber:		NULL,
 	write:			NULL_IF_DISCOVER_ONLY (loop_write),
 
 	partition_set_name:	NULL,

@@ -1,7 +1,7 @@
 /* -*- Mode: c; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000-2001, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 2000-2001, 2007-2010 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -63,26 +63,6 @@ aix_probe (const PedDevice *dev)
 	free (label);
 	return magic == AIX_LABEL_MAGIC;
 }
-
-#ifndef DISCOVER_ONLY
-static int
-aix_clobber (PedDevice* dev)
-{
-	PED_ASSERT (dev != NULL, return 0);
-
-	if (!aix_probe (dev))
-		return 0;
-
-	void *label;
-	if (!ptt_read_sector (dev, 0, &label))
-		return 0;
-
-	aix_label_magic_set (label, 0);
-	int result = ped_device_write (dev, label, 0, 1);
-	free (label);
-	return result;
-}
-#endif /* !DISCOVER_ONLY */
 
 static PedDisk*
 aix_alloc (const PedDevice* dev)
@@ -239,7 +219,7 @@ aix_alloc_metadata (PedDisk* disk)
 PT_define_limit_functions (aix)
 
 static PedDiskOps aix_disk_ops = {
-	clobber:		NULL_IF_DISCOVER_ONLY (aix_clobber),
+	clobber:		NULL,
 	write:			NULL_IF_DISCOVER_ONLY (aix_write),
 
 	partition_set_name:		NULL,
