@@ -1,3 +1,16 @@
+parted (2.2-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+  [ Colin Watson ]
+  * Upstream now uses libtool's versioning system, so the SONAME has changed
+    from "libparted-2.1.so.0" to "libparted.so.0".  Change library package
+    names to libparted0 etc. to match.  This actually returns to a SONAME
+    that was used for a few months in 2000, but it seems unlikely that that
+    will cause any problems and I'd rather keep in sync with upstream.
+
+ -- Colin Watson <cjwatson@debian.org>  Fri, 05 Mar 2010 11:23:23 +0000
+
 parted (2.1-4) experimental; urgency=low
 
   * Make libparted-2.1-dev depend on packages that deliver other libraries
