@@ -1,7 +1,7 @@
-# serial 54
+# serial 55
 
-# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005,
-# 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006,
+# 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -94,6 +94,13 @@ AC_DEFUN([gl_REGEX],
             s = re_compile_pattern ("a[[:@:>@:]]b\n", 11, &regex);
             /* This should fail with _Invalid character class name_ error.  */
             if (!s)
+              return 1;
+
+            /* Ensure that [b-a] is diagnosed as invalid. */
+            re_set_syntax (RE_SYNTAX_POSIX_EGREP);
+            memset (&regex, 0, sizeof regex);
+            s = re_compile_pattern ("a[b-a]", 6, &regex);
+            if (s == 0)
               return 1;
 
             /* This should succeed, but does not for glibc-2.1.3.  */
@@ -213,6 +220,7 @@ AC_DEFUN([gl_REGEX],
 AC_DEFUN([gl_PREREQ_REGEX],
 [
   AC_REQUIRE([AC_USE_SYSTEM_EXTENSIONS])
+  AC_REQUIRE([AC_C_INLINE])
   AC_REQUIRE([AC_C_RESTRICT])
   AC_REQUIRE([AC_TYPE_MBSTATE_T])
   AC_CHECK_HEADERS([libintl.h])

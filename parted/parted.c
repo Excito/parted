@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999-2003, 2005-2009 Free Software Foundation, Inc.
+    Copyright (C) 1999-2003, 2005-2010 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -133,7 +133,7 @@ int     pretend_input_tty = 0;
 int     opt_machine_mode = 0;
 int     disk_is_modified = 0;
 int     is_toggle_mode = 0;
-int     alignment = ALIGNMENT_CYLINDER;
+int     alignment = ALIGNMENT_OPTIMAL;
 
 static const char* number_msg = N_(
 "NUMBER is the partition number used by Linux.  On MS-DOS disk labels, the "
@@ -178,6 +178,8 @@ static TimerContext timer_context;
 
 static int _print_list ();
 static void _done (PedDevice* dev);
+static bool partition_align_check (PedDisk const *disk,
+                        PedPartition const *part, enum AlignmentType a_type);
 
 static void
 _timer_handler (PedTimer* timer, void* context)
@@ -294,11 +296,11 @@ enum { /* Don't change these values */
         SECT_END        = -1
 };
 
-/* Find the prefered way to adjust the sector s inside range.
+/* Find the preferred way to adjust the sector s inside range.
  * If a move isn't allowed or is out of range it can't be selected.
  * what contains SECT_START if the sector to adjust is a start sector
  * or SECT_END if it's an end one.
- * The prefered move is to the nearest allowed boundary of the part
+ * The preferred move is to the nearest allowed boundary of the part
  * partition (if at equal distance: to start if SECT_START or to end
  * if SECT_END).
  * The distance is returned in dist.
@@ -830,10 +832,15 @@ do_mkpart (PedDevice** dev)
                 ped_exception_leave_all();
 
                 PedConstraint *constraint_any = ped_constraint_any (*dev);
-                bool added_ok = ped_disk_add_partition (disk, part,
+                added_ok = ped_disk_add_partition (disk, part,
                                                         constraint_any);
                 ped_constraint_destroy (constraint_any);
-                if (added_ok) {
+
+                if (!added_ok)
+                        goto error_remove_part;
+
+                if (!ped_geometry_test_sector_inside(range_start, part->geom.start) ||
+                    !ped_geometry_test_sector_inside(range_end, part->geom.end)) {
                         start_usr = ped_unit_format (*dev, start);
                         end_usr   = ped_unit_format (*dev, end);
                         start_sol = ped_unit_format (*dev, part->geom.start);
@@ -867,8 +874,23 @@ do_mkpart (PedDevice** dev)
                                         /* undo partition addition */
                                         goto error_remove_part;
                         }
-                } else {
-                        goto error_remove_part;
+                }
+
+                if ((alignment == ALIGNMENT_OPTIMAL &&
+                     !partition_align_check(disk, part, PA_OPTIMUM)) ||
+                    (alignment == ALIGNMENT_MINIMAL &&
+                     !partition_align_check(disk, part, PA_MINIMUM))) {
+                        if (ped_exception_throw(
+                                PED_EXCEPTION_WARNING,
+                                (opt_script_mode
+                                 ? PED_EXCEPTION_OK
+                                 : PED_EXCEPTION_IGNORE_CANCEL),
+                                _("The resulting partition is not properly "
+                                  "aligned for best performance.")) ==
+                            PED_EXCEPTION_CANCEL) {
+                                /* undo partition addition */
+                                goto error_remove_part;
+                        }
                 }
         } else {
                 ped_exception_leave_all();
@@ -949,6 +971,11 @@ do_mkpartfs (PedDevice** dev)
         if (!disk)
                 goto error;
 
+        if (ped_disk_is_flag_available(disk, PED_DISK_CYLINDER_ALIGNMENT))
+                if (!ped_disk_set_flag(disk, PED_DISK_CYLINDER_ALIGNMENT,
+                                       alignment == ALIGNMENT_CYLINDER))
+                        goto error_destroy_disk;
+
         if (!ped_disk_type_check_feature (disk->type, PED_DISK_TYPE_EXTENDED)) {
                 part_type = PED_PARTITION_NORMAL;
         } else {
@@ -989,7 +1016,14 @@ do_mkpartfs (PedDevice** dev)
                                                                 range_end);
         PED_ASSERT (user_constraint != NULL, return 0);
 
-        dev_constraint = ped_device_get_constraint (*dev);
+        if (alignment == ALIGNMENT_OPTIMAL)
+                dev_constraint =
+                        ped_device_get_optimal_aligned_constraint(*dev);
+        else if (alignment == ALIGNMENT_MINIMAL)
+                dev_constraint =
+                        ped_device_get_minimal_aligned_constraint(*dev);
+        else
+                dev_constraint = ped_device_get_constraint(*dev);
         PED_ASSERT (dev_constraint != NULL, return 0);
 
         final_constraint = ped_constraint_intersect (user_constraint,
@@ -1006,8 +1040,16 @@ do_mkpartfs (PedDevice** dev)
         if (!added_ok) {
                 ped_exception_leave_all();
 
-                if (ped_disk_add_partition (disk, part,
-                                        ped_constraint_any (*dev))) {
+                PedConstraint *constraint_any = ped_constraint_any (*dev);
+                bool added_ok = ped_disk_add_partition (disk, part,
+                                                        constraint_any);
+                ped_constraint_destroy (constraint_any);
+
+                if (!added_ok)
+                        goto error_remove_part;
+
+                if (!ped_geometry_test_sector_inside(range_start, part->geom.start) ||
+                    !ped_geometry_test_sector_inside(range_end, part->geom.end)) {
                         start_usr = ped_unit_format (*dev, start);
                         end_usr   = ped_unit_format (*dev, end);
                         start_sol = ped_unit_format (*dev, part->geom.start);
@@ -1036,8 +1078,23 @@ do_mkpartfs (PedDevice** dev)
                                         /* undo partition addition */
                                         goto error_remove_part;
                         }
-                } else {
-                        goto error_remove_part;
+                }
+
+                if ((alignment == ALIGNMENT_OPTIMAL &&
+                     !partition_align_check(disk, part, PA_OPTIMUM)) ||
+                    (alignment == ALIGNMENT_MINIMAL &&
+                     !partition_align_check(disk, part, PA_MINIMUM))) {
+                        if (ped_exception_throw(
+                                PED_EXCEPTION_WARNING,
+                                (opt_script_mode
+                                 ? PED_EXCEPTION_OK
+                                 : PED_EXCEPTION_IGNORE_CANCEL),
+                                _("The resulting partition is not properly "
+                                  "aligned for best performance.")) ==
+                            PED_EXCEPTION_CANCEL) {
+                                /* undo partition addition */
+                                goto error_remove_part;
+                        }
                 }
         } else {
                 ped_exception_leave_all();
@@ -1346,12 +1403,16 @@ do_print (PedDevice** dev)
         char*           size;
         const char*     name;
         char*           tmp;
-        char*           flags;
         wchar_t*        table_rendered;
 
         disk = ped_disk_new (*dev);
         if (!disk)
                 goto error;
+
+        if (ped_disk_is_flag_available(disk, PED_DISK_CYLINDER_ALIGNMENT))
+                if (!ped_disk_set_flag(disk, PED_DISK_CYLINDER_ALIGNMENT,
+                                       alignment == ALIGNMENT_CYLINDER))
+                        goto error_destroy_disk;
 
         peek_word = command_line_peek_word ();
         if (peek_word) {
@@ -1549,7 +1610,7 @@ do_print (PedDevice** dev)
                                     str_list_append (row, name);
                             }
 
-                            flags = partition_print_flags (part);
+                            char *flags = partition_print_flags (part);
                             str_list_append (row, flags);
                             free (flags);
                     } else {
@@ -1635,6 +1696,7 @@ do_print (PedDevice** dev)
 
         return 1;
 
+error_destroy_disk:
         ped_disk_destroy (disk);
 error:
         return 0;
@@ -1862,6 +1924,11 @@ do_resize (PedDevice** dev)
         disk = ped_disk_new (*dev);
         if (!disk)
                 goto error;
+
+        if (ped_disk_is_flag_available(disk, PED_DISK_CYLINDER_ALIGNMENT))
+                if (!ped_disk_set_flag(disk, PED_DISK_CYLINDER_ALIGNMENT,
+                                       alignment == ALIGNMENT_CYLINDER))
+                        goto error_destroy_disk;
 
         if (!command_line_get_partition (_("Partition number?"), disk, &part))
                 goto error_destroy_disk;

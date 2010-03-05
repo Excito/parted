@@ -3,10 +3,10 @@ This is parted.info, produced by makeinfo version 4.13 from parted.texi.
 This file documents the use of GNU Parted, a program for creating,
 resizing, checking and copy partitions and file systems on them.
 
-  Copyright (C) 1999-2009 Free Software Foundation, Inc.
+  Copyright (C) 1999-2010 Free Software Foundation, Inc.
 
   Permission is granted to copy, distribute and/or modify this document
-under the terms of the GNU Free Documentation License, Version 1.1 or
+under the terms of the GNU Free Documentation License, Version 1.3 or
 any later version published by the Free Software Foundation; with no
 Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
 Texts.  A copy of the license is included in the section entitled "GNU
@@ -26,7 +26,7 @@ This document describes the use of GNU Parted, a program for creating,
 destroying, resizing, checking and copying hard drive partitions, and
 the file systems on them.
 
-  This document applies roughly to version *2.1* of GNU Parted.
+  This document applies roughly to version *2.2* of GNU Parted.
 
   The original version was written by Andrew Clausen in text format.
 Richard M. Kreuter translated it into Texinfo format in 2002, to be
@@ -39,8 +39,7 @@ heavily edited by Leslie P. Polzer in 2006.
 * Related information::         Further reading on related topics
 * Copying This Manual::         How to make copies of this manual
 * History::                     This manual's history
-
-* Index::                       Index of referenced concepts
+* Concept index::               Concept index
 
 
 File: parted.info,  Node: Introduction,  Next: Using Parted,  Prev: Top,  Up: Top
@@ -1111,7 +1110,7 @@ A.1 GNU Free Documentation License
 
                         Version 1.1, March 2000
 
-     Copyright (C) 2000, 2009 Free Software Foundation, Inc.
+     Copyright (C) 2000, 2009-2010 Free Software Foundation, Inc.
      51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 
      Everyone is permitted to copy and distribute verbatim copies
@@ -1472,7 +1471,7 @@ notices just after the title page:
 
        Copyright (C)  YEAR  YOUR NAME.
        Permission is granted to copy, distribute and/or modify this document
-       under the terms of the GNU Free Documentation License, Version 1.1
+       under the terms of the GNU Free Documentation License, Version 1.3
        or any later version published by the Free Software Foundation;
        with the Invariant Sections being LIST THEIR TITLES, with the
        Front-Cover Texts being LIST, and with the Back-Cover Texts being LIST.
@@ -1490,7 +1489,7 @@ free software license, such as the GNU General Public License, to
 permit their use in free software.
 
 
-File: parted.info,  Node: History,  Next: Index,  Prev: Copying This Manual,  Up: Top
+File: parted.info,  Node: History,  Next: Concept index,  Prev: Copying This Manual,  Up: Top
 
 Appendix B This manual's history
 ********************************
@@ -1511,7 +1510,7 @@ Front-Cover Texts, and with no Back-Cover Texts.  *Note Copying This
 Manual::, for details.
 
 
-File: parted.info,  Node: Index,  Prev: History,  Up: Top
+File: parted.info,  Node: Concept index,  Prev: History,  Up: Top
 
 Index
 *****
@@ -1597,41 +1596,41 @@ Index
 
 Tag Table:
 Node: Top758
-Node: Introduction1643
-Node: Overview2213
-Node: Software Required4258
-Node: Supported Platforms5617
-Node: License6333
-Node: Compiling6964
-Node: Static binaries8609
-Node: Using Parted10444
-Node: Partitioning10863
-Node: Running Parted11319
-Node: Invoking Parted14262
-Node: Command explanations15042
-Node: align-check15428
-Node: check16157
-Node: cp16456
-Node: help17387
-Node: mklabel17661
-Ref: mklabel-Footnote-118542
-Node: mkfs18671
-Node: mkpart19167
-Node: mkpartfs20577
-Node: move21723
-Node: name22604
-Node: print22982
-Node: quit23871
-Node: rescue24366
-Node: resize25891
-Node: rm27101
-Node: select27998
-Node: set28467
-Node: unit30629
-Node: Related information34177
-Node: Copying This Manual35000
-Node: GNU Free Documentation License35244
-Node: History55127
-Node: Index55924
+Node: Introduction1627
+Node: Overview2197
+Node: Software Required4242
+Node: Supported Platforms5601
+Node: License6317
+Node: Compiling6948
+Node: Static binaries8593
+Node: Using Parted10428
+Node: Partitioning10847
+Node: Running Parted11303
+Node: Invoking Parted14246
+Node: Command explanations15026
+Node: align-check15412
+Node: check16141
+Node: cp16440
+Node: help17371
+Node: mklabel17645
+Ref: mklabel-Footnote-118526
+Node: mkfs18655
+Node: mkpart19151
+Node: mkpartfs20561
+Node: move21707
+Node: name22588
+Node: print22966
+Node: quit23855
+Node: rescue24350
+Node: resize25875
+Node: rm27085
+Node: select27982
+Node: set28451
+Node: unit30613
+Node: Related information34161
+Node: Copying This Manual34984
+Node: GNU Free Documentation License35228
+Node: History55116
+Node: Concept index55921
 
 End Tag Table

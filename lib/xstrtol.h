@@ -1,7 +1,7 @@
 /* A more useful interface to strtol.
 
-   Copyright (C) 1995, 1996, 1998, 1999, 2001, 2002, 2003, 2004, 2006, 2007,
-   2008 Free Software Foundation, Inc.
+   Copyright (C) 1995-1996, 1998-1999, 2001-2004, 2006-2010 Free Software
+   Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -45,6 +45,11 @@ _DECLARE_XSTRTOL (xstrtol, long int)
 _DECLARE_XSTRTOL (xstrtoul, unsigned long int)
 _DECLARE_XSTRTOL (xstrtoimax, intmax_t)
 _DECLARE_XSTRTOL (xstrtoumax, uintmax_t)
+
+#if HAVE_LONG_LONG_INT
+_DECLARE_XSTRTOL (xstrtoll, long long int)
+_DECLARE_XSTRTOL (xstrtoull, unsigned long long int)
+#endif
 
 #ifndef __attribute__
 # if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 8)

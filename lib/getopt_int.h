@@ -1,6 +1,6 @@
 /* Internal declarations for getopt.
-   Copyright (C) 1989-1994,1996-1999,2001,2003,2004,2009
-   Free Software Foundation, Inc.
+   Copyright (C) 1989-1994, 1996-1999, 2001, 2003-2004, 2009-2010 Free Software
+   Foundation, Inc.
    This file is part of the GNU C Library.
 
    This program is free software: you can redistribute it and/or modify
@@ -115,8 +115,8 @@ struct _getopt_data
 extern int _getopt_internal_r (int ___argc, char **___argv,
                                const char *__shortopts,
                                const struct option *__longopts, int *__longind,
-                               int __long_only, int __posixly_correct,
-                               struct _getopt_data *__data);
+                               int __long_only, struct _getopt_data *__data,
+                               int __posixly_correct);
 
 extern int _getopt_long_r (int ___argc, char **___argv,
                            const char *__shortopts,

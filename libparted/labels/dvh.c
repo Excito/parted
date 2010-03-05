@@ -1,6 +1,7 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2001-2002, 2005, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 2001-2002, 2005, 2007-2010 Free Software Foundation,
+    Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -93,14 +94,6 @@ dvh_probe (const PedDevice *dev)
 	free (label);
 	return found;
 }
-
-#ifndef DISCOVER_ONLY
-static int
-dvh_clobber (PedDevice* dev)
-{
-	return ptt_clear_sectors (dev, 0, 1);
-}
-#endif /* !DISCOVER_ONLY */
 
 static PedDisk*
 dvh_alloc (const PedDevice* dev)
@@ -891,7 +884,7 @@ error:
 PT_define_limit_functions (dvh)
 
 static PedDiskOps dvh_disk_ops = {
-	clobber:		NULL_IF_DISCOVER_ONLY (dvh_clobber),
+	clobber:		NULL,
 	write:			NULL_IF_DISCOVER_ONLY (dvh_write),
 
 	partition_set_name:	dvh_partition_set_name,

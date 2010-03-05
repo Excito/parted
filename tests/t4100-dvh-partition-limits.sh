@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Copyright (C) 2008-2009 Free Software Foundation, Inc.
+# Copyright (C) 2008-2010 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ test_expect_success \
     'create an XFS file system' \
     '
     dd if=/dev/zero of=$fs bs=1MB count=2 seek=20 &&
-    mkfs.xfs -q $fs &&
+    mkfs.xfs -f -q $fs &&
     mkdir "$mp"
 
     '

@@ -1,5 +1,5 @@
 # Customize maint.mk                           -*- makefile -*-
-# Copyright (C) 2003-2009 Free Software Foundation, Inc.
+# Copyright (C) 2003-2010 Free Software Foundation, Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,8 +24,8 @@ gnu_rel_host = $(gnu_ftp_host-$(RELEASE_TYPE))
 url_dir_list = \
   ftp://$(gnu_rel_host)/gnu/parted
 
-# The GnuPG ID of the key used to sign the tarballs.
-gpg_key_ID = B9AB9A16
+# Used in maint.mk's web-manual rule
+manual_title = Parted User's Manual
 
 # Tests not to run as part of "make distcheck".
 # Exclude changelog-check here so that there's less churn in ChangeLog
@@ -41,14 +41,16 @@ local-checks-to-skip = \
 # Now that we have better (check.mk) tests, make this the default.
 export VERBOSE = yes
 
-old_NEWS_hash = 5d0c8961833d95e7fb0d467596a8613f
+old_NEWS_hash = 3667631deb6fa6200514ce8811be7801
 
 include $(srcdir)/dist-check.mk
-
-update-copyright-env = UPDATE_COPYRIGHT_USE_INTERVALS=1
 
 useless_free_options = \
   --name=pth_free
 
 # Tools used to bootstrap this package, used for "announcement".
 bootstrap-tools = autoconf,automake,gnulib,gperf
+
+update-copyright-env = \
+  UPDATE_COPYRIGHT_USE_INTERVALS=1 \
+  UPDATE_COPYRIGHT_MAX_LINE_LENGTH=79

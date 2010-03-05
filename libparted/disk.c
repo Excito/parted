@@ -1,6 +1,7 @@
  /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2003, 2005, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 1999-2003, 2005, 2007-2010 Free Software Foundation,
+    Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -275,6 +276,9 @@ ped_disk_duplicate (const PedDisk* old_disk)
 	}
 	if (!_disk_pop_update_mode (new_disk))
 		goto error_destroy_new_disk;
+
+        new_disk->needs_clobber = old_disk->needs_clobber;
+
 	return new_disk;
 
 error_destroy_new_disk:
@@ -405,7 +409,6 @@ _ped_disk_alloc (const PedDevice* dev, const PedDiskType* disk_type)
 	disk->part_list = NULL;
 	return disk;
 
-	free (disk);
 error:
 	return NULL;
 }
@@ -631,7 +634,9 @@ ped_disk_check (const PedDisk* disk)
 				walk->num, part_size, fs_size);
 
 			free (part_size);
+
 			free (fs_size);
+			fs_size = NULL;
 
 			if (choice != PED_EXCEPTION_IGNORE)
 				return 0;

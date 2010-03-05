@@ -1,7 +1,7 @@
 /* -*- Mode: c; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000-2001, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 2000-2001, 2007-2010 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -254,20 +254,6 @@ bsd_free (PedDisk* disk)
 	_ped_disk_free (disk);
 }
 
-#ifndef DISCOVER_ONLY
-static int
-bsd_clobber (PedDevice* dev)
-{
-	void *label;
-	if (!ptt_read_sector (dev, 0, &label))
-		return 0;
-	BSDRawLabel *rawlabel
-	  = (BSDRawLabel *) ((char *) label + BSD_LABEL_OFFSET);
-	rawlabel->d_magic = 0;
-	return ped_device_write (dev, label, 0, 1);
-}
-#endif /* !DISCOVER_ONLY */
-
 static int
 bsd_read (PedDisk* disk)
 {
@@ -416,7 +402,6 @@ bsd_partition_new (const PedDisk* disk, PedPartitionType part_type,
 	}
 	return part;
 
-	free (bsd_data);
 error_free_part:
 	free (part);
 error:
@@ -642,7 +627,7 @@ error:
 PT_define_limit_functions (bsd)
 
 static PedDiskOps bsd_disk_ops = {
-	clobber:		NULL_IF_DISCOVER_ONLY (bsd_clobber),
+	clobber:		NULL,
 	write:			NULL_IF_DISCOVER_ONLY (bsd_write),
 
 	partition_set_name:	NULL,

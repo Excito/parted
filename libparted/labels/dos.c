@@ -1,6 +1,7 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2001, 2004-2005, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 1999-2001, 2004-2005, 2007-2010 Free Software
+    Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -85,6 +86,7 @@ static const char MBR_BOOT_CODE[] = {
 #define PARTITION_LINUX		0x83
 #define PARTITION_LINUX_EXT	0x85
 #define PARTITION_LINUX_LVM	0x8e
+#define PARTITION_HFS		0xaf
 #define PARTITION_SUN_UFS	0xbf
 #define PARTITION_DELL_DIAG	0xde
 #define PARTITION_GPT		0xee
@@ -304,25 +306,6 @@ msdos_disk_is_flag_available (const PedDisk *disk, PedDiskFlag flag)
                return 0;
         }
 }
-
-#ifndef DISCOVER_ONLY
-static int
-msdos_clobber (PedDevice* dev)
-{
-	PED_ASSERT (dev != NULL, return 0);
-	PED_ASSERT (msdos_probe (dev), return 0);
-
-	void *label;
-	if (!ptt_read_sector (dev, 0, &label))
-		return 0;
-
-	DosRawTable *table = label;
-	table->magic = 0;
-        int write_ok = ped_device_write (dev, (void*) table, 0, 1);
-        free (label);
-	return write_ok;
-}
-#endif /* !DISCOVER_ONLY */
 
 static int
 chs_get_cylinder (const RawCHS* chs)
@@ -872,7 +855,6 @@ read_table (PedDisk* disk, PedSector sector, int is_extended_table)
 	PedPartition*		part;
 	PedPartitionType	type;
 	PedSector		lba_offset;
-	PedConstraint*		constraint_exact;
 
 	PED_ASSERT (disk != NULL, return 0);
 	PED_ASSERT (disk->dev != NULL, return 0);
@@ -943,10 +925,12 @@ read_table (PedDisk* disk, PedSector sector, int is_extended_table)
 		if (type != PED_PARTITION_EXTENDED)
 			part->fs_type = ped_file_system_probe (&part->geom);
 
-		constraint_exact = ped_constraint_exact (&part->geom);
-		if (!ped_disk_add_partition (disk, part, constraint_exact))
-			goto error;
+		PedConstraint *constraint_exact
+		  = ped_constraint_exact (&part->geom);
+		bool ok = ped_disk_add_partition (disk, part, constraint_exact);
 		ped_constraint_destroy (constraint_exact);
+		if (!ok)
+			goto error;
 
 		/* non-nested extended partition */
 		if (part->type == PED_PARTITION_EXTENDED) {
@@ -1371,7 +1355,10 @@ msdos_partition_set_system (PedPartition* part,
 		   || !strcmp (fs_type->name, "hpfs")) {
 		dos_data->system = PARTITION_NTFS;
 		dos_data->system |= dos_data->hidden ? PART_FLAG_HIDDEN : 0;
-	} else if (!strcmp (fs_type->name, "sun-ufs"))
+	} else if (!strcmp (fs_type->name, "hfs")
+		   || !strcmp (fs_type->name, "hfs+"))
+		dos_data->system = PARTITION_HFS;
+	else if (!strcmp (fs_type->name, "sun-ufs"))
 		dos_data->system = PARTITION_SUN_UFS;
 	else if (is_linux_swap (fs_type->name))
 		dos_data->system = PARTITION_LINUX_SWAP;
@@ -2336,7 +2323,7 @@ msdos_get_max_supported_partition_count(const PedDisk* disk, int *max_n)
 PT_define_limit_functions (msdos)
 
 static PedDiskOps msdos_disk_ops = {
-	clobber:		NULL_IF_DISCOVER_ONLY (msdos_clobber),
+	clobber:		NULL,
 	write:			NULL_IF_DISCOVER_ONLY (msdos_write),
 
 	disk_set_flag:          msdos_disk_set_flag,

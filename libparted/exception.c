@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2000, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 1999-2000, 2007-2010 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -132,7 +132,7 @@ default_handler (PedException* e)
 			_("A bug has been detected in GNU Parted.  "
 			"Refer to the web site of parted "
 			"http://www.gnu.org/software/parted/parted.html "
-			"for more informations of what could be useful "
+			"for more information of what could be useful "
 			"for bug submitting!  "
 			"Please email a bug report to "
 			"bug-parted@gnu.org containing at least the "

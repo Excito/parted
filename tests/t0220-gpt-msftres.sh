@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (C) 2009 Free Software Foundation, Inc.
+# Copyright (C) 2009-2010 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,8 +35,8 @@ NTFS
 reiserfs
 '
 
-start=200
-part_size=100
+start=2048
+part_size=2048
 n_types=$(echo "$fs_types"|wc -w)
 
 # Create a "disk" with enough room for one partition per FS type,

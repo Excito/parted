@@ -1,7 +1,8 @@
 /* -*- Mode: c; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000-2001, 2005, 2007-2009 Free Software Foundation, Inc.
+    Copyright (C) 2000-2001, 2005, 2007-2010 Free Software Foundation,
+    Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,6 +44,9 @@
 #define SUN_DISK_MAGIC		0xDABE	/* Disk magic number */
 #define SUN_DISK_MAXPARTITIONS	8
 
+#define SUN_VTOC_VERSION	1
+#define SUN_VTOC_SANITY		0x600DDEEE
+
 #define WHOLE_DISK_ID		0x05
 #define WHOLE_DISK_PART		2	/* as in 0, 1, 2 (3rd partition) */
 #define LINUX_SWAP_ID		0x82
@@ -67,9 +71,18 @@ struct __attribute__ ((packed)) _SunPartitionInfo {
 
 struct __attribute__ ((packed)) _SunRawLabel {
 	char 		info[128];	/* Informative text string */
-	u_int8_t	spare0[14];
+	u_int32_t	version;	/* Layout version */
+	u_int8_t	volume[8];	/* Volume name */
+	u_int16_t	nparts;		/* Number of partitions */
 	SunPartitionInfo infos[SUN_DISK_MAXPARTITIONS];
-	u_int8_t	spare1[246];	/* Boot information etc. */
+	u_int16_t	padding;	/* Alignment padding */
+	u_int32_t	bootinfo[3];	/* Info needed by mboot */
+	u_int32_t	sanity;		/* To verify vtoc sanity */
+	u_int32_t	reserved[10];	/* Free space */
+	u_int32_t	timestamp[8];	/* Partition timestamp */
+	u_int32_t	write_reinstruct; /* sectors to skip, writes */
+	u_int32_t	read_reinstruct; /* sectors to skip, reads */
+	u_int8_t	spare1[148];	/* Padding */
 	u_int16_t	rspeed;		/* Disk rotational speed */
 	u_int16_t	pcylcount;	/* Physical cylinder count */
 	u_int16_t	sparecyl;	/* extra sects per cylinder */
@@ -156,25 +169,6 @@ sun_probe (const PedDevice *dev)
 	return ok;
 }
 
-#ifndef DISCOVER_ONLY
-static int
-sun_clobber (PedDevice* dev)
-{
-	PED_ASSERT (dev != NULL, return 0);
-	PED_ASSERT (sun_probe (dev), return 0);
-
-	void *s0;
-	if (!ptt_read_sector (dev, 0, &s0))
-		return 0;
-
-	SunRawLabel *table = s0;
-	table->magic = 0;
-	int write_ok = ped_device_write (dev, (void*) table, 0, 1);
-	free (s0);
-	return write_ok;
-}
-#endif /* !DISCOVER_ONLY */
-
 static PedDisk*
 sun_alloc (const PedDevice* dev)
 {
@@ -212,6 +206,10 @@ sun_alloc (const PedDevice* dev)
 	label->ntrks	= PED_CPU_TO_BE16 (bios_geom->heads);
 	label->nsect	= PED_CPU_TO_BE16 (bios_geom->sectors);
 	label->ncyl	= PED_CPU_TO_BE16 (dev->length / cyl_size);
+
+	label->sanity   = PED_CPU_TO_BE32 (SUN_VTOC_SANITY);
+	label->version  = PED_CPU_TO_BE32 (SUN_VTOC_VERSION);
+	label->nparts   = PED_CPU_TO_BE16 (SUN_DISK_MAXPARTITIONS);
 
 	/* Add a whole disk partition at a minimum */
 	label->infos[WHOLE_DISK_PART].id = WHOLE_DISK_ID;
@@ -920,7 +918,7 @@ error:
 PT_define_limit_functions (sun)
 
 static PedDiskOps sun_disk_ops = {
-	clobber:		NULL_IF_DISCOVER_ONLY (sun_clobber),
+	clobber:		NULL,
 	write:			NULL_IF_DISCOVER_ONLY (sun_write),
 
 	disk_set_flag:          sun_disk_set_flag,
