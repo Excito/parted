@@ -4,9 +4,11 @@ Bug: http://parted.alioth.debian.org/cgi-bin/trac.cgi/ticket/188
 Last-Update: 2009-01-05
 Description: Improve ext4 code
 
+Index: b/libparted/fs/ext2/ext2.c
+===================================================================
 --- a/libparted/fs/ext2/ext2.c
 +++ b/libparted/fs/ext2/ext2.c
-@@ -184,8 +184,8 @@
+@@ -185,8 +185,8 @@
  
  		fs->gd[group].bg_free_blocks_count = PED_CPU_TO_LE16
  			(EXT2_GROUP_FREE_BLOCKS_COUNT(fs->gd[group]) + diff);
@@ -17,7 +19,7 @@ Description: Improve ext4 code
  		fs->metadirty |= EXT2_META_SB | EXT2_META_GD;
  	}
  	return 1;
-@@ -605,7 +605,7 @@
+@@ -606,7 +606,7 @@
  	if (wmeta == EXT2_META_CLEAN)
  		return 1;
  
@@ -26,7 +28,7 @@ Description: Improve ext4 code
  		fs->r_frac * (loff_t)EXT2_SUPER_BLOCKS_COUNT(fs->sb)
  				  / 100);
  
-@@ -721,7 +721,8 @@
+@@ -722,7 +722,8 @@
  			    EXT2_FEATURE_COMPAT_HAS_DIR_INDEX)) ||
  	    (EXT2_SUPER_FEATURE_INCOMPAT(fs->sb)
  	    		& ~(EXT2_FEATURE_INCOMPAT_FILETYPE |
@@ -36,6 +38,8 @@ Description: Improve ext4 code
  	    (EXT2_SUPER_FEATURE_RO_COMPAT(fs->sb)
  			& ~(EXT2_FEATURE_RO_COMPAT_SPARSE_SUPER |
  			    EXT2_FEATURE_RO_COMPAT_LARGE_FILE)))
+Index: b/libparted/fs/ext2/ext2_fs.h
+===================================================================
 --- a/libparted/fs/ext2/ext2_fs.h
 +++ b/libparted/fs/ext2/ext2_fs.h
 @@ -174,9 +174,9 @@
@@ -152,6 +156,8 @@ Description: Improve ext4 code
  #define EXT2_SUPER_UUID(sb)		((sb).s_uuid)
  #define EXT2_SUPER_VOLUME_NAME(sb)	((sb).s_volume_name)
  #define EXT2_SUPER_LAST_MOUNTED(sb)	((sb).s_last_mounted)
+Index: b/libparted/fs/ext2/ext2_mkfs.c
+===================================================================
 --- a/libparted/fs/ext2/ext2_mkfs.c
 +++ b/libparted/fs/ext2/ext2_mkfs.c
 @@ -240,7 +240,7 @@
@@ -181,9 +187,11 @@ Description: Improve ext4 code
  	sb->s_free_inodes_count = PED_CPU_TO_LE32 (numgroups
  							* inodes_per_group);
  	sb->s_first_data_block = PED_CPU_TO_LE32(first_block);
+Index: b/libparted/fs/ext2/ext2_resize.c
+===================================================================
 --- a/libparted/fs/ext2/ext2_resize.c
 +++ b/libparted/fs/ext2/ext2_resize.c
-@@ -104,9 +104,9 @@
+@@ -105,9 +105,9 @@
  	fs->sb.s_inodes_count = PED_CPU_TO_LE32(
  		EXT2_SUPER_INODES_COUNT(fs->sb)
  		+ EXT2_SUPER_INODES_PER_GROUP(fs->sb));
@@ -195,7 +203,7 @@ Description: Improve ext4 code
  		EXT2_SUPER_FREE_BLOCKS_COUNT(fs->sb) + groupsize - admin);
  	fs->sb.s_free_inodes_count = PED_CPU_TO_LE32(
  		EXT2_SUPER_FREE_INODES_COUNT(fs->sb)
-@@ -303,9 +303,9 @@
+@@ -304,9 +304,9 @@
  	fs->sb.s_inodes_count = PED_CPU_TO_LE32(
  		EXT2_SUPER_INODES_COUNT(fs->sb)
  		- EXT2_SUPER_INODES_PER_GROUP(fs->sb));
@@ -207,7 +215,7 @@ Description: Improve ext4 code
  		EXT2_SUPER_FREE_BLOCKS_COUNT(fs->sb) - (groupsize - admin));
  	fs->sb.s_free_inodes_count = PED_CPU_TO_LE32(
  		EXT2_SUPER_FREE_INODES_COUNT(fs->sb)
-@@ -357,7 +357,7 @@
+@@ -358,7 +358,7 @@
  	for (i=gblocks;i<newsize;i++)
  		ext2_set_block_state(fs, groupoff + i, 0, 1);
  
@@ -216,7 +224,7 @@ Description: Improve ext4 code
  		EXT2_SUPER_BLOCKS_COUNT(fs->sb) + newsize - gblocks);
  	fs->metadirty |= EXT2_META_SB;
  
-@@ -432,9 +432,9 @@
+@@ -433,9 +433,9 @@
  	}
  
  	i = gblocks - newsize;
@@ -228,7 +236,7 @@ Description: Improve ext4 code
  		EXT2_SUPER_FREE_BLOCKS_COUNT(fs->sb) - i);
  	fs->gd[group].bg_free_blocks_count = PED_CPU_TO_LE16(
  		EXT2_GROUP_FREE_BLOCKS_COUNT(fs->gd[group]) - i);
-@@ -684,6 +684,14 @@
+@@ -685,6 +685,14 @@
  		fs->metadirty |= EXT2_META_SB;
  	}
  
@@ -243,6 +251,8 @@ Description: Improve ext4 code
  	if (!ext2_determine_itoffset(fs) && ped_exception_throw (
                          PED_EXCEPTION_WARNING,
                          PED_EXCEPTION_OK_CANCEL,
+Index: b/libparted/fs/ext2/interface.c
+===================================================================
 --- a/libparted/fs/ext2/interface.c
 +++ b/libparted/fs/ext2/interface.c
 @@ -28,6 +28,7 @@

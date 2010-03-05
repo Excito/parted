@@ -7,7 +7,7 @@ Index: b/libparted/arch/linux.c
 ===================================================================
 --- a/libparted/arch/linux.c
 +++ b/libparted/arch/linux.c
-@@ -2557,7 +2557,7 @@
+@@ -2563,7 +2563,7 @@
  }
  
  #if USE_BLKID
@@ -16,7 +16,7 @@ Index: b/libparted/arch/linux.c
  linux_get_minimum_alignment(const PedDevice *dev)
  {
          blkid_topology tp = LINUX_SPECIFIC(dev)->topology;
-@@ -2570,7 +2570,7 @@
+@@ -2581,7 +2581,7 @@
                  blkid_topology_get_minimum_io_size(tp) / dev->sector_size);
  }
  

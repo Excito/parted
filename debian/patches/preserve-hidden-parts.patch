@@ -8,11 +8,11 @@ Description: Avoid overwriting empty or hidden partitions
  reused.  This makes fatresize and similar front-ends safe to use in
  the presence of hidden partitions.
 
-Index: parted/libparted/labels/dos.c
+Index: b/libparted/labels/dos.c
 ===================================================================
---- parted.orig/libparted/labels/dos.c	2010-02-02 16:12:12.000000000 -0200
-+++ parted/libparted/labels/dos.c	2010-02-02 16:12:36.000000000 -0200
-@@ -1196,13 +1196,18 @@
+--- a/libparted/labels/dos.c
++++ b/libparted/labels/dos.c
+@@ -1180,13 +1180,18 @@
  	if (!table->mbr_signature)
  		table->mbr_signature = generate_random_id();
  
