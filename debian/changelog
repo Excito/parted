@@ -1,4 +1,4 @@
-parted (2.2-1) UNRELEASED; urgency=low
+parted (2.2-1) experimental; urgency=low
 
   * New upstream release.
 
@@ -9,7 +9,7 @@ parted (2.2-1) UNRELEASED; urgency=low
     that was used for a few months in 2000, but it seems unlikely that that
     will cause any problems and I'd rather keep in sync with upstream.
 
- -- Colin Watson <cjwatson@debian.org>  Fri, 05 Mar 2010 11:23:23 +0000
+ -- Colin Watson <cjwatson@debian.org>  Mon, 08 Mar 2010 13:48:02 +0000
 
 parted (2.1-4) experimental; urgency=low
 
