@@ -67,8 +67,8 @@ Architecture: any
 Section: libs
 Depends: ${shlibs:Depends}
 Suggests: parted | nparted, libparted@LIBPKGVER@-dev, libparted@LIBPKGVER@-i18n (= ${source:Version})
-Conflicts: parted (<< 1.4.13+14pre1), libparted0, libparted1, libparted2
-Replaces: libparted0, libparted1, libparted2, libparted1.4 (<< 1.4.24-2)
+Conflicts: parted (<< 1.4.13+14pre1), libparted0 (<< 2.2), libparted1 (<< 2.2), libparted2 (<< 2.2)
+Replaces: libparted0 (<< 2.2), libparted1 (<< 2.2), libparted2 (<< 2.2), libparted1.4 (<< 1.4.24-2)
 Provides: libparted
 Description: The GNU Parted disk partitioning shared library
  GNU Parted is a program that allows you to create, destroy,
@@ -139,7 +139,7 @@ Package: libparted@LIBPKGVER@-i18n
 Architecture: all
 Section: localization
 Depends: libparted@SHAREDLIBPKGVER@
-Replaces: libparted0, libparted1, libparted2, libparted1.4 (<< 1.4.24-2), libparted1.6 (<< 1.5+1.6.0-pre3-2), libparted1.4-i18n, parted (<< 1.4.13+14pre1)
+Replaces: libparted0 (<< 2.2), libparted1 (<< 2.2), libparted2 (<< 2.2), libparted1.4 (<< 1.4.24-2), libparted1.6 (<< 1.5+1.6.0-pre3-2), libparted1.4-i18n, parted (<< 1.4.13+14pre1)
 Conflicts: libparted-i18n
 Provides: libparted-i18n
 Description: The GNU Parted disk partitioning library i18n support
@@ -177,7 +177,7 @@ Section: libdevel
 Depends: libc6-dev, libparted@SHAREDLIBPKGVER@ (= ${binary:Version})
 Suggests: parted@BINPKGVER@ (= ${binary:Version}), parted-doc
 Conflicts: libparted-dev, parted (<< 1.2.11)
-Replaces: libparted-dev, libparted0-dev, libparted2-dev
+Replaces: libparted-dev, libparted0-dev (<< 2.2), libparted2-dev (<< 2.2)
 Provides: libparted-dev
 Description: The GNU Parted disk partitioning library development files
  GNU Parted is a program that allows you to create, destroy,
