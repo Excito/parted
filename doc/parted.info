@@ -27,7 +27,7 @@ This document describes the use of GNU Parted, a program for creating,
 destroying, resizing, checking and copying hard drive partitions, and
 the file systems on them.
 
-  This document applies roughly to version *UNKNOWN-dirty* of GNU
+  This document applies roughly to version *1.8.8.git-dirty* of GNU
 Parted.
 
   The original version was written by Andrew Clausen in text format.
@@ -1565,40 +1565,40 @@ Index
 
 Tag Table:
 Node: Top778
-Node: Introduction1673
-Node: Overview2243
-Node: Software Required4288
-Node: Supported Platforms5647
-Node: License6363
-Node: Compiling6994
-Node: Static binaries8639
-Node: Using Parted10474
-Node: Partitioning10893
-Node: Running Parted11349
-Node: Invoking Parted14292
-Node: Command explanations14908
-Node: check15278
-Node: cp15557
-Node: help16488
-Node: mklabel16762
-Ref: mklabel-Footnote-117643
-Node: mkfs17772
-Node: mkpart18268
-Node: mkpartfs19678
-Node: move20824
-Node: name21705
-Node: print22081
-Node: quit22970
-Node: rescue23465
-Node: resize24990
-Node: rm26200
-Node: select27097
-Node: set27566
-Node: unit29607
-Node: Related information33155
-Node: Copying This Manual33978
-Node: GNU Free Documentation License34222
-Node: History54099
-Node: Index54896
+Node: Introduction1675
+Node: Overview2245
+Node: Software Required4290
+Node: Supported Platforms5649
+Node: License6365
+Node: Compiling6996
+Node: Static binaries8641
+Node: Using Parted10476
+Node: Partitioning10895
+Node: Running Parted11351
+Node: Invoking Parted14294
+Node: Command explanations14910
+Node: check15280
+Node: cp15559
+Node: help16490
+Node: mklabel16764
+Ref: mklabel-Footnote-117645
+Node: mkfs17774
+Node: mkpart18270
+Node: mkpartfs19680
+Node: move20826
+Node: name21707
+Node: print22083
+Node: quit22972
+Node: rescue23467
+Node: resize24992
+Node: rm26202
+Node: select27099
+Node: set27568
+Node: unit29609
+Node: Related information33157
+Node: Copying This Manual33980
+Node: GNU Free Documentation License34224
+Node: History54101
+Node: Index54898
 
 End Tag Table
