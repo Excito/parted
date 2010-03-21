@@ -1,3 +1,9 @@
+parted (2.2-2) UNRELEASED; urgency=low
+
+  * Upload to unstable.
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 21 Mar 2010 23:24:51 +0000
+
 parted (2.2-1) experimental; urgency=low
 
   * New upstream release.
