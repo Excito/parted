@@ -280,7 +280,7 @@ Index: b/libparted/arch/freebsd.c
 ===================================================================
 --- /dev/null
 +++ b/libparted/arch/freebsd.c
-@@ -0,0 +1,1214 @@
+@@ -0,0 +1,1216 @@
 +/*
 +    libparted - a library for manipulating disk partitions
 +    Copyright (C) 1999 - 2005 Free Software Foundation, Inc.
@@ -1327,6 +1327,8 @@ Index: b/libparted/arch/freebsd.c
 +		}
 +
 +		cptr = strchr(cptr, '\n');
++		if (!cptr)
++			break;
 +		cptr++;
 +	}
 +
