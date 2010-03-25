@@ -206,6 +206,10 @@ build-dbg/config.status: patch
 
 build: build-deb build-udeb build-dbg
 
+# Avoid confusion from automatic autotools rebuild rules following patches
+# that touch configure.ac and Makefile.am files.
+MAKEFLAGS += ACLOCAL=true AUTOCONF=true AUTOHEADER=true AUTOMAKE=true
+
 build-deb: build-deb/build-stamp
 build-deb/build-stamp: build-deb/config.status
 	dh_testdir
