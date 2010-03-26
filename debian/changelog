@@ -6,6 +6,8 @@ parted (2.2-3) UNRELEASED; urgency=low
   * Fix FreeBSD support for file devices.
   * Add GPT device naming support on kFreeBSD (thanks, Robert Millan;
     closes: #548436).
+  * Strings from struct ata_params are not guaranteed to be null terminated
+    (thanks, Aurelien Jarno; closes: #559645).
 
  -- Colin Watson <cjwatson@debian.org>  Thu, 25 Mar 2010 13:09:05 +0000
 
