@@ -280,7 +280,7 @@ Index: b/libparted/arch/freebsd.c
 ===================================================================
 --- /dev/null
 +++ b/libparted/arch/freebsd.c
-@@ -0,0 +1,1227 @@
+@@ -0,0 +1,1237 @@
 +/*
 +    libparted - a library for manipulating disk partitions
 +    Copyright (C) 1999 - 2005 Free Software Foundation, Inc.
@@ -1359,14 +1359,24 @@ Index: b/libparted/arch/freebsd.c
 +{
 +	int		path_len = strlen (dev->path);
 +	int		result_len = path_len + 16;
++	int		is_gpt;
 +	char*		result;
++	PedDisk*	disk;
++
++	disk = ped_disk_new (dev);
++	if (!disk)
++		return NULL;
 +
 +	result = (char*) ped_malloc (result_len);
 +	if (!result)
 +		return NULL;
 +
++	is_gpt = !strcmp (disk->type->name, "gpt");
++
++	ped_disk_destroy (disk);
++
 +	/* append slice number (ad0, partition 1 => ad0s1)*/
-+	snprintf (result, result_len, "%ss%d", dev->path, num);
++	snprintf (result, result_len, is_gpt ? "%sp%d" : "%ss%d", dev->path, num);
 +
 +	return result;
 +}

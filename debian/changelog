@@ -4,6 +4,8 @@ parted (2.2-3) UNRELEASED; urgency=low
   * Don't rebuild autotools files during the build.
   * Guard against FreeBSD kern.geom.conftxt not being newline-terminated.
   * Fix FreeBSD support for file devices.
+  * Add GPT device naming support on kFreeBSD (thanks, Robert Millan;
+    closes: #548436).
 
  -- Colin Watson <cjwatson@debian.org>  Thu, 25 Mar 2010 13:09:05 +0000
 
