@@ -1,4 +1,4 @@
-parted (2.2-3) UNRELEASED; urgency=low
+parted (2.2-3) unstable; urgency=low
 
   * Restore GNU/kFreeBSD support (closes: #575007).
   * Don't rebuild autotools files during the build.
@@ -9,7 +9,7 @@ parted (2.2-3) UNRELEASED; urgency=low
   * Strings from struct ata_params are not guaranteed to be null terminated
     (thanks, Aurelien Jarno; closes: #559645).
 
- -- Colin Watson <cjwatson@debian.org>  Thu, 25 Mar 2010 13:09:05 +0000
+ -- Colin Watson <cjwatson@debian.org>  Fri, 26 Mar 2010 11:06:34 +0000
 
 parted (2.2-2) unstable; urgency=low
 
