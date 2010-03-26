@@ -280,7 +280,7 @@ Index: b/libparted/arch/freebsd.c
 ===================================================================
 --- /dev/null
 +++ b/libparted/arch/freebsd.c
-@@ -0,0 +1,1216 @@
+@@ -0,0 +1,1227 @@
 +/*
 +    libparted - a library for manipulating disk partitions
 +    Copyright (C) 1999 - 2005 Free Software Foundation, Inc.
@@ -798,6 +798,11 @@ Index: b/libparted/arch/freebsd.c
 +			goto error_free_arch_specific;
 +		break;
 +
++	case PED_DEVICE_FILE:
++		if (!init_file (dev))
++			goto error_free_arch_specific;
++		break;
++
 +	default:
 +		ped_exception_throw (PED_EXCEPTION_NO_FEATURE,
 +				PED_EXCEPTION_CANCEL,
@@ -867,6 +872,9 @@ Index: b/libparted/arch/freebsd.c
 +	int fd;
 +	struct ata_cmd iocmd;
 +
++	if (dev->type != PED_DEVICE_IDE)
++		return;
++
 +	if (freebsd_is_busy(dev))
 +		printf("FreeBSD: Device %s is mounted. Not flushing cache.\n",
 +			   dev->path);
@@ -914,6 +922,9 @@ Index: b/libparted/arch/freebsd.c
 +{
 +	FreeBSDSpecific*	arch_specific = FREEBSD_SPECIFIC (dev);
 +	struct ata_ioc_request ioreq;
++
++	if (dev->type != PED_DEVICE_IDE)
++		return;
 +
 +	if (freebsd_is_busy(dev))
 +		printf("FreeBSD: Device %s is mounted. Not flushing cache.\n",
