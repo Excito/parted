@@ -1,3 +1,9 @@
+parted (2.2-4) UNRELEASED; urgency=low
+
+  * Policy version 3.8.4: no changes required.
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 30 Mar 2010 09:44:49 +0100
+
 parted (2.2-3) unstable; urgency=low
 
   * Restore GNU/kFreeBSD support (closes: #575007).
