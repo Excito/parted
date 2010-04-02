@@ -1,6 +1,9 @@
 parted (2.2-4) UNRELEASED; urgency=low
 
   * Policy version 3.8.4: no changes required.
+  * Merge from maint-1.8 branch:
+    - Version libparted[12] conflicts/replaces in preparation for
+      upstream-maintained sonames in 2.2 and newer.
 
  -- Colin Watson <cjwatson@debian.org>  Tue, 30 Mar 2010 09:44:49 +0100
 
@@ -103,6 +106,13 @@ parted (2.1-1) experimental; urgency=low
   * Use soname in libparted udeb name
 
  -- Otavio Salvador <otavio@ossystems.com.br>  Sat, 06 Feb 2010 16:39:19 -0200
+
+parted (1.8.8.git.2009.07.19-6) unstable; urgency=medium
+
+  * Version libparted[012] conflicts/replaces in preparation for
+    upstream-maintained sonames in 2.2 and newer.
+
+ -- Colin Watson <cjwatson@debian.org>  Mon, 08 Mar 2010 13:37:49 +0000
 
 parted (1.8.8.git.2009.07.19-5) unstable; urgency=low
 
