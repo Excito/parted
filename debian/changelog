@@ -4,6 +4,13 @@ parted (2.2-4) UNRELEASED; urgency=low
   * Merge from maint-1.8 branch:
     - Version libparted[12] conflicts/replaces in preparation for
       upstream-maintained sonames in 2.2 and newer.
+  * Rename libparted0 to libparted0debian1 (LP: #535368), and also
+    libparted0-dbg to libparted0debian1-dbg in case anything is relying on
+    those package names matching.  This is unfortunate, but is needed to
+    work around historical unversioned Conflicts on libparted0, libparted1,
+    and libparted2, which would break upgrades from lenny.  Add a dummy
+    libparted0 package to provide smooth upgrades from earlier 2.2-*
+    versions.
 
  -- Colin Watson <cjwatson@debian.org>  Tue, 30 Mar 2010 09:44:49 +0100
 

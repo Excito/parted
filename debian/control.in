@@ -65,10 +65,20 @@ Description: Manually partition a hard drive (parted)
 Package: libparted@LIBSONAME@
 Architecture: any
 Section: libs
+Priority: extra
+Depends: ${misc:Depends}, libparted@LIBSONAME@debian1 (= ${binary:Version})
+Description: The GNU Parted disk partitioning shared library (old name)
+ This is a dummy package providing smooth upgrades to
+ libparted@LIBSONAME@debian1. You can safely remove it if no other
+ package depends on it.
+
+Package: libparted@LIBSONAME@debian1
+Architecture: any
+Section: libs
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: parted | nparted, libparted@LIBSONAME@-dev, libparted@LIBSONAME@-i18n (= ${source:Version})
 Conflicts: parted (<< 1.4.13+14pre1), libparted1 (<< 2.2), libparted2 (<< 2.2)
-Replaces: libparted1 (<< 2.2), libparted2 (<< 2.2), libparted1.4 (<< 1.4.24-2)
+Replaces: libparted0 (<< 2.2-4), libparted1 (<< 2.2), libparted2 (<< 2.2), libparted1.4 (<< 1.4.24-2)
 Provides: libparted
 Description: The GNU Parted disk partitioning shared library
  GNU Parted is a program that allows you to create, destroy,
@@ -133,7 +143,7 @@ Description: The GNU Parted disk partitioning shared library
 Package: libparted@LIBSONAME@-i18n
 Architecture: all
 Section: localization
-Depends: libparted@LIBSONAME@, ${misc:Depends}
+Depends: libparted@LIBSONAME@debian1, ${misc:Depends}
 Replaces: libparted1 (<< 2.2), libparted2 (<< 2.2), libparted1.4 (<< 1.4.24-2), libparted1.6 (<< 1.5+1.6.0-pre3-2), libparted1.4-i18n, parted (<< 1.4.13+14pre1)
 Conflicts: libparted-i18n
 Provides: libparted-i18n
@@ -163,7 +173,7 @@ Description: The GNU Parted disk partitioning library i18n support
 Package: libparted@LIBSONAME@-dev
 Architecture: any
 Section: libdevel
-Depends: libc6-dev, libparted@LIBSONAME@ (= ${binary:Version}), libdevmapper-dev (>= 1.02.33) [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64], uuid-dev, libblkid-dev, ${misc:Depends}
+Depends: libc6-dev, libparted@LIBSONAME@debian1 (= ${binary:Version}), libdevmapper-dev (>= 1.02.33) [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64], uuid-dev, libblkid-dev, ${misc:Depends}
 Suggests: parted@BINPKGVER@ (= ${binary:Version}), parted@BINPKGVER@-doc
 Conflicts: libparted-dev, parted (<< 1.2.11)
 Replaces: libparted-dev, libparted2-dev (<< 2.2)
@@ -193,13 +203,13 @@ Description: The GNU Parted disk partitioning library development files
  they could exist, so please back up all important files before
  running it, and do so at your own risk.
 
-Package: libparted@LIBSONAME@-dbg
+Package: libparted@LIBSONAME@debian1-dbg
 Architecture: any
 Section: debug
 Priority: extra
-Depends: libparted@LIBSONAME@ (= ${binary:Version}), libparted@LIBSONAME@-dev (= ${binary:Version}), ${misc:Depends}
+Depends: libparted@LIBSONAME@debian1 (= ${binary:Version}), libparted@LIBSONAME@-dev (= ${binary:Version}), ${misc:Depends}
 Conflicts: libparted-dbg
-Replaces: libparted-dbg
+Replaces: libparted-dbg, libparted0-dbg (<< 2.2-4)
 Provides: libparted-dbg
 Description: The GNU Parted disk partitioning library debug development files
  GNU Parted is a program that allows you to create, destroy,
@@ -243,4 +253,4 @@ Description: The GNU Parted disk partition resizing program documentation
  disk usage, and copying data to new hard disks. This package
  contains user documentation for parted (for the 'parted@BINPKGVER@'
  package) and API documentation for libparted (for the
- 'libparted@LIBSONAME@' and 'libparted@LIBSONAME@-dev' packages).
+ 'libparted@LIBSONAME@debian1' and 'libparted@LIBSONAME@-dev' packages).

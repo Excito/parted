@@ -46,7 +46,8 @@ SUBSTS = BINPKGVER DEPVER LIBSONAME
 # You will probably need to change this depending on what files your package
 # needs ...
 GENFILES = debian/control \
-	debian/libparted$(LIBSONAME).files \
+	debian/libparted$(LIBSONAME)debian1.files \
+	debian/libparted$(LIBSONAME)debian1.lintian-overrides \
 	debian/libparted$(LIBSONAME)-dev.files \
 	debian/libparted$(LIBSONAME)-i18n.files \
 
@@ -139,7 +140,7 @@ debian/%: debian/%.in debian/rules
 	sed -e '$(SUBSTLIST)' < $< > $@
 
 # This puts the libparted-* packaging files in their right places
-debian/libparted$(LIBSONAME)%: debian/libparted%
+debian/libparted$(LIBSONAME)debian1.%: debian/libparted.%
 	cp $< $@
 
 debian/libparted$(LIBSONAME)%: debian/libparted%
@@ -260,7 +261,7 @@ clean: unpatch packaging-files
 	   file="`basename $$file`"; \
 	   case "$$file" in \
 	   libparted.*|libparted-dev.*|libparted-i18n.*|\
-	   libparted$(LIBSONAME).*|libparted$(LIBSONAME)-dev.*|\
+	   libparted$(LIBSONAME)debian1.*|libparted$(LIBSONAME)-dev.*|\
 	   libparted$(LIBSONAME)-i18n.*|libparted$(LIBSONAME)-udeb.*) \
 	      ;; \
 	   *) \
@@ -271,7 +272,7 @@ clean: unpatch packaging-files
 
 	dh_clean
 
-install: DH_OPTIONS=-Nparted$(BINPKGVER)-udeb -Nlibparted$(LIBSONAME)-udeb -Nlibparted$(LIBSONAME)-dbg
+install: DH_OPTIONS=-Nparted$(BINPKGVER)-udeb -Nlibparted$(LIBSONAME)-udeb -Nlibparted$(LIBSONAME)debian1-dbg
 install: build packaging-files
 	dh_testdir
 	dh_testroot
@@ -339,14 +340,14 @@ install-udeb: build-udeb
 	[ -z "$(PARTED_UDEB)" ] || $(MAKE) -C build-udeb/parted install \
 			DESTDIR=$(CURDIR)/debian/parted$(BINPKGVER)-udeb
 
-install-dbg: DH_OPTIONS=-plibparted$(LIBSONAME)-dbg
+install-dbg: DH_OPTIONS=-plibparted$(LIBSONAME)debian1-dbg
 install-dbg: build-dbg
 	dh_testdir
 	dh_testroot
-	dh_prep -plibparted$(LIBSONAME)-dbg
+	dh_prep -plibparted$(LIBSONAME)debian1-dbg
 
 	install -D -m644 build-dbg/libparted/.libs/libparted.a \
-	   debian/libparted$(LIBSONAME)-dbg/usr/lib/libparted_g.a
+	   debian/libparted$(LIBSONAME)debian1-dbg/usr/lib/libparted_g.a
 
 # This single target is used to build all the packages, all at once, or
 # one at a time. So keep in mind: any options passed to commands here will
@@ -367,10 +368,10 @@ binary-common:
 	dh_link
 	dh_compress
 	dh_fixperms
-	dh_makeshlibs -V'libparted$(LIBSONAME) (>= $(DEPVER))' \
+	dh_makeshlibs -V'libparted$(LIBSONAME)debian1 (>= $(DEPVER))' \
 		--add-udeb=$(shell dh_listpackages | grep -E '^libparted$(LIBSONAME)-udeb$$')
-	dh_shlibdeps -Llibparted$(LIBSONAME) \
-		-l/debian/libparted$(LIBSONAME)/lib
+	dh_shlibdeps -Llibparted$(LIBSONAME)debian1 \
+		-l/debian/libparted$(LIBSONAME)debian1/lib
 	dh_installdeb
 	dh_gencontrol
 	dh_md5sums
@@ -387,8 +388,8 @@ binary-indep: build install
 # FIXME: this is an ugly hack :-( Work out a better way to build the
 # separate debug package ...
 binary-arch: build install install-udeb
-	$(MAKE) -f debian/rules DH_OPTIONS="-a -Nlibparted$(LIBSONAME)-dbg" binary-common
-	$(MAKE) -f debian/rules binary-libparted$(LIBSONAME)-dbg
+	$(MAKE) -f debian/rules DH_OPTIONS="-a -Nlibparted$(LIBSONAME)debian1-dbg" binary-common
+	$(MAKE) -f debian/rules binary-libparted$(LIBSONAME)debian1-dbg
 
 # Any other binary targets build just one binary package at a time.
 binary-%-dbg: build-dbg install-dbg
