@@ -1,4 +1,4 @@
-parted (2.2-4) UNRELEASED; urgency=low
+parted (2.2-4) unstable; urgency=low
 
   * Policy version 3.8.4: no changes required.
   * Merge from maint-1.8 branch:
@@ -12,7 +12,7 @@ parted (2.2-4) UNRELEASED; urgency=low
     libparted0 package to provide smooth upgrades from earlier 2.2-*
     versions.
 
- -- Colin Watson <cjwatson@debian.org>  Tue, 30 Mar 2010 09:44:49 +0100
+ -- Colin Watson <cjwatson@debian.org>  Sat, 03 Apr 2010 11:53:56 +0100
 
 parted (2.2-3) unstable; urgency=low
 
