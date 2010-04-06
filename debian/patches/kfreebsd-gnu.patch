@@ -651,7 +651,7 @@ Index: b/libparted/arch/freebsd.c
 +			dev->model = strdup(_("IDE"));
 +		}
 +	} else {
-+		snprintf(vendor_buf, 64, "%.40s/%.8s", params.model, params.revision);
++		snprintf(vendor_buf, 64, "%.40s/%.8s", ap.model, ap.revision);
 +		dev->model = strip_name (vendor_buf);
 +	}
 +
