@@ -1,8 +1,8 @@
-parted (2.2-5) UNRELEASED; urgency=low
+parted (2.2-5) unstable; urgency=low
 
   * Fix brown-paper-bag build error in kFreeBSD patch.
 
- -- Colin Watson <cjwatson@debian.org>  Tue, 06 Apr 2010 10:46:11 +0100
+ -- Colin Watson <cjwatson@debian.org>  Tue, 06 Apr 2010 11:06:54 +0100
 
 parted (2.2-4) unstable; urgency=low
 
