@@ -1,3 +1,10 @@
+parted (2.2-6) UNRELEASED; urgency=low
+
+  * libparted0-dev should depend on libgeom-dev on kFreeBSD (thanks, Petr
+    Salinger; closes: #576684).
+
+ -- Colin Watson <cjwatson@debian.org>  Sun, 11 Apr 2010 23:25:37 +0100
+
 parted (2.2-5) unstable; urgency=low
 
   * Fix brown-paper-bag build error in kFreeBSD patch.
