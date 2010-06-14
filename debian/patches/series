@@ -9,4 +9,5 @@ linux-exports.patch
 kfreebsd-gnu.patch
 
 # Symbols for this ABI (amd64 as reference)
+btrfs.patch
 update-abi-symbols.patch
