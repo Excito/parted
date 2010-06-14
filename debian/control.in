@@ -11,7 +11,7 @@ Build-Depends:
  quilt,
  libncurses-dev | libncurses5-dev,
  libreadline-dev | libreadline6-dev,
- libdevmapper-dev (>= 1.02.33) [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64],
+ libdevmapper-dev (>= 2:1.02.33) [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64],
  uuid-dev,
  gettext,
  texinfo (>= 4.2),
