@@ -1,11 +1,11 @@
-parted (2.2-6) UNRELEASED; urgency=low
+parted (2.2-6) unstable; urgency=low
 
   * libparted0-dev should depend on libgeom-dev on kFreeBSD (thanks, Petr
     Salinger; closes: #576684).
   * Use proper epoch in libdevmapper-dev build-dependency (closes: #580415).
   * Add btrfs discovery support (thanks, Luca Bruno; closes: #567176).
 
- -- Colin Watson <cjwatson@debian.org>  Sun, 11 Apr 2010 23:25:37 +0100
+ -- Colin Watson <cjwatson@debian.org>  Mon, 14 Jun 2010 13:53:27 +0100
 
 parted (2.2-5) unstable; urgency=low
 
