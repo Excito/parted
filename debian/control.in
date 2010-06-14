@@ -16,7 +16,6 @@ Build-Depends:
  gettext,
  texinfo (>= 4.2),
  debianutils (>= 1.13.1),
- libgeom-dev [kfreebsd-i386 kfreebsd-amd64],
  libblkid-dev,
  po4a,
  pkg-config
@@ -173,7 +172,7 @@ Description: The GNU Parted disk partitioning library i18n support
 Package: libparted@LIBSONAME@-dev
 Architecture: any
 Section: libdevel
-Depends: libc6-dev, libparted@LIBSONAME@debian1 (= ${binary:Version}), libdevmapper-dev (>= 1.02.33) [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64], uuid-dev, libgeom-dev [kfreebsd-i386 kfreebsd-amd64], libblkid-dev, ${misc:Depends}
+Depends: libc6-dev, libparted@LIBSONAME@debian1 (= ${binary:Version}), libdevmapper-dev (>= 1.02.33) [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64], uuid-dev, libblkid-dev, ${misc:Depends}
 Suggests: parted@BINPKGVER@ (= ${binary:Version}), parted@BINPKGVER@-doc
 Conflicts: libparted-dev, parted (<< 1.2.11)
 Replaces: libparted-dev, libparted2-dev (<< 2.2)
