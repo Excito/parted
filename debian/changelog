@@ -4,6 +4,8 @@ parted (2.3-1) UNRELEASED; urgency=low
   * debian/patches/update-ext4-code.patch: refreshed against newer code.
   * debian/patches/linux-exports.patch: dropped, merged upstream.
   * debian/patches/kfreebsd-gnu.patch: refreshed against newer code.
+  * debian/patches/sun-revert-disk-flag.patch: backported to revert the
+    disk flag implementation. Refs: #579948.
 
  -- Otavio Salvador <otavio@ossystems.com.br>  Sat, 26 Jun 2010 17:25:06 -0300
 
