@@ -46,7 +46,9 @@ typedef enum {
         PED_DEVICE_DM           = 12,
         PED_DEVICE_XVD          = 13,
         PED_DEVICE_SDMMC        = 14,
-        PED_DEVICE_VIRTBLK      = 15
+        PED_DEVICE_VIRTBLK      = 15,
+        PED_DEVICE_AOE          = 16,
+        PED_DEVICE_MD           = 17
 } PedDeviceType;
 
 typedef struct _PedDevice PedDevice;
@@ -144,7 +146,7 @@ extern int ped_device_sync (PedDevice* dev);
 extern int ped_device_sync_fast (PedDevice* dev);
 extern PedSector ped_device_check (PedDevice* dev, void* buffer,
                                    PedSector start, PedSector count);
-extern PedConstraint* ped_device_get_constraint (PedDevice* dev);
+extern PedConstraint* ped_device_get_constraint (const PedDevice* dev);
 
 extern PedConstraint *ped_device_get_minimal_aligned_constraint(
                                                          const PedDevice *dev);
@@ -161,4 +163,3 @@ extern void _ped_device_probe (const char* path);
 #endif /* PED_DEVICE_H_INCLUDED */
 
 /** @} */
-

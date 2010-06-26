@@ -12,6 +12,7 @@ Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
 Texts.  A copy of the license is included in the section entitled "GNU
 Free Documentation License".
 
+INFO-DIR-SECTION System administration
 START-INFO-DIR-ENTRY
 * parted: (parted).                         GNU partitioning software
 END-INFO-DIR-ENTRY
@@ -26,7 +27,7 @@ This document describes the use of GNU Parted, a program for creating,
 destroying, resizing, checking and copying hard drive partitions, and
 the file systems on them.
 
-  This document applies roughly to version *2.2* of GNU Parted.
+  This document applies roughly to version *2.3* of GNU Parted.
 
   The original version was written by Andrew Clausen in text format.
 Richard M. Kreuter translated it into Texinfo format in 2002, to be
@@ -962,6 +963,10 @@ File: parted.info,  Node: set,  Next: unit,  Prev: select,  Up: Command explanat
           be used as a PReP boot partition on PowerPC PReP or IBM
           RS6K/CHRP hardware.
 
+    `DIAG'
+          (MS-DOS) - Enable this to indicate that a partition can be
+          used as a diagnostics / recovery partition.
+
 
      The print command displays all enabled flags for each partition.
 
@@ -1029,7 +1034,7 @@ File: parted.info,  Node: unit,  Prev: set,  Up: Command explanations
      wrote that satisfies constraints from both the operation, the
      filesystem being worked on, the disk label, other partitions and so
      on.  Use the sector unit "s" to specify exact locations (if they
-     do not satisfy all onstraints, Parted will ask you for the nearest
+     do not satisfy all constraints, Parted will ask you for the nearest
      solution).  Note that negative numbers count back from the end of
      the disk, with "-1s" pointing to the end of the disk.
 
@@ -1595,42 +1600,42 @@ Index
 
 
 Tag Table:
-Node: Top758
-Node: Introduction1627
-Node: Overview2197
-Node: Software Required4242
-Node: Supported Platforms5601
-Node: License6317
-Node: Compiling6948
-Node: Static binaries8593
-Node: Using Parted10428
-Node: Partitioning10847
-Node: Running Parted11303
-Node: Invoking Parted14246
-Node: Command explanations15026
-Node: align-check15412
-Node: check16141
-Node: cp16440
-Node: help17371
-Node: mklabel17645
-Ref: mklabel-Footnote-118526
-Node: mkfs18655
-Node: mkpart19151
-Node: mkpartfs20561
-Node: move21707
-Node: name22588
-Node: print22966
-Node: quit23855
-Node: rescue24350
-Node: resize25875
-Node: rm27085
-Node: select27982
-Node: set28451
-Node: unit30613
-Node: Related information34161
-Node: Copying This Manual34984
-Node: GNU Free Documentation License35228
-Node: History55116
-Node: Concept index55921
+Node: Top797
+Node: Introduction1666
+Node: Overview2236
+Node: Software Required4281
+Node: Supported Platforms5640
+Node: License6356
+Node: Compiling6987
+Node: Static binaries8632
+Node: Using Parted10467
+Node: Partitioning10886
+Node: Running Parted11342
+Node: Invoking Parted14285
+Node: Command explanations15065
+Node: align-check15451
+Node: check16180
+Node: cp16479
+Node: help17410
+Node: mklabel17684
+Ref: mklabel-Footnote-118565
+Node: mkfs18694
+Node: mkpart19190
+Node: mkpartfs20600
+Node: move21746
+Node: name22627
+Node: print23005
+Node: quit23894
+Node: rescue24389
+Node: resize25914
+Node: rm27124
+Node: select28021
+Node: set28490
+Node: unit30787
+Node: Related information34336
+Node: Copying This Manual35159
+Node: GNU Free Documentation License35403
+Node: History55291
+Node: Concept index56096
 
 End Tag Table

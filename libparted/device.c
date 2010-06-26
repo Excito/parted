@@ -73,6 +73,16 @@ _device_unregister (PedDevice* dev)
 		if (walk == dev) break;
 	}
 
+	/* This function may be called twice for the same device if a
+	   libparted user explictly removes the device from the cache using
+	   ped_device_cache_remove(), we get called and it then becomes the
+	   user's responsibility to free the PedDevice by calling
+	   ped_device_destroy().
+	   ped_device_destroy() will then call us a second time, so if the
+	   device is not found in the list do nothing. */
+	if (walk == NULL)
+		return;
+
 	if (last)
 		last->next = dev->next;
 	else
@@ -139,10 +149,12 @@ PedDevice*
 ped_device_get (const char* path)
 {
 	PedDevice*	walk;
-	char*		normal_path;
+	char*		normal_path = NULL;
 
 	PED_ASSERT (path != NULL, return NULL);
-	normal_path = canonicalize_file_name (path);
+	/* Don't canonicalize /dev/mapper paths, see tests/symlink.c */
+	if (strncmp (path, "/dev/mapper/", 12))
+		normal_path = canonicalize_file_name (path);
 	if (!normal_path)
 		/* Well, maybe it is just that the file does not exist.
 		 * Try it anyway.  */
@@ -401,7 +413,7 @@ ped_device_sync_fast (PedDevice* dev)
  *         constraint.
  */
 PedConstraint*
-ped_device_get_constraint (PedDevice* dev)
+ped_device_get_constraint (const PedDevice* dev)
 {
         PedGeometry *s, *e;
         PedConstraint* c = ped_constraint_new (

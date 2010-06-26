@@ -1,5 +1,50 @@
 GNU parted NEWS                                    -*- outline -*-
 
+* Noteworthy changes in release 2.3 (2010-05-28) [stable]
+
+** New features
+
+  parted now recognizes ATA over Ethernet (AoE) devices
+
+  parted now recognizes Linux Software RAID Arrays
+
+  libparted has a new partition flag to check for diagnostic (aka recovery
+  or reserved) partitions: PED_PARTITION_DIAG
+
+** Bug fixes
+
+  When libparted deferenced a /dev/mapper/foo symlink, it would keep the
+  resulting /dev/dm-N name and sometimes use it later, even though it
+  had since become stale and invalid.  It no longer stores the result
+  of dereferencing a /dev/mapper symlink.
+
+  libparted's msdos_partition_is_flag_available function now always reports
+  that the "hidden" flag is not available for an extended partition.
+  Similarly, msdos_partition_get_flag(p,PED_PARTITION_HIDDEN) always returns 0
+  for an extended partition.
+
+  libparted uses a more accurate heuristic to distinguish between
+  ext4 and ext3 partitions.
+
+  libparted now properly checks the return value of dm_task_run when
+  operating on devicemapper devices.
+
+  allow using ped_device_cache_remove(dev) followed by a (later)
+  ped_device_destroy() without corrupting the device cache.
+
+  when creating an ext2 file system[*], Parted no longer creates an
+  invalid one when its size is 2TiB or larger.
+  [*] Remember, now all FS-creation operations are deprecated in Parted.
+  This is not an indicator that we'll be supporting this code.
+  On the contrary, it is slated to be removed.
+
+** Changes in behavior
+
+  libparted no longer issues an exception/warning about >512-byte
+  sector support being "HIGHLY EXPERIMENTAL".  It seems to have matured
+  enough to be usable at least with GPT and MSDOS partition tables.
+
+
 * Noteworthy changes in release 2.2 (2010-02-26) [stable]
 
 ** Changes in behavior

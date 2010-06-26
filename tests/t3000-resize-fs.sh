@@ -23,6 +23,7 @@ fi
 
 : ${srcdir=.}
 . $srcdir/t-lib.sh
+require_hfs_
 
 require_root_
 require_scsi_debug_module_
@@ -109,6 +110,9 @@ for fs_type in hfs+ fat32; do
   sed -n 3p out > k && mv k out || fail=1
   printf "1:$start:$new_end:530082s:$fs_type:primary:$ms;\n" > exp || fail=1
   compare out exp || fail=1
+
+  # Remove the partition explicitly, so that mklabel doesn't evoke a warning.
+  parted -s $dev rm 1 || fail=1
 
   # Create a clean partition table for the next iteration.
   parted -s $dev mklabel gpt > out 2>&1 || fail=1

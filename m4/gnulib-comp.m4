@@ -27,12 +27,194 @@ AC_DEFUN([gl_EARLY],
   m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
   m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([AC_PROG_RANLIB])
+  # Code from module alloca:
+  # Code from module alloca-opt:
+  # Code from module alloca-opt-tests:
+  # Code from module announce-gen:
+  # Code from module arg-nonnull:
+  # Code from module argmatch:
+  # Code from module argmatch-tests:
+  # Code from module assert:
+  # Code from module binary-io:
+  # Code from module binary-io-tests:
+  # Code from module btowc:
+  # Code from module btowc-tests:
+  # Code from module c++defs:
+  # Code from module c-ctype:
+  # Code from module c-ctype-tests:
+  # Code from module c-strcase:
+  # Code from module c-strcase-tests:
+  # Code from module calloc:
+  # Code from module calloc-posix:
+  # Code from module canonicalize-lgpl:
+  # Code from module canonicalize-lgpl-tests:
+  # Code from module close:
+  # Code from module close-hook:
+  # Code from module close-stream:
+  # Code from module closeout:
+  # Code from module config-h:
+  # Code from module configmake:
+  # Code from module dirname:
+  # Code from module dirname-lgpl:
+  # Code from module dirname-tests:
+  # Code from module do-release-commit-and-tag:
+  # Code from module double-slash-root:
+  # Code from module dup2:
+  # Code from module dup2-tests:
+  # Code from module environ:
+  # Code from module environ-tests:
+  # Code from module errno:
+  # Code from module errno-tests:
+  # Code from module error:
+  # Code from module exitfail:
+  # Code from module extensions:
   AC_REQUIRE([gl_USE_SYSTEM_EXTENSIONS])
+  # Code from module fclose:
+  # Code from module fcntl-h:
+  # Code from module fcntl-h-tests:
+  # Code from module fdl:
+  # Code from module fpending:
+  # Code from module fpending-tests:
+  # Code from module fsync:
+  # Code from module fsync-tests:
+  # Code from module gendocs:
+  # Code from module getopt-gnu:
+  # Code from module getopt-posix:
+  # Code from module getopt-posix-tests:
+  # Code from module gettext:
+  # Code from module gettext-h:
+  # Code from module gettimeofday:
+  # Code from module gettimeofday-tests:
+  # Code from module git-version-gen:
+  # Code from module gitlog-to-changelog:
+  # Code from module gnu-web-doc-update:
+  # Code from module gnumakefile:
+  # Code from module gnupload:
+  # Code from module havelib:
+  # Code from module ignore-value:
+  # Code from module include_next:
+  # Code from module inline:
+  # Code from module intprops:
+  # Code from module inttypes:
+  # Code from module inttypes-tests:
+  # Code from module langinfo:
+  # Code from module langinfo-tests:
+  # Code from module lib-ignore:
+  # Code from module localcharset:
+  # Code from module long-options:
+  # Code from module lseek:
+  # Code from module lseek-tests:
+  # Code from module lstat:
+  # Code from module lstat-tests:
+  # Code from module maintainer-makefile:
+  # Code from module malloc:
+  # Code from module malloc-posix:
+  # Code from module malloca:
+  # Code from module malloca-tests:
+  # Code from module manywarnings:
+  # Code from module mbrtowc:
+  # Code from module mbrtowc-tests:
+  # Code from module mbsinit:
+  # Code from module mbsinit-tests:
+  # Code from module memchr:
+  # Code from module memchr-tests:
+  # Code from module mkstemp:
+  # Code from module mktempd:
+  # Code from module multiarch:
+  # Code from module nl_langinfo:
+  # Code from module nl_langinfo-tests:
+  # Code from module open:
+  # Code from module open-tests:
+  # Code from module pathmax:
+  # Code from module priv-set:
+  # Code from module priv-set-tests:
+  # Code from module progname:
+  # Code from module putenv:
+  # Code from module quote:
+  # Code from module quotearg:
+  # Code from module quotearg-tests:
+  # Code from module readlink:
+  # Code from module readlink-tests:
+  # Code from module realloc:
+  # Code from module realloc-posix:
+  # Code from module regex:
+  # Code from module rpmatch:
+  # Code from module safe-read:
+  # Code from module same-inode:
+  # Code from module setenv:
+  # Code from module setenv-tests:
+  # Code from module sleep:
+  # Code from module sleep-tests:
+  # Code from module ssize_t:
+  # Code from module stat:
+  # Code from module stat-tests:
+  # Code from module stdarg:
   dnl Some compilers (e.g., AIX 5.3 cc) need to be in c99 mode
   dnl for the builtin va_copy to work.  With Autoconf 2.60 or later,
   dnl AC_PROG_CC_STDC arranges for this.  With older Autoconf AC_PROG_CC_STDC
   dnl shouldn't hurt, though installers are on their own to set c99 mode.
   AC_REQUIRE([AC_PROG_CC_STDC])
+  # Code from module stdbool:
+  # Code from module stdbool-tests:
+  # Code from module stddef:
+  # Code from module stddef-tests:
+  # Code from module stdint:
+  # Code from module stdint-tests:
+  # Code from module stdio:
+  # Code from module stdio-tests:
+  # Code from module stdlib:
+  # Code from module stdlib-tests:
+  # Code from module strdup-posix:
+  # Code from module streq:
+  # Code from module strerror:
+  # Code from module strerror-tests:
+  # Code from module string:
+  # Code from module string-tests:
+  # Code from module strndup:
+  # Code from module strnlen:
+  # Code from module symlink:
+  # Code from module symlink-tests:
+  # Code from module sys_stat:
+  # Code from module sys_stat-tests:
+  # Code from module sys_time:
+  # Code from module sys_time-tests:
+  # Code from module tempname:
+  # Code from module time:
+  # Code from module time-tests:
+  # Code from module unistd:
+  # Code from module unistd-tests:
+  # Code from module unlink:
+  # Code from module unlink-tests:
+  # Code from module unlinkdir:
+  # Code from module unsetenv:
+  # Code from module unsetenv-tests:
+  # Code from module update-copyright:
+  # Code from module update-copyright-tests:
+  # Code from module useless-if-before-free:
+  # Code from module usleep:
+  # Code from module usleep-tests:
+  # Code from module vc-list-files:
+  # Code from module vc-list-files-tests:
+  # Code from module verify:
+  # Code from module verify-tests:
+  # Code from module version-etc:
+  # Code from module version-etc-fsf:
+  # Code from module version-etc-tests:
+  # Code from module warn-on-use:
+  # Code from module warnings:
+  # Code from module wchar:
+  # Code from module wchar-tests:
+  # Code from module wcrtomb:
+  # Code from module wcrtomb-tests:
+  # Code from module wctob:
+  # Code from module wctype:
+  # Code from module wctype-tests:
+  # Code from module xalloc:
+  # Code from module xalloc-die:
+  # Code from module xalloc-die-tests:
+  # Code from module xstrndup:
+  # Code from module xstrtol:
+  # Code from module xstrtol-tests:
 ])
 
 # This macro should be invoked from ./configure.ac, in the section
@@ -41,6 +223,7 @@ AC_DEFUN([gl_INIT],
 [
   AM_CONDITIONAL([GL_COND_LIBTOOL], [true])
   gl_cond_libtool=true
+  gl_m4_base='m4'
   m4_pushdef([AC_LIBOBJ], m4_defn([gl_LIBOBJ]))
   m4_pushdef([AC_REPLACE_FUNCS], m4_defn([gl_REPLACE_FUNCS]))
   m4_pushdef([AC_LIBSOURCES], m4_defn([gl_LIBSOURCES]))
@@ -48,52 +231,87 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([gl_LIBSOURCES_DIR], [])
   gl_COMMON
   gl_source_base='lib'
+  # Code from module alloca:
 changequote(,)dnl
 LTALLOCA=`echo "$ALLOCA" | sed -e 's/\.[^.]* /.lo /g;s/\.[^.]*$/.lo/'`
 changequote([, ])dnl
 AC_SUBST([LTALLOCA])
+  # Code from module alloca-opt:
   gl_FUNC_ALLOCA
+  # Code from module announce-gen:
+  # Code from module arg-nonnull:
+  # Code from module argmatch:
   gl_ARGMATCH
+  # Code from module assert:
   gl_ASSERT
+  # Code from module btowc:
   gl_FUNC_BTOWC
   gl_WCHAR_MODULE_INDICATOR([btowc])
+  # Code from module c++defs:
+  # Code from module calloc:
   AC_FUNC_CALLOC
+  # Code from module calloc-posix:
   gl_FUNC_CALLOC_POSIX
   gl_STDLIB_MODULE_INDICATOR([calloc-posix])
+  # Code from module canonicalize-lgpl:
   gl_CANONICALIZE_LGPL
   gl_MODULE_INDICATOR([canonicalize-lgpl])
   gl_STDLIB_MODULE_INDICATOR([canonicalize_file_name])
   gl_STDLIB_MODULE_INDICATOR([realpath])
+  # Code from module close:
   gl_FUNC_CLOSE
   gl_UNISTD_MODULE_INDICATOR([close])
+  # Code from module close-hook:
+  # Code from module close-stream:
   gl_CLOSE_STREAM
   gl_MODULE_INDICATOR([close-stream])
+  # Code from module closeout:
   gl_CLOSEOUT
+  # Code from module config-h:
   gl_CONFIG_H
+  # Code from module configmake:
+  # Code from module dirname:
   gl_DIRNAME
   gl_MODULE_INDICATOR([dirname])
+  # Code from module dirname-lgpl:
   gl_DIRNAME_LGPL
+  # Code from module do-release-commit-and-tag:
+  # Code from module double-slash-root:
   gl_DOUBLE_SLASH_ROOT
+  # Code from module errno:
   gl_HEADER_ERRNO_H
+  # Code from module error:
   gl_ERROR
   m4_ifdef([AM_XGETTEXT_OPTION],
     [AM_][XGETTEXT_OPTION([--flag=error:3:c-format])
      AM_][XGETTEXT_OPTION([--flag=error_at_line:5:c-format])])
-  gl_EXITFAIL
+  # Code from module exitfail:
+  # Code from module extensions:
+  # Code from module fclose:
   gl_FUNC_FCLOSE
   gl_STDIO_MODULE_INDICATOR([fclose])
+  # Code from module fdl:
+  # Code from module fpending:
   gl_FUNC_FPENDING
+  # Code from module fsync:
   gl_FUNC_FSYNC
   gl_UNISTD_MODULE_INDICATOR([fsync])
+  # Code from module gendocs:
+  # Code from module getopt-gnu:
   gl_FUNC_GETOPT_GNU
-  gl_MODULE_INDICATOR([getopt-gnu])
+  gl_MODULE_INDICATOR_FOR_TESTS([getopt-gnu])
+  # Code from module getopt-posix:
   gl_FUNC_GETOPT_POSIX
-  dnl you must add AM_GNU_GETTEXT([external]) or similar to configure.ac.
-  AM_GNU_GETTEXT_VERSION([0.17])
+  # Code from module gettext-h:
   AC_SUBST([LIBINTL])
   AC_SUBST([LTLIBINTL])
+  # Code from module gettimeofday:
   gl_FUNC_GETTIMEOFDAY
   gl_SYS_TIME_MODULE_INDICATOR([gettimeofday])
+  # Code from module git-version-gen:
+  # Code from module gitlog-to-changelog:
+  # Code from module gnu-web-doc-update:
+  # Code from module gnumakefile:
   # Autoconf 2.61a.99 and earlier don't support linking a file only
   # in VPATH builds.  But since GNUmakefile is for maintainer use
   # only, it does not matter if we skip the link with older autoconf.
@@ -104,87 +322,162 @@ AC_SUBST([LTALLOCA])
   	m4_defn([m4_PACKAGE_VERSION])), [1], [],
         [AC_CONFIG_LINKS([$GNUmakefile:$GNUmakefile], [],
   	[GNUmakefile=$GNUmakefile])])
+  # Code from module gnupload:
+  # Code from module include_next:
+  # Code from module inline:
   gl_INLINE
+  # Code from module intprops:
+  # Code from module inttypes:
   gl_INTTYPES_H
+  # Code from module langinfo:
   gl_LANGINFO_H
+  # Code from module lib-ignore:
   gl_IGNORE_UNUSED_LIBRARIES
+  # Code from module localcharset:
   gl_LOCALCHARSET
   LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(top_builddir)/$gl_source_base\""
   AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
+  # Code from module long-options:
   gl_LONG_OPTIONS
+  # Code from module lseek:
   gl_FUNC_LSEEK
   gl_UNISTD_MODULE_INDICATOR([lseek])
+  # Code from module lstat:
   gl_FUNC_LSTAT
   gl_SYS_STAT_MODULE_INDICATOR([lstat])
+  # Code from module maintainer-makefile:
   AC_CONFIG_COMMANDS_PRE([m4_ifdef([AH_HEADER],
     [AC_SUBST([CONFIG_INCLUDE], m4_defn([AH_HEADER]))])])
+  # Code from module malloc:
   AC_FUNC_MALLOC
   AC_DEFINE([GNULIB_MALLOC_GNU], 1, [Define to indicate the 'malloc' module.])
+  # Code from module malloc-posix:
   gl_FUNC_MALLOC_POSIX
   gl_STDLIB_MODULE_INDICATOR([malloc-posix])
+  # Code from module malloca:
   gl_MALLOCA
+  # Code from module manywarnings:
+  # Code from module mbrtowc:
   gl_FUNC_MBRTOWC
   gl_WCHAR_MODULE_INDICATOR([mbrtowc])
+  # Code from module mbsinit:
   gl_FUNC_MBSINIT
   gl_WCHAR_MODULE_INDICATOR([mbsinit])
+  # Code from module memchr:
   gl_FUNC_MEMCHR
   gl_STRING_MODULE_INDICATOR([memchr])
+  # Code from module mkstemp:
   gl_FUNC_MKSTEMP
   gl_STDLIB_MODULE_INDICATOR([mkstemp])
+  # Code from module mktempd:
+  # Code from module multiarch:
   gl_MULTIARCH
+  # Code from module nl_langinfo:
   gl_FUNC_NL_LANGINFO
   gl_LANGINFO_MODULE_INDICATOR([nl_langinfo])
+  # Code from module pathmax:
   gl_PATHMAX
+  # Code from module progname:
   AC_CHECK_DECLS([program_invocation_name], [], [], [#include <errno.h>])
   AC_CHECK_DECLS([program_invocation_short_name], [], [], [#include <errno.h>])
+  # Code from module quote:
   gl_QUOTE
+  # Code from module quotearg:
   gl_QUOTEARG
+  # Code from module readlink:
   gl_FUNC_READLINK
   gl_UNISTD_MODULE_INDICATOR([readlink])
+  # Code from module realloc:
   AC_FUNC_REALLOC
   AC_DEFINE([GNULIB_REALLOC_GNU], 1, [Define to indicate the 'realloc' module.])
+  # Code from module realloc-posix:
   gl_FUNC_REALLOC_POSIX
   gl_STDLIB_MODULE_INDICATOR([realloc-posix])
+  # Code from module regex:
   gl_REGEX
+  # Code from module rpmatch:
   gl_FUNC_RPMATCH
   gl_STDLIB_MODULE_INDICATOR([rpmatch])
+  # Code from module safe-read:
   gl_SAFE_READ
+  # Code from module sleep:
+  gl_FUNC_SLEEP
+  gl_UNISTD_MODULE_INDICATOR([sleep])
+  # Code from module ssize_t:
   gt_TYPE_SSIZE_T
+  # Code from module stat:
   gl_FUNC_STAT
   gl_SYS_STAT_MODULE_INDICATOR([stat])
+  # Code from module stdarg:
   gl_STDARG_H
+  # Code from module stdbool:
   AM_STDBOOL_H
+  # Code from module stddef:
   gl_STDDEF_H
+  # Code from module stdint:
   gl_STDINT_H
+  # Code from module stdio:
   gl_STDIO_H
+  # Code from module stdlib:
   gl_STDLIB_H
-  gl_FUNC_STRDUP
+  # Code from module strdup-posix:
+  gl_FUNC_STRDUP_POSIX
   gl_STRING_MODULE_INDICATOR([strdup])
+  # Code from module streq:
+  # Code from module strerror:
   gl_FUNC_STRERROR
   gl_STRING_MODULE_INDICATOR([strerror])
+  # Code from module string:
   gl_HEADER_STRING_H
+  # Code from module strndup:
   gl_FUNC_STRNDUP
   gl_STRING_MODULE_INDICATOR([strndup])
+  # Code from module strnlen:
   gl_FUNC_STRNLEN
   gl_STRING_MODULE_INDICATOR([strnlen])
+  # Code from module sys_stat:
   gl_HEADER_SYS_STAT_H
   AC_PROG_MKDIR_P
+  # Code from module sys_time:
   gl_HEADER_SYS_TIME_H
   AC_PROG_MKDIR_P
+  # Code from module tempname:
   gl_FUNC_GEN_TEMPNAME
+  # Code from module time:
   gl_HEADER_TIME_H
+  # Code from module unistd:
   gl_UNISTD_H
+  # Code from module unlink:
   gl_FUNC_UNLINK
   gl_UNISTD_MODULE_INDICATOR([unlink])
+  # Code from module update-copyright:
+  # Code from module useless-if-before-free:
+  # Code from module usleep:
+  gl_FUNC_USLEEP
+  gl_UNISTD_MODULE_INDICATOR([usleep])
+  # Code from module vc-list-files:
+  # Code from module verify:
+  # Code from module version-etc:
   gl_VERSION_ETC
+  # Code from module version-etc-fsf:
+  # Code from module warn-on-use:
+  # Code from module warnings:
   AC_SUBST([WARN_CFLAGS])
+  # Code from module wchar:
   gl_WCHAR_H
+  # Code from module wcrtomb:
   gl_FUNC_WCRTOMB
   gl_WCHAR_MODULE_INDICATOR([wcrtomb])
+  # Code from module wctype:
   gl_WCTYPE_H
+  # Code from module xalloc:
   gl_XALLOC
+  # Code from module xalloc-die:
+  # Code from module xstrndup:
   gl_XSTRNDUP
+  # Code from module xstrtol:
   gl_XSTRTOL
+  # End of code from modules
   m4_ifval(gl_LIBSOURCES_LIST, [
     m4_syscmd([test ! -d ]m4_defn([gl_LIBSOURCES_DIR])[ ||
       for gl_file in ]gl_LIBSOURCES_LIST[ ; do
@@ -224,6 +517,12 @@ AC_SUBST([LTALLOCA])
   m4_pushdef([gltests_LIBSOURCES_DIR], [])
   gl_COMMON
   gl_source_base='gnulib-tests'
+changequote(,)dnl
+  gltests_WITNESS=IN_`echo "${PACKAGE-$PACKAGE_TARNAME}" | LC_ALL=C tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ | LC_ALL=C sed -e 's/[^A-Z0-9_]/_/g'`_GNULIB_TESTS
+changequote([, ])dnl
+  AC_SUBST([gltests_WITNESS])
+  gl_module_indicator_condition=$gltests_WITNESS
+  m4_pushdef([gl_MODULE_INDICATOR_CONDITION], [$gl_module_indicator_condition])
   gt_LOCALE_FR
   gt_LOCALE_FR_UTF8
   gt_LOCALE_FR
@@ -233,6 +532,8 @@ AC_SUBST([LTALLOCA])
   gl_ENVIRON
   gl_UNISTD_MODULE_INDICATOR([environ])
   gl_FCNTL_H
+  dnl you must add AM_GNU_GETTEXT([external]) or similar to configure.ac.
+  AM_GNU_GETTEXT_VERSION([0.18])
   AC_REQUIRE([AC_C_INLINE])
   gt_LOCALE_FR
   gt_LOCALE_FR_UTF8
@@ -242,7 +543,6 @@ AC_SUBST([LTALLOCA])
   gt_LOCALE_FR
   gt_LOCALE_FR_UTF8
   gl_FUNC_OPEN
-  gl_MODULE_INDICATOR([open])
   gl_FCNTL_MODULE_INDICATOR([open])
   gl_PRIV_SET
   gl_FUNC_PUTENV
@@ -251,6 +551,7 @@ AC_SUBST([LTALLOCA])
   gt_LOCALE_FR_UTF8
   gl_FUNC_SETENV
   gl_STDLIB_MODULE_INDICATOR([setenv])
+  AC_CHECK_DECLS_ONCE([alarm])
   gt_TYPE_WCHAR_T
   gt_TYPE_WINT_T
   gl_FUNC_SYMLINK
@@ -268,6 +569,7 @@ AC_SUBST([LTALLOCA])
   gt_LOCALE_ZH_CN
   gl_FUNC_WCTOB
   gl_WCHAR_MODULE_INDICATOR([wctob])
+  m4_popdef([gl_MODULE_INDICATOR_CONDITION])
   m4_ifval(gltests_LIBSOURCES_LIST, [
     m4_syscmd([test ! -d ]m4_defn([gltests_LIBSOURCES_DIR])[ ||
       for gl_file in ]gltests_LIBSOURCES_LIST[ ; do
@@ -361,7 +663,9 @@ AC_DEFUN([gltests_LIBSOURCES], [
 AC_DEFUN([gl_FILE_LIST], [
   build-aux/announce-gen
   build-aux/arg-nonnull.h
+  build-aux/c++defs.h
   build-aux/config.rpath
+  build-aux/do-release-commit-and-tag
   build-aux/gendocs.sh
   build-aux/git-version-gen
   build-aux/gitlog-to-changelog
@@ -448,6 +752,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/rpmatch.c
   lib/safe-read.c
   lib/safe-read.h
+  lib/sleep.c
   lib/stat.c
   lib/stdarg.in.h
   lib/stdbool.in.h
@@ -470,6 +775,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/time.in.h
   lib/unistd.in.h
   lib/unlink.c
+  lib/usleep.c
   lib/verify.h
   lib/version-etc-fsf.c
   lib/version-etc.c
@@ -489,6 +795,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/00gnulib.m4
   m4/alloca.m4
   m4/argmatch.m4
+  m4/asm-underscore.m4
   m4/assert.m4
   m4/btowc.m4
   m4/calloc.m4
@@ -506,7 +813,6 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/environ.m4
   m4/errno_h.m4
   m4/error.m4
-  m4/exitfail.m4
   m4/extensions.m4
   m4/fclose.m4
   m4/fcntl-o.m4
@@ -575,6 +881,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/safe-read.m4
   m4/setenv.m4
   m4/size_max.m4
+  m4/sleep.m4
   m4/ssize_t.m4
   m4/stat.m4
   m4/stdarg.m4
@@ -599,15 +906,16 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/unistd_h.m4
   m4/unlink.m4
   m4/unlinkdir.m4
+  m4/usleep.m4
   m4/version-etc.m4
   m4/visibility.m4
   m4/warn-on-use.m4
   m4/warnings.m4
-  m4/wchar.m4
+  m4/wchar_h.m4
   m4/wchar_t.m4
   m4/wcrtomb.m4
   m4/wctob.m4
-  m4/wctype.m4
+  m4/wctype_h.m4
   m4/wint_t.m4
   m4/xalloc.m4
   m4/xsize.m4
@@ -667,6 +975,7 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-readlink.c
   tests/test-readlink.h
   tests/test-setenv.c
+  tests/test-sleep.c
   tests/test-stat.c
   tests/test-stat.h
   tests/test-stdbool.c
@@ -686,8 +995,11 @@ AC_DEFUN([gl_FILE_LIST], [
   tests/test-unlink.h
   tests/test-unsetenv.c
   tests/test-update-copyright.sh
+  tests/test-usleep.c
   tests/test-vc-list-files-cvs.sh
   tests/test-vc-list-files-git.sh
+  tests/test-verify.c
+  tests/test-verify.sh
   tests/test-version-etc.c
   tests/test-version-etc.sh
   tests/test-wchar.c

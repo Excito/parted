@@ -39,7 +39,6 @@
 #include <stdbool.h>
 
 #include "architecture.h"
-#include "intprops.h"
 #include "labels/pt-tools.h"
 
 #if ENABLE_NLS
@@ -2442,6 +2441,8 @@ ped_partition_flag_get_name (PedPartitionFlag flag)
 		return N_("msftres");
         case PED_PARTITION_APPLE_TV_RECOVERY:
                 return N_("atvrecv");
+        case PED_PARTITION_DIAG:
+                return N_("diag");
 
 	default:
 		ped_exception_throw (

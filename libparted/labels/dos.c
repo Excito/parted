@@ -81,6 +81,7 @@ static const char MBR_BOOT_CODE[] = {
 #define PARTITION_FAT16_LBA_H	(PARTITION_FAT16_LBA	| PART_FLAG_HIDDEN)
 
 #define PARTITION_COMPAQ_DIAG	0x12
+#define PARTITION_MSFT_RECOVERY	0x27
 #define PARTITION_LDM		0x42
 #define PARTITION_LINUX_SWAP	0x82
 #define PARTITION_LINUX		0x83
@@ -157,6 +158,7 @@ typedef struct {
 	int		lba;
 	int		palo;
 	int		prep;
+	int		diag;
 	OrigState*	orig;			/* used for CHS stuff */
 } DosPartitionData;
 
@@ -828,6 +830,9 @@ raw_part_parse (const PedDisk* disk, const DosRawPartition* raw_part,
 	dos_data = part->disk_specific;
 	dos_data->system = raw_part->type;
 	dos_data->boot = raw_part->boot_ind != 0;
+	dos_data->diag = raw_part->type == PARTITION_COMPAQ_DIAG ||
+			 raw_part->type == PARTITION_MSFT_RECOVERY ||
+			 raw_part->type == PARTITION_DELL_DIAG;
 	dos_data->hidden = raw_part_is_hidden (raw_part);
 	dos_data->raid = raw_part->type == PARTITION_LINUX_RAID;
 	dos_data->lvm = raw_part->type == PARTITION_LINUX_LVM_OLD
@@ -1231,6 +1236,7 @@ msdos_partition_new (const PedDisk* disk, PedPartitionType part_type,
 		dos_data->system = PARTITION_LINUX;
 		dos_data->hidden = 0;
 		dos_data->boot = 0;
+		dos_data->diag = 0;
 		dos_data->raid = 0;
 		dos_data->lvm = 0;
 		dos_data->lba = 0;
@@ -1264,6 +1270,7 @@ msdos_partition_duplicate (const PedPartition* part)
 	new_dos_data = (DosPartitionData*) new_part->disk_specific;
 	new_dos_data->system = old_dos_data->system;
 	new_dos_data->boot = old_dos_data->boot;
+	new_dos_data->diag = old_dos_data->diag;
 	new_dos_data->hidden = old_dos_data->hidden;
 	new_dos_data->raid = old_dos_data->raid;
 	new_dos_data->lvm = old_dos_data->lvm;
@@ -1313,6 +1320,7 @@ msdos_partition_set_system (PedPartition* part,
 		dos_data->hidden = 0;
 
 	if (part->type & PED_PARTITION_EXTENDED) {
+		dos_data->diag = 0;
 		dos_data->raid = 0;
 		dos_data->lvm = 0;
 		dos_data->palo = 0;
@@ -1324,6 +1332,15 @@ msdos_partition_set_system (PedPartition* part,
 		return 1;
 	}
 
+	if (dos_data->diag) {
+		/* Don't change the system if it already is a diag type,
+		   otherwise use Compaq as almost all vendors use that. */
+		if (dos_data->system != PARTITION_COMPAQ_DIAG &&
+		    dos_data->system != PARTITION_MSFT_RECOVERY &&
+		    dos_data->system != PARTITION_DELL_DIAG)
+			dos_data->system = PARTITION_COMPAQ_DIAG;
+		return 1;
+	}
 	if (dos_data->lvm) {
 		dos_data->system = PARTITION_LINUX_LVM;
 		return 1;
@@ -1368,6 +1385,17 @@ msdos_partition_set_system (PedPartition* part,
 	return 1;
 }
 
+static void
+clear_flags (DosPartitionData *dos_data)
+{
+  dos_data->diag = 0;
+  dos_data->hidden = 0;
+  dos_data->lvm = 0;
+  dos_data->palo = 0;
+  dos_data->prep = 0;
+  dos_data->raid = 0;
+}
+
 static int
 msdos_partition_set_flag (PedPartition* part,
                           PedPartitionFlag flag, int state)
@@ -1409,23 +1437,21 @@ msdos_partition_set_flag (PedPartition* part,
 		}
 		return 1;
 
+	case PED_PARTITION_DIAG:
+		if (state)
+			clear_flags (dos_data);
+		dos_data->diag = state;
+		return ped_partition_set_system (part, part->fs_type);
+
 	case PED_PARTITION_RAID:
-		if (state) {
-			dos_data->hidden = 0;
-			dos_data->lvm = 0;
-			dos_data->palo = 0;
-			dos_data->prep = 0;
-		}
+		if (state)
+			clear_flags (dos_data);
 		dos_data->raid = state;
 		return ped_partition_set_system (part, part->fs_type);
 
 	case PED_PARTITION_LVM:
-		if (state) {
-			dos_data->hidden = 0;
-			dos_data->raid = 0;
-			dos_data->palo = 0;
-			dos_data->prep = 0;
-		}
+		if (state)
+			clear_flags (dos_data);
 		dos_data->lvm = state;
 		return ped_partition_set_system (part, part->fs_type);
 
@@ -1434,20 +1460,14 @@ msdos_partition_set_flag (PedPartition* part,
 		return ped_partition_set_system (part, part->fs_type);
 
 	case PED_PARTITION_PALO:
-		if (state) {
-			dos_data->hidden = 0;
-			dos_data->raid = 0;
-			dos_data->lvm = 0;
-		}
+		if (state)
+			clear_flags (dos_data);
 		dos_data->palo = state;
 		return ped_partition_set_system (part, part->fs_type);
 
 	case PED_PARTITION_PREP:
-		if (state) {
-			dos_data->hidden = 0;
-			dos_data->raid = 0;
-			dos_data->lvm = 0;
-		}
+		if (state)
+			clear_flags (dos_data);
 		dos_data->prep = state;
 		return ped_partition_set_system (part, part->fs_type);
 
@@ -1467,10 +1487,16 @@ msdos_partition_get_flag (const PedPartition* part, PedPartitionFlag flag)
 	dos_data = part->disk_specific;
 	switch (flag) {
 	case PED_PARTITION_HIDDEN:
-		return dos_data->hidden;
+		if (part->type == PED_PARTITION_EXTENDED)
+			return 0;
+		else
+			return dos_data->hidden;
 
 	case PED_PARTITION_BOOT:
 		return dos_data->boot;
+
+	case PED_PARTITION_DIAG:
+		return dos_data->diag;
 
 	case PED_PARTITION_RAID:
 		return dos_data->raid;
@@ -1498,12 +1524,18 @@ msdos_partition_is_flag_available (const PedPartition* part,
 {
 	switch (flag) {
 	case PED_PARTITION_HIDDEN:
+		if (part->type == PED_PARTITION_EXTENDED)
+			return 0;
+		else
+			return 1;
+
 	case PED_PARTITION_BOOT:
 	case PED_PARTITION_RAID:
 	case PED_PARTITION_LVM:
 	case PED_PARTITION_LBA:
 	case PED_PARTITION_PALO:
 	case PED_PARTITION_PREP:
+	case PED_PARTITION_DIAG:
 		return 1;
 
 	default:
@@ -1606,8 +1638,13 @@ _primary_constraint (const PedDisk* disk, const PedCHSGeometry* bios_geom,
 			       		dev->length - min_geom->end))
 			return NULL;
 	} else {
-		if (!ped_geometry_init (&start_geom, dev, cylinder_size,
-			       		dev->length - cylinder_size))
+		/* Do not assume that length is larger than 1 cylinder's
+		   worth of sectors.  This is useful when testing with
+		   a memory-mapped "disk" (a la scsi_debug) that is say,
+		   2048 sectors long.  */
+		if (cylinder_size < dev->length
+		    && !ped_geometry_init (&start_geom, dev, cylinder_size,
+					   dev->length - cylinder_size))
 			return NULL;
 		if (!ped_geometry_init (&end_geom, dev, 0, dev->length))
 			return NULL;
@@ -1739,7 +1776,11 @@ _get_min_extended_part_geom (const PedPartition* ext_part,
 	min_geom = ped_geometry_duplicate (&walk->geom);
 	if (!min_geom)
 		return NULL;
-	ped_geometry_set_start (min_geom, walk->geom.start - 1 * head_size);
+	/* We must always allow at least two sectors at the start, to leave
+	 * room for LILO.  See linux/fs/partitions/msdos.c.
+	 */
+	ped_geometry_set_start (min_geom,
+				walk->geom.start - PED_MAX (1 * head_size, 2));
 
 	for (walk = ext_part->part_list; walk; walk = walk->next) {
 		if (!ped_partition_is_active (walk) || walk->num == 5)
@@ -1811,7 +1852,7 @@ _logical_min_start_head (const PedPartition* part,
 
 /* Shamelessly copied and adapted from _partition_get_overlap_constraint
  * (in disk.c)
- * This should get ride of the infamous Assertion (metadata_length > 0) failed
+ * This should get rid of the infamous Assertion (metadata_length > 0) failed
  * bug for extended msdos disklabels generated by Parted.
  * 1) There always is a partition table at the start of ext_part, so we leave
  *    a one sector gap there.

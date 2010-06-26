@@ -27,9 +27,10 @@
 #include "ui.h"
 #include "progname.h"
 #include "table.h"
+#include "version.h"
 
 #define AUTHORS \
-  "<http://parted.alioth.debian.org/cgi-bin/trac.cgi/browser/AUTHORS>"
+  "<http://git.debian.org/?p=parted/parted.git;a=blob_plain;f=AUTHORS>"
 
 /* The official name of this program (e.g., no `g' prefix).  */
 #define PROGRAM_NAME "parted"
@@ -1396,7 +1397,8 @@ do_print (PedDevice** dev)
         const char *const transport[] = {"unknown", "scsi", "ide", "dac960",
                                          "cpqarray", "file", "ataraid", "i2o",
                                          "ubd", "dasd", "viodasd", "sx8", "dm",
-                                         "xvd", "sd/mmc", "virtblk"};
+                                         "xvd", "sd/mmc", "virtblk", "aoe",
+                                         "md"};
         char*           peek_word;
         char*           start;
         char*           end;
@@ -2076,18 +2078,33 @@ do_align_check (PedDevice **dev)
 {
   PedDisk *disk = ped_disk_new (*dev);
   if (!disk)
-    return 0;
+    goto error;
 
-  enum AlignmentType align_type;
+  enum AlignmentType align_type = PA_OPTIMUM;
   PedPartition *part = NULL;
-  bool aligned =
-    (command_line_get_align_type (_("alignment type(min/opt)"), &align_type)
-     && command_line_get_partition (_("Partition number?"), disk, &part)
-     && partition_align_check (disk, part, align_type));
+
+  if (!command_line_get_align_type (_("alignment type(min/opt)"), &align_type))
+    goto error_destroy_disk;
+  if (!command_line_get_partition (_("Partition number?"), disk, &part))
+    goto error_destroy_disk;
+
+  bool aligned = partition_align_check (disk, part, align_type);
+  if (!opt_script_mode)
+    printf(aligned ? _("%d aligned\n") : _("%d not aligned\n"), part->num);
 
   ped_disk_destroy (disk);
 
-  return aligned ? 1 : 0;
+  if (opt_script_mode)
+    return aligned ? 1 : 0;
+
+  /* Always return 1 in interactive mode, to be consistent
+     with the other modes.  */
+  return 1;
+
+error_destroy_disk:
+  ped_disk_destroy (disk);
+error:
+  return 0;
 }
 
 static int
@@ -2316,6 +2333,7 @@ static void
 _done_messages ()
 {
         free (flag_msg);
+        free (unit_msg);
         free (mkfs_fs_type_msg);
         free (mkpart_fs_type_msg);
         free (resize_fs_type_msg);
@@ -2549,7 +2567,7 @@ textdomain(PACKAGE);
 void
 _version ()
 {
-  version_etc (stdout, PROGRAM_NAME, PACKAGE_NAME, VERSION, AUTHORS,
+  version_etc (stdout, PROGRAM_NAME, PACKAGE_NAME, Version, AUTHORS,
                (char *) NULL);
 }
 
