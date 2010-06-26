@@ -1,3 +1,9 @@
+parted (2.3-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Otavio Salvador <otavio@ossystems.com.br>  Sat, 26 Jun 2010 17:25:06 -0300
+
 parted (2.2-7) unstable; urgency=low
 
   * Update GNU/kFreeBSD patch, from Luca Favatella's Google Summer of Code
