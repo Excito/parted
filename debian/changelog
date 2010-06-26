@@ -1,6 +1,7 @@
 parted (2.3-1) UNRELEASED; urgency=low
 
   * New upstream release.
+  * debian/patches/update-ext4-code.patch: refreshed against newer code.
 
  -- Otavio Salvador <otavio@ossystems.com.br>  Sat, 26 Jun 2010 17:25:06 -0300
 
