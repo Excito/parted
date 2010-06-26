@@ -10,24 +10,23 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -60,6 +60,8 @@
+@@ -60,6 +60,7 @@
  	linux*) OS=linux ;;
  	gnu*)	OS=gnu ;;
  	beos*)	OS=beos ;;
-+	freebsd* | kfreebsd*-gnu)
-+			OS=freebsd ;;
++	freebsd* | kfreebsd*-gnu)	OS=freebsd ;;
  	*)	AC_MSG_ERROR([Unknown or unsupported OS "$host_os".  Only "linux", "gnu" and "beos" are supported in this version of GNU Parted.]) ;;
  esac
  AC_SUBST([OS])
-@@ -280,6 +282,7 @@
+@@ -281,6 +282,7 @@
  	#include <sys/types.h>
  	#include <unistd.h>
  ])
 +AC_CHECK_TYPE([loff_t], [long long])
  
  AM_ENABLE_SHARED
- if test "$OS" = linux -a $ac_cv_sizeof_off_t -lt 8; then
-@@ -517,7 +534,7 @@
+ if test "$OS" = linux && test $ac_cv_sizeof_off_t -lt 8; then
+@@ -518,7 +520,7 @@
          http://web.mit.edu/tytso/www/linux/e2fsprogs.html])]
  )
  
@@ -36,7 +35,7 @@ Index: b/configure.ac
  
  dnl required for libparted/llseek.c  (TODO: make linux-x86 only)
  if test "$OS" = linux; then
-@@ -576,7 +593,9 @@
+@@ -577,7 +579,9 @@
  AC_C_RESTRICT
  
  dnl Checks for library functions.
@@ -51,16 +50,15 @@ Index: b/configure
 ===================================================================
 --- a/configure
 +++ b/configure
-@@ -3727,6 +3727,8 @@
+@@ -3766,6 +3766,7 @@
  	linux*) OS=linux ;;
  	gnu*)	OS=gnu ;;
  	beos*)	OS=beos ;;
-+	freebsd* | kfreebsd*-gnu)
-+			OS=freebsd ;;
- 	*)	as_fn_error "Unknown or unsupported OS \"$host_os\".  Only \"linux\", \"gnu\" and \"beos\" are supported in this version of GNU Parted." "$LINENO" 5 ;;
++	freebsd* | kfreebsd*-gnu)	OS=freebsd ;;
+ 	*)	as_fn_error $? "Unknown or unsupported OS \"$host_os\".  Only \"linux\", \"gnu\" and \"beos\" are supported in this version of GNU Parted." "$LINENO" 5 ;;
  esac
  
-@@ -20995,6 +20997,17 @@
+@@ -22042,6 +22043,17 @@
  _ACEOF
  
  
@@ -78,7 +76,7 @@ Index: b/configure
  
  # Check whether --enable-shared was given.
  if test "${enable_shared+set}" = set; then :
-@@ -30121,12 +30183,14 @@
+@@ -31169,12 +31181,14 @@
  
  
  
@@ -97,7 +95,7 @@ Index: b/configure
  _ACEOF
  
  fi
-@@ -30974,7 +31038,8 @@
+@@ -32022,7 +32036,8 @@
   esac
  
  
@@ -107,7 +105,7 @@ Index: b/configure
  do :
    ac_fn_c_check_func "$LINENO" "sigaction" "ac_cv_func_sigaction"
  if test "x$ac_cv_func_sigaction" = x""yes; then :
-@@ -30985,6 +31050,7 @@
+@@ -32033,6 +32048,7 @@
  fi
  done
  
@@ -119,7 +117,7 @@ Index: b/lib/config.h.in
 ===================================================================
 --- a/lib/config.h.in
 +++ b/lib/config.h.in
-@@ -226,6 +226,9 @@
+@@ -347,6 +347,9 @@
  /* Define to 1 if you have the `dup2' function. */
  #undef HAVE_DUP2
  
@@ -129,7 +127,7 @@ Index: b/lib/config.h.in
  /* Define if you have the declaration of environ. */
  #undef HAVE_ENVIRON_DECL
  
-@@ -784,6 +787,9 @@
+@@ -935,6 +938,9 @@
  /* Define to 1 if you have the <sys/bitypes.h> header file. */
  #undef HAVE_SYS_BITYPES_H
  
@@ -139,7 +137,7 @@ Index: b/lib/config.h.in
  /* Define to 1 if you have the <sys/inttypes.h> header file. */
  #undef HAVE_SYS_INTTYPES_H
  
-@@ -1126,6 +1132,9 @@
+@@ -1287,6 +1293,9 @@
  /* Define to rpl_localtime if the replacement function should be used. */
  #undef localtime
  
@@ -167,7 +165,7 @@ Index: b/libparted/Makefile.in
 ===================================================================
 --- a/libparted/Makefile.in
 +++ b/libparted/Makefile.in
-@@ -897,7 +897,8 @@
+@@ -931,7 +931,8 @@
  EXTRA_libparted_la_SOURCES = arch/linux.c	\
  				arch/linux.h	\
  				arch/gnu.c	\
@@ -177,7 +175,7 @@ Index: b/libparted/Makefile.in
  
  libparted_la_LIBADD = \
    fs/libfs.la		\
-@@ -996,6 +997,7 @@
+@@ -1030,6 +1031,7 @@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/disk.Plo@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/exception.Plo@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/filesys.Plo@am__quote@
@@ -185,7 +183,7 @@ Index: b/libparted/Makefile.in
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/geom.Plo@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gnu.Plo@am__quote@
  @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libparted.Plo@am__quote@
-@@ -1074,6 +1076,13 @@
+@@ -1108,6 +1110,13 @@
  @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
  @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o beos.lo `test -f 'arch/beos.c' || echo '$(srcdir)/'`arch/beos.c
  
