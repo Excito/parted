@@ -32,16 +32,19 @@ manual_title = Parted User's Manual
 # files -- otherwise, you'd need to have the upcoming version number
 # at the top of the file for each `make distcheck' run.
 local-checks-to-skip = \
+  sc_error_message_uppercase \
+  sc_error_message_period \
   sc_file_system \
   sc_prohibit_strcmp \
   sc_prohibit_atoi_atof \
   sc_require_test_exit_idiom \
-  sc_space_tab
+  sc_space_tab \
+  sc_texinfo_acronym
 
 # Now that we have better (check.mk) tests, make this the default.
 export VERBOSE = yes
 
-old_NEWS_hash = 3667631deb6fa6200514ce8811be7801
+old_NEWS_hash = 71570fda344ec276ea5c9ff0ab82fdce
 
 include $(srcdir)/dist-check.mk
 

@@ -2,6 +2,7 @@ XFAIL_TESTS = \
   t3200-type-change.sh
 
 TESTS = \
+  help-version \
   t0000-basic.sh \
   t0001-tiny.sh \
   t0010-script-no-ctrl-chars.sh \
@@ -22,8 +23,12 @@ TESTS = \
   t2100-mkswap.sh \
   t2200-dos-label-recog.sh \
   t2300-dos-label-extended-bootcode.sh \
+  t2310-dos-extended-2-sector-min-offset.sh \
   t2400-dos-hfs-partition-type.sh \
   t3000-resize-fs.sh \
+  t3200-type-change.sh \
+  t3300-palo-prep.sh \
+  t3310-flags.sh \
   t4000-sun-raid-type.sh \
   t4001-sun-vtoc.sh \
   t4100-msdos-partition-limits.sh \
@@ -37,10 +42,11 @@ TESTS = \
   t9010-big-sector.sh \
   t9020-alignment.sh \
   t9021-maxima.sh \
-  t9030-align-check.sh
+  t9030-align-check.sh \
+  t9040-many-partitions.sh
 
 EXTRA_DIST = \
-  $(TESTS) test-lib.sh t-lib.sh lvm-utils.sh t-local.sh t-lvm.sh
+  $(TESTS) test-lib.sh t-lib.sh lvm-utils.sh t-local.sh t-lvm.sh init.sh
 
 check_PROGRAMS = print-align print-max dup-clobber
 LDADD = \
@@ -54,9 +60,9 @@ parted_dir = $(abs_top_builddir)/parted
 pp_dir = $(abs_top_builddir)/partprobe
 sep = $(PATH_SEPARATOR)
 
-CLEANFILES = init.sh
-all: init.sh
-init.sh: Makefile.in
+CLEANFILES = old-init.sh
+all: old-init.sh
+old-init.sh: Makefile.in
 	rm -f $@-t $@
 	echo 'PARTED_USABLE_TEST_DIR="$(PARTED_USABLE_TEST_DIR)"' > $@-t
 	echo 'abs_top_srcdir="$(abs_top_srcdir)"' >> $@-t
@@ -92,8 +98,10 @@ TESTS_ENVIRONMENT =				\
   abs_top_builddir='$(abs_top_builddir)'	\
   abs_top_srcdir='$(abs_top_srcdir)'		\
   abs_srcdir='$(abs_srcdir)'			\
+  built_programs=parted				\
   srcdir='$(srcdir)'				\
   top_srcdir='$(top_srcdir)'			\
+  AWK='$(AWK)'					\
   CC='$(CC)'					\
   MAKE=$(MAKE)					\
   PACKAGE_BUGREPORT='$(PACKAGE_BUGREPORT)'	\
@@ -104,6 +112,7 @@ TESTS_ENVIRONMENT =				\
   PREFERABLY_POSIX_SHELL='$(PREFERABLY_POSIX_SHELL)' \
   REPLACE_GETCWD=$(REPLACE_GETCWD)		\
   PATH='$(abs_top_builddir)/parted$(PATH_SEPARATOR)'"$$PATH" \
+  VERSION=$(VERSION)				\
   ; shell_or_perl_
 
 VERBOSE = yes
