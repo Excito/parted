@@ -8,6 +8,7 @@ update-ext4-code.patch
 kfreebsd-gnu.patch
 btrfs.patch
 loop-limits.patch
+freebsd-ufs.patch
 
 # Backported
 sun-revert-disk-flag.patch

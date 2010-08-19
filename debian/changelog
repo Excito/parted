@@ -8,6 +8,9 @@ parted (2.3-2) UNRELEASED; urgency=low
     RAID arrays.
   * Backport upstream patch to update tests/t4000-sun-raid-type.sh so that
     the test suite passes again.
+  * Add support for detection of FreeBSD UFS file systems and creation of
+    the partition on DOS and GPT labels (thanks, Aurelien Jarno; closes:
+    #588364).
 
  -- Colin Watson <cjwatson@debian.org>  Thu, 19 Aug 2010 11:14:09 +0100
 
