@@ -2,6 +2,10 @@ parted (2.3-2) UNRELEASED; urgency=low
 
   * Fix patch ordering: btrfs.patch is for upstream merging, not a symbols
     patch.
+  * Remove limits on loop labels (closes: #592679).  There's no reason to
+    impose any particular limit on loop labels, since they just represent a
+    single large partition.  Sector counts over 2^32 are needed for large
+    RAID arrays.
 
  -- Colin Watson <cjwatson@debian.org>  Thu, 19 Aug 2010 11:14:09 +0100
 
