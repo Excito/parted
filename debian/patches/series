@@ -11,6 +11,7 @@ loop-limits.patch
 
 # Backported
 sun-revert-disk-flag.patch
+sun-raid-type-test-fix.patch
 
 # Symbols for this ABI (amd64 as reference)
 update-abi-symbols.patch

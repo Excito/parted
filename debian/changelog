@@ -6,6 +6,8 @@ parted (2.3-2) UNRELEASED; urgency=low
     impose any particular limit on loop labels, since they just represent a
     single large partition.  Sector counts over 2^32 are needed for large
     RAID arrays.
+  * Backport upstream patch to update tests/t4000-sun-raid-type.sh so that
+    the test suite passes again.
 
  -- Colin Watson <cjwatson@debian.org>  Thu, 19 Aug 2010 11:14:09 +0100
 
