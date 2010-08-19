@@ -1,4 +1,4 @@
-parted (2.3-2) UNRELEASED; urgency=low
+parted (2.3-2) unstable; urgency=low
 
   * Fix patch ordering: btrfs.patch is for upstream merging, not a symbols
     patch.
@@ -12,7 +12,7 @@ parted (2.3-2) UNRELEASED; urgency=low
     the partition on DOS and GPT labels (thanks, Aurelien Jarno; closes:
     #588364).
 
- -- Colin Watson <cjwatson@debian.org>  Thu, 19 Aug 2010 11:14:09 +0100
+ -- Colin Watson <cjwatson@debian.org>  Thu, 19 Aug 2010 12:19:36 +0100
 
 parted (2.3-1) unstable; urgency=low
 
