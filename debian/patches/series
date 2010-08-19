@@ -6,10 +6,10 @@ preserve-hidden-parts.patch
 update-ext4-code.patch
 #unblacklist-md.patch
 kfreebsd-gnu.patch
+btrfs.patch
 
 # Backported
 sun-revert-disk-flag.patch
 
 # Symbols for this ABI (amd64 as reference)
-btrfs.patch
 update-abi-symbols.patch

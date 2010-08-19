@@ -1,3 +1,10 @@
+parted (2.3-2) UNRELEASED; urgency=low
+
+  * Fix patch ordering: btrfs.patch is for upstream merging, not a symbols
+    patch.
+
+ -- Colin Watson <cjwatson@debian.org>  Thu, 19 Aug 2010 11:14:09 +0100
+
 parted (2.3-1) unstable; urgency=low
 
   * New upstream release.

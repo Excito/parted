@@ -10,7 +10,7 @@ Index: b/configure.ac
 ===================================================================
 --- a/configure.ac
 +++ b/configure.ac
-@@ -643,6 +643,7 @@
+@@ -629,6 +629,7 @@
  libparted/labels/Makefile
  libparted/fs/Makefile
  libparted/fs/amiga/Makefile
@@ -201,7 +201,7 @@ Index: b/libparted/fs/Makefile.in
 ===================================================================
 --- a/libparted/fs/Makefile.in
 +++ b/libparted/fs/Makefile.in
-@@ -831,7 +831,7 @@
+@@ -865,7 +865,7 @@
  top_build_prefix = @top_build_prefix@
  top_builddir = @top_builddir@
  top_srcdir = @top_srcdir@
@@ -210,7 +210,7 @@ Index: b/libparted/fs/Makefile.in
  partedincludedir = -I$(top_srcdir)/include
  noinst_LTLIBRARIES = libfs.la
  libfs_la_LDFLAGS = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
-@@ -850,7 +850,8 @@
+@@ -884,7 +884,8 @@
  		    linux_swap/liblinuxswap.la	\
  		    xfs/libxfs.la		\
  		    jfs/libjfs.la		\
@@ -1315,7 +1315,7 @@ Index: b/configure
 ===================================================================
 --- a/configure
 +++ b/configure
-@@ -31181,7 +31181,7 @@
+@@ -32179,7 +32179,7 @@
  
  
  
@@ -1324,7 +1324,7 @@ Index: b/configure
  
  cat >confcache <<\_ACEOF
  # This file is a shell script that caches the results of configure
-@@ -32237,6 +32237,7 @@
+@@ -33235,6 +33235,7 @@
      "libparted/labels/Makefile") CONFIG_FILES="$CONFIG_FILES libparted/labels/Makefile" ;;
      "libparted/fs/Makefile") CONFIG_FILES="$CONFIG_FILES libparted/fs/Makefile" ;;
      "libparted/fs/amiga/Makefile") CONFIG_FILES="$CONFIG_FILES libparted/fs/amiga/Makefile" ;;
