@@ -5,7 +5,7 @@ Description: Remove limits on loop labels
 Author: Colin Watson <cjwatson@ubuntu.com>
 Bug-Debian: http://bugs.debian.org/592679
 Bug-Ubuntu: https://bugs.launchpad.net/bugs/543838
-Forwarded: sent to parted-devel on 2010-08-19
+Forwarded: http://lists.alioth.debian.org/pipermail/parted-devel/2010-August/003725.html
 Last-Update: 2010-04-09
 
 Index: b/libparted/labels/pt-limit.c
