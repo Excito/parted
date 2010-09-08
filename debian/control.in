@@ -18,7 +18,8 @@ Build-Depends:
  debianutils (>= 1.13.1),
  libblkid-dev,
  po4a,
- pkg-config
+ pkg-config,
+ check
 
 Package: parted@BINPKGVER@
 Architecture: any
