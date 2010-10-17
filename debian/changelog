@@ -1,9 +1,9 @@
-parted (2.3-3) UNRELEASED; urgency=low
+parted (2.3-3) unstable; urgency=low
 
   * Build-depend on check, so that we can run more of our test suite.
   * Add ZFS detection support (thanks, Robert Millan; closes: #595007).
 
- -- Colin Watson <cjwatson@debian.org>  Wed, 08 Sep 2010 18:52:53 +0100
+ -- Colin Watson <cjwatson@debian.org>  Sun, 17 Oct 2010 11:13:02 +0100
 
 parted (2.3-2) unstable; urgency=low
 
