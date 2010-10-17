@@ -169,7 +169,16 @@ Index: b/scripts/data/abi/baseline_symbols.txt
  FUNC:ped_file_system_check
  FUNC:ped_file_system_clobber
  FUNC:ped_file_system_close
-@@ -352,6 +394,7 @@
+@@ -344,6 +386,8 @@
+ FUNC:ped_file_system_ufs_init
+ FUNC:ped_file_system_xfs_done
+ FUNC:ped_file_system_xfs_init
++FUNC:ped_file_system_zfs_done
++FUNC:ped_file_system_zfs_init
+ FUNC:ped_geometry_check
+ FUNC:ped_geometry_destroy
+ FUNC:ped_geometry_duplicate
+@@ -352,6 +396,7 @@
  FUNC:ped_geometry_map
  FUNC:ped_geometry_new
  FUNC:ped_geometry_read
@@ -177,7 +186,7 @@ Index: b/scripts/data/abi/baseline_symbols.txt
  FUNC:ped_geometry_set
  FUNC:ped_geometry_set_end
  FUNC:ped_geometry_set_start
-@@ -376,13 +419,11 @@
+@@ -376,13 +421,11 @@
  FUNC:ped_partition_is_busy
  FUNC:ped_partition_is_flag_available
  FUNC:ped_partition_new
@@ -191,7 +200,7 @@ Index: b/scripts/data/abi/baseline_symbols.txt
  FUNC:ped_round_down_to
  FUNC:ped_round_to_nearest
  FUNC:ped_round_up_to
-@@ -406,45 +447,112 @@
+@@ -406,45 +449,112 @@
  FUNC:ped_unit_parse
  FUNC:ped_unit_parse_custom
  FUNC:ped_unit_set_default
