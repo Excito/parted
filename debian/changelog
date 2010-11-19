@@ -2,6 +2,7 @@ parted (2.3-4) UNRELEASED; urgency=low
 
   * Fix used-uninitialised bug on devices smaller than one cylinder (closes:
     #602568).
+  * Ignore zero-length devices (closes: #602533).
 
  -- Colin Watson <cjwatson@debian.org>  Tue, 16 Nov 2010 19:32:44 +0000
 

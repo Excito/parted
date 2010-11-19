@@ -10,6 +10,7 @@ btrfs.patch
 loop-limits.patch
 freebsd-ufs.patch
 zfs.patch
+zero-length-devices.patch
 
 # Backported
 sun-revert-disk-flag.patch
