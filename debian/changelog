@@ -1,3 +1,10 @@
+parted (2.3-4) UNRELEASED; urgency=low
+
+  * Fix used-uninitialised bug on devices smaller than one cylinder (closes:
+    #602568).
+
+ -- Colin Watson <cjwatson@debian.org>  Tue, 16 Nov 2010 19:32:44 +0000
+
 parted (2.3-3) unstable; urgency=low
 
   * Build-depend on check, so that we can run more of our test suite.
