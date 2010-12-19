@@ -1,9 +1,9 @@
-parted (2.3-5) UNRELEASED; urgency=low
+parted (2.3-5) unstable; urgency=low
 
   * Remove DASD restriction on _disk_sync_part_table, as otherwise DASD
     partitioning will never work properly (closes: #605759).
 
- -- Colin Watson <cjwatson@debian.org>  Sun, 19 Dec 2010 12:55:33 +0000
+ -- Colin Watson <cjwatson@debian.org>  Sun, 19 Dec 2010 12:57:43 +0000
 
 parted (2.3-4) unstable; urgency=low
 
