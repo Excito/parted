@@ -16,6 +16,7 @@ zero-length-devices.patch
 sun-revert-disk-flag.patch
 sun-raid-type-test-fix.patch
 tiny-disk-constraint.patch
+dasd-sync.patch
 
 # Symbols for this ABI (amd64 as reference)
 update-abi-symbols.patch
