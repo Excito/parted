@@ -1,3 +1,11 @@
+parted (2.3-6) UNRELEASED; urgency=low
+
+  * Backport from upstream:
+    - Accommodate two-component Linux version numbers like 3.0
+      (LP: #796865).
+
+ -- Colin Watson <cjwatson@debian.org>  Wed, 15 Jun 2011 14:50:39 +0100
+
 parted (2.3-5) unstable; urgency=low
 
   * Remove DASD restriction on _disk_sync_part_table, as otherwise DASD
