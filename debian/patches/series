@@ -17,7 +17,7 @@ sun-revert-disk-flag.patch
 sun-raid-type-test-fix.patch
 tiny-disk-constraint.patch
 dasd-sync.patch
+linux-two-component.patch
 
 # Symbols for this ABI (amd64 as reference)
-linux-two-component.patch
 update-abi-symbols.patch
