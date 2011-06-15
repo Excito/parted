@@ -3,6 +3,8 @@ parted (2.3-6) UNRELEASED; urgency=low
   * Backport from upstream:
     - Accommodate two-component Linux version numbers like 3.0
       (LP: #796865).
+  * Rewrite package descriptions and add a Homepage field (thanks, Justin B
+    Rye; closes: #615124).
 
  -- Colin Watson <cjwatson@debian.org>  Wed, 15 Jun 2011 14:50:39 +0100
 
