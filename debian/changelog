@@ -1,4 +1,4 @@
-parted (2.3-6) UNRELEASED; urgency=low
+parted (2.3-6) unstable; urgency=low
 
   * Backport from upstream:
     - Accommodate two-component Linux version numbers like 3.0
@@ -6,7 +6,7 @@ parted (2.3-6) UNRELEASED; urgency=low
   * Rewrite package descriptions and add a Homepage field (thanks, Justin B
     Rye; closes: #615124).
 
- -- Colin Watson <cjwatson@debian.org>  Wed, 15 Jun 2011 14:50:39 +0100
+ -- Colin Watson <cjwatson@debian.org>  Wed, 15 Jun 2011 15:21:08 +0100
 
 parted (2.3-5) unstable; urgency=low
 
