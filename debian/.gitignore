@@ -2,4 +2,5 @@
 /libparted0-dev.files
 /libparted0-i18n.files
 /libparted0debian1.files
+/libparted0debian1.files.in
 /libparted0debian1.lintian-overrides

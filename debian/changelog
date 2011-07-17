@@ -3,6 +3,7 @@ parted (2.3-7) UNRELEASED; urgency=low
   * Use [linux-any] in debian/control rather than [!hurd-i386 !kfreebsd-i386
     !kfreebsd-amd64].
   * Remove libparted.la from libparted0-dev.
+  * Convert to multiarch.
 
  -- Colin Watson <cjwatson@debian.org>  Sun, 17 Jul 2011 09:21:18 +0100
 
