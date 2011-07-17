@@ -12,7 +12,7 @@ Build-Depends:
  quilt,
  libncurses-dev | libncurses5-dev,
  libreadline-dev | libreadline6-dev,
- libdevmapper-dev (>= 2:1.02.33) [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64],
+ libdevmapper-dev (>= 2:1.02.33) [linux-any],
  uuid-dev,
  gettext,
  texinfo (>= 4.2),
@@ -117,7 +117,7 @@ Description: disk partition manipulator - i18n support
 Package: libparted@LIBSONAME@-dev
 Architecture: any
 Section: libdevel
-Depends: libc6-dev, libparted@LIBSONAME@debian1 (= ${binary:Version}), libdevmapper-dev (>= 1.02.33) [!hurd-i386 !kfreebsd-i386 !kfreebsd-amd64], uuid-dev, libblkid-dev, ${misc:Depends}
+Depends: libc6-dev, libparted@LIBSONAME@debian1 (= ${binary:Version}), libdevmapper-dev (>= 1.02.33) [linux-any], uuid-dev, libblkid-dev, ${misc:Depends}
 Suggests: parted@BINPKGVER@ (= ${binary:Version}), parted@BINPKGVER@-doc
 Conflicts: libparted-dev, parted (<< 1.2.11)
 Replaces: libparted-dev, libparted2-dev (<< 2.2)
