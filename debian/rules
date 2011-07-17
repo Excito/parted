@@ -307,6 +307,7 @@ install: build packaging-files
 #	 installing the executable to /sbin ...) :-)
 	mkdir -p debian/tmp/lib
 	mv debian/tmp/usr/lib/*.so.* debian/tmp/lib
+	rm -f debian/tmp/usr/lib/*.la
 
 	dh_movefiles
 
