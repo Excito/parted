@@ -12,6 +12,7 @@ freebsd-ufs.patch
 zfs.patch
 zero-length-devices.patch
 freebsd-zvol.patch
+freebsd-geli.patch
 
 # Backported
 sun-revert-disk-flag.patch

@@ -2,6 +2,7 @@ parted (2.3-8) UNRELEASED; urgency=low
 
   [ Robert Millan ]
   * Add detection of ZFS volumes (closes: #635384).
+  * Add detection of GEOM encryption devices (closes: #635393).
 
  -- Colin Watson <cjwatson@debian.org>  Sat, 30 Jul 2011 14:29:56 +0100
 
