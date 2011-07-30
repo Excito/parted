@@ -1,3 +1,10 @@
+parted (2.3-8) UNRELEASED; urgency=low
+
+  [ Robert Millan ]
+  * Add detection of ZFS volumes (closes: #635384).
+
+ -- Colin Watson <cjwatson@debian.org>  Sat, 30 Jul 2011 14:29:56 +0100
+
 parted (2.3-7) unstable; urgency=low
 
   * Use [linux-any] in debian/control rather than [!hurd-i386 !kfreebsd-i386

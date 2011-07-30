@@ -11,6 +11,7 @@ loop-limits.patch
 freebsd-ufs.patch
 zfs.patch
 zero-length-devices.patch
+freebsd-zvol.patch
 
 # Backported
 sun-revert-disk-flag.patch
