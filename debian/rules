@@ -209,7 +209,8 @@ build-dbg/config.status: patch
 
 	touch $@
 
-build: build-deb build-udeb build-dbg
+build build-arch: build-deb build-udeb build-dbg
+build-indep: build-deb
 
 # Avoid confusion from automatic autotools rebuild rules following patches
 # that touch configure.ac and Makefile.am files.
