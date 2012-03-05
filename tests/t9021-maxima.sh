@@ -1,7 +1,7 @@
 #!/bin/sh
 # verify that partition maxima-querying functions work
 
-# Copyright (C) 2009-2010 Free Software Foundation, Inc.
+# Copyright (C) 2009-2011 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,16 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 ss=$sector_size_
 
-fail=0
 dev=dev-file
 PATH="..:$PATH"
 export PATH
@@ -42,7 +35,7 @@ for t in msdos gpt dvh sun mac bsd amiga loop pc98; do
     max_start=4294967295
     max_len=4294967295
     case $t in
-	gpt) max_start=18446744073709551615; max_len=$max_start;;
+	gpt|loop) max_start=18446744073709551615; max_len=$max_start;;
 	sun) max_start=549755813760;; # 128 * (2^32-1)
     esac
 

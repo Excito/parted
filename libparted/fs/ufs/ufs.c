@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2001, 2007, 2009-2010 Free Software Foundation, Inc.
+    Copyright (C) 2001, 2007, 2009-2011 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -242,55 +242,12 @@ ufs_probe_hp (PedGeometry* geom)
 	return NULL;
 }
 
-#ifndef DISCOVER_ONLY
-static int
-ufs_clobber (PedGeometry* geom)
-{
-	char	buf[1536];
-
-	if (!ped_geometry_read (geom, buf, 16, 3))
-		return 0;
-
-	memset (buf, 0, sizeof(struct ufs_super_block));
-
-	return ped_geometry_write (geom, buf, 16, 3);
-}
-#endif /* !DISCOVER_ONLY */
-
 static PedFileSystemOps ufs_ops_sun = {
 	probe:		ufs_probe_sun,
-#ifndef DISCOVER_ONLY
-	clobber:	ufs_clobber,
-#else
-	clobber:	NULL,
-#endif
-	open:		NULL,
-	create:		NULL,
-	close:		NULL,
-	check:		NULL,
-	copy:		NULL,
-	resize:		NULL,
-	get_create_constraint:	NULL,
-	get_resize_constraint:	NULL,
-	get_copy_constraint:	NULL
 };
 
 static PedFileSystemOps ufs_ops_hp = {
 	probe:		ufs_probe_hp,
-#ifndef DISCOVER_ONLY
-	clobber:	ufs_clobber,
-#else
-	clobber:	NULL,
-#endif
-	open:		NULL,
-	create:		NULL,
-	close:		NULL,
-	check:		NULL,
-	copy:		NULL,
-	resize:		NULL,
-	get_create_constraint:	NULL,
-	get_resize_constraint:	NULL,
-	get_copy_constraint:	NULL
 };
 
 static PedFileSystemType ufs_type_sun = {
@@ -310,7 +267,7 @@ static PedFileSystemType ufs_type_hp = {
 void
 ped_file_system_ufs_init ()
 {
-	PED_ASSERT (sizeof (struct ufs_super_block) == 1380, return);
+	PED_ASSERT (sizeof (struct ufs_super_block) == 1380);
 
 	ped_file_system_type_register (&ufs_type_sun);
 	ped_file_system_type_register (&ufs_type_hp);

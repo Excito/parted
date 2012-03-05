@@ -1,7 +1,6 @@
 /*
     libparted
-    Copyright (C) 1998-2000, 2007, 2009-2010 Free Software Foundation,
-    Inc.
+    Copyright (C) 1998-2000, 2007, 2009-2011 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -126,7 +125,6 @@ int fat_boot_sector_generate (FatBootSector* bs, const PedFileSystem* fs);
 int fat_boot_sector_write (const FatBootSector* bs, PedFileSystem* fs);
 
 int fat_info_sector_read (FatInfoSector* is, const PedFileSystem* fs);
-int fat_info_sector_generate (FatInfoSector* is, const PedFileSystem* fs);
 int fat_info_sector_write (const FatInfoSector* is, PedFileSystem* fs);
 
 #endif /* PED_FAT_BOOTSECTOR_H */

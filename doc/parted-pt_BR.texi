@@ -22,7 +22,7 @@
 This file documents the use of GNU Parted, a program for creating,
 resising, checking and copy partitions, and file systems on them.
 
-Copyright 1999-2002, 2009-2010 Free Software Foundation, Inc.
+Copyright 1999-2002, 2009-2011 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -1380,7 +1380,7 @@ none           /dev/pts     devpts  gid=5,mode=620  0 0
 thing.  However, on PC and PC98 based computers, the word BIOS is more
 common.  On Apple Macintosh and Sun computers, the word ``firmware'' is
 more common.  The BIOS or firmware program is built into a ROM chip
-inside your computer, that does memory checks, etc.  You can not
+inside your computer, that does memory checks, etc.  You cannot
 (easily) change this program.  Since BIOSes today are generally
 compatible with BIOSes in use 20 years ago, these programs tend to have
 an antiquated design.  Features have been added in counter-intuitive

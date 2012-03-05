@@ -1,5 +1,107 @@
 GNU parted NEWS                                    -*- outline -*-
 
+* Noteworthy changes in release 3.0 (2011-05-30) [stable]
+
+** Bug fixes
+
+  Fix numerous small leaks in both the library and the UI.
+
+** Changes in behavior
+
+  Remove all FS-related (file system-related) sub-commands; these commands
+  are no longer recognized because they were all dependent on parted "knowing"
+  too much about file system: mkpartfs, mkfs, cp, move, check, resize.
+  This change removes not just the user interface bits, but also the
+  library functions and nearly all of the underlying FS-munging code.
+  The code embedded in Parted by which it knew about those file systems
+  was so old, unmaintainable and buggy that while seemingly drastic,
+  this change is like removing a gangrenous toe.
+
+  Here is the list of removed functions:
+
+    ped_file_system_clobber
+    ped_file_system_open
+    ped_file_system_create
+    ped_file_system_close
+    ped_file_system_check
+    ped_file_system_copy
+    ped_file_system_resize
+    ped_file_system_get_create_constraint
+    ped_file_system_get_resize_constraint
+    ped_file_system_get_copy_constraint
+
+  This change also removes the corresponding function members
+  from "struct _PedFileSystemOps":
+
+    clobber open create close check copy resize get_create_constraint
+    get_resize_constraint get_copy_constraint
+
+
+* Noteworthy changes in release 2.4 (2011-05-18) [stable]
+
+** Bug fixes
+
+  parted no longer allows the modification of certain in-use partitions.
+  In particular, before this fix, parted would permit removal or modification
+  of any in-use partition on a dmraid and any in-use partition beyond the 15th
+  on a regular scsi disk.
+
+  Improve support of DASD devices on the s390 architecture.
+  Parted now supports all DASD types (CKD and FBA), DASD formats (CDL,
+  LDL, CMS non-reserved, and CMS reserved), and DASD drivers (ECKD, FBA,
+  and DIAG) in all combinations supported by the Linux kernel.  As before,
+  only CDL format on CKD DASD using the ECKD driver is supported for
+  read-write operations (create, delete, move, re-size, etc.).  However,
+  the implicit partition present on LDL- and CMS-formatted disks is now
+  correctly recognized for read-only operations.  In detail:
+
+  - parted now correctly handles LDL-format disks with a block
+    size other than 4096 (bug fix)
+
+  - parted now recognizes the CMS disk format, both reserved
+    and non-reserved (enhancement)
+
+  - parted now supports FBA DASD devices (enhancement)
+
+  - parted now supports the DIAG driver when running in a
+    virtual machine under z/VM (enhancement)
+
+  libparted: raise the limit on the maximum start sector and the
+  maximum number of sectors in a "loop" partition table from 2^32 to 2^64.
+  [bug introduced in parted-2.1]
+
+  libparted once again recognizes a whole-disk FAT partition
+  [bug introduced in parted-1.9.0]
+
+  libparted now recognizes scsi disks with a high major (128-135) as scsi
+  disks
+
+  an msdos partition table on a very small device (smaller than one cylinder)
+  is now recognized.  [bug introduced in parted-2.2]
+
+  libparted: zero-length devices (other than files) are ignored rather than
+  throwing an exception.
+
+  libparted: gpt label creation can no longer divide by zero with a
+  defective device or when a concurrent writer modifies the PE-size
+  bytes in the small interval between the write and subsequent read
+  of the primary GPT header.
+
+** Changes in behavior
+
+  "parted $dev print" now prints information about the device (model, size,
+  transport, sector size) even when it fails to recognize the disk label.
+
+  specifying partition start or end values using MiB, GiB, etc. suffixes
+  now makes parted do what I want, i.e., use that precise value, and not
+  some other that is up to 500KiB or 500MiB away from what I specified.
+  Before, to get that behavior, you would have had to use carefully chosen
+  values with units of bytes ("B") or sectors ("s") to obtain the same
+  result, and with sectors, your usage would not be portable between devices
+  with varying sector sizes.  This change does not affect how parted handles
+  suffixes like KB, MB, GB, etc.
+
+
 * Noteworthy changes in release 2.3 (2010-05-28) [stable]
 
 ** New features
@@ -477,7 +579,7 @@ GNU parted NEWS                                    -*- outline -*-
 
 ========================================================================
 
-Copyright (C) 2001-2010 Free Software Foundation, Inc.
+Copyright (C) 2001-2011 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or

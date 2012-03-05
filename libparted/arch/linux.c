@@ -1,5 +1,5 @@
 /* libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2010 Free Software Foundation, Inc.
+    Copyright (C) 1999-2011 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -40,12 +40,14 @@
 #include <sys/types.h>
 #include <sys/utsname.h>        /* for uname() */
 #include <scsi/scsi.h>
+#include <assert.h>
 #ifdef ENABLE_DEVICE_MAPPER
 #include <libdevmapper.h>
 #endif
 
 #include "../architecture.h"
 #include "dirname.h"
+#include "xstrtol.h"
 
 #if ENABLE_NLS
 #  include <libintl.h>
@@ -220,6 +222,14 @@ struct blkdev_ioctl_param {
 #define SCSI_DISK5_MAJOR        69
 #define SCSI_DISK6_MAJOR        70
 #define SCSI_DISK7_MAJOR        71
+#define SCSI_DISK8_MAJOR        128
+#define SCSI_DISK9_MAJOR        129
+#define SCSI_DISK10_MAJOR       130
+#define SCSI_DISK11_MAJOR       131
+#define SCSI_DISK12_MAJOR       132
+#define SCSI_DISK13_MAJOR       133
+#define SCSI_DISK14_MAJOR       134
+#define SCSI_DISK15_MAJOR       135
 #define COMPAQ_SMART2_MAJOR     72
 #define COMPAQ_SMART2_MAJOR1    73
 #define COMPAQ_SMART2_MAJOR2    74
@@ -260,7 +270,8 @@ struct blkdev_ioctl_param {
 #define SCSI_BLK_MAJOR(M) (                                             \
                 (M) == SCSI_DISK0_MAJOR                                 \
                 || (M) == SCSI_CDROM_MAJOR                              \
-                || ((M) >= SCSI_DISK1_MAJOR && (M) <= SCSI_DISK7_MAJOR))
+                || ((M) >= SCSI_DISK1_MAJOR && (M) <= SCSI_DISK7_MAJOR) \
+                || ((M) >= SCSI_DISK8_MAJOR && (M) <= SCSI_DISK15_MAJOR))
 
 /* Maximum number of partitions supported by linux. */
 #define MAX_NUM_PARTS		64
@@ -496,8 +507,8 @@ _probe_dm_devices ()
 static int
 _device_stat (PedDevice* dev, struct stat * dev_stat)
 {
-        PED_ASSERT (dev != NULL, return 0);
-        PED_ASSERT (!dev->external_mode, return 0);
+        PED_ASSERT (dev != NULL);
+        PED_ASSERT (!dev->external_mode);
 
         while (1) {
                 if (!stat (dev->path, dev_stat)) {
@@ -644,7 +655,7 @@ _device_set_sector_size (PedDevice* dev)
         dev->sector_size = PED_SECTOR_SIZE_DEFAULT;
         dev->phys_sector_size = PED_SECTOR_SIZE_DEFAULT;
 
-        PED_ASSERT (dev->open_count, return);
+        PED_ASSERT (dev->open_count);
 
         if (_get_linux_version() < KERNEL_VERSION (2,3,0)) {
                 dev->sector_size = PED_SECTOR_SIZE_DEFAULT;
@@ -710,10 +721,17 @@ _device_get_length (PedDevice* dev)
         unsigned long           size;
         LinuxSpecific*          arch_specific = LINUX_SPECIFIC (dev);
         uint64_t bytes=0;
+        const char*             test_str;
+        PedSector               test_size;
 
 
-        PED_ASSERT (dev->open_count > 0, return 0);
-        PED_ASSERT (dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
+        PED_ASSERT (dev->open_count > 0);
+        PED_ASSERT (dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0);
+
+        test_str = getenv ("PARTED_TEST_DEVICE_LENGTH");
+        if (test_str
+            && xstrtoll (test_str, NULL, 10, &test_size, NULL) == LONGINT_OK)
+                return test_size;
 
         if (_kernel_has_blkgetsize64()) {
                 if (ioctl(arch_specific->fd, BLKGETSIZE64, &bytes) == 0) {
@@ -743,7 +761,7 @@ _device_probe_geometry (PedDevice* dev)
 
         if (!_device_stat (dev, &dev_stat))
                 return 0;
-        PED_ASSERT (S_ISBLK (dev_stat.st_mode), return 0);
+        PED_ASSERT (S_ISBLK (dev_stat.st_mode));
 
         _device_set_sector_size (dev);
 
@@ -823,7 +841,7 @@ init_ide (PedDevice* dev)
                                 dev->model = strdup(_("Generic IDE"));
                                 break;
                         default:
-                                PED_ASSERT (0, (void) 0);
+                                PED_ASSERT (0);
                                 break;
                 }
         } else {
@@ -859,7 +877,7 @@ init_ide (PedDevice* dev)
                                 case PED_EXCEPTION_IGNORE:
                                         break;
                                 default:
-                                        PED_ASSERT (0, (void) 0);
+                                        PED_ASSERT (0);
                                         break;
                         }
                 }
@@ -896,8 +914,10 @@ read_device_sysfs_file (PedDevice *dev, const char *file)
         if ((f = fopen (name_buf, "r")) == NULL)
                 return NULL;
 
-        if (fgets (buf, 255, f) == NULL)
+        if (fgets (buf, 255, f) == NULL) {
+                fclose (f);
                 return NULL;
+        }
 
         fclose (f);
         return strip_name (buf);
@@ -1080,7 +1100,7 @@ init_file (PedDevice* dev)
                 ped_exception_throw (
                         PED_EXCEPTION_ERROR,
                         PED_EXCEPTION_CANCEL,
-                        _("The device %s has zero length, and can't possibly "
+                        _("The device %s is so small that it cannot possibly "
                           "store a file system or partition table.  Perhaps "
                           "you selected the wrong device?"),
                         dev->path);
@@ -1119,7 +1139,7 @@ init_dasd (PedDevice* dev, const char* model_name)
 
         LinuxSpecific* arch_specific = LINUX_SPECIFIC (dev);
 
-        PED_ASSERT (S_ISBLK (dev_stat.st_mode), return 0);
+        PED_ASSERT (S_ISBLK (dev_stat.st_mode));
 
         _device_set_sector_size (dev);
         if (!dev->sector_size)
@@ -1180,6 +1200,12 @@ init_generic (PedDevice* dev, const char* model_name)
         if (_device_probe_geometry (dev)) {
                 ped_exception_leave_all ();
         } else {
+		if (!_device_get_length (dev)) {
+			ped_exception_catch ();
+			ped_exception_leave_all ();
+			goto error_close_dev;
+		}
+
                 /* hack to allow use of files, for testing */
                 ped_exception_catch ();
                 ped_exception_leave_all ();
@@ -1200,7 +1226,7 @@ init_generic (PedDevice* dev, const char* model_name)
                         case PED_EXCEPTION_IGNORE:
                                 break;
                         default:
-                                PED_ASSERT (0, (void) 0);
+                                PED_ASSERT (0);
                                 break;
                 }
 
@@ -1258,7 +1284,7 @@ linux_new (const char* path)
         PedDevice*      dev;
         LinuxSpecific*  arch_specific;
 
-        PED_ASSERT (path != NULL, return NULL);
+        PED_ASSERT (path != NULL);
 
         dev = (PedDevice*) ped_malloc (sizeof (PedDevice));
         if (!dev)
@@ -1606,9 +1632,9 @@ _device_seek (const PedDevice* dev, PedSector sector)
 {
         LinuxSpecific*  arch_specific;
 
-        PED_ASSERT (dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
-        PED_ASSERT (dev != NULL, return 0);
-        PED_ASSERT (!dev->external_mode, return 0);
+        PED_ASSERT (dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0);
+        PED_ASSERT (dev != NULL);
+        PED_ASSERT (!dev->external_mode);
 
         arch_specific = LINUX_SPECIFIC (dev);
 
@@ -1630,8 +1656,8 @@ _read_lastoddsector (const PedDevice* dev, void* buffer)
         LinuxSpecific*                  arch_specific;
         struct blkdev_ioctl_param       ioctl_param;
 
-        PED_ASSERT(dev != NULL, return 0);
-        PED_ASSERT(buffer != NULL, return 0);
+        PED_ASSERT(dev != NULL);
+        PED_ASSERT(buffer != NULL);
 
         arch_specific = LINUX_SPECIFIC (dev);
 
@@ -1665,8 +1691,8 @@ linux_read (const PedDevice* dev, void* buffer, PedSector start,
         PedExceptionOption      ex_status;
         void*                   diobuf = NULL;
 
-        PED_ASSERT (dev != NULL, return 0);
-        PED_ASSERT (dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
+        PED_ASSERT (dev != NULL);
+        PED_ASSERT (dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0);
 
         if (_get_linux_version() < KERNEL_VERSION (2,6,0)) {
                 /* Kludge.  This is necessary to read/write the last
@@ -1700,7 +1726,7 @@ linux_read (const PedDevice* dev, void* buffer, PedSector start,
                         case PED_EXCEPTION_CANCEL:
                                 return 0;
                         default:
-                                PED_ASSERT (0, (void) 0);
+                                PED_ASSERT (0);
                                 break;
                 }
         }
@@ -1744,7 +1770,7 @@ linux_read (const PedDevice* dev, void* buffer, PedSector start,
                                 free(diobuf);
                                 return 0;
                         default:
-                                PED_ASSERT (0, (void) 0);
+                                PED_ASSERT (0);
                                 break;
                 }
         }
@@ -1760,8 +1786,8 @@ _write_lastoddsector (PedDevice* dev, const void* buffer)
         LinuxSpecific*                  arch_specific;
         struct blkdev_ioctl_param       ioctl_param;
 
-        PED_ASSERT(dev != NULL, return 0);
-        PED_ASSERT(buffer != NULL, return 0);
+        PED_ASSERT(dev != NULL);
+        PED_ASSERT(buffer != NULL);
 
         arch_specific = LINUX_SPECIFIC (dev);
 
@@ -1796,7 +1822,7 @@ linux_write (PedDevice* dev, const void* buffer, PedSector start,
         void*                   diobuf;
         void*                   diobuf_start;
 
-        PED_ASSERT(dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0, return 0);
+        PED_ASSERT(dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0);
 
         if (dev->read_only) {
                 if (ped_exception_throw (
@@ -1842,7 +1868,7 @@ linux_write (PedDevice* dev, const void* buffer, PedSector start,
                         case PED_EXCEPTION_CANCEL:
                                 return 0;
                         default:
-                                PED_ASSERT (0, (void) 0);
+                                PED_ASSERT (0);
                                 break;
                 }
         }
@@ -1886,7 +1912,7 @@ linux_write (PedDevice* dev, const void* buffer, PedSector start,
                                 free(diobuf_start);
                                 return 0;
                         default:
-                                PED_ASSERT (0, (void) 0);
+                                PED_ASSERT (0);
                                 break;
                 }
         }
@@ -1905,7 +1931,7 @@ linux_check (PedDevice* dev, void* buffer, PedSector start, PedSector count)
         int             status;
         void*           diobuf;
 
-        PED_ASSERT(dev != NULL, return 0);
+        PED_ASSERT(dev != NULL);
 
         if (!_device_seek (dev, start))
                 return 0;
@@ -1956,7 +1982,7 @@ _do_fsync (PedDevice* dev)
                         case PED_EXCEPTION_CANCEL:
                                 return 0;
                         default:
-                                PED_ASSERT (0, (void) 0);
+                                PED_ASSERT (0);
                                 break;
                 }
         }
@@ -1966,8 +1992,8 @@ _do_fsync (PedDevice* dev)
 static int
 linux_sync (PedDevice* dev)
 {
-        PED_ASSERT (dev != NULL, return 0);
-        PED_ASSERT (!dev->external_mode, return 0);
+        PED_ASSERT (dev != NULL);
+        PED_ASSERT (!dev->external_mode);
 
         if (dev->read_only)
                 return 1;
@@ -1980,8 +2006,8 @@ linux_sync (PedDevice* dev)
 static int
 linux_sync_fast (PedDevice* dev)
 {
-        PED_ASSERT (dev != NULL, return 0);
-        PED_ASSERT (!dev->external_mode, return 0);
+        PED_ASSERT (dev != NULL);
+        PED_ASSERT (!dev->external_mode);
 
         if (dev->read_only)
                 return 1;
@@ -2038,16 +2064,17 @@ _probe_proc_partitions ()
         char            buf [512];
         char            part_name [256];
         char            dev_name [256];
+        int ok = 0;
 
         proc_part_file = fopen ("/proc/partitions", "r");
         if (!proc_part_file)
                 return 0;
 
         if (fgets (buf, 256, proc_part_file) == NULL)
-                return 0;
+                goto done;
 
         if (fgets (buf, 256, proc_part_file) == NULL)
-                return 0;
+                goto done;
 
         while (fgets (buf, 512, proc_part_file)
                && sscanf (buf, "%d %d %d %255s", &major, &minor, &size,
@@ -2064,8 +2091,10 @@ _probe_proc_partitions ()
                 _ped_device_probe (dev_name);
         }
 
+        ok = 1;
+ done:
         fclose (proc_part_file);
-        return 1;
+        return ok;
 }
 
 struct _entry {
@@ -2171,32 +2200,39 @@ linux_probe_all ()
                 _probe_proc_partitions ();
 }
 
-static char*
-_device_get_part_path (PedDevice* dev, int num)
+static char * _GL_ATTRIBUTE_FORMAT ((__printf__, 1, 2))
+zasprintf (const char *format, ...)
 {
-        int             path_len = strlen (dev->path);
-        int             result_len = path_len + 16;
-        char*           result;
+  va_list args;
+  char *resultp;
+  va_start (args, format);
+  int r = vasprintf (&resultp, format, args);
+  va_end (args);
+  return r < 0 ? NULL : resultp;
+}
 
-        result = (char*) ped_malloc (result_len);
-        if (!result)
-                return NULL;
+static char*
+_device_get_part_path (PedDevice *dev, int num)
+{
+        size_t path_len = strlen (dev->path);
 
+        char *result;
         /* Check for devfs-style /disc => /partN transformation
            unconditionally; the system might be using udev with devfs rules,
            and if not the test is harmless. */
-        if (!strcmp (dev->path + path_len - 5, "/disc")) {
-                /* replace /disc with /path%d */
-                strcpy (result, dev->path);
-                snprintf (result + path_len - 5, 16, "/part%d", num);
-        } else if (dev->type == PED_DEVICE_DAC960
-                        || dev->type == PED_DEVICE_CPQARRAY
-                        || dev->type == PED_DEVICE_ATARAID
-                        || dev->type == PED_DEVICE_DM
-                        || isdigit (dev->path[path_len - 1]))
-                snprintf (result, result_len, "%sp%d", dev->path, num);
-        else
-                snprintf (result, result_len, "%s%d", dev->path, num);
+        if (5 < path_len && !strcmp (dev->path + path_len - 5, "/disc")) {
+                /* replace /disc with /part%d */
+                result = zasprintf ("%.*s/part%d",
+                                    (int) (path_len - 5), dev->path, num);
+        } else {
+                char const *p = (dev->type == PED_DEVICE_DAC960
+                                 || dev->type == PED_DEVICE_CPQARRAY
+                                 || dev->type == PED_DEVICE_ATARAID
+                                 || dev->type == PED_DEVICE_DM
+                                 || isdigit (dev->path[path_len - 1])
+                                 ? "p" : "");
+                result = zasprintf ("%s%s%d", dev->path, p, num);
+        }
 
         return result;
 }
@@ -2205,19 +2241,6 @@ static char*
 linux_partition_get_path (const PedPartition* part)
 {
         return _device_get_part_path (part->disk->dev, part->num);
-}
-
-static dev_t
-_partition_get_part_dev (const PedPartition* part)
-{
-        struct stat dev_stat;
-        int dev_major, dev_minor;
-
-        if (stat (part->disk->dev->path, &dev_stat))
-                return (dev_t)0;
-        dev_major = major (dev_stat.st_rdev);
-        dev_minor = minor (dev_stat.st_rdev);
-        return (dev_t)makedev (dev_major, dev_minor + part->num);
 }
 
 static int
@@ -2263,22 +2286,25 @@ _partition_is_mounted_by_path (const char *path)
         return _partition_is_mounted_by_dev (part_stat.st_rdev);
 }
 
+/* If partition PART is mounted, or if we encounter an out-of-memory error
+   while trying to determine its status, return 1.  Otherwise, return 0.  */
 static int
 _partition_is_mounted (const PedPartition *part)
 {
-        dev_t dev;
-        if (!ped_partition_is_active (part))
-                return 0;
-        dev = _partition_get_part_dev (part);
-        if (!dev)
-                return 0;
-        return _partition_is_mounted_by_dev (dev);
+	if (!ped_partition_is_active (part))
+		return 0;
+	char *part_name = _device_get_part_path (part->disk->dev, part->num);
+	if (!part_name)
+		return 1;
+	int status = _partition_is_mounted_by_path (part_name);
+	free (part_name);
+	return !!status;
 }
 
 static int
 _has_partitions (const PedDisk* disk)
 {
-        PED_ASSERT(disk != NULL, return 0);
+        PED_ASSERT(disk != NULL);
 
         /* Some devices can't be partitioned. */
         if (!strcmp (disk->type->name, "loop"))
@@ -2292,7 +2318,7 @@ linux_partition_is_busy (const PedPartition* part)
 {
         PedPartition*   walk;
 
-        PED_ASSERT (part != NULL, return 0);
+        PED_ASSERT (part != NULL);
 
         if (_partition_is_mounted (part))
                 return 1;
@@ -2326,9 +2352,8 @@ _blkpg_add_partition (PedDisk* disk, const PedPartition *part)
         const char*             vol_name;
         char*                   dev_name;
 
-        PED_ASSERT(disk != NULL, return 0);
-        PED_ASSERT(disk->dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0,
-                   return 0);
+        PED_ASSERT(disk != NULL);
+        PED_ASSERT(disk->dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0);
 
         if (!_has_partitions (disk))
                 return 0;
@@ -2436,8 +2461,8 @@ _device_get_partition_range(PedDevice* dev)
 static int
 _disk_sync_part_table (PedDisk* disk)
 {
-        PED_ASSERT(disk != NULL, return 0);
-        PED_ASSERT(disk->dev != NULL, return 0);
+        PED_ASSERT(disk != NULL);
+        PED_ASSERT(disk->dev != NULL);
         int lpn;
 
         /* lpn = largest partition number. */
@@ -2710,15 +2735,15 @@ _dm_add_partition (PedDisk* disk, PedPartition* part)
 
         dev_name = dm_task_get_name (task);
 
-        if (asprintf (&vol_name, "%sp%d", dev_name, part->num) == -1)
+        if ( ! (vol_name = zasprintf ("%sp%d", dev_name, part->num)))
                 goto err;
 
         /* Caution: dm_task_destroy frees dev_name.  */
         dm_task_destroy (task);
         task = NULL;
 
-        if (asprintf (&params, "%d:%d %lld", arch_specific->major,
-                      arch_specific->minor, part->geom.start) == -1)
+        if ( ! (params = zasprintf ("%d:%d %lld", arch_specific->major,
+                                    arch_specific->minor, part->geom.start)))
                 goto err;
 
         task = dm_task_create (DM_DEVICE_CREATE);
@@ -2801,20 +2826,15 @@ linux_disk_commit (PedDisk* disk)
                 return _dm_reread_part_table (disk);
 #endif
         if (disk->dev->type != PED_DEVICE_FILE) {
-                /* The ioctl() command BLKPG_ADD_PARTITION does not notify
-                 * the devfs system; consequently, /proc/partitions will not
-                 * be up to date, and the proper links in /dev are not
-                 * created.  Therefore, if using DevFS, we must get the kernel
-                 * to re-read and grok the partition table.
-                 */
-                /* Work around kernel dasd problem so we really do BLKRRPART */
-		int ok = 1;
-		if (disk->dev->type != PED_DEVICE_DASD && _have_blkpg ()) {
-			if (!_disk_sync_part_table (disk))
-			  ok = 0;
-		}
 
-                return ok;
+		/* We now require BLKPG support.  If this assertion fails,
+		   please write to the mailing list describing your system.
+		   Assuming it's never triggered, ...
+		   FIXME: remove this assertion in 2012.  */
+		assert (_have_blkpg ());
+
+		if (!_disk_sync_part_table (disk))
+			return 0;
         }
 
         return 1;
@@ -2846,13 +2866,29 @@ linux_get_optimum_alignment(const PedDevice *dev)
         if (!tp)
                 return NULL;
 
-        /* If optimal_io_size is 0 _and_ alignment_offset is 0 _and_
-           minimum_io_size is a power of 2 then go with the device.c default */
-        unsigned long minimum_io_size = blkid_topology_get_minimum_io_size(tp);
-        if (blkid_topology_get_optimal_io_size(tp) == 0 &&
-            blkid_topology_get_alignment_offset(tp) == 0 &&
-            (minimum_io_size & (minimum_io_size - 1)) == 0)
-                return NULL;
+        /* When PED_DEFAULT_ALIGNMENT is divisible by the *_io_size or
+	   there are no *_io_size values, use the PED_DEFAULT_ALIGNMENT
+           If one or the other will not divide evenly, fall through to
+           previous logic. */
+        unsigned long optimal_io = blkid_topology_get_optimal_io_size(tp);
+        unsigned long minimum_io = blkid_topology_get_minimum_io_size(tp);
+        if (
+            (!optimal_io && !minimum_io)
+	    || (optimal_io && PED_DEFAULT_ALIGNMENT % optimal_io == 0
+		&& minimum_io && PED_DEFAULT_ALIGNMENT % minimum_io == 0)
+	    || (!minimum_io && optimal_io
+		&& PED_DEFAULT_ALIGNMENT % optimal_io == 0)
+	    || (!optimal_io && minimum_io
+		&& PED_DEFAULT_ALIGNMENT % minimum_io == 0)
+           ) {
+            /* DASD needs to use minimum alignment */
+            if (dev->type == PED_DEVICE_DASD)
+                return linux_get_minimum_alignment(dev);
+
+            return ped_alignment_new(
+                    blkid_topology_get_alignment_offset(tp) / dev->sector_size,
+                    PED_DEFAULT_ALIGNMENT / dev->sector_size);
+        }
 
         /* If optimal_io_size is 0 and we don't meet the other criteria
            for using the device.c default, return the minimum alignment. */

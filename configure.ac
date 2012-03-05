@@ -1,5 +1,5 @@
 dnl GNU Parted - a library and front end for manipulation hard disk partitions
-dnl Copyright (C) 1998-2002, 2005-2010 Free Software Foundation, Inc.
+dnl Copyright (C) 1998-2002, 2005-2011 Free Software Foundation, Inc.
 dnl
 dnl This file may be modified and/or distributed without restriction.
 
@@ -117,15 +117,6 @@ if test "$enable_discover_only" = yes \
 	)
 fi
 
-AC_ARG_ENABLE([fs],
-	[  --enable-fs             include filesystem support [default=yes]], ,
-	enable_fs=yes
-)
-if test "$enable_fs" = yes; then
-	AC_DEFINE([ENABLE_FS], [1],
-		  [Include file system support.  i.e. libparted/fs_...])
-fi
-
 AC_ARG_ENABLE([debug],
 	[  --enable-debug          compile in assertions [default=yes]], ,
 	enable_debug=yes
@@ -156,11 +147,6 @@ if test "$enable_pc98" = yes; then
 		  [Include PC98 partition tables.  (Sometimes excluded to avoid
 		   collisions with msdos partition tables])
 fi
-
-AC_ARG_ENABLE([Werror],
-	[  --enable-Werror         build with gcc -Werror [default=yes]], ,
-	enable_Werror=yes
-)
 
 AC_ARG_ENABLE([hfs-extract-fs],
 	[  --enable-hfs-extract-fs Extract special HFS files for debugging [default=no]], ,
@@ -310,10 +296,13 @@ fi
 
 dnl Check for libdl, if we are doing dynamic loading
 DL_LIBS=""
+AC_SUBST([DYNAMIC_LOADING])
+DYNAMIC_LOADING=no
 if test "$enable_dynamic_loading" = yes; then
 	AC_CHECK_LIB([dl], [dlopen],
 		DL_LIBS="-ldl"
 		PARTED_LIBS="$PARTED_LIBS -ldl"
+		DYNAMIC_LOADING=yes
 		AC_DEFINE([DYNAMIC_LOADING], [1], [Lazy linking to fs libs]),
 		AC_MSG_ERROR(
 			[-ldl not found!  Try using --disable-dynamic-loading]
@@ -326,15 +315,12 @@ dnl Check for libuuid
 UUID_LIBS=""
 AC_CHECK_LIB([uuid], [uuid_generate], [UUID_LIBS="-luuid"],
 	[AC_MSG_ERROR(dnl
-[GNU Parted requires libuuid - a part of the e2fsprogs package (but
-sometimes distributed separately in uuid-devel or similar)
+[GNU Parted requires libuuid - a part of the util-linux-ng package (but
+usually distributed separately in libuuid-devel, uuid-dev or similar)
 This can probably be found on your distribution's CD or FTP site or at:
-         http://web.mit.edu/tytso/www/linux/e2fsprogs.html
-Note: if you are using precompiled packages you will also need the development
-package as well (which may be called e2fsprogs-devel or something similar).
-If you compile e2fsprogs yourself then you need to do 'make install' and
-'make install-libs'.])]
-)
+    http://userweb.kernel.org/~kzak/util-linux-ng/
+Note: originally, libuuid was part of the e2fsprogs package.  Later, it
+moved to util-linux-ng-2.16, and that package is now the preferred source.])])
 AC_SUBST([UUID_LIBS])
 
 dnl Check for libdevmapper
@@ -519,6 +505,7 @@ If you can't find one try:
 )
 
 AC_CHECK_HEADERS([getopt.h])
+AC_CHECK_HEADERS([linux/ext2_fs.h])
 
 dnl required for libparted/llseek.c  (TODO: make linux-x86 only)
 if test "$OS" = linux; then
@@ -592,12 +579,6 @@ fi
 
 AC_CHECK_FUNCS([canonicalize_file_name])
 
-# CFLAGS="$CFLAGS -W -Wall -Wno-unused -Wno-switch -Wno-format"
-
-if test "$enable_Werror" = yes; then
-	CFLAGS="$CFLAGS -Werror"
-fi
-
 DATE=$(date '+%d %b %Y %H:%M')
 USER=$(whoami)
 HOST=$(hostname)
@@ -634,6 +615,7 @@ libparted/fs/ntfs/Makefile
 libparted/fs/reiserfs/Makefile
 libparted/fs/ufs/Makefile
 libparted/fs/xfs/Makefile
+libparted/fs/nilfs2/Makefile
 libparted/tests/Makefile
 libparted.pc
 parted/Makefile
@@ -642,7 +624,6 @@ doc/Makefile
 doc/C/Makefile
 doc/pt_BR/Makefile
 debug/Makefile
-debug/clearfat/Makefile
 debug/test/Makefile
 tests/Makefile
 po/Makefile.in

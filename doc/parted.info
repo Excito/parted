@@ -1,9 +1,9 @@
 This is parted.info, produced by makeinfo version 4.13 from parted.texi.
 
-This file documents the use of GNU Parted, a program for creating,
-resizing, checking and copy partitions and file systems on them.
+This file documents the use of GNU Parted, a program for creating and
+manipulating partition tables.
 
-  Copyright (C) 1999-2010 Free Software Foundation, Inc.
+  Copyright (C) 1999-2011 Free Software Foundation, Inc.
 
   Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -23,11 +23,10 @@ File: parted.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU Parted User Manual
 **********************
 
-This document describes the use of GNU Parted, a program for creating,
-destroying, resizing, checking and copying hard drive partitions, and
-the file systems on them.
+This file documents the use of GNU Parted, a program for creating and
+manipulating partition tables.
 
-  This document applies roughly to version *2.3* of GNU Parted.
+  This document applies roughly to version *3.0* of GNU Parted.
 
   The original version was written by Andrew Clausen in text format.
 Richard M. Kreuter translated it into Texinfo format in 2002, to be
@@ -55,8 +54,6 @@ File: parted.info,  Node: Introduction,  Next: Using Parted,  Prev: Top,  Up: To
 * Supported Platforms::         Where you can use GNU Parted
 * License::                     What you may and may not do with GNU Parted
 * Compiling::                   How to build GNU Parted
-* Static binaries::             How to get and use a static version of GNU
-                                Parted
 
 
 File: parted.info,  Node: Overview,  Next: Software Required,  Up: Introduction
@@ -64,25 +61,16 @@ File: parted.info,  Node: Overview,  Next: Software Required,  Up: Introduction
 1.1 Overview of GNU Parted
 ==========================
 
-GNU Parted is a program for creating, destroying, resizing, checking
-and copying partitions, and the file systems on them.
-
-  This is useful for creating space for new operating systems, for
-reorganizing disk usage, for copying data between hard disks and for
-"disk imaging" -- replicating an installation on another computer.
+GNU Parted is a program for creating and manipulating partition tables.
 
   This documentation is written with the assumption that the reader has
-some understanding of partitioning and file systems.  If you want to
-learn more about these, the upcoming GNU Storage Guide is recommended
-reading.
+some understanding of partitioning and file systems.
 
   GNU Parted was designed to minimize the chance of data loss.  For
 example, it was designed to avoid data loss during interruptions (like
 power failure) and performs many safety checks.  However, there could
 be bugs in GNU Parted, so you should back up your important files before
-running Parted.  Also note that reiserfs support relies on libreiserfs,
-which does not fulfil the aforementioned requirement.  The same holds
-for any external tools like `ntfsresize'.
+running Parted.
 
   The GNU Parted homepage is `http://www.gnu.org/software/parted'.  The
 library and frontend themselves can be downloaded from
@@ -152,18 +140,13 @@ File: parted.info,  Node: Supported Platforms,  Next: License,  Prev: Software R
 
 Hopefully, this list will grow a lot.  If you do not have one of these
 platforms, then you can use a rescue disk and a static binary of GNU
-Parted.  *Note Static binaries::.
+Parted.
 
 GNU/Linux
      Linux versions 2.0 and up, on Alpha, x86 PCs, PC98, Macintosh
      PowerPC, Sun hardware.
 
 GNU/Hurd
-
-  GNU libc 2.1 or higher is required.  You can probably use older
-versions by using the `--disable-nls' option. *Note Building GNU
-Parted: Compiling. (Note: I think we have now dropped this requirement.
-TODO: check if libc 2.0 works!)
 
 
 File: parted.info,  Node: License,  Next: Compiling,  Prev: Supported Platforms,  Up: Introduction
@@ -181,7 +164,7 @@ General Public License.  It is NOT released under the GNU Lesser General
 Public License (LGPL).
 
 
-File: parted.info,  Node: Compiling,  Next: Static binaries,  Prev: License,  Up: Introduction
+File: parted.info,  Node: Compiling,  Prev: License,  Up: Introduction
 
 1.5 Building GNU Parted
 =======================
@@ -208,9 +191,6 @@ If you want to compile GNU Parted, this is generally done with:
      small overhead (mainly linking with libdl), so it may be useful to
      disable it on bootdisks if you don't need the flexibility.
 
-`--disable-fs'
-     disable all file system support
-
 `--disable-nls'
      turns off native language support.  This is useful for use with old
      versions of glibc, or a trimmed down version of glibc suitable for
@@ -220,9 +200,6 @@ If you want to compile GNU Parted, this is generally done with:
      turns off shared libraries.  This may be necessary for use with old
      versions of GNU libc, if you get a compile error about a "spilled
      register".  Also useful for boot/rescue disks.
-
-`--disable-Werror'
-     ignore warning messages in compilation
 
 `--enable-discover-only'
      support only reading/probing (reduces size considerably)
@@ -234,70 +211,12 @@ If you want to compile GNU Parted, this is generally done with:
      disable writing (for debugging)
 
 
-
-File: parted.info,  Node: Static binaries,  Prev: Compiling,  Up: Introduction
-
-1.6 Using static binaries of GNU Parted
-=======================================
-
-1.6.1 Introduction
+1.5.1 Introduction
 ------------------
 
 If you want to run GNU Parted on a machine without GNU/Linux installed,
-or you want to resize a root or boot partition, you will need to use a
-boot disk.
-
-  Special boot disk images for GNU Parted used to be available, but
-with the emergence of a plethora of rescue disks and Live CDs that all
-include GNU Parted this is no longer necessary.  However, please note
-that these disks often ship with out-of-date versions of Parted.  To
-compensate for this a static binary of the latest GNU Parted version is
-available, which you can use thus:
-
-1.6.2 Creating the Parted disk
-------------------------------
-
-  1. Boot your system
-
-  2. Download `parted-static-VERSION.tgz' from
-     `ftp://ftp.gnu.org/gnu/parted/static'
-
-  3. Unpack the tarball, resulting in a file called "parted.static".
-
-  4. Insert a floppy.
-
-  5. Do a low-level format on it (on GNU/Linux this can be achieved with
-          the tool "fdformat" from the "util-linux" package.
-     This is basically a sanity check because floppy disks often
-     contain bad blocks.
-
-  6. Create a file system. Example:
-
-          $ parted /dev/fd0 mklabel loop mkpartfs ext2 0 1.4
-
-  7. Mount the floppy disk, e.g.,
-
-          $ mount -t ext2 /dev/fd0 /mnt/floppy
-
-  8. Copy `parted.static' to the floppy, e.g.,
-
-          $ cp parted.static /mnt/floppy
-
-  9. Unmount the floppy, e.g.,
-
-          $ umount /mnt/floppy
-
-1.6.3 Using the Parted disk
----------------------------
-
-  1. Choose a rescue disk that suits you.
-
-  2. Boot off your rescue disk.  Mount the disk you copied Parted onto.
-
-  3. Run Parted.  For example,
-
-          # cd /mnt/floppy
-          # ./parted-static
+or you want to modify a root or boot partition, use GParted Live:
+`http://gparted.sourceforge.net/livecd.php'.
 
 
 File: parted.info,  Node: Using Parted,  Next: Related information,  Prev: Introduction,  Up: Top
@@ -343,57 +262,46 @@ want.)
   In command line mode, this is followed by one or more commands.  For
 example:
 
-     # parted /dev/sda resize 1 52Mb 104Mb mkfs 2 fat16
+     # parted /dev/sda mklabel gpt mkpart P1 ext3 1MiB 8MiB
 
 Options (like `--help') can only be specified on the command line.
 
   In interactive mode, commands are entered one at a time at a prompt,
 and modify the disk immediately.  For example:
 
-     (parted) resize 1 52.0005Mb 104.5Mb
-     (parted) mkfs 2 fat16
+     (parted) mklabel gpt
+     (parted) mkpart P1 ext3 1MiB 8MiB
 
 Unambiguous abbreviations are allowed.  For example, you can type "p"
-instead of "print", and "resi" instead of "resize".  Commands can be
-typed either in English, or your native language (if your language has
-been translated).  This may create ambiguities.  Commands are
+instead of "print", and "u" instead of "units".  Commands can be typed
+either in English, or your native language (if your language has been
+translated).  This may create ambiguities.  Commands are
 case-insensitive.
 
   Numbers indicating partition locations can be whole numbers or
 decimals.  The suffix selects the unit, which may be one of those
 described in *note unit::, except CHS and compact.  If no suffix is
 given, then the default unit is assumed.  Negative numbers count back
-from the end of the disk, with "-1s" indicating the end of the disk.
-Parted will compute sensible ranges for the locations you specify (e.g.
-a range of +/- 500 MB when you specify the location in "G"). Use the
-sector unit "s" to specify exact locations.
+from the end of the disk, with "-1s" indicating the sector at the end
+of the disk.  Parted will compute sensible ranges for the locations you
+specify (e.g. a range of +/- 500 MB when you specify the location in
+"G"). Use the sector unit "s" to specify exact locations.  With
+parted-2.4 and newer, IEC binary units like "MiB", "GiB", "TiB", etc.,
+specify exact locations as well.  See *Note IEC binary units::.
 
   If you don't give a parameter to a command, Parted will prompt you
 for it.  For example:
 
-     (parted) resize 1
-     Start? 0Gb
-     End? 40Gb
+     (parted) mklabel
+     New disk label type? gpt
 
   Parted will always warn you before doing something that is potentially
 dangerous, unless the command is one of those that is inherently
-dangerous (viz., rm, mklabel and mkfs).  For example, if you attempt to
-shrink a partition "too much" (i.e., by more than the free space
-available), Parted will automatically reduce the shrinkage so that the
-partition is the smallest it can be without losing data.  If this size
-is significantly different from the size requested, Parted will warn
-you.  Since many partitioning systems have complicated constraints,
-Parted will usually do something slightly different to what you asked.
-(For example, create a partition starting at 10.352Mb, not 10.4Mb) If
-the calculated values differ too much, Parted will ask you for
-confirmation.
-
-  Currently ext3 filesystem functionality does not work. To manage ext3
-type filesystems use tools like resize2fs or mke2fs.  Note that the
-currently supported ext2 filesystem will be deprecated once ext3
-support is finalized.  Further note that ext3 support will have limited
-functionality that is yet to be defined.  Use tools like resize2fs (8)
-and mke2fs (8) to manage these types of filesystems.
+dangerous (viz., rm, mklabel and mkpart).  Since many partitioning
+systems have complicated constraints, Parted will usually do something
+slightly different to what you asked.  (For example, create a partition
+starting at 10.352Mb, not 10.4Mb) If the calculated values differ too
+much, Parted will ask you for confirmation.
 
 
 File: parted.info,  Node: Invoking Parted,  Next: Command explanations,  Prev: Running Parted,  Up: Using Parted
@@ -440,26 +348,23 @@ GNU Parted provides the following commands:
 * Menu:
 
 * align-check::
-* check::
-* cp::
 * help::
 * mklabel::
-* mkfs::
 * mkpart::
-* mkpartfs::
-* move::
 * name::
 * print::
 * quit::
 * rescue::
-* resize::
 * rm::
 * select::
 * set::
 * unit::
 
+  Note that after version 2.4, the following commands were removed:
+check, cp, mkfs, mkpartfs, move, resize.
+
 
-File: parted.info,  Node: align-check,  Next: check,  Up: Command explanations
+File: parted.info,  Node: align-check,  Next: help,  Up: Command explanations
 
 2.4.1 align-check
 -----------------
@@ -481,57 +386,9 @@ File: parted.info,  Node: align-check,  Next: check,  Up: Command explanations
 
 
 
-File: parted.info,  Node: check,  Next: cp,  Prev: align-check,  Up: Command explanations
+File: parted.info,  Node: help,  Next: mklabel,  Prev: align-check,  Up: Command explanations
 
-2.4.2 check
------------
-
- -- Command: check NUMBER
-     Checks if the file system on partition NUMBER has any errors.
-
-     Example:
-
-          (parted) check 1
-
-     Check the file system on partition 1.
-
-
-File: parted.info,  Node: cp,  Next: help,  Prev: check,  Up: Command explanations
-
-2.4.3 cp
---------
-
- -- Command: cp [FROM-DEVICE] FROM-NUMBER TO-NUMBER
-     Copies the file system on the partition FROM-NUMBER to partition
-     TO-NUMBER, deleting the original contents of the destination
-     partition.
-
-     An optional device parameter, FROM-DEVICE can be given, which
-     specifies which device the source partition is on.
-
-     Supported file systems:
-        * ext2 (provided the destination partition is larger than the
-          source partition)
-
-        * fat16, fat32
-
-        * linux-swap (equivalent to mkswap on destination partition)
-
-        * reiserfs (if libreiserfs is installed)
-
-
-     Example:
-
-          (parted) cp /dev/hdb 2 3
-
-     Copy partition 2 of `/dev/hdb' (i.e., `/dev/hdb2') to partition on
-     3, on the device Parted was loaded with, destroying the original
-     contents of partition 3.
-
-
-File: parted.info,  Node: help,  Next: mklabel,  Prev: cp,  Up: Command explanations
-
-2.4.4 help
+2.4.2 help
 ----------
 
  -- Command: help [COMMAND]
@@ -539,14 +396,14 @@ File: parted.info,  Node: help,  Next: mklabel,  Prev: cp,  Up: Command explanat
 
      Example:
 
-          (parted) help resize
+          (parted) help mklabel
 
-     Print help for the resize command.
+     Print help for the mklabel command.
 
 
-File: parted.info,  Node: mklabel,  Next: mkfs,  Prev: help,  Up: Command explanations
+File: parted.info,  Node: mklabel,  Next: mkpart,  Prev: help,  Up: Command explanations
 
-2.4.5 mklabel
+2.4.3 mklabel
 -------------
 
  -- Command: mklabel LABEL-TYPE
@@ -585,34 +442,9 @@ File: parted.info,  Node: mklabel,  Next: mkfs,  Prev: help,  Up: Command explan
 are all the same thing: partition table, partition map.
 
 
-File: parted.info,  Node: mkfs,  Next: mkpart,  Prev: mklabel,  Up: Command explanations
+File: parted.info,  Node: mkpart,  Next: name,  Prev: mklabel,  Up: Command explanations
 
-2.4.6 mkfs
-----------
-
- -- Command: mkfs NUMBER FS-TYPE
-     Makes a file system FS-TYPE on partition NUMBER, destroying all
-     data that resides on that partition.
-
-     Supported file systems:
-        * ext2
-
-        * fat16, fat32
-
-        * linux-swap
-
-        * reiserfs (if libreiserfs is installed)
-
-     Example:
-
-          (parted) mkfs 2 fat32
-
-     Make a FAT32 file system on partition 2.
-
-
-File: parted.info,  Node: mkpart,  Next: mkpartfs,  Prev: mkfs,  Up: Command explanations
-
-2.4.7 mkpart
+2.4.4 mkpart
 ------------
 
  -- Command: mkpart [PART-TYPE FS-TYPE NAME] START END
@@ -655,77 +487,10 @@ File: parted.info,  Node: mkpart,  Next: mkpartfs,  Prev: mkfs,  Up: Command exp
 
 
 
-File: parted.info,  Node: mkpartfs,  Next: move,  Prev: mkpart,  Up: Command explanations
+File: parted.info,  Node: name,  Next: print,  Prev: mkpart,  Up: Command explanations
 
-2.4.8 mkpartfs
---------------
-
- -- Command: mkpartfs PART-TYPE FS-TYPE START END
-     Creates a new partition of type PART-TYPE with a new file system
-     of type FS-TYPE on it.  The new partition will start START
-     megabytes, and end END megabytes from the beginning of the disk.
-     Do not use this command to recover a deleted partition (use mkpart
-     instead).  Using this command is discouraged.  Instead use mkpart
-     to create an empty partition, and then use external tools like
-     mke2fs (8) to create the filesystem.
-
-     PART-TYPE is one of: primary, extended, logical.  Extended and
-     logical are only used for msdos and dvh disk labels.
-
-     FS-TYPE must be one of these supported file systems:
-        * ext2
-
-        * fat16, fat32
-
-        * linux-swap
-
-        * reiserfs (if libreiserfs is installed)
-
-     Example:
-
-          (parted) mkpartfs logical ext2 440 670
-
-     Make a logical partition and write an ext2 file system, starting
-     440 megabytes and ending 670 megabytes from the beginning of the
-     disk.
-
-
-File: parted.info,  Node: move,  Next: name,  Prev: mkpartfs,  Up: Command explanations
-
-2.4.9 move
+2.4.5 name
 ----------
-
- -- Command: move NUMBER START END
-     Moves partition on the disk, by moving its beginning to START.
-     You can't move a partition so that the old and new positions
-     overlap.  That is, you can only move partitions into free space.
-     If you want to resize a partition in-place, use `resize'.
-
-     Move never changes the partition number.
-
-     Supported file systems:
-        * ext2 (provided the destination partition is larger than the
-          source partition)
-
-        * fat16, fat32
-
-        * linux-swap
-
-        * reiserfs (if libreiserfs is installed)
-
-     Example:
-
-          (parted) move 2 150M 500M
-
-     Move the partition numbered 2 so that it begins 150 megabytes from
-     the start of the disk, and ends 500 megabytes from the start.
-
-
-
-File: parted.info,  Node: name,  Next: print,  Prev: move,  Up: Command explanations
-
-2.4.10 name
------------
 
  -- Command: name NUMBER NAME
      Sets the name for the partition NUMBER (GPT, Mac, MIPS and PC98
@@ -740,8 +505,8 @@ File: parted.info,  Node: name,  Next: print,  Prev: move,  Up: Command explanat
 
 File: parted.info,  Node: print,  Next: quit,  Prev: name,  Up: Command explanations
 
-2.4.11 print
-------------
+2.4.6 print
+-----------
 
  -- Command: print [NUMBER]
      Displays the partition table on the device parted is editing, or
@@ -767,8 +532,8 @@ File: parted.info,  Node: print,  Next: quit,  Prev: name,  Up: Command explanat
 
 File: parted.info,  Node: quit,  Next: rescue,  Prev: print,  Up: Command explanations
 
-2.4.12 quit
------------
+2.4.7 quit
+----------
 
  -- Command: quit
      Quits Parted.
@@ -780,10 +545,10 @@ File: parted.info,  Node: quit,  Next: rescue,  Prev: print,  Up: Command explan
      system's cache and the disk's hardware cache may delay this.
 
 
-File: parted.info,  Node: rescue,  Next: resize,  Prev: quit,  Up: Command explanations
+File: parted.info,  Node: rescue,  Next: rm,  Prev: quit,  Up: Command explanations
 
-2.4.13 rescue
--------------
+2.4.8 rescue
+------------
 
  -- Command: rescue START END
      Rescue a lost partition that used to be located approximately
@@ -825,54 +590,16 @@ File: parted.info,  Node: rescue,  Next: resize,  Prev: quit,  Up: Command expla
 
 
 
-File: parted.info,  Node: resize,  Next: rm,  Prev: rescue,  Up: Command explanations
+File: parted.info,  Node: rm,  Next: select,  Prev: rescue,  Up: Command explanations
 
-2.4.14 resize
--------------
-
- -- Command: resize NUMBER START END
-     Resizes the partition with number NUMBER.  The partition will start
-     START from the beginning of the disk, and end END from the
-     beginning of the disk.  resize never changes the partition number.
-     Extended partitions can be resized only so long as the new
-     extended partition completely contains all logical partitions.
-
-     Note that Parted can manipulate partitions whether or not they
-     have been defragmented, so you do not need to defragment the disk
-     before using Parted.
-
-     Supported file systems:
-        * ext2 - restriction: the new START must be the same as the old
-          START.
-
-        * fat16, fat32
-
-        * hfs, hfs+, hfsx - restriction: the new START must be the same
-          as the old START and the new END must be smaller than the old
-          END.
-
-        * linux-swap
-
-        * reiserfs (if libreiserfs is installed)
-
-     Example:
-
-          (parted) resize 3 200M 850M
-
-     Resize partition 3, so that it begins 200 megabytes and ends 850
-     megabytes from the beginning of the disk.
-
-
-File: parted.info,  Node: rm,  Next: select,  Prev: resize,  Up: Command explanations
-
-2.4.15 rm
----------
+2.4.9 rm
+--------
 
  -- Command: rm NUMBER
      Removes the partition with number NUMBER.  If you accidently delete
-     a partition with this command, use mkpart (_not_ mkpartfs) to
-     recover it.  Also, you can use the gpart program (*note Related
-     information::) to recover damaged disk labels.
+     a partition with this command, use mkpart to recover it.  Also,
+     you can use the gpart program (*note Related information::) to
+     recover damaged disk labels.
 
      Note for msdos disk labels: if you delete a logical partition, all
      logical partitions with a larger partition number will be
@@ -891,7 +618,7 @@ File: parted.info,  Node: rm,  Next: select,  Prev: resize,  Up: Command explana
 
 File: parted.info,  Node: select,  Next: set,  Prev: rm,  Up: Command explanations
 
-2.4.16 select
+2.4.10 select
 -------------
 
  -- Command: select DEVICE
@@ -909,7 +636,7 @@ File: parted.info,  Node: select,  Next: set,  Prev: rm,  Up: Command explanatio
 
 File: parted.info,  Node: set,  Next: unit,  Prev: select,  Up: Command explanations
 
-2.4.17 set
+2.4.11 set
 ----------
 
  -- Command: set NUMBER FLAG STATE
@@ -920,6 +647,10 @@ File: parted.info,  Node: set,  Next: unit,  Prev: select,  Up: Command explanat
     `bios_grub'
           (GPT) - Enable this to record that the selected partition is a
           GRUB BIOS partition.
+
+    `legacy_boot'
+          (GPT) - this flag is used to tell special purpose software
+          that the GPT partition may be bootable.
 
     `boot'
           (Mac, MS-DOS, PC98) - should be enabled if you want to boot
@@ -979,7 +710,7 @@ File: parted.info,  Node: set,  Next: unit,  Prev: select,  Up: Command explanat
 
 File: parted.info,  Node: unit,  Prev: set,  Up: Command explanations
 
-2.4.18 unit
+2.4.12 unit
 -----------
 
  -- Command: unit UNIT
@@ -994,6 +725,18 @@ File: parted.info,  Node: unit,  Prev: set,  Up: Command explanations
 
     `B'
           byte
+
+    `KiB'
+          kibibyte (1024 bytes)
+
+    `MiB'
+          mebibyte (1048576 bytes)
+
+    `GiB'
+          gibibyte (1073741824 bytes)
+
+    `TiB'
+          tebibyte (1099511627776 bytes)
 
     `kB'
           kilobyte (1000 bytes)
@@ -1029,14 +772,26 @@ File: parted.info,  Node: unit,  Prev: set,  Up: Command explanations
      particular number, but CHS and cylinder units are not supported as
      a suffix.  If no suffix is given, then the default unit is assumed.
      Parted will compute sensible ranges for the locations you specify
-     (e.g. a range of +/- 500 MB when you specify the location in "G")
+     (e.g. a range of +/- 500 MB when you specify the location in "G",
+     and a range of +/- 500 KB when you specify the location in "M")
      and will select the nearest location in this range from the one you
      wrote that satisfies constraints from both the operation, the
      filesystem being worked on, the disk label, other partitions and so
      on.  Use the sector unit "s" to specify exact locations (if they
      do not satisfy all constraints, Parted will ask you for the nearest
      solution).  Note that negative numbers count back from the end of
-     the disk, with "-1s" pointing to the end of the disk.
+     the disk, with "-1s" pointing to the last sector of the disk.
+
+     Note that as of parted-2.4, when you specify start and/or end
+     values using IEC binary units like "MiB", "GiB", "TiB", etc.,
+     parted treats those values as exact, and equivalent to the same
+     number specified in bytes (i.e., with the "B" suffix), in that it
+     provides _no_ "helpful" range of sloppiness.  Contrast that with a
+     partition start request of "4GB", which may actually resolve to
+     some sector up to 500MB before or after that point.  Thus, when
+     creating a partition, you should prefer to specify units of bytes
+     ("B"), sectors ("s"), or IEC binary units like "MiB", but not
+     "MB", "GB", etc.
 
      Example:
 
@@ -1115,7 +870,7 @@ A.1 GNU Free Documentation License
 
                         Version 1.1, March 2000
 
-     Copyright (C) 2000, 2009-2010 Free Software Foundation, Inc.
+     Copyright (C) 2000, 2009-2011 Free Software Foundation, Inc.
      51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
 
      Everyone is permitted to copy and distribute verbatim copies
@@ -1526,21 +1281,14 @@ Index
 * align-check, command description:      align-check.           (line 6)
 * bugs, reporting:                       Overview.              (line 6)
 * building parted:                       Compiling.             (line 6)
-* check, command description:            check.                 (line 6)
 * command description, align-check:      align-check.           (line 6)
-* command description, check:            check.                 (line 6)
-* command description, cp:               cp.                    (line 6)
 * command description, help:             help.                  (line 6)
-* command description, mkfs:             mkfs.                  (line 6)
 * command description, mkindex:          mklabel.               (line 6)
 * command description, mkpart:           mkpart.                (line 6)
-* command description, mkpartfs:         mkpartfs.              (line 6)
-* command description, move:             move.                  (line 6)
 * command description, name:             name.                  (line 6)
 * command description, print:            print.                 (line 6)
 * command description, quit:             quit.                  (line 6)
 * command description, rescue:           rescue.                (line 6)
-* command description, resize:           resize.                (line 6)
 * command description, rm:               rm.                    (line 6)
 * command description, select:           select.                (line 6)
 * command description, set:              set.                   (line 6)
@@ -1551,7 +1299,6 @@ Index
 * commands, overview:                    Invoking Parted.       (line 6)
 * compiling parted:                      Compiling.             (line 6)
 * contacting developers:                 Overview.              (line 6)
-* cp, command description:               cp.                    (line 6)
 * description of parted:                 Overview.              (line 6)
 * detailed command listing:              Command explanations.  (line 6)
 * e2fsprogs:                             Software Required.     (line 6)
@@ -1566,12 +1313,9 @@ Index
 * invocation options:                    Invoking Parted.       (line 6)
 * libuuid:                               Software Required.     (line 6)
 * license terms:                         License.               (line 6)
-* mkfs, command description:             mkfs.                  (line 6)
 * mklabel, command description:          mklabel.               (line 6)
 * mkpart, command description:           mkpart.                (line 6)
-* mkpartfs, command description:         mkpartfs.              (line 6)
 * modes of use:                          Running Parted.        (line 6)
-* move, command description:             move.                  (line 6)
 * name, command description:             name.                  (line 6)
 * options at invocation:                 Invoking Parted.       (line 6)
 * overview:                              Overview.              (line 6)
@@ -1585,57 +1329,47 @@ Index
 * reporting bugs:                        Overview.              (line 6)
 * required software:                     Software Required.     (line 6)
 * rescue, command description:           rescue.                (line 6)
-* resize, command description:           resize.                (line 6)
-* resizing root device:                  Static binaries.       (line 6)
 * rm, command description:               rm.                    (line 6)
 * select, command description:           select.                (line 6)
 * set, command description:              set.                   (line 6)
 * software dependencies:                 Software Required.     (line 6)
-* static binary:                         Static binaries.       (line 6)
 * supported platforms:                   Supported Platforms.   (line 6)
 * terms of distribution:                 License.               (line 6)
 * unit, command description:             unit.                  (line 6)
-* unsupported platforms:                 Static binaries.       (line 6)
 
 
 
 Tag Table:
-Node: Top797
-Node: Introduction1666
-Node: Overview2236
-Node: Software Required4281
-Node: Supported Platforms5640
-Node: License6356
-Node: Compiling6987
-Node: Static binaries8632
-Node: Using Parted10467
-Node: Partitioning10886
-Node: Running Parted11342
-Node: Invoking Parted14285
-Node: Command explanations15065
-Node: align-check15451
-Node: check16180
-Node: cp16479
-Node: help17410
-Node: mklabel17684
-Ref: mklabel-Footnote-118565
-Node: mkfs18694
-Node: mkpart19190
-Node: mkpartfs20600
-Node: move21746
-Node: name22627
-Node: print23005
-Node: quit23894
-Node: rescue24389
-Node: resize25914
-Node: rm27124
-Node: select28021
-Node: set28490
-Node: unit30787
-Node: Related information34336
-Node: Copying This Manual35159
-Node: GNU Free Documentation License35403
-Node: History55291
-Node: Concept index56096
+Node: Top766
+Node: Introduction1569
+Node: Overview2025
+Node: Software Required3552
+Node: Supported Platforms4911
+Node: License5365
+Node: Compiling5996
+Node: Using Parted7723
+Node: Partitioning8142
+Node: Running Parted8598
+Node: Invoking Parted10980
+Node: Command explanations11760
+Node: align-check12197
+Node: help12925
+Node: mklabel13210
+Ref: mklabel-Footnote-114093
+Node: mkpart14222
+Node: name15631
+Node: print16009
+Node: quit16896
+Node: rescue17389
+Node: rm18908
+Node: select19786
+Node: set20255
+Node: unit22690
+Ref: IEC binary units25057
+Node: Related information27151
+Node: Copying This Manual27974
+Node: GNU Free Documentation License28218
+Node: History48106
+Node: Concept index48911
 
 End Tag Table

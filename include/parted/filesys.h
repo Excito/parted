@@ -1,7 +1,7 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2001, 2006-2007, 2009-2010 Free Software
-    Foundation, Inc.
+    Copyright (C) 1999-2001, 2006-2007, 2009-2011 Free Software Foundation,
+    Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -38,20 +38,6 @@ typedef const struct _PedFileSystemOps	PedFileSystemOps;
 
 struct _PedFileSystemOps {
 	PedGeometry* (*probe) (PedGeometry* geom);
-	int (*clobber) (PedGeometry* geom);
-
-	PedFileSystem* (*open) (PedGeometry* geom);
-	PedFileSystem* (*create) (PedGeometry* geom, PedTimer* timer);
-	int (*close) (PedFileSystem* fs);
-	int (*check) (PedFileSystem* fs, PedTimer* timer);
-	PedFileSystem* (*copy) (const PedFileSystem* fs, PedGeometry* geom,
-				PedTimer* timer);
-	int (*resize) (PedFileSystem* fs, PedGeometry* geom, PedTimer* timer);
-
-	PedConstraint* (*get_create_constraint) (const PedDevice* dev);
-	PedConstraint* (*get_resize_constraint) (const PedFileSystem* fs);
-	PedConstraint* (*get_copy_constraint) (const PedFileSystem* fs,
-		       			       const PedDevice* dev);
 };
 
 /**
@@ -109,26 +95,6 @@ extern PedFileSystemType* ped_file_system_probe (PedGeometry* geom);
 extern PedGeometry* ped_file_system_probe_specific (
 			const PedFileSystemType* fs_type,
 			PedGeometry* geom);
-extern int ped_file_system_clobber (PedGeometry* geom);
-
-extern PedFileSystem* ped_file_system_open (PedGeometry* geom);
-extern PedFileSystem* ped_file_system_create (PedGeometry* geom,
-					      const PedFileSystemType* type,
-					      PedTimer* timer);
-extern int ped_file_system_close (PedFileSystem* fs);
-extern int ped_file_system_check (PedFileSystem* fs, PedTimer* timer);
-extern PedFileSystem* ped_file_system_copy (PedFileSystem* fs,
-					    PedGeometry* geom,
-					    PedTimer* timer);
-extern int ped_file_system_resize (PedFileSystem* fs, PedGeometry* geom,
-				   PedTimer* timer);
-
-extern PedConstraint* ped_file_system_get_create_constraint (
-		const PedFileSystemType* fs_type, const PedDevice* dev);
-extern PedConstraint* ped_file_system_get_resize_constraint (
-		const PedFileSystem* fs);
-extern PedConstraint* ped_file_system_get_copy_constraint (
-		const PedFileSystem* fs, const PedDevice* dev);
 
 #endif /* PED_FILESYS_H_INCLUDED */
 

@@ -7,11 +7,13 @@ TESTS = \
   t0001-tiny.sh \
   t0010-script-no-ctrl-chars.sh \
   t0100-print.sh \
+  t0101-print-empty.sh \
   t0200-gpt.sh \
   t0201-gpt.sh \
   t0202-gpt-pmbr.sh \
   t0205-gpt-list-clobbers-pmbr.sh \
   t0206-gpt-print-with-corrupt-primary-clobbers-pmbr.sh \
+  t0207-IEC-binary-notation.sh \
   t0220-gpt-msftres.sh \
   t0250-gpt.sh \
   t0280-gpt-corrupt.sh \
@@ -19,16 +21,16 @@ TESTS = \
   t0400-loop-clobber-infloop.sh \
   t0500-dup-clobber.sh \
   t1100-busy-label.sh \
-  t1700-ext-probe.sh \
-  t2100-mkswap.sh \
+  t1101-busy-partition.sh \
+  t1700-probe-fs.sh \
   t2200-dos-label-recog.sh \
   t2300-dos-label-extended-bootcode.sh \
   t2310-dos-extended-2-sector-min-offset.sh \
   t2400-dos-hfs-partition-type.sh \
-  t3000-resize-fs.sh \
   t3200-type-change.sh \
   t3300-palo-prep.sh \
   t3310-flags.sh \
+  t3400-whole-disk-FAT-partition.sh \
   t4000-sun-raid-type.sh \
   t4001-sun-vtoc.sh \
   t4100-msdos-partition-limits.sh \
@@ -43,10 +45,13 @@ TESTS = \
   t9020-alignment.sh \
   t9021-maxima.sh \
   t9030-align-check.sh \
-  t9040-many-partitions.sh
+  t9040-many-partitions.sh \
+  t9041-undetected-in-use-16th-partition.sh \
+  t9050-partition-table-types.sh
 
 EXTRA_DIST = \
-  $(TESTS) test-lib.sh t-lib.sh lvm-utils.sh t-local.sh t-lvm.sh init.sh
+  $(TESTS) lvm-utils.sh t-local.sh t-lvm.sh \
+  init.cfg init.sh t-lib-helpers.sh
 
 check_PROGRAMS = print-align print-max dup-clobber
 LDADD = \
@@ -59,17 +64,6 @@ AM_CFLAGS = $(WARN_CFLAGS) $(WERROR_CFLAGS)
 parted_dir = $(abs_top_builddir)/parted
 pp_dir = $(abs_top_builddir)/partprobe
 sep = $(PATH_SEPARATOR)
-
-CLEANFILES = old-init.sh
-all: old-init.sh
-old-init.sh: Makefile.in
-	rm -f $@-t $@
-	echo 'PARTED_USABLE_TEST_DIR="$(PARTED_USABLE_TEST_DIR)"' > $@-t
-	echo 'abs_top_srcdir="$(abs_top_srcdir)"' >> $@-t
-	echo 'PATH="$(parted_dir)$(sep)$(pp_dir)$(sep)$$PATH"' >> $@-t
-	echo 'export PATH' >> $@-t
-	chmod a-w $@-t
-	mv $@-t $@
 
 # Note that the first lines are statements.  They ensure that environment
 # variables that can perturb tests are unset or set to expected values.

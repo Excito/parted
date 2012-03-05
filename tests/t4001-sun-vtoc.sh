@@ -1,7 +1,7 @@
 #!/bin/sh
 # Ensure that Sun VTOC is properly initialized.
 
-# Copyright (C) 2009-2010 Free Software Foundation, Inc.
+# Copyright (C) 2009-2011 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,20 +18,12 @@
 
 # Written by Karel Zak <kzak@redhat.com>
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 
 N=2M
 dev=loop-file
 # create a file to simulate the underlying device
 dd if=/dev/null of=$dev bs=1 seek=$N || framework_failure
-
-fail=0
 
 # label the test disk
 parted -s $dev mklabel sun > out 2>&1 || fail=1

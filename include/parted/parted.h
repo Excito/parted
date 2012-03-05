@@ -1,7 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2001, 2007, 2009-2010 Free Software Foundation,
-    Inc.
+    Copyright (C) 1999-2001, 2007, 2009-2011 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,6 +18,8 @@
 
 #ifndef PARTED_H_INCLUDED
 #define PARTED_H_INCLUDED
+
+#define PED_DEFAULT_ALIGNMENT (1024 * 1024)
 
 #ifdef __cplusplus
 extern "C" {

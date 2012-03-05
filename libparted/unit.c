@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2005, 2007, 2009-2010 Free Software Foundation, Inc.
+    Copyright (C) 2005, 2007, 2009-2011 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -141,7 +141,7 @@ ped_unit_get_size (const PedDevice* dev, PedUnit unit)
 	}
 
 	/* never reached */
-	PED_ASSERT(0, return 0);
+	PED_ASSERT(0);
 	return 0;
 }
 
@@ -198,7 +198,7 @@ ped_unit_format_custom_byte (const PedDevice* dev, PedSector byte, PedUnit unit)
 	double d, w;
 	int p;
 
-	PED_ASSERT (dev != NULL, return NULL);
+	PED_ASSERT (dev != NULL);
 
 	/* CHS has a special comma-separated format. */
 	if (unit == PED_UNIT_CHS) {
@@ -266,7 +266,7 @@ ped_unit_format_custom_byte (const PedDevice* dev, PedSector byte, PedUnit unit)
 char*
 ped_unit_format_byte (const PedDevice* dev, PedSector byte)
 {
-	PED_ASSERT (dev != NULL, return NULL);
+	PED_ASSERT (dev != NULL);
 	return ped_unit_format_custom_byte (dev, byte, default_unit);
 }
 
@@ -279,7 +279,7 @@ ped_unit_format_byte (const PedDevice* dev, PedSector byte)
 char*
 ped_unit_format_custom (const PedDevice* dev, PedSector sector, PedUnit unit)
 {
-	PED_ASSERT (dev != NULL, return NULL);
+	PED_ASSERT (dev != NULL);
 	return ped_unit_format_custom_byte(dev, sector*dev->sector_size, unit);
 }
 
@@ -293,7 +293,7 @@ ped_unit_format_custom (const PedDevice* dev, PedSector sector, PedUnit unit)
 char*
 ped_unit_format (const PedDevice* dev, PedSector sector)
 {
-	PED_ASSERT (dev != NULL, return NULL);
+	PED_ASSERT (dev != NULL);
 	return ped_unit_format_custom_byte (dev, sector * dev->sector_size,
 					    default_unit);
 }
@@ -480,6 +480,12 @@ parse_unit_suffix (const char* suffix, PedUnit suggested_unit)
 	return suggested_unit;
 }
 
+static bool
+is_power_of_2 (long long n)
+{
+  return (n & (n - 1)) == 0;
+}
+
 /**
  * If \p str contains a valid description of a location on \p dev, then
  * \p *sector is modified to describe the location and a geometry is created
@@ -529,6 +535,13 @@ ped_unit_parse_custom (const char* str, const PedDevice* dev, PedUnit unit,
 	unit_size = ped_unit_get_size (dev, unit);
 	radius = ped_div_round_up (unit_size, dev->sector_size) - 1;
 	if (radius < 0)
+		radius = 0;
+	/* If the user specifies units in a power of 2, e.g., 4MiB, as in
+	       parted -s -- $dev mklabel gpt mkpart P-NAME 4MiB -34s
+	   do not use 4MiB as the range.  Rather, presume that they
+	   are specifying precisely the starting or ending number,
+	   and treat "4MiB" just as we would treat "4194304B".  */
+	if (is_power_of_2 (unit_size))
 		radius = 0;
 
 	*sector = num * unit_size / dev->sector_size;

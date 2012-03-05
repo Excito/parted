@@ -1,7 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999-2001, 2007, 2009-2010 Free Software Foundation,
-    Inc.
+    Copyright (C) 1999-2001, 2007, 2009-2011 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -442,7 +441,7 @@ str_list_print_wrap (const StrList* list, int line_length, int offset,
 	int		search_result;
 	int		line_break;
 
-	PED_ASSERT (line_length - indent > 10, return);
+	PED_ASSERT (line_length - indent > 10);
 
 	line_left = line_length - offset;
 

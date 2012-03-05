@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2000, 2007-2010 Free Software Foundation, Inc.
+    Copyright (C) 1999-2000, 2007-2011 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -108,7 +108,7 @@ ped_log2 (int n)
 {
 	int x;
 
-        PED_ASSERT (n > 0, return -1);
+        PED_ASSERT (n > 0);
 
 	for (x=0; 1 << x <= n; x++);
 
@@ -135,9 +135,9 @@ default_handler (PedException* e)
 			"for more information of what could be useful "
 			"for bug submitting!  "
 			"Please email a bug report to "
-			"bug-parted@gnu.org containing at least the "
+			"%s containing at least the "
 			"version (%s) and the following message:  "),
-			VERSION);
+			 PACKAGE_BUGREPORT, VERSION);
 	else
 		fprintf (stderr, "%s: ",
 			 ped_exception_get_type_string (e->type));
@@ -304,7 +304,7 @@ ped_exception_fetch_all ()
 void
 ped_exception_leave_all ()
 {
-	PED_ASSERT (ex_fetch_count > 0, return);
+	PED_ASSERT (ex_fetch_count > 0);
 	ex_fetch_count--;
 }
 

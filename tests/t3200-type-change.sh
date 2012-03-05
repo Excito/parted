@@ -1,7 +1,7 @@
 #!/bin/sh
 # Ensure parted doesn't change the type of a partition to match its FS.
 
-# Copyright (C) 2009-2010 Free Software Foundation, Inc.
+# Copyright (C) 2009-2011 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,27 +16,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 
 require_root_
 require_scsi_debug_module_
 
-# check for scsi_debug module
-modprobe -n scsi_debug ||
-  skip_test_ "you lack the scsi_debug kernel module"
-
 grep '^#define USE_BLKID 1' "$CONFIG_HEADER" > /dev/null ||
-  skip_test_ 'this system lacks a new-enough libblkid'
+  skip_ 'this system lacks a new-enough libblkid'
 
 # create memory-backed device
 scsi_debug_setup_ dev_size_mb=550 > dev-name ||
-  skip_test_ 'failed to create scsi_debug device'
+  skip_ 'failed to create scsi_debug device'
 scsi_dev=$(cat dev-name)
 
 # Create an empty partition of "type fat32", and then create an actual
@@ -44,7 +34,6 @@ scsi_dev=$(cat dev-name)
 # partition and ensure that parted doesn't "helpfully" change the partition
 # type to match the newly-detected FS type.
 
-fail=0
 parted -s $scsi_dev mklabel msdos mkpart primary fat32 64s 80000s || fail=1
 
 parted -s $scsi_dev u s p

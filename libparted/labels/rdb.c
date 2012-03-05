@@ -2,8 +2,7 @@
 
     libparted - a library for manipulating disk partitions
     disk_amiga.c - libparted module to manipulate amiga RDB partition tables.
-    Copyright (C) 2000-2001, 2004, 2007-2010 Free Software Foundation,
-    Inc.
+    Copyright (C) 2000-2001, 2004, 2007-2011 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -333,7 +332,7 @@ amiga_probe (const PedDevice *dev)
 {
 	struct RigidDiskBlock *rdb;
 	uint32_t found;
-	PED_ASSERT(dev != NULL, return 0);
+	PED_ASSERT(dev != NULL);
 
 	if ((rdb=RDSK(ped_malloc(dev->sector_size)))==NULL)
 		return 0;
@@ -351,7 +350,7 @@ amiga_alloc (const PedDevice* dev)
 	PedSector cyl_size;
 	int highest_cylinder, highest_block;
 
-	PED_ASSERT(dev != NULL, return NULL);
+	PED_ASSERT(dev != NULL);
 	cyl_size = dev->hw_geom.sectors * dev->hw_geom.heads;
 
 	if (!(disk = _ped_disk_alloc (dev, &amiga_disk_type)))
@@ -365,7 +364,7 @@ amiga_alloc (const PedDevice* dev)
 
         /* Upon failed assertion this does leak.  That's fine, because
            if the assertion fails, you have bigger problems than this leak. */
-        PED_ASSERT(sizeof(*rdb) <= disk->dev->sector_size, return NULL);
+        PED_ASSERT(sizeof(*rdb) <= disk->dev->sector_size);
 
 	memset(rdb, 0, disk->dev->sector_size);
 
@@ -425,9 +424,9 @@ amiga_duplicate (const PedDisk* disk)
 	PedDisk*	new_disk;
 	struct RigidDiskBlock *	new_rdb;
 	struct RigidDiskBlock * old_rdb;
-	PED_ASSERT(disk != NULL, return NULL);
-	PED_ASSERT(disk->dev != NULL, return NULL);
-	PED_ASSERT(disk->disk_specific != NULL, return NULL);
+	PED_ASSERT(disk != NULL);
+	PED_ASSERT(disk->dev != NULL);
+	PED_ASSERT(disk->disk_specific != NULL);
 
 	old_rdb = (struct RigidDiskBlock *) disk->disk_specific;
 
@@ -442,8 +441,8 @@ amiga_duplicate (const PedDisk* disk)
 static void
 amiga_free (PedDisk* disk)
 {
-	PED_ASSERT(disk != NULL, return);
-	PED_ASSERT(disk->disk_specific != NULL, return);
+	PED_ASSERT(disk != NULL);
+	PED_ASSERT(disk->disk_specific != NULL);
 
 	free (disk->disk_specific);
 	_ped_disk_free (disk);
@@ -474,11 +473,10 @@ amiga_read (PedDisk* disk)
 	PedSector cylblocks;
 	int i;
 
-	PED_ASSERT(disk != NULL, return 0);
-	PED_ASSERT(disk->dev != NULL, return 0);
-	PED_ASSERT(disk->dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0,
-                   return 0);
-	PED_ASSERT(disk->disk_specific != NULL, return 0);
+	PED_ASSERT(disk != NULL);
+	PED_ASSERT(disk->dev != NULL);
+	PED_ASSERT(disk->dev->sector_size % PED_SECTOR_SIZE_DEFAULT == 0);
+	PED_ASSERT(disk->disk_specific != NULL);
 	rdb = RDSK(disk->disk_specific);
 
 	if (_amiga_find_rdb (disk->dev, rdb) == AMIGA_RDB_NOT_FOUND) {
@@ -511,7 +509,6 @@ amiga_read (PedDisk* disk)
 	{
 		PedPartition *part;
 		PedSector start, end;
-		PedConstraint *constraint_exact;
 
 		/* Let's look for loops in the partition table */
 		if (_amiga_loop_check(partblock, partlist, i)) {
@@ -544,13 +541,17 @@ amiga_read (PedDisk* disk)
 		/* Let's probe what file system is present on the disk */
 		part->fs_type = ped_file_system_probe (&part->geom);
 
-		constraint_exact = ped_constraint_exact (&part->geom);
-		if (!ped_disk_add_partition (disk, part, constraint_exact)) {
+		PedConstraint *constraint_exact
+			= ped_constraint_exact (&part->geom);
+		if (constraint_exact == NULL)
+			return 0;
+		bool ok = ped_disk_add_partition (disk, part, constraint_exact);
+		ped_constraint_destroy (constraint_exact);
+		if (!ok) {
 			ped_partition_destroy(part);
 			free(partition);
 			return 0;
 		}
-		ped_constraint_destroy (constraint_exact);
 	}
 	free(partition);
 	return 1;
@@ -562,8 +563,8 @@ _amiga_find_free_blocks(const PedDisk *disk, uint32_t *table,
 {
 	PedSector next;
 
-	PED_ASSERT(disk != NULL, return 0);
-	PED_ASSERT(disk->dev != NULL, return 0);
+	PED_ASSERT(disk != NULL);
+	PED_ASSERT(disk->dev != NULL);
 
 	for (next = first; next != LINK_END; next = PED_BE32_TO_CPU(block->lk_Next)) {
 		if (table[next] != IDNAME_FREE) {
@@ -636,9 +637,9 @@ amiga_write (const PedDisk* disk)
 	uint32_t i;
 	uint32_t rdb_num, part_num, block_num, next_num;
 
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (disk->dev != NULL, return 0);
-	PED_ASSERT (disk->disk_specific != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (disk->dev != NULL);
+	PED_ASSERT (disk->disk_specific != NULL);
 
 	if (!(rdb = ped_malloc (disk->dev->sector_size)))
 		return 0;
@@ -720,9 +721,9 @@ amiga_write (const PedDisk* disk)
 	part = _amiga_next_real_partition(disk, NULL);
 	rdb->rdb_PartitionList = PED_CPU_TO_BE32(part ? part_num : LINK_END);
 	for (; part != NULL; part = next_part, block_num = next_num) {
-		PED_ASSERT(part->disk_specific != NULL, return 0);
-		PED_ASSERT(part->geom.start % cylblocks == 0, return 0);
-		PED_ASSERT((part->geom.end + 1) % cylblocks == 0, return 0);
+		PED_ASSERT(part->disk_specific != NULL);
+		PED_ASSERT(part->geom.start % cylblocks == 0);
+		PED_ASSERT((part->geom.end + 1) % cylblocks == 0);
 
 		next_part = _amiga_next_real_partition(disk, part);
 		next_num = _amiga_next_free_block(table, block_num+1, IDNAME_PARTITION);
@@ -779,9 +780,9 @@ amiga_partition_new (const PedDisk* disk, PedPartitionType part_type,
 	struct PartitionBlock *partition;
 	struct RigidDiskBlock *rdb;
 
-	PED_ASSERT(disk != NULL, return NULL);
-	PED_ASSERT(disk->dev != NULL, return NULL);
-	PED_ASSERT(disk->disk_specific != NULL, return NULL);
+	PED_ASSERT(disk != NULL);
+	PED_ASSERT(disk->dev != NULL);
+	PED_ASSERT(disk->disk_specific != NULL);
 	dev = disk->dev;
 	cyl = (PedSector) (dev->hw_geom.sectors * dev->hw_geom.heads);
 	rdb = RDSK(disk->disk_specific);
@@ -840,9 +841,9 @@ amiga_partition_duplicate (const PedPartition* part)
 	struct PartitionBlock *new_amiga_part;
 	struct PartitionBlock *old_amiga_part;
 
-	PED_ASSERT(part != NULL, return NULL);
-	PED_ASSERT(part->disk != NULL, return NULL);
-	PED_ASSERT(part->disk_specific != NULL, return NULL);
+	PED_ASSERT(part != NULL);
+	PED_ASSERT(part->disk != NULL);
+	PED_ASSERT(part->disk_specific != NULL);
 	old_amiga_part = (struct PartitionBlock *) part->disk_specific;
 
 	new_part = ped_partition_new (part->disk, part->type,
@@ -860,10 +861,10 @@ amiga_partition_duplicate (const PedPartition* part)
 static void
 amiga_partition_destroy (PedPartition* part)
 {
-	PED_ASSERT (part != NULL, return);
+	PED_ASSERT (part != NULL);
 
 	if (ped_partition_is_active (part)) {
-		PED_ASSERT (part->disk_specific != NULL, return);
+		PED_ASSERT (part->disk_specific != NULL);
 		free (part->disk_specific);
 	}
 	_ped_partition_free (part);
@@ -875,8 +876,8 @@ amiga_partition_set_system (PedPartition* part,
 {
 	struct PartitionBlock *partition;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk_specific != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 	partition = PART(part->disk_specific);
 
 	part->fs_type = fs_type;
@@ -917,8 +918,8 @@ amiga_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 {
 	struct PartitionBlock *partition;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk_specific != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 
 	partition = PART(part->disk_specific);
 
@@ -949,8 +950,8 @@ amiga_partition_get_flag (const PedPartition* part, PedPartitionFlag flag)
 {
 	struct PartitionBlock *partition;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk_specific != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 
 	partition = PART(part->disk_specific);
 
@@ -988,8 +989,8 @@ amiga_partition_set_name (PedPartition* part, const char* name)
 {
 	struct PartitionBlock *partition;
 
-	PED_ASSERT (part != NULL, return);
-	PED_ASSERT (part->disk_specific != NULL, return);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 
 	partition = PART(part->disk_specific);
 	_amiga_set_bstr(name, partition->pb_DriveName, 32);
@@ -999,8 +1000,8 @@ amiga_partition_get_name (const PedPartition* part)
 {
 	struct PartitionBlock *partition;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk_specific != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 
 	partition = PART(part->disk_specific);
 
@@ -1039,8 +1040,8 @@ _amiga_get_constraint (const PedDisk *disk)
 static int
 amiga_partition_align (PedPartition* part, const PedConstraint* constraint)
 {
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
 
 	if (_ped_partition_attempt_align (part, constraint,
 					  _amiga_get_constraint (part->disk)))
@@ -1059,8 +1060,8 @@ amiga_partition_enumerate (PedPartition* part)
 	int i;
 	PedPartition* p;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
 
 	/* never change the partition numbers */
 	if (part->num != -1)
@@ -1087,8 +1088,8 @@ amiga_alloc_metadata (PedDisk* disk)
 	PedPartition*		new_part;
 	PedConstraint*		constraint_any = NULL;
 
-	PED_ASSERT (disk != NULL, goto error);
-	PED_ASSERT (disk->dev != NULL, goto error);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (disk->dev != NULL);
 
 	constraint_any = ped_constraint_any (disk->dev);
 
@@ -1148,11 +1149,11 @@ static PedDiskType amiga_disk_type = {
 void
 ped_disk_amiga_init ()
 {
-	PED_ASSERT (sizeof (struct AmigaBlock) != 3, return);
-	PED_ASSERT (sizeof (struct RigidDiskBlock) != 64, return);
-	PED_ASSERT (sizeof (struct PartitionBlock) != 64, return);
-	PED_ASSERT (sizeof (struct LinkedBlock) != 5, return);
-	PED_ASSERT (sizeof (struct Linked2Block) != 18, return);
+	PED_ASSERT (sizeof (struct AmigaBlock) != 3);
+	PED_ASSERT (sizeof (struct RigidDiskBlock) != 64);
+	PED_ASSERT (sizeof (struct PartitionBlock) != 64);
+	PED_ASSERT (sizeof (struct LinkedBlock) != 5);
+	PED_ASSERT (sizeof (struct Linked2Block) != 18);
 
 	ped_disk_type_register (&amiga_disk_type);
 }

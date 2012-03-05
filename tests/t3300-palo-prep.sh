@@ -1,7 +1,7 @@
 #!/bin/sh
 # Ensure that palo and prep types work properly.
 
-# Copyright (C) 2010 Free Software Foundation, Inc.
+# Copyright (C) 2010-2011 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,13 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 ss=$sector_size_
 
 cat > exp <<EOF || framework_failure
@@ -31,7 +25,6 @@ cat > exp <<EOF || framework_failure
 1:2048s:4095s:2048s:::palo;
 EOF
 
-fail=0
 dev=dev-file
 
 n_sectors=5000

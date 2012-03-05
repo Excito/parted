@@ -1,7 +1,6 @@
 /*
     libparted/fs_amiga - amiga file system support.
-    Copyright (C) 2000-2001, 2007, 2009-2010 Free Software Foundation,
-    Inc.
+    Copyright (C) 2000-2001, 2007, 2009-2011 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -269,8 +268,8 @@ amiga_find_part (PedGeometry *geom, struct PartitionBlock *part)
 	uint32_t partlist[AMIGA_MAX_PARTITIONS];
 	int i;
 
-	PED_ASSERT(geom!= NULL, return NULL);
-	PED_ASSERT(geom->dev!= NULL, return NULL);
+	PED_ASSERT(geom!= NULL);
+	PED_ASSERT(geom->dev!= NULL);
 
 	if (!(rdb = ped_malloc (PED_SECTOR_SIZE_DEFAULT))) {
 		switch (ped_exception_throw(PED_EXCEPTION_ERROR,

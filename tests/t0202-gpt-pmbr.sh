@@ -1,7 +1,7 @@
 #!/bin/sh
 # Preserve first 446B of the Protected MBR for gpt partitions.
 
-# Copyright (C) 2009-2010 Free Software Foundation, Inc.
+# Copyright (C) 2009-2011 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,18 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 
 dev=loop-file
 bootcode_size=446
 
-fail=0
 dd if=/dev/null of=$dev bs=1 seek=1M || framework_failure
 
 # create a GPT partition table

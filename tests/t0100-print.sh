@@ -1,6 +1,6 @@
 #!/bin/sh
 # the most basic 'print' test
-# Copyright (C) 2007, 2009-2010 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2009-2011 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,13 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 ss=$sector_size_
 
 ss=$sector_size_
@@ -42,8 +36,6 @@ EOF
 # Using msdos_magic='\x55\xaa' looks nicer, but isn't portable.
 # dash's builtin printf doesn't recognize such \xHH hexadecimal escapes.
 msdos_magic='\125\252'
-
-fail=0
 
 # The extra 3KB+ zero bytes at the end are to avoid triggering a failure
 # on linux-2.6.8 that's probably related to opening with O_DIRECT.

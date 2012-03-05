@@ -1,5 +1,5 @@
 # Put lvm-related utilities here.
-# This file is sourced from test-lib.sh.
+# This file is sourced from test infrastructure.
 
 # Copyright (C) 2007-2010 Red Hat, Inc. All rights reserved.
 #
@@ -21,7 +21,7 @@ unsafe_losetup_()
   f=$1
 
   test -n "$G_dev_" \
-    || error "Internal error: unsafe_losetup_ called before init_root_dir_"
+    || fail_ "Internal error: unsafe_losetup_ called before init_root_dir_"
 
   # Iterate through $G_dev_/loop{,/}{0,1,2,3,4,5,6,7,8,9}
   for slash in '' /; do
@@ -156,12 +156,12 @@ dmsetup_has_dm_devdir_support_()
 # set up private /dev and /etc
 init_root_dir_()
 {
-  test -n "$test_dir_rand_" \
-    || error "Internal error: called init_root_dir_ before" \
-      "defining \$test_dir_rand_"
+  test -n "$test_dir_" \
+    || fail_ "Internal error: called init_root_dir_ before" \
+      "defining \$test_dir_"
 
   # Define these two globals.
-  G_root_=$test_dir_rand_/root
+  G_root_=$test_dir_/root
   G_dev_=$G_root_/dev
 
   export LVM_SYSTEM_DIR=$G_root_/etc

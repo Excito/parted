@@ -3,7 +3,7 @@
 # Much like t0205, but with the addition of a corrupt PTE in primary table,
 # "parted $device print" would modify $device.
 
-# Copyright (C) 2010 Free Software Foundation, Inc.
+# Copyright (C) 2010-2011 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,15 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
-
-fail=0
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 
 ss=$sector_size_
 n_sectors=400

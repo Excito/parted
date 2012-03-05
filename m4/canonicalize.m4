@@ -1,6 +1,6 @@
-# canonicalize.m4 serial 16
+# canonicalize.m4 serial 19
 
-dnl Copyright (C) 2003-2007, 2009-2010 Free Software Foundation, Inc.
+dnl Copyright (C) 2003-2007, 2009-2011 Free Software Foundation, Inc.
 
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -26,6 +26,7 @@ AC_DEFUN([gl_FUNC_CANONICALIZE_FILENAME_MODE],
 # Provides canonicalize_file_name and realpath.
 AC_DEFUN([gl_CANONICALIZE_LGPL],
 [
+  AC_REQUIRE([gl_STDLIB_H_DEFAULTS])
   AC_REQUIRE([gl_CANONICALIZE_LGPL_SEPARATE])
   if test $ac_cv_func_canonicalize_file_name = no; then
     HAVE_CANONICALIZE_FILE_NAME=0
@@ -43,7 +44,7 @@ AC_DEFUN([gl_CANONICALIZE_LGPL],
 ])
 
 # Like gl_CANONICALIZE_LGPL, except prepare for separate compilation
-# (no AC_LIBOBJ).
+# (no REPLACE_CANONICALIZE_FILE_NAME, no REPLACE_REALPATH, no AC_LIBOBJ).
 AC_DEFUN([gl_CANONICALIZE_LGPL_SEPARATE],
 [
   AC_REQUIRE([gl_USE_SYSTEM_EXTENSIONS])
@@ -63,12 +64,26 @@ AC_DEFUN([gl_FUNC_REALPATH_WORKS],
     touch conftest.a
     AC_RUN_IFELSE([
       AC_LANG_PROGRAM([[
+        ]GL_NOCRASH[
         #include <stdlib.h>
       ]], [[
-        char *name1 = realpath ("conftest.a", NULL);
-        char *name2 = realpath ("conftest.b/../conftest.a", NULL);
-        char *name3 = realpath ("conftest.a/", NULL);
-        return !(name1 && *name1 == '/' && !name2 && !name3);
+        int result = 0;
+        {
+          char *name = realpath ("conftest.a", NULL);
+          if (!(name && *name == '/'))
+            result |= 1;
+        }
+        {
+          char *name = realpath ("conftest.b/../conftest.a", NULL);
+          if (name != NULL)
+            result |= 2;
+        }
+        {
+          char *name = realpath ("conftest.a/", NULL);
+          if (name != NULL)
+            result |= 4;
+        }
+        return result;
       ]])
     ], [gl_cv_func_realpath_works=yes], [gl_cv_func_realpath_works=no],
        [gl_cv_func_realpath_works="guessing no"])

@@ -4,7 +4,7 @@
     original version by Matt Domsch <Matt_Domsch@dell.com>
     Disclaimed into the Public Domain
 
-    Portions Copyright (C) 2001-2003, 2005-2010 Free Software Foundation, Inc.
+    Portions Copyright (C) 2001-2003, 2005-2011 Free Software Foundation, Inc.
 
     EFI GUID Partition Table handling
     Per Intel EFI Specification v1.02
@@ -40,6 +40,7 @@
 #include <stdbool.h>
 #include <errno.h>
 #include "xalloc.h"
+#include "verify.h"
 
 #include "pt-tools.h"
 
@@ -69,6 +70,8 @@ typedef struct _GuidPartitionEntry_t GuidPartitionEntry_t;
 typedef struct _PartitionRecord_t PartitionRecord_t;
 typedef struct _LegacyMBR_t LegacyMBR_t;
 typedef struct _GPTDiskData GPTDiskData;
+
+
 typedef struct
 {
   uint32_t time_low;
@@ -163,12 +166,16 @@ struct __attribute__ ((packed)) _GuidPartitionEntryAttributes_t
 {
 #ifdef __GNUC__			/* XXX narrow this down to !TinyCC */
   uint64_t RequiredToFunction:1;
-  uint64_t Reserved:47;
+  uint64_t NoBlockIOProtocol:1;
+  uint64_t LegacyBIOSBootable:1;
+  uint64_t Reserved:45;
   uint64_t GuidSpecific:16;
 #else
 #       warning "Using crippled partition entry type"
   uint32_t RequiredToFunction:1;
-  uint32_t Reserved:32;
+  uint32_t NoBlockIOProtocol:1;
+  uint32_t LegacyBIOSBootable:1;
+  uint32_t Reserved:30;
   uint32_t LOST:5;
   uint32_t GuidSpecific:16;
 #endif
@@ -274,6 +281,7 @@ typedef struct _GPTPartitionData
   int msftres;
   int atvrecv;
   int msftrecv;
+  int legacy_boot;
 } GPTPartitionData;
 
 static PedDiskType gpt_disk_type;
@@ -323,7 +331,7 @@ pth_new_from_raw (const PedDevice *dev, const uint8_t *pth_raw)
 {
   GuidPartitionTableHeader_t *pth = pth_new (dev);
 
-  PED_ASSERT (pth_raw != NULL, return 0);
+  PED_ASSERT (pth_raw != NULL);
 
   memcpy (pth, pth_raw, pth_get_size_static (dev));
   memcpy (pth->Reserved2, pth_raw + pth_get_size_static (dev),
@@ -337,7 +345,7 @@ pth_free (GuidPartitionTableHeader_t *pth)
 {
   if (pth == NULL)
     return;
-  PED_ASSERT (pth->Reserved2 != NULL, return);
+  PED_ASSERT (pth->Reserved2 != NULL);
 
   free (pth->Reserved2);
   free (pth);
@@ -346,8 +354,8 @@ pth_free (GuidPartitionTableHeader_t *pth)
 static uint8_t *
 pth_get_raw (const PedDevice *dev, const GuidPartitionTableHeader_t *pth)
 {
-  PED_ASSERT (pth != NULL, return 0);
-  PED_ASSERT (pth->Reserved2 != NULL, return 0);
+  PED_ASSERT (pth != NULL);
+  PED_ASSERT (pth->Reserved2 != NULL);
 
   int size_static = pth_get_size_static (dev);
   uint8_t *pth_raw = ped_malloc (pth_get_size (dev));
@@ -385,7 +393,7 @@ swap_uuid_and_efi_guid (uuid_t uuid)
 {
   efi_guid_t *guid = (efi_guid_t *) uuid;
 
-  PED_ASSERT (uuid != NULL, return);
+  PED_ASSERT (uuid != NULL);
   guid->time_low = PED_SWAP32 (guid->time_low);
   guid->time_mid = PED_SWAP16 (guid->time_mid);
   guid->time_hi_and_version = PED_SWAP16 (guid->time_hi_and_version);
@@ -408,8 +416,8 @@ static int
 pth_crc32 (const PedDevice *dev, const GuidPartitionTableHeader_t *pth,
            uint32_t *crc32)
 {
-  PED_ASSERT (dev != NULL, return 0);
-  PED_ASSERT (pth != NULL, return 0);
+  PED_ASSERT (dev != NULL);
+  PED_ASSERT (pth != NULL);
 
   uint8_t *pth_raw = pth_get_raw (dev, pth);
   if (pth_raw == NULL)
@@ -433,7 +441,7 @@ _pmbr_is_valid (const LegacyMBR_t *mbr)
 {
   int i;
 
-  PED_ASSERT (mbr != NULL, return 0);
+  PED_ASSERT (mbr != NULL);
 
   if (mbr->Signature != PED_CPU_TO_LE16 (MSDOS_MBR_SIGNATURE))
     return 0;
@@ -451,7 +459,7 @@ gpt_probe (const PedDevice *dev)
   GuidPartitionTableHeader_t *gpt = NULL;
   int gpt_sig_found = 0;
 
-  PED_ASSERT (dev != NULL, return 0);
+  PED_ASSERT (dev != NULL);
 
   if (dev->length <= 1)
     return 0;
@@ -631,9 +639,10 @@ _header_is_valid (PedDisk const *disk, GuidPartitionTableHeader_t *gpt,
      no smaller than the size of the PartitionEntry structure.
      We also require that be no larger than 1/16th of UINT32_MAX,
      as an additional sanity check.  */
-  uint32_t sope = PED_LE32_TO_CPU (gpt->SizeOfPartitionEntry);
-  if (sope % 8 != 0
-      || sope < sizeof (GuidPartitionEntry_t) || (UINT32_MAX >> 4) < sope)
+  uint32_t pe_size = PED_LE32_TO_CPU (gpt->SizeOfPartitionEntry);
+  if (pe_size % 8 != 0
+      || ! (sizeof (GuidPartitionEntry_t) <= pe_size
+            && pe_size <= (UINT32_MAX >> 4)))
     return 0;
 
   if (PED_LE64_TO_CPU (gpt->MyLBA) != my_lba)
@@ -650,6 +659,10 @@ _header_is_valid (PedDisk const *disk, GuidPartitionTableHeader_t *gpt,
 
   bool crc_match;
   if (check_PE_array_CRC (disk, gpt, &crc_match) != 0 || !crc_match)
+    return 0;
+
+  PedSector first_usable = PED_LE64_TO_CPU (gpt->FirstUsableLBA);
+  if (first_usable < 3)
     return 0;
 
   origcrc = gpt->HeaderCRC32;
@@ -679,7 +692,7 @@ _parse_header (PedDisk *disk, const GuidPartitionTableHeader_t *gpt,
            PED_EXCEPTION_IGNORE_CANCEL,
            _("The format of the GPT partition table is version "
              "%x, which is newer than what Parted can "
-             "recognise.  Please tell us!  bug-parted@gnu.org"),
+             "recognise.  Please report this!"),
            PED_LE32_TO_CPU (gpt->Revision)) != PED_EXCEPTION_IGNORE)
         return 0;
     }
@@ -710,11 +723,11 @@ _parse_header (PedDisk *disk, const GuidPartitionTableHeader_t *gpt,
       last_usable_if_grown = last_usable_min_default;
     }
 
-  PED_ASSERT (last_usable > first_usable, return 0);
-  PED_ASSERT (last_usable <= disk->dev->length, return 0);
+  PED_ASSERT (last_usable > first_usable);
+  PED_ASSERT (last_usable <= disk->dev->length);
 
-  PED_ASSERT (last_usable_if_grown > first_usable, return 0);
-  PED_ASSERT (last_usable_if_grown <= disk->dev->length, return 0);
+  PED_ASSERT (last_usable_if_grown > first_usable);
+  PED_ASSERT (last_usable_if_grown <= disk->dev->length);
 
   if (!asked_already && last_usable < last_usable_if_grown)
     {
@@ -746,8 +759,8 @@ _parse_header (PedDisk *disk, const GuidPartitionTableHeader_t *gpt,
 
   gpt_disk_data->entry_count
     = PED_LE32_TO_CPU (gpt->NumberOfPartitionEntries);
-  PED_ASSERT (gpt_disk_data->entry_count > 0, return 0);
-  PED_ASSERT (gpt_disk_data->entry_count <= 8192, return 0);
+  PED_ASSERT (gpt_disk_data->entry_count > 0);
+  PED_ASSERT (gpt_disk_data->entry_count <= 8192);
 
   gpt_disk_data->uuid = gpt->DiskGUID;
 
@@ -779,10 +792,13 @@ _parse_part_entry (PedDisk *disk, GuidPartitionEntry_t *pte)
     = gpt_part_data->boot = gpt_part_data->hp_service
     = gpt_part_data->hidden = gpt_part_data->msftres
     = gpt_part_data->msftrecv
+    = gpt_part_data->legacy_boot
     = gpt_part_data->bios_grub = gpt_part_data->atvrecv = 0;
 
   if (pte->Attributes.RequiredToFunction & 0x1)
     gpt_part_data->hidden = 1;
+  if (pte->Attributes.LegacyBIOSBootable & 0x1)
+    gpt_part_data->legacy_boot = 1;
 
   if (!guid_cmp (gpt_part_data->type, PARTITION_SYSTEM_GUID))
     gpt_part_data->boot = 1;
@@ -1149,7 +1165,7 @@ _partition_generate_part_entry (PedPartition *part, GuidPartitionEntry_t *pte)
   GPTPartitionData *gpt_part_data = part->disk_specific;
   unsigned int i;
 
-  PED_ASSERT (gpt_part_data != NULL, return);
+  PED_ASSERT (gpt_part_data != NULL);
 
   pte->PartitionTypeGuid = gpt_part_data->type;
   pte->UniquePartitionGuid = gpt_part_data->uuid;
@@ -1159,6 +1175,8 @@ _partition_generate_part_entry (PedPartition *part, GuidPartitionEntry_t *pte)
 
   if (gpt_part_data->hidden)
     pte->Attributes.RequiredToFunction = 1;
+  if (gpt_part_data->legacy_boot)
+    pte->Attributes.LegacyBIOSBootable = 1;
 
   for (i = 0; i < 72 / sizeof (efi_char16_t); i++)
     pte->PartitionName[i]
@@ -1176,9 +1194,9 @@ gpt_write (const PedDisk *disk)
   PedPartition *part;
   int ptes_size;
 
-  PED_ASSERT (disk != NULL, goto error);
-  PED_ASSERT (disk->dev != NULL, goto error);
-  PED_ASSERT (disk->disk_specific != NULL, goto error);
+  PED_ASSERT (disk != NULL);
+  PED_ASSERT (disk->dev != NULL);
+  PED_ASSERT (disk->disk_specific != NULL);
 
   gpt_disk_data = disk->disk_specific;
 
@@ -1250,7 +1268,7 @@ add_metadata_part (PedDisk *disk, PedSector start, PedSector length)
 {
   PedPartition *part;
   PedConstraint *constraint_exact;
-  PED_ASSERT (disk != NULL, return 0);
+  PED_ASSERT (disk != NULL);
 
   part = ped_partition_new (disk, PED_PARTITION_METADATA, NULL,
                             start, start + length - 1);
@@ -1301,6 +1319,7 @@ gpt_partition_new (const PedDisk *disk,
   gpt_part_data->msftres = 0;
   gpt_part_data->msftrecv = 0;
   gpt_part_data->atvrecv = 0;
+  gpt_part_data->legacy_boot = 0;
   uuid_generate ((unsigned char *) &gpt_part_data->uuid);
   swap_uuid_and_efi_guid ((unsigned char *) (&gpt_part_data->uuid));
   memset (gpt_part_data->name, 0, sizeof gpt_part_data->name);
@@ -1349,7 +1368,7 @@ gpt_partition_destroy (PedPartition *part)
 {
   if (part->type == 0)
     {
-      PED_ASSERT (part->disk_specific != NULL, return);
+      PED_ASSERT (part->disk_specific != NULL);
       free (part->disk_specific);
     }
 
@@ -1362,7 +1381,7 @@ gpt_partition_set_system (PedPartition *part,
 {
   GPTPartitionData *gpt_part_data = part->disk_specific;
 
-  PED_ASSERT (gpt_part_data != NULL, return 0);
+  PED_ASSERT (gpt_part_data != NULL);
 
   part->fs_type = fs_type;
 
@@ -1438,9 +1457,9 @@ gpt_alloc_metadata (PedDisk *disk)
   PedSector gptlength, pteslength = 0;
   GPTDiskData *gpt_disk_data;
 
-  PED_ASSERT (disk != NULL, return 0);
-  PED_ASSERT (disk->dev != NULL, return 0);
-  PED_ASSERT (disk->disk_specific != NULL, return 0);
+  PED_ASSERT (disk != NULL);
+  PED_ASSERT (disk->dev != NULL);
+  PED_ASSERT (disk->disk_specific != NULL);
   gpt_disk_data = disk->disk_specific;
 
   gptlength = ped_div_round_up (sizeof (GuidPartitionTableHeader_t),
@@ -1482,7 +1501,7 @@ gpt_partition_enumerate (PedPartition *part)
         }
     }
 
-  PED_ASSERT (0, return 0);
+  PED_ASSERT (0);
 
   return 0;			/* used if debug is disabled */
 }
@@ -1491,8 +1510,8 @@ static int
 gpt_partition_set_flag (PedPartition *part, PedPartitionFlag flag, int state)
 {
   GPTPartitionData *gpt_part_data;
-  PED_ASSERT (part != NULL, return 0);
-  PED_ASSERT (part->disk_specific != NULL, return 0);
+  PED_ASSERT (part != NULL);
+  PED_ASSERT (part->disk_specific != NULL);
   gpt_part_data = part->disk_specific;
 
   switch (flag)
@@ -1588,6 +1607,9 @@ gpt_partition_set_flag (PedPartition *part, PedPartitionFlag flag, int state)
     case PED_PARTITION_HIDDEN:
       gpt_part_data->hidden = state;
       return 1;
+    case PED_PARTITION_LEGACY_BOOT:
+      gpt_part_data->legacy_boot = state;
+      return 1;
     case PED_PARTITION_SWAP:
     case PED_PARTITION_ROOT:
     case PED_PARTITION_LBA:
@@ -1601,7 +1623,7 @@ static int
 gpt_partition_get_flag (const PedPartition *part, PedPartitionFlag flag)
 {
   GPTPartitionData *gpt_part_data;
-  PED_ASSERT (part->disk_specific != NULL, return 0);
+  PED_ASSERT (part->disk_specific != NULL);
   gpt_part_data = part->disk_specific;
 
   switch (flag)
@@ -1624,6 +1646,8 @@ gpt_partition_get_flag (const PedPartition *part, PedPartitionFlag flag)
       return gpt_part_data->atvrecv;
     case PED_PARTITION_HIDDEN:
       return gpt_part_data->hidden;
+    case PED_PARTITION_LEGACY_BOOT:
+      return gpt_part_data->legacy_boot;
     case PED_PARTITION_SWAP:
     case PED_PARTITION_LBA:
     case PED_PARTITION_ROOT:
@@ -1648,6 +1672,7 @@ gpt_partition_is_flag_available (const PedPartition *part,
     case PED_PARTITION_DIAG:
     case PED_PARTITION_APPLE_TV_RECOVERY:
     case PED_PARTITION_HIDDEN:
+    case PED_PARTITION_LEGACY_BOOT:
       return 1;
     case PED_PARTITION_SWAP:
     case PED_PARTITION_ROOT:
@@ -1721,6 +1746,13 @@ gpt_get_max_supported_partition_count (const PedDisk *disk, int *max_n)
   if (pth == NULL)
     return false;
 
+  if (!_header_is_valid (disk, pth, 1))
+    {
+      pth->FirstUsableLBA = 34;
+      pth->SizeOfPartitionEntry
+        = PED_CPU_TO_LE32 (sizeof (GuidPartitionEntry_t));
+    }
+
   *max_n = (disk->dev->sector_size * (pth->FirstUsableLBA - 2)
             / PED_LE32_TO_CPU (pth->SizeOfPartitionEntry));
   pth_free (pth);
@@ -1738,7 +1770,7 @@ _non_metadata_constraint (const PedDisk *disk)
 static int
 gpt_partition_align (PedPartition *part, const PedConstraint *constraint)
 {
-  PED_ASSERT (part != NULL, return 0);
+  PED_ASSERT (part != NULL);
 
   if (_ped_partition_attempt_align (part, constraint,
                                     _non_metadata_constraint (part->disk)))
@@ -1777,9 +1809,6 @@ static PedDiskType gpt_disk_type =
 void
 ped_disk_gpt_init ()
 {
-  PED_ASSERT (sizeof (GuidPartitionEntryAttributes_t) == 8, return);
-  PED_ASSERT (sizeof (GuidPartitionEntry_t) == 128, return);
-
   ped_disk_type_register (&gpt_disk_type);
 }
 
@@ -1788,3 +1817,6 @@ ped_disk_gpt_done ()
 {
   ped_disk_type_unregister (&gpt_disk_type);
 }
+
+verify (sizeof (GuidPartitionEntryAttributes_t) == 8);
+verify (sizeof (GuidPartitionEntry_t) == 128);

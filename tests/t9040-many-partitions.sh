@@ -1,7 +1,7 @@
 #!/bin/sh
 # Ensure that creating many partitions works.
 
-# Copyright (C) 2010 Free Software Foundation, Inc.
+# Copyright (C) 2010-2011 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,23 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 
 require_root_
 require_scsi_debug_module_
 
-# check for scsi_debug module
-modprobe -n scsi_debug ||
-  skip_test_ "you lack the scsi_debug kernel module"
-
 grep '^#define USE_BLKID 1' "$CONFIG_HEADER" > /dev/null ||
-  skip_test_ 'this system lacks a new-enough libblkid'
+  skip_ 'this system lacks a new-enough libblkid'
 
 ss=$sector_size_
 partition_sectors=256  # sectors per partition
@@ -46,10 +36,8 @@ sectors_per_MiB=$((1024 * 1024 / ss))
 n_MiB=$(((n_sectors + sectors_per_MiB - 1) / sectors_per_MiB))
 # create memory-backed device
 scsi_debug_setup_ sector_size=$ss dev_size_mb=$n_MiB > dev-name ||
-  skip_test_ 'failed to create scsi_debug device'
+  skip_ 'failed to create scsi_debug device'
 scsi_dev=$(cat dev-name)
-
-fail=0
 
 n=$((n_MiB * sectors_per_MiB))
 printf "BYT;\n$scsi_dev:${n}s:scsi:$ss:$ss:gpt:Linux scsi_debug;\n" \
@@ -79,5 +67,17 @@ $AWK "BEGIN {d = $t_final - $t0; n = $n_partitions; st = 60 < d;"\
 
 parted -m -s $scsi_dev u s p > out || fail=1
 compare out exp || fail=1
+
+# We must remove these partitions before terminating.
+# Otherwise, even though cleanup-driven rmmod will eventually cause
+# them to be removed, they may continue to be removed long after
+# the rmmod cleanup lock has been released, and such removals
+# can (and regularly did) interfere with the following test.
+i=1
+while :; do
+    parted -s $scsi_dev rm $i || fail=1
+    test $i = $n_partitions && break
+    i=$((i+1))
+done
 
 Exit $fail

@@ -1,5 +1,5 @@
 # Customize maint.mk                           -*- makefile -*-
-# Copyright (C) 2003-2010 Free Software Foundation, Inc.
+# Copyright (C) 2003-2011 Free Software Foundation, Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ local-checks-to-skip = \
 # Now that we have better (check.mk) tests, make this the default.
 export VERBOSE = yes
 
-old_NEWS_hash = 71570fda344ec276ea5c9ff0ab82fdce
+old_NEWS_hash = 31d7ac1051f7d5678928cb459b7abd5f
 
 include $(srcdir)/dist-check.mk
 
@@ -52,8 +52,19 @@ useless_free_options = \
   --name=pth_free
 
 # Tools used to bootstrap this package, used for "announcement".
-bootstrap-tools = autoconf,automake,gnulib,gperf
+bootstrap-tools = autoconf,automake,gettext,gnulib,gperf
 
 update-copyright-env = \
   UPDATE_COPYRIGHT_USE_INTERVALS=1 \
   UPDATE_COPYRIGHT_MAX_LINE_LENGTH=79
+
+#==> .j/.x-sc_GPL_version <==
+#build-aux/vc-list-files
+
+exclude_file_name_regexp--sc_bindtextdomain = ^(libparted/)?tests/.*\.c$$
+
+exclude_file_name_regexp--sc_cross_check_PATH_usage_in_tests = \
+  ^libparted/tests/t.*\.sh$$
+
+exclude_file_name_regexp--sc_prohibit_always-defined_macros = \
+  ^parted/(strlist|table)\.h$$

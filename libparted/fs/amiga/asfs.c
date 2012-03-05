@@ -1,7 +1,6 @@
 /*
     asfs.c -- parted asfs filesystem support
-    Copyright (C) 1998-2000, 2007, 2009-2010 Free Software Foundation,
-    Inc.
+    Copyright (C) 1998-2000, 2007, 2009-2011 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -61,8 +60,8 @@ _asfs_probe (PedGeometry* geom)
         PedSector root;
         int found = 0;
 
-	PED_ASSERT (geom != NULL, return NULL);
-	PED_ASSERT (geom->dev != NULL, return NULL);
+	PED_ASSERT (geom != NULL);
+	PED_ASSERT (geom->dev != NULL);
 
 	/* Finds the blocksize of the partition block */
 	if (!(part = ped_malloc (PED_SECTOR_SIZE_DEFAULT*blocksize))) {
@@ -119,16 +118,6 @@ error_part:
 
 static PedFileSystemOps _asfs_ops = {
 	probe:		_asfs_probe,
-	clobber:	NULL,
-	open:		NULL,
-	create:         NULL,
-	close:		NULL,
-	check:          NULL,
-	resize:		NULL,
-	copy:           NULL,
-	get_create_constraint:	NULL,
-	get_copy_constraint:	NULL,
-	get_resize_constraint:	NULL
 };
 
 PedFileSystemType _asfs_type = {

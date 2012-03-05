@@ -9,7 +9,7 @@
 
    Written by Richard W.M. Jones <rjones.at.redhat.com>
 
-   Copyright (C) 2008-2010 Free Software Foundation, Inc.
+   Copyright (C) 2008-2011 Free Software Foundation, Inc.
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public
@@ -19,7 +19,7 @@
    This library is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Lesser General Public License for more details.
+   General Public License for more details.
 
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
@@ -30,13 +30,13 @@
 #if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
 
 /* _get_osfhandle */
-#include <io.h>
+# include <io.h>
 
 /* FlushFileBuffers */
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+# define WIN32_LEAN_AND_MEAN
+# include <windows.h>
 
-#include <errno.h>
+# include <errno.h>
 
 int
 fsync (int fd)
@@ -75,6 +75,6 @@ fsync (int fd)
 
 #else /* !Windows */
 
-#error "This platform lacks fsync function, and Gnulib doesn't provide a replacement. This is a bug in Gnulib."
+# error "This platform lacks fsync function, and Gnulib doesn't provide a replacement. This is a bug in Gnulib."
 
 #endif /* !Windows */

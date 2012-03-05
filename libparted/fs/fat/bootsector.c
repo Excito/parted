@@ -1,6 +1,6 @@
 /*
     libparted
-    Copyright (C) 1998-2000, 2002, 2004, 2007, 2009-2010 Free Software
+    Copyright (C) 1998-2000, 2002, 2004, 2007, 2009-2011 Free Software
     Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -38,8 +38,8 @@
 int
 fat_boot_sector_read (FatBootSector* bs, const PedGeometry *geom)
 {
-	PED_ASSERT (bs != NULL, return 0);
-	PED_ASSERT (geom != NULL, return 0);
+	PED_ASSERT (bs != NULL);
+	PED_ASSERT (geom != NULL);
 
 	if (!ped_geometry_read (geom, bs, 0, 1))
 		return 0;
@@ -117,6 +117,23 @@ fat_boot_sector_probe_type (const FatBootSector* bs, const PedGeometry* geom)
 		return FAT_TYPE_FAT12;
 }
 
+static int
+_fat_table_entry_size (FatType fat_type)
+{
+	switch (fat_type) {
+		case FAT_TYPE_FAT12:
+		return 2;		/* FIXME: how? */
+
+		case FAT_TYPE_FAT16:
+		return 2;
+
+		case FAT_TYPE_FAT32:
+		return 4;
+	}
+
+	return 0;
+}
+
 /* Analyses the boot sector, and sticks appropriate numbers in
    fs->type_specific.
 
@@ -130,7 +147,7 @@ fat_boot_sector_analyse (FatBootSector* bs, PedFileSystem* fs)
 	FatSpecific*		fs_info = FAT_SPECIFIC (fs);
 	int			fat_entry_size;
 
-	PED_ASSERT (bs != NULL, return 0);
+	PED_ASSERT (bs != NULL);
 
 	if (PED_LE16_TO_CPU (bs->sector_size) != 512) {
 		if (ped_exception_throw (
@@ -275,7 +292,7 @@ fat_boot_sector_analyse (FatBootSector* bs, PedFileSystem* fs)
 		= (fs_info->sector_count - fs_info->cluster_offset)
 		  / fs_info->cluster_sectors;
 
-	fat_entry_size = fat_table_entry_size (fs_info->fat_type);
+	fat_entry_size = _fat_table_entry_size (fs_info->fat_type);
 	if (fs_info->cluster_count + 2
 			> fs_info->fat_sectors * 512 / fat_entry_size)
 		fs_info->cluster_count
@@ -290,7 +307,7 @@ fat_boot_sector_analyse (FatBootSector* bs, PedFileSystem* fs)
 int
 fat_boot_sector_set_boot_code (FatBootSector* bs)
 {
-	PED_ASSERT (bs != NULL, return 0);
+	PED_ASSERT (bs != NULL);
 
 	memset (bs, 0, 512);
 	memcpy (bs->boot_jump, FAT_BOOT_JUMP, 3);
@@ -303,7 +320,7 @@ fat_boot_sector_generate (FatBootSector* bs, const PedFileSystem* fs)
 {
 	FatSpecific*	fs_info = FAT_SPECIFIC (fs);
 
-	PED_ASSERT (bs != NULL, return 0);
+	PED_ASSERT (bs != NULL);
 
 	memcpy (bs->system_id, "MSWIN4.1", 8);
 	bs->sector_size = PED_CPU_TO_LE16 (fs_info->logical_sector_size * 512);
@@ -382,7 +399,7 @@ fat_boot_sector_write (const FatBootSector* bs, PedFileSystem* fs)
 {
 	FatSpecific*	fs_info = FAT_SPECIFIC (fs);
 
-	PED_ASSERT (bs != NULL, return 0);
+	PED_ASSERT (bs != NULL);
 
 	if (!ped_geometry_write (fs->geom, bs, 0, 1))
 		return 0;
@@ -400,7 +417,7 @@ fat_info_sector_read (FatInfoSector* is, const PedFileSystem* fs)
 	FatSpecific*	fs_info = FAT_SPECIFIC (fs);
 	int		status;
 
-	PED_ASSERT (is != NULL, return 0);
+	PED_ASSERT (is != NULL);
 
 	if (!ped_geometry_read (fs->geom, is, fs_info->info_sector_offset, 1))
 		return 0;
@@ -419,31 +436,11 @@ fat_info_sector_read (FatInfoSector* is, const PedFileSystem* fs)
 }
 
 int
-fat_info_sector_generate (FatInfoSector* is, const PedFileSystem* fs)
-{
-	FatSpecific*	fs_info = FAT_SPECIFIC (fs);
-
-	PED_ASSERT (is != NULL, return 0);
-
-	fat_table_count_stats (fs_info->fat);
-
-	memset (is, 0, 512);
-
-	is->signature_1 = PED_CPU_TO_LE32 (FAT32_INFO_MAGIC1);
-	is->signature_2 = PED_CPU_TO_LE32 (FAT32_INFO_MAGIC2);
-	is->free_clusters = PED_CPU_TO_LE32 (fs_info->fat->free_cluster_count);
-	is->next_cluster = PED_CPU_TO_LE32 (fs_info->fat->last_alloc);
-	is->signature_3 = PED_CPU_TO_LE16 (FAT32_INFO_MAGIC3);
-
-	return 1;
-}
-
-int
 fat_info_sector_write (const FatInfoSector* is, PedFileSystem *fs)
 {
 	FatSpecific*	fs_info = FAT_SPECIFIC (fs);
 
-	PED_ASSERT (is != NULL, return 0);
+	PED_ASSERT (is != NULL);
 
 	if (!ped_geometry_write (fs->geom, is, fs_info->info_sector_offset, 1))
 		return 0;

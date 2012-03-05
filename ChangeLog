@@ -1,4 +1,1031 @@
+2011-05-30  Jim Meyering  <meyering@redhat.com>
+
+	version 3.0
+	* NEWS: Record release date.
+
+	maint: placate coverity: don't ignore some return values
+	* libparted/cs/constraint.c: Include <assert.h>.
+	(ped_constraint_exact): Don't ignore ped_alignment_init's return
+	value or that from ped_geometry_init.
+
+	loop: avoid NULL dereference upon failure
+	* libparted/labels/loop.c (loop_partition_duplicate): Don't dereference
+	NULL upon failure.
+
+	shared library version: increment major: 1.0.0
+	* libparted/Makefile.am (CURRENT, REVISION): Update from 0.2.0 to 1.0.0,
+	due to removed interfaces.
+
+	build: update gnulib submodule to latest
+
+2011-05-27  Jim Meyering  <meyering@redhat.com>
+
+	doc: update NEWS
+	* NEWS (Changes in behavior): Describe the change.
+	(Bug fixes): Mention the leak fixes.
+
+	doc: reflect removal of FS-related commands
+	* README (WARNING): Say that all FS-manipulation code is now gone.
+	* doc/parted.texi (Command explanations): Remove descriptions of and
+	any examples or references to the following commands: check, cp,
+	mkfs, mkpartfs, move, resize.
+
+	build: remove configure-time options: --disable-fs, --enable-Werror
+	* configure.ac: Remove support for --enable-fs and --disable-fs.
+	Remove support for --enable-Werror and --disable-Werror.
+	* README: Remove paragraph about --disable-fs and
+	--enable-discovery-only.
+	* libparted/libparted.c: Now that --disable-fs is gone (i.e.,
+	ENABLE_FS would be always 1), remove its #ifdefs.
+
+	tests: make t0220 more useful when it fails
+
+	maint: update po/POTFILES.in
+	* po/POTFILES.in: Remove file names, to reflect file deletions.
+
+	doc: remove FS-related documentation and other stale bits
+	* doc/parted.texi: Remove FS-related documentation and other
+	stale bits.
+
+	linux_swap: remove all-but-probe FS-related code
+
+	xfs: remove all-but-probe FS-related code
+
+	jfs: remove all-but-probe FS-related code
+
+	ufs: remove all-but-probe FS-related code
+
+	reiserfs: remove all-but-probe FS-related code
+
+	hfs: remove all-but-probe FS-related code
+
+	ntfs: remove all-but-probe FS-related code
+
+	amiga: build with warning and error options
+	* libparted/fs/amiga/Makefile.am (AM_CFLAGS): Add $(WARN_CFLAGS)
+	and $(WERROR_CFLAGS).
+
+	ext2: remove all-but-probe FS-related code
+
+	fat: remove all-but-probe FS-related code
+
+	remove all top-level FS-op code and the clearfat program
+
+	UI: remove all file-system-aware sub-commands
+	Note that we are removing the resize command, even though parted
+	appears to be the only free tool that provides the ability to
+	resize FAT16 and FAT32 file systems.
+	* parted/parted.c (do_mkfs, do_cp, do_mkpartfs): Remove functions.
+	(do_move, do_check, do_resize): Likewise.
+	(_init_commands): Remove each command-definition clause.
+	* parted/parted.c (_partition_warn_loss): Remove now-unused function.
+	* include/parted/filesys.h: Remove declarations of now-removed
+	FS-munging functions
+
+	tests: t1100: show that adding a partition on a busy device succeeds
+	* tests/t1100-busy-label.sh: Demonstrate that adding a partition
+	succeeds, even when another on the same device is mounted (active).
+
+	amiga: avoid NULL-deref-on-OOM and an error-path leak
+	* libparted/labels/rdb.c (amiga_read): Don't dereference NULL on OOM.
+	Don't leak a constraint when failing to add a partition.
+
+	mac: avoid NULL-deref-on-OOM and an error-path leak
+	* libparted/labels/mac.c (mac_read): Don't dereference NULL on OOM.
+	Don't leak a constraint when failing to add a partition.
+
+	sun: avoid NULL-deref-on-OOM and an error-path leak
+	* libparted/labels/sun.c (sun_read): Don't dereference NULL on OOM.
+	Don't leak a constraint when failing to add a partition.
+
+	UI: avoid leak when interactive sector selection matches default
+	* parted/ui.c (command_line_get_fs_type): Don't leak an input "word".
+
+	UI: plug a leak
+	* parted/ui.c (command_line_get_fs_type): Don't leak an FS type name
+	string.
+
+	bsd: avoid NULL-deref-on-OOM and an error-path leak
+	* libparted/labels/bsd.c (bsd_read): Don't dereference NULL on OOM.
+	Don't leak a constraint when failing to add a partition.
+
+	linux: don't leak a FILE* upon /proc read failure
+	* libparted/arch/linux.c (_probe_proc_partitions): Call fclose
+	upon failure.
+
+	linux: plug a file descriptor leak
+	* libparted/arch/linux.c (read_device_sysfs_file): Don't leak a
+	file descriptor.
+
+	tests: t1100-busy-label: don't use mkpartfs; rework to use scsi_debug
+	* tests/t1100-busy-label.sh: Remove one last use of mkpartfs.
+	Use scsi_debug rather than requiring an explicitly-provided device.
+
+	maint: correct coverity-reported "suspicious sizeof"
+	* parted/table.c (table_add_row): Use sizeof(*VAR), rather than
+	erroneous sizeof(explicit_type) that just happened to be ok.
+
+	maint: remove unreachable code
+	* libparted/labels/sun.c (sun_partition_new): Remove unreachable stmt.
+	* libparted/labels/pc98.c (pc98_partition_new): Likewise.
+
+	build: update gnulib submodule to latest
+
+2011-05-18  Jim Meyering  <meyering@redhat.com>
+
+	post-release administrivia
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* cfg.mk (old_NEWS_hash): Auto-update.
+
+	version 2.4
+	* NEWS: Record release date.
+
+	shared library version: increment REVISION
+	* libparted/Makefile.am (REVISION): Increment, since there have
+	been changes to the library, but no interface addition or removal.
+	* README-release: Mention the shared-library version update procedure.
+
+	build: update gnulib submodule to latest
+
+	tests: avoid nasty FP-causing race condition
+	* tests/t9040-many-partitions.sh: Remove all partitions before
+	exiting -- otherwise, the rmmod-prompted removal of those many
+	partitions would continue long after rmmod completion and the
+	release of the scsi_debug lock, and thus partition-device removals
+	provoked by this test would cause failure in the subsequent test,
+	e.g., when the devices for partitions 14,15,16 have just been
+	successfully created (verified that they exist), yet the next
+	step -- to create a file system on one of them -- fails or is
+	erroneously skipped because the device has been removed asynchronously.
+
+	tests: add double quotes around another use of $VERBOSE
+	* tests/t-local.sh (scsi_debug_setup_): Quote another $VERBOSE.
+
+	build: list bc as a build-requirement
+	* bootstrap.conf (buildreq): Also require "bc", since it's used
+	in some of 'make check's tests.
+
+2011-05-17  Jim Meyering  <meyering@redhat.com>
+
+	tests: remove tests that are too FS-centric
+	* tests/t2100-mkswap.sh: Likewise.
+	* tests/t3000-resize-fs.sh: Remove file, now that all FS-ops are gone.
+	* tests/Makefile.am (TESTS): Remove them here, too.
+
+	linux: fix diagnostic about operating on very small file or device
+	* libparted/arch/linux.c (init_file): Correct diagnostic.
+	Parted would claim that a small-but-non-empty file has zero length.
+
+	bfs: remove unused files
+
+	tests: add double quotes around a use of $VERBOSE
+	* tests/t-local.sh (scsi_debug_cleanup_): Add missing double quotes.
+
+2011-05-12  Jim Meyering  <meyering@redhat.com>
+
+	tests: avoid new, spurious test failure
+	* tests/t9050-partition-table-types.sh: Use a "device size"
+	that is large enough to accommodate 1KiB and 4KiB sectors.
+	The original size, 3MiB was too small for a dvh partition
+	with PARTED_SECTOR_SIZE=1024.  Increase it to 30MiB.
+
+	tests: adapt t1101-busy-partition not to use mkpartfs
+	* tests/t1101-busy-partition.sh: Use mkfs.vfat instead.
+
+2011-05-11  Jim Meyering  <meyering@redhat.com>
+
+	tests: write all pairs of partition table types
+	* tests/t9050-partition-table-types.sh: New file.
+	* tests/Makefile.am (TESTS): Add it.
+
+2011-05-10  Jim Meyering  <meyering@redhat.com>
+
+	tests: add a NEWS entry and a test to exercise today's bug fix
+	* tests/t9041-undetected-in-use-16th-partition: New file.
+	* tests/Makefile.am (TESTS): Add it.
+	* NEWS (Bug fixes): Describe it.
+
+2011-05-10  Phillip Susi  <psusi@cfl.rr.com>
+
+	linux: also detect "in-use" dmraid and scsi-Nth (N>=16) partitions
+	Prior to this change, Parted would fail to detect any in-use
+	partition on a dmraid disk, as well as any in-use partition
+	numbered 16 or greater on a regular scsi disk.
+	This was because assumptions were being made about the device node
+	major/minor numbers and how they relate to the partition number.
+	These assumptions are invalid for dmraid devices, and for normal
+	disks with >= 16 partitions.
+	* libparted/arch/linux.c (_partition_get_part_dev): Remove function.
+	(_partition_is_mounted): Rewrite to use _partition_is_mounted_by_path
+	instead of _by_dev.
+
+2011-05-10  Jim Meyering  <meyering@redhat.com>
+
+	build: update gnulib submodule to latest
+
+	tests: avoid subtle shell semantics bug
+	This bug was causing some root-only tests to be mistakenly skipped.
+	This bash command will always exit successfully,
+	i.e., the "return 1" will never happen:
+	  bash -c 'f(){ local f=$(false)||return 1; return 0; }; f'
+	That's because the assignment always succeeds, and that success
+	is what determines the return value, not the $(...) command.
+	This is very counter-intuitive, sigh.
+	The work-around is to separate the declaration and assignment, as in
+	local f; f=$(...) || ...
+	* tests/t-local.sh (new_sdX_): Do that.
+	(gpt_corrupt_primary_table_): Likewise.
+
+	tests: minor fix; add/adjust comments
+	* tests/t1101-busy-partition.sh: Don't ignore failed comparison.
+	Add a comment.
+
+2011-04-21  Brian C. Lane  <bcl@redhat.com>
+
+	s390/dasd: avoid buffer overrun upon API mismatch diagnostic
+	* libparted/labels/fdasd.c (fdasd_check_api_version): The static
+	buffer for the error string was too small.  Double its length.
+	This resolves http://bugzilla.redhat.com/693852
+
+2011-04-20  Brian C. Lane  <bcl@redhat.com>
+
+	linux: fix typo in comment: /path%d => /part%d
+	* libparted/arch/linux.c (_device_get_part_path): Fix typo in comment.
+
+2011-04-18  Jim Meyering  <meyering@redhat.com>
+
+	linux: don't free invalid pointer upon asprintf failure
+	* libparted/arch/linux.c (_device_get_part_path): When asprintf
+	fails, it leaves its first argument in an undefined state, and
+	hence that pointer must not be freed.  However, here, in two
+	places we could potentially free an invalid pointer.  Use
+	zasprintf; then the pointer is either NULL or allocated,
+	and hence always freeable.
+
+	linux: clean up device naming code (no semantic change)
+	* libparted/arch/linux.c (zasprintf): New function.
+	(_device_get_part_path): Clean up:
+	Use size_t, not "int" for strlen-returned value.
+	Combine mostly duplicate snprintf uses.
+	Use zasprintf instead of malloc+snprintf.
+
+	don't reference before start of buffer for short device name
+	* libparted/arch/linux.c (_device_get_part_path): Avoid invalid
+	reference to memory before dev->path when its length is 4 or less.
+
+2011-04-14  Jim Meyering  <meyering@redhat.com>
+
+	maint: s/can not/cannot/ in a comment and documentation
+	Without this, a new "make syntax-check" rule would fail.
+	* libparted/filesys.c: s/can not/cannot/
+	* doc/parted-pt_BR.texi (BIOSes and Firmware): Likewise.
+
+	tests: remove now-unused Makefile rule
+	* libparted/tests/Makefile.am (old-init.sh): Remove obsolete rule.
+
+	tests: improve t1101-busy-partition.sh
+	* tests/t1101-busy-partition.sh: Fail hard upon timeout while
+	waiting for device to appear.
+
+	tests: make the tests in libparted/tests work properly once again
+	Since switching to init.sh, the root-only tests did not clean up.
+	* libparted/tests/Makefile.am (prereq): Always create a symlink
+	to tests/init.sh.
+	* tests/init.cfg: Source $abs_top_srcdir/tests-relative names,
+	not $srcdir-relative names.  This way, it works also when run
+	from libparted/tests/.
+	* tests/t-local.sh: Likewise.
+
+	tests: avoid a race condition in the scsi_debug-using tests
+	* tests/t-local.sh (new_sdX_): New function.
+	(scsi_debug_setup_): Use new_sdX_ to find the just-created device name,
+	rather relying on the list of file names in /sys/block/sd* changing.
+	Sometimes the list would not change, which would lead to tests failing
+	with I/O errors when run in parallel.  Thanks to Brian Lane for the
+	tip that /sys/block/sd*/device/model contains "scsi_debug" if there
+	is a device created by our "modprobe scsi_debug" command.
+
+2011-03-24  Jim Meyering  <meyering@redhat.com>
+
+	make parted "do what I say" with IEC start and end values like 5GiB
+	In a command like this,
+	  parted -s -- $dev mklabel gpt mkpart P-NAME 4MB -34s
+	parted interprets the "4MB" as merely a suggestion for the starting
+	sector number.  It uses half of the MB-units value as a "radius"
+	about the sector containing byte 4,000,000, and it may choose some
+	other more appropriate sector, based on partition table or alignment
+	constraints within the range 3,500,000B..4,500,000B.
+	Before, parted handled IEC units, i.e., KiB, MiB, GiB, etc.,
+	with identically "helpful" sloppiness, of course honoring the
+	power-of-two semantics.
+	Now, however if you use IEC units, i.e., KiB, MiB, GiB, etc.,
+	the "radius" is taken to be zero, so parted uses precisely
+	whatever multiple of a power of two you've specified.
+	Hence, adjusting the example above to use MiB, rather than "MB",
+	  parted -s -- $dev mklabel gpt mkpart P-NAME 4MiB -34s
+	With this change, that is equivalent to the following:
+	  parted -s -- $dev mklabel gpt mkpart P-NAME 4194304B -34s
+	I.e., it uses the sector containing precisely that byte, and
+	does not perform any "extra" adjustment.
+	* libparted/unit.c (is_power_of_2): New function.
+	(ped_unit_parse_custom): Use it to avoid interpreting a large
+	input string as "sloppy" (i.e. large radius) when it uses IEC
+	binary notation like 34KiB, 3GiB and 65TiB.
+	* tests/t0207-IEC-binary-notation.sh: New test.
+	* tests/Makefile.am (TESTS): Add it.
+	* doc/parted.texi (unit): Describe the new behavior.
+	* NEWS (Changes in behavior): Mention it here, too.
+
+2011-03-20  Jim Meyering  <meyering@redhat.com>
+
+	maint: stop using .x-sc_* files to list syntax-check exemptions
+	Instead, use the new mechanism with which you merely use a
+	variable (derived from the rule name) defined in cfg.mk to an ERE
+	matching the exempted file names.
+	* gnulib: Update to latest, to get maint.mk that implements this.
+	* .x-sc_GPL_version: Remove file.
+	* .x-sc_prohibit_always-defined_macros: Likewise.
+	* Makefile.am (EXTRA_DIST): Remove them from here, too.
+	* cfg.mk: Define variables to exempt the same files.
+
+2011-03-16  Jim Meyering  <meyering@redhat.com>
+
+	maint: rename a variable
+	* libparted/labels/gpt.c (_header_is_valid): Rename a variable,
+	and switch to more readable range-checking logic.
+
+	gpt: avoid division by zero
+	* libparted/labels/gpt.c (_header_is_valid): Reject as invalid if
+	FirstUsableLBA < 3.
+	(gpt_get_max_supported_partition_count): Ensure that we don't divide
+	by zero: verify that the GPT header is valid before dividing by its
+	"size of partition entry".  Under normal circumstances, the on-disk
+	PE size field is reasonable because we have just written it.  However,
+	there are two ways it can end up zero: we lose the race when some other
+	process pokes a 4-byte 0 into just the right location between when
+	we write it and when we re-read the value we're about to divide by.
+	Then there's the case that I encountered: using an old USB (8MB) key,
+	mklabel gpt failed due to division by zero.  The device reported no
+	failure when writing the initial header, yet when reading back that
+	very same sector (also successful), parted got all 0 bytes.
+	* NEWS (Bug fixes): Mention it.
+
+	build: enable compilation warnings also for new nilfs2 subdir
+	* libparted/fs/nilfs2/Makefile.am (AM_CFLAGS): Define.
+
+	nilfs2: remove unused nilfs2_clobber function
+	* libparted/fs/nilfs2/nilfs2.c (nilfs2_clobber): Remove unused
+	function.
+	(nilfs2_ops) [clobber]: Always set to NULL.
+
+	maint: avoid shadowing warning
+	* parted/parted.c (do_mkpart): Rename inner added_ok to add_ok.
+
+	build: don't let parted_CFLAGS override our AM_CFLAGS setting
+	* parted/Makefile.am (parted_CFLAGS): Remove unused (and interfering)
+	definition.
+
+	maint: avoid new compiler warnings
+	* parted/parted.c (do_print): Remove now-unused "error" label.
+	(_print_disk_info): Use one more "const" attribute, to avoid
+	compiler warnings.
+
+2011-03-16  Petr Uzel  <petr.uzel@suse.cz>
+
+	tests: do not fail if some utilities are missing
+	* tests/t1700-probe-fs.sh: Skip the test if mkfs.ext3 or tune2fs
+	is missing or is not in $PATH.
+
+	tests: test 'parted print' with empty disk
+	* tests/t0101-print-empty.sh: New test.
+	* tests/Makefile.am: Add it.
+
+	parted: rework 'parted print' so that it works with empty disk
+	'parted $dev print' on a device without a partition table used to fail
+	with an 'unrecognised disk label' error, without printing the following:
+	disk model, transport, size, sector size, BIOS geometry
+	all of which are available, and do not dependent on the partition table.
+
+	With this patch, parted prints all of this information (BIOS geometry
+	only if 'unit cyl' is specified) and reports success even if the disk
+	does not have a valid partition table.
+
+	As a side efect, 'parted $dev print devices/all/list' now prints
+	information about all the devices, even if $dev does not have a
+	partition table.
+
+	* parted/parted.c (_print_disk_info): New function.
+	(do_print): Do not immediately fail if the partition table is not
+	recognized, but print disk information and report success instead.
+	* NEWS (Changes in behavior): Mention it.
+
+	parted: factor out disk geometry printing into separate function
+	* parted/parted.c (_print_disk_geometry): New function.
+	(do_print): Use _print_disk_geometry.
+
+2011-03-05  Brian C. Lane  <bcl@redhat.com>
+
+	Remove PED_ASSERT action argument
+	The action argument was a leftover from when the PED_ASSERT macro was
+	last changed. This removes that argument from the macro and from all
+	occurrences of it.
+
+	Remove PED_ASSERT from dos geometry checking
+	The CHS geometry values are calculated based on the existing partition
+	information. The values can't always be calculated, and the partition
+	may be corrupt so instead of throwing an assertion just return 0 and
+	carry on.
+
+	I left the logic for the PED_ASSERT checks the same so that it is clear
+	that the logic has not changed, it just returns 0 now.
+
+	* libparted/labels/dos.c (probe_partition_for_geom): remove PED_ASSERT
+
+2011-03-05  Jim Meyering  <meyering@redhat.com>
+
+	tests: add a minimal nilfs2 test
+	* tests/t1700-probe-fs.sh: Adapt to also test nilfs2.
+
+2011-03-04  Jim Meyering  <meyering@redhat.com>
+
+	tests: rename a test script, before extending it to handle nilfs
+	* tests/t1700-probe-fs.sh: Rename from ...
+	* tests/t1700-ext-probe.sh: ...this.
+	* tests/Makefile.am (TESTS): Rename it here, too.
+
+2011-02-26  Jiro SEKIBA  <jir@unicus.jp>
+
+	libparted: add nilfs2 module
+	* libparted/fs/nilfs2/Makefile.am: New file.
+	* libparted/fs/nilfs2/nilfs2.c: New file.
+	(is_valid_nilfs_sb, nilfs2_probe, nilfs2_clobber): New functions.
+	(ped_file_system_nilfs2_init, ped_file_system_nilfs2_done): Likewise.
+	(nilfs2_ops, nilfs2_type): Define.
+	* libparted/fs/Makefile.am (SUBDIRS): Add nilfs2.
+	* configure.ac (AC_OUTPUT): Add the new Makefile.
+	* libparted/libparted.c: Declare and use the _init and _done functions.
+
+	Add a new fs module to provide following:
+	- probe nilfs2 filesystem partition
+	- clobber nilfs2 filesystem partition
+
+	The is_valid_nilfs_sb function came from the grub nilfs2 module,
+	which is written by me and assigned to FSF.
+
+2011-02-26  Jim Meyering  <meyering@redhat.com>
+
+	maint: two files lacked a newline at EOF: add one to each
+	* include/Makefile.am: Add newline at end of file.
+	* libparted/fs/jfs/Makefile.am: Likewise.
+
+	tests: t3310-flags: check all gpt boolean flags, too
+	* tests/t3310-flags.sh: Check gpt as well as msdos flags.
+	Parametrize mkpart usage.
+	Accommodate gpt-induced difference in parted's print output
+	GPT partitions have a name, while msdos ones do not.
+	This also fixes the "on_and_off" perl flag extraction regexp,
+	which before was using $1 with no corresponding () group.
+
+	tests: prepare t3310-flags to check gpt boolean flags, too
+	* tests/t3310-flags.sh: Put a loop around the body of the test,
+	and factor out the partition table name.
+
+	tests: remove useless commands
+	* tests/t3310-flags.sh: Remove useless exp-manipulating commands.
+
+2011-02-26  Brian C. Lane  <bcl@redhat.com>
+
+	gpt: add legacy_boot partition flag
+	Add support for the Legacy BIOS Bootable flag in the GPT
+	Attribute field.  This is used by software like syslinux to
+	determine which partition to boot when in BIOS mode.
+
+	See Page 105, Table 19 Bit 2 of the UEFI Spec 2.3 book.
+
+	* doc/C/parted.8: Document legacy_boot.
+	* doc/parted.texi: Document legacy_boot.
+	* include/parted/disk.h: Add PED_PARTITION_LEGACY_BOOT flag.
+	* libparted/disk.c (ped_partition_flag_get_name): Add legacy_boot flag.
+	* libparted/labels/gpt.c (_parse_part_entry):
+	(_partition_generate_part_entry, gpt_partition_new):
+	(gpt_partition_set_flag, gpt_partition_get_flag):
+	(gpt_partition_is_flag_available): Add legacy_boot flag support.
+
+	gpt: add partition attribute bits: NoBlockIOProtocol, LegacyBIOSBootable
+	Add NoBlockIOProtocol and LegacyBIOSBootable flags to the GPT partition
+	Attributes entry.
+
+2011-02-26  Jim Meyering  <meyering@redhat.com>
+
+	doc: regenerate partprobe .pot and .po files
+	* doc/C/po/partprobe.8.pot: Slight syntax update induced by newer tool.
+	* doc/pt_BR/partprobe.8.pt_BR.po: Likewise.
+
+	tests: move test_description= variable to a comment
+	test-lib.sh-based tests required a test_description= definition.
+	When testing switched to init.sh, which by convention uses a brief
+	comment on line 2 instead, some instances were not converted.
+	* libparted/tests/t1000-label.sh: Put test description on line 2.
+	Remove now-unused test_description= definition.
+	* libparted/tests/t2000-disk.sh: Likewise.
+	* tests/t0220-gpt-msftres.sh: Likewise.
+
+2011-02-23  Jim Meyering  <meyering@redhat.com>
+
+	s390: avoid warnings
+	* libparted/labels/vtoc.c (vtoc_read_volume_label): Remove decl
+	of unused var.
+	* libparted/labels/fdasd.c (fdasd_valid_vtoc_pointer): Return
+	a value also when successful.
+	* libparted/labels/dasd.c (dasd_alloc_metadata): Initialize "part"
+	to NULL solely to avoid a spurious used-uninitialized warning.
+
+2011-02-23  Stephen Powell  <zlinuxman@wowway.com>
+
+	doc: add NEWS entries for s390 fix and improvements
+
+	s390: make DIAG driver work for FBA DASD with block size > 512
+	In order to make the DIAG driver work for FBA DASD with a block
+	size greater than 512, I had to make a rather awkward patch to
+	C function vtoc_read_volume_label in libparted/labels/vtoc.c.
+	The "right" logic would be "If this is an FBA DASD device
+	using the DIAG driver, and the effective block size used by the
+	DIAG driver is greater than 512, then do it this way.  Else,
+	do it the normal way."  (Note that when using the FBA driver,
+	the effective block size is always 512, regardless of the CMS
+	logical block size stored in the volume label.  The DIAG driver,
+	on the other hand, honors the CMS logical block size.)
+
+	The problem is that the information needed to make that decision
+	has not been provided to the routine (via the parameter list).
+	So what I ended up doing is assuming the normal way, then if
+	I don't find a recognized volume label header (VOL1, LNX1,
+	or CMS1, in EBCDIC), then I assumed that it must be the special
+	case.  So in the special case I end up doing an unnecessary
+	read.  It's a kludge, but it works.
+
+2011-02-23  Jim Meyering  <meyering@redhat.com>
+
+	tests: new script to generate 9-pte-GPT-tables
+
+	cleanup: use verify, not PED_ASSERT to check struct sizes
+	* libparted/labels/gpt.c: Use compile-time "verify" rather than
+	run-time PED_ASSERT to ensure struct sizes are as expected.
+
+2011-02-23  Stephen Powell  <zlinuxman@wowway.com>
+
+	s390: improve/correct DASD support
+	The long title would be "corrections to partition size and location
+	calculations for type 1 partitions for s390 dasd".
+
+	This could be treated as two separate fixes, one to make corrections
+	for LDL formatted disks and one to add support for CMS formatted
+	disks.  I see CMS formatted disks as a variant of LDL formatted
+	disks, with the additional twist that CMS formatted disks can
+	be reserved or recomped, which LDL formatted disks cannot be.
+	This affects the size and location of the partition.
+
+	With these patches, parted matches the behavior of the Linux kernel
+	in recognizing partitions on CMS- and LDL-formatted disks, as documented
+	in the Linux kernel source code in routine fs/partitions/ibm.c.
+	Calculation of the metadata has also been changed so that parted will
+	show no free space on such a disk.  In some cases there are now two
+	non-contiguous metadata extents: one at the beginning of the disk and
+	one at the end.
+
+	As before, parted only supports CKD DASD using the ECKD driver.
+	FBA DASD and CKD DASD using the DIAG driver are still not supported.
+
+	In my regression testing I have discovered some problems in the area
+	of recognizing file system options.  However, since I can duplicate
+	these errors on a version of parted which does not contain my changes,
+	I have concluded that my changes did not cause this and therefore
+	this is an unrelated bug.
+
+2011-02-22  Jim Meyering  <meyering@redhat.com>
+
+	maint: update from gnulib
+	* bootstrap: Update from gnulib.
+	* tests/init.sh: Likewise.
+	* gnulib: Update submodule to latest.
+
+	maint: update copyright year ranges to include 2011
+	Run "make update-copyright".
+
+	maint: update copyright date in parted.texi
+	* doc/parted.texi: Update copyright date.
+
+2010-12-30  Jim Meyering  <meyering@redhat.com>
+
+	maint: don't hard-code bug-reporting address
+	* libparted/exception.c (default_handler): Use PACKAGE_BUGREPORT
+	rather than hard-coding bug-parted@...
+	* libparted/labels/gpt.c (_parse_header) [DISCOVER_ONLY]: Don't
+	mention the bug-reporting address explicitly, since ped_exception_throw
+	is about to do just that.
+
+2010-12-16  Jim Meyering  <meyering@redhat.com>
+
+	maint: correct typos in HACKING
+	* HACKING: Don't reference grep everywhere.  I copied grep's
+	HACKING and forgot to s/grep/parted/ (slightly different for
+	the repository, since it's at git.debian.org, not Savannah).
+	2010-11-25  Jim Meyering  <meyering@redhat.com>
+
+2010-12-15  Brian C. Lane  <bcl@redhat.com>
+
+	default to 1MiB alignment when possible
+	Change the linux_get_optimum_alignment() function to prefer
+	aligning partitions to PED_DEFAULT_ALIGNMENT (1MiB), if possible.
+	This helps tools like anaconda better support 4k sector drives.
+
+	* include/parted/parted.h (PED_DEFAULT_ALIGNMENT): Define.
+	* libparted/arch/linux.c (linux_get_optimum_alignment): Adjust.
+	See comments for details.
+	* libparted/device.c (ped_device_get_optimum_alignment): Use
+	PED_DEFAULT_ALIGNMENT rather than hard-coded 1048576.
+	* tests/t9020-alignment.sh: Adjust expectations to match new behavior.
+	See http://bugzilla.redhat.com/618255 for details.
+
+2010-11-22  Jim Meyering  <meyering@redhat.com>
+
+	tests: don't rely on "lockfile" program
+	* tests/t-local.sh (scsi_debug_acquire_lock_): Use mkdir, rather
+	that lockfile.  The latter is not always available.
+	(scsi_debug_lock_dir_): Rename, now that it's a dir.
+	(scsi_debug_cleanup_): Remove it with rm -rf.
+	Fix typo in diag: s/rrmod/rmmod/
+
+	tests: remove vestiges of test-lib.sh
+	* tests/t-lib-helpers.sh (require_mdadm_): Remove vestiges of
+	test-lib.sh (aka uses of the "say" and "test_done" functions).
+	(require_xfs_): Likewise.
+
+	tests: avoid spurious failure
+	* tests/t6000-dm.sh: Sanitize directory name, to avoid spurious
+	failure due to e.g., mount-related differences.
+
+2010-11-22  Brian C. Lane  <bcl@redhat.com>
+
+	linux: remove DASD restriction on _disk_sync_part_table
+	* libparted/arch/linux.c: Include <assert.h>.
+	(linux_disk_commit): Assert that _have_blkpg returns true
+	and don't skip _disk_sync_part_table for DASD devices.
+	Otherwise, when creating a partition on a DASD device,
+	new /dev/*[12...] device files would not be created.
+	Also, remove obsolete comment about DevFS.
+	For details, see http://bugzilla.redhat.com/651478
+	and http://thread.gmane.org/gmane.comp.gnu.parted.bugs/10191
+
+2010-11-21  Jim Meyering  <meyering@redhat.com>
+
+	build: update gnulib submodule to latest
+	avoid new syntax-check failures
+	* .x-sc_cross_check_PATH_usage_in_tests: New file.
+	* .x-sc_bindtextdomain: New file.
+
+2010-11-20  Jim Meyering  <meyering@redhat.com>
+
+	tests: adjust cleanup_ handler to work with init.sh
+	* tests/init.cfg (cleanup_, cleanup_fn_, cleanup_final_): Define.
+	* tests/t-local.sh (cleanup_final_): Use this to ensure that we
+	always release the lock and run rmmod.  Overriding the trap did not
+	do the job.
+	* libparted/tests/t2100-zerolen.sh: Use cleanup_fn_, not cleanup_.
+	* tests/t1100-busy-label.sh: Likewise.
+	* tests/t1101-busy-partition.sh: Likewise.
+	* tests/t4100-dvh-partition-limits.sh: Likewise.
+	* tests/t4100-msdos-partition-limits.sh: Likewise.
+	* tests/t6000-dm.sh: Likewise.
+	* tests/t8000-loop.sh: Likewise.
+
+	tests: t3000-resize-fs.sh: don't expect fs-op warning
+	* tests/t3000-resize-fs.sh: Don't expect fs-op warning.
+	The testing framework now suppresses it.
+
+	tests: t-lvm.sh (lvm_init_root_dir_): Fix it to use $test_dir_
+
+	tests: remove t-lib.sh
+	* tests/t-lib.sh: Remove file.  No longer used.
+	* tests/Makefile.am (EXTRA_DIST): Remove t-lib.sh.
+	* tests/t-lib-helpers.sh: Don't mention this file name.
+	* tests/t-local.sh: Likewise.
+
+	tests: switch from t-lib.sh to init.sh
+	* tests/init.cfg: Source t-local.sh.
+	* tests/t-local.sh: Replace trap so that we always run
+	scsi_debug_cleanup_, regardless of the cleanup_ function.
+	Replace each snippet like this:
+	-if test "$VERBOSE" = yes; then
+	-  set -x
+	-  parted --version
+	-fi
+	-
+	-: ${srcdir=.}
+	-. $srcdir/t-lib.sh
+	+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
+
+	Use this command (LHS elided, because it was too long):
+	  git grep -l 'srcdir/t-lib.sh'|xargs perl -p0i -e \
+	    's!...!. "\${srcdir=.}/init.sh"; path_prepend_ ../parted\n!'
+
+	* tests/t3310-flags.sh: Adjust manually, since the snippet
+	didn't quite match.
+
+	tests: remove test-lib.sh
+	* tests/test-lib.sh: Remove file.  No longer used.
+	* tests/Makefile.am (EXTRA_DIST): Remove test-lib.sh.
+	(old-init.sh): Remove rule and associated uses.
+	* tests/lvm-utils.sh (init_root_dir_): Switch to test_dir_,
+	since that is now the only variable that remains.
+
+	tests: remove fail=0 initializations
+	Now, this is done in init.sh.
+
+	tests: libparted/tests: use init.sh, not test-lib.sh
+
+	tests: make lvm-utils.sh usable also from init.sh-using tests
+	* tests/lvm-utils.sh: Use fail_, not error for diagnostics.
+	The former also works in init.sh-using scripts.
+	(init_root_dir_): Use test_dir_ if $test_dir_rand_ is not set.
+
+	tests: new function required for t2100-zerolen.sh
+	* tests/t-lib-helpers.sh (device_mapper_required_): New function.
+
+	tests: convert t5000-tags.sh
+
+	tests: t-lib-helpers.sh: don't discard require_dvhtool_ stderr/stdout
+
+	tests: dvhtool: use skip_, not skip
+
+	tests: t4200-partprobe.sh: convert
+
+	tests: t-lib-helpers.sh (require_dvhtool_): New function.
+
+	tests: convert t4000-sun-raid-type.sh
+
+	tests: move more functions to t-lib-helpers.sh
+
+	tests: convert t7000 to init.sh
+
+	tests: t-lib-helpers: copy emit_superuser_warning from test-lib.sh
+
+	tests: t0000: convert to use init.sh
+
+	tests: convert t1101-busy-partition.sh
+	* tests/t1101-busy-partition.sh: Convert from t-lib.sh to init.sh.
+
+	tests: convert t4100-msdos-partition-limits.sh
+	* tests/t4100-msdos-partition-limits.sh: Likewise.
+
+	tests: convert t4100-dvh-partition-limits.sh to use init.sh
+	* tests/t4100-dvh-partition-limits.sh: Convert.
+
+	tests: convert t4100-msdos-starting-sector.sh
+	* tests/t4100-msdos-starting-sector.sh: Use init.sh.
+
+	tests: convert t0220 to use init.sh
+	* tests/t0220-gpt-msftres.sh: Convert to use init.sh.
+
+	tests: extract t-lib.sh functions for use via init.sh
+	Currently there are three test frameworks in use:
+	  - test-lib.sh: old, don't use this framework any more;
+	      I found it too hard to use and debug.
+	  - t-lib.sh: newer, I had converted most tests to use this
+	  - init.sh: newest: successor of t-lib.sh, the master copy
+	      of which now resides in gnulib. All new tests should use
+	      this framework.
+	* tests/t-lib-helpers.sh: New file, extracted from t-lib.sh,
+	so that init.cfg can source these functions, too.
+	* tests/t-lib.sh: Source it.
+	* tests/init.cfg: Source it from here, too.
+	* tests/Makefile.am (EXTRA_DIST): Add t-lib-helpers.sh.
+
+	tests: remove unused function: skip_if_
+
+	tests: global subst: s/skip_test_/skip_/
+	git grep -l skip_test_|xargs perl -pi -e 's/skip_test_/skip_/'
+
+	maint: remove unused test function
+	* tests/t-lib.sh (require_built_): Remove unused function.
+	It also happened to use skip_, which we're about to make a function.
+
+	tests: avoid race condition in t3000-resize
+	Without the 1-second sleep, this root-only test would
+	fail about 50% of the time for me.
+	* tests/t3000-resize-fs.sh (device_sectors_required): Sleep
+	one more second after ${dev}1 appears, so that subsequent
+	commands are more predictable.
+	Split a long line.
+
+	tests: t2100-mkswap.sh: convert to init.sh
+	* tests/t2100-mkswap: Likewise.
+
+	tests: convert t1100 to use init.sh
+	* tests/t1100-busy-label.sh: Convert to use init.sh
+	* tests/init.cfg (require_erasable_): New function, mostly
+	copied from test-lib.sh.
+
+	tests: init.cfg: copy envvar setings from testlib.sh:
+	Unset TERM and CDPATH; sanitize LC_ALL, TZ, LANG, and set
+	PARTED_SUPPRESS_FILE_SYSTEM_MANIPULATION_WARNING=1.
+	* tests/t1101-busy-partition.sh: Expect no output, now that we set
+	PARTED_SUPPRESS_FILE_SYSTEM_MANIPULATION_WARNING=1.
+
+	maint: update init.sh and bootstrap from gnulib
+	* tests/init.sh: Update from gnulib.
+	* bootstrap: Likewise.
+
+	doc: also mention KiB, MiB, GiB and TiB suffixes
+	* doc/parted.texi (unit): Also mention KiB, MiB, GiB and TiB.
+
+2010-11-18  Colin Watson  <cjwatson@ubuntu.com>
+
+	libparted: ignore zero-length devices
+	* bootstrap.conf (gnulib_modules): Add xstrtoll.
+	* configure.ac: Create DYNAMIC_LOADING output variable.
+	* libparted/arch/linux.c (_device_get_length): Return the value of
+	PARTED_TEST_DEVICE_LENGTH if set in the environment, strictly for use by
+	the test suite.
+	(init_generic): If geometry probing fails because the device was
+	zero-length, return quietly rather than throwing an exception.  This has
+	been observed in the wild with cciss devices, and it's difficult for
+	partitioners to tell the difference between that and more serious
+	errors.
+	* libparted/tests/Makefile.am (TESTS): Add t2100-zerolen.sh.
+	(check_PROGRAMS): Add zerolen.
+	(zerolen_SOURCES): Add.
+	(TESTS_ENVIRONMENT): Add DYNAMIC_LOADING and ENABLE_DEVICE_MAPPER.
+	* libparted/tests/t2100-zerolen.sh: New file.
+	* libparted/tests/zerolen.c: New file.
+	* tests/test-lib.sh (wait_for_dev_to_appear_): New function, copied from
+	tests/t-local.sh.
+	* NEWS (Bug fixes): Mention it.
+
+2010-11-09  Jim Meyering  <meyering@redhat.com>
+
+	dos: fix a bug affecting very small devices (smaller than 1 cylinder)
+	This bug was introduced in commit c79d91ec, "dos: accommodate very
+	small devices (useful for testing)".
+	* libparted/labels/dos.c (_primary_constraint): The bug was to
+	skip setting start_geom for small devices.  That led to a used-
+	uninitialized bug in the subsequent ped_constraint_new call.
+	The fix is to relax the constraint to use a starting sector of "1",
+	if necessary.  Report and diagnosis by Jean-Christian de Rivaz in
+	http://thread.gmane.org/gmane.comp.gnu.parted.bugs/10178
+	* NEWS (Bug fixes): Mention it.
+
+2010-10-10  Jim Meyering  <meyering@redhat.com>
+
+	maint: don't use obsolete gnulib modules
+	* bootstrap.conf (gnulib_modules): Use calloc-gnu, malloc-gnu
+	and realloc-gnu modules, rather than calloc, malloc and realloc.
+	The shorter-named modules are now deprecated.
+
+	maint: describe policy on copyright year number ranges
+	* README: Mention coreutils' long-standing policy on use of M-N
+	ranges in copyright year lists.  Requested by Richard Stallman.
+
+	build: update gnulib submodule to latest, and update bootstrap
+	* bootstrap: update from gnulib
+
+2010-08-23  Petr Uzel  <petr.uzel@suse.cz>
+
+	build: suggest libuuid from util-linux-ng package
+	* configure.ac: libuuid was moved from e2fsprogs to
+	util-linux-ng-2.16.  Because distributions now often
+	build e2fsprogs without libuuid support, suggest installing
+	libuuid from util-linux-ng if it is missing, not from e2fsprogs.
+
+2010-08-20  Colin Watson  <cjwatson@ubuntu.com>
+
+	libparted: remove limits on loop labels
+	There's no reason to impose any particular limit on loop labels, since
+	they just represent a single large partition.  Sector counts over 2^32
+	are needed for large RAID arrays.  Change the limit to 2^64 since that's
+	the upper limit imposed by libparted and it saves us implementing the
+	limit functions separately.  This bug appears to have been introduced
+	by commit 2dbc645c.
+
+	* libparted/labels/pt-limit.gperf: Change limits on "loop" to 2^64.
+	* tests/t9021-maxima.sh: Update for the new loop limit.
+	* NEWS (Bug fixes): Mention it.
+
+2010-08-19  Jim Meyering  <meyering@redhat.com>
+
+	avoid non-srcdir "make check" failure
+	* tests/Makefile.am (EXTRA_DIST): Add init.cfg.
+	The failure was introduced by commit 6f7c0f12.
+
+	build and tests: update bootstrap and init.sh from gnulib
+	* tests/init.sh: Update from gnulib.
+	* bootstrap: Likewise.
+
+2010-08-18  Jim Meyering  <meyering@redhat.com>
+
+	build: update gnulib submodule to latest
+
+2010-07-20  Hans de Goede  <hdegoede@redhat.com>
+
+	linux: recognize scsi disks with a high major number (128-135)
+	* libparted/arch/linux.c (SCSI_BLK_MAJOR): Recognize high major number.
+
+2010-07-17  Jim Meyering  <meyering@redhat.com>
+
+	libparted: avoid regression when processing a whole-disk FAT partition
+	Without this change, we would improperly classify a whole-disk partition
+	containing a FAT file system as a DOS partition table with no partitions.
+	Introduced by commit d732a2b7 on 2008-05-28.
+	* libparted/labels/dos.c (maybe_FAT): New function.
+	(msdos_probe): Use it.
+	Reported by ChenMin in
+	http://thread.gmane.org/gmane.comp.gnu.parted.bugs/10115
+	* NEWS (Bug fixes): Mention it.
+	* tests/t3400-whole-disk-FAT-partition.sh: New file.  Test for the bug.
+	* tests/Makefile.am (TESTS): Add it.
+
+	tests: use init.cfg; required for init.sh-using tests
+	* tests/init.cfg: New file.
+	(require_512_byte_sector_size_): Slightly different function
+	than the one in test-lib.sh.
+
+	* tests/init.cfg: New file.
+
+	build: update gnulib submodule to latest
+
+	maint: remove trailing blank
+	* tests/t1101-busy-partition.sh: Remove trailing blank.
+
+2010-06-30  Otavio Salvador  <otavio@ossystems.com.br>
+
+	tests: update resize-fs to use wait_for_dev_to_appear_
+	* t3000-resize-fs.sh: rely on wait_for_dev_to_appear_ to wait for the
+	device to be crated.
+
+	tests: rely on require_scsi_debug_module_ to modprobe scsi_debug module
+	* t2310-dos-extended-2-sector-min-offset.sh: remove explicit modprobe
+	since it is done by require_scsi_debug_module_.
+	* t3200-type-change.sh: likewise.
+	* t9020-alignment.sh: likewise.
+	* t9030-align-check.sh: likewise.
+	* t9040-many-partitions.sh: likewise.
+
+	tests: add one: try to remove a busy partition
+	This test tries to reproduce the issue reported in Debian bug #582818[1].
+
+	 1. http://bugs.debian.org/582818
+
+	Basically it does:
+
+	 * create two primary partitions
+	 * mount the second one
+	 * remove the first (must work)
+	 * try to remove the second (must fail)
+
+	* tests/t1101-busy-partition.sh: new file.
+	* tests/Makefile.am (TESTS): add the new test in check target.
+
+2010-06-27  Otavio Salvador  <otavio@ossystems.com.br>
+
+	tests: skip loop-clobber-infloop if mkswap cannot be found
+	* tests/t0400-loop-clobber-infloop.sh: Skip the test is case of mkswap
+	cannot be found.
+
+2010-06-26  Jim Meyering  <meyering@redhat.com>
+
+	build: update gnulib submodule to latest
+	* bootstrap: Update from gnulib.
+	* tests/init.sh: Likewise.
+
+2010-06-26  Colin Watson  <cjwatson@ubuntu.com>
+
+	sun: revert "implement disk flag operations"
+	This reverts the libparted/labels/sun.c part of
+	723ea23c5df68cbe67d1f518ef484f4c77f516fa.  Sun disk labels do
+	not appear to be able to handle non-cylinder alignment
+	(http://bugs.debian.org/579948).
+	* libparted/labels/sun.c: Revert.
+
+2010-06-26  Jim Meyering  <meyering@redhat.com>
+
+	tests: adjust sun-partition-creating test to conform
+	* tests/t4000-sun-raid-type.sh: Adjust partition size so the
+	end falls on a cylinder boundary.
+
 2010-05-28  Jim Meyering  <meyering@redhat.com>
+
+	maint: update README-release
+	* README-release: Update to match the template used for diffutils,
+	coreutils, etc.
+
+	maint: add gettext to list of bootstrapped-with tools in announcement
+	* cfg.mk (bootstrap-tools): Add gettext to the list.
+
+	post-release administrivia
+	* NEWS: Add header line for next release.
+	* .prev-version: Record previous version.
+	* cfg.mk (old_NEWS_hash): Auto-update.
 
 	version 2.3
 	* NEWS: Record release date.

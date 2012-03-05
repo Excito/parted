@@ -1,4 +1,6 @@
-# iconv.m4 serial 10 (gettext-0.18.1)
+# -*- buffer-read-only: t -*- vi: set ro:
+# DO NOT EDIT! GENERATED AUTOMATICALLY!
+# iconv.m4 serial 9 (gettext-0.18)
 dnl Copyright (C) 2000-2002, 2007-2010 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -170,10 +172,7 @@ int main ()
   AC_SUBST([LTLIBICONV])
 ])
 
-dnl Define AM_ICONV using AC_DEFUN_ONCE for Autoconf >= 2.64, in order to
-dnl avoid warnings like
-dnl "warning: AC_REQUIRE: `AM_ICONV' was expanded before it was required".
-m4_version_prereq([2.64],[AC_DEFUN_ONCE],[AC_DEFUN])([AM_ICONV],
+AC_DEFUN([AM_ICONV],
 [
   AM_ICONV_LINK
   if test "$am_cv_func_iconv" = yes; then

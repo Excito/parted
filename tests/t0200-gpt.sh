@@ -1,7 +1,7 @@
 #!/bin/sh
 # Ensure that printing a GPT partition table does not modify it.
 
-# Copyright (C) 2009-2010 Free Software Foundation, Inc.
+# Copyright (C) 2009-2011 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,20 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 
 N=2M
 dev=loop-file
 # create a file large enough to hold a GPT partition table
 dd if=/dev/null of=$dev bs=1 seek=$N || framework_failure
-
-fail=0
 
 # create a GPT partition table
 parted -s $dev mklabel gpt > out 2>&1 || fail=1
