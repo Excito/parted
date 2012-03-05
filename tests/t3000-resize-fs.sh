@@ -1,7 +1,7 @@
 #!/bin/sh
-# exercise the resize sub-command; FAT and HFS only
+# exercise the resize library; FAT and HFS+ only
 
-# Copyright (C) 2009-2010 Free Software Foundation, Inc.
+# Copyright (C) 2009-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,27 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted .
 require_hfs_
 
 require_root_
 require_scsi_debug_module_
 require_512_byte_sector_size_
-
-cat <<EOF > exp-warning || framework_failure
-WARNING: you are attempting to use parted to operate on (resize) a file system.
-parted's file system manipulation code is not as robust as what you'll find in
-dedicated, file-system-specific packages like e2fsprogs.  We recommend
-you use parted only to manipulate partition tables, whenever possible.
-Support for performing most operations on most types of file systems
-will be removed in an upcoming release.
-EOF
 
 ss=$sector_size_
 
@@ -53,7 +38,7 @@ fail=0
 
 parted -s $dev mklabel gpt > out 2>&1 || fail=1
 # expect no output
-compare out /dev/null || fail=1
+compare /dev/null out || fail=1
 
 # ensure that the disk is large enough
 dev_n_sectors=$(parted -s $dev u s p|sed -n '2s/.* \([0-9]*\)s$/\1/p')
@@ -64,32 +49,18 @@ test $device_sectors_required -le $dev_n_sectors || fail=1
 for fs_type in hfs+ fat32; do
 
   # create an empty $fs_type partition, cylinder aligned, size > 256 MB
-  parted -s $dev mkpart primary $fs_type $start $default_end > out 2>&1 || fail=1
-  echo "Warning: The resulting partition is not properly aligned for best performance." > exp
-  compare out exp || fail=1
+  parted -a min -s $dev mkpart p1 $start $default_end > out 2>&1 || fail=1
+  compare /dev/null out || fail=1
 
   # print partition table
   parted -m -s $dev u s p > out 2>&1 || fail=1
 
-  # FIXME: check expected output
-
-  # There's a race condition here: on udev-based systems, the partition#1
-  # device, ${dev}1 (i.e., /dev/sde1) is not created immediately, and
-  # without some delay, this mount command would fail.  Using a flash card
-  # as $dev, the loop below typically iterates 7-20 times.
-
   # wait for new partition device to appear
-  i=0
-  while :; do
-    test -e "${dev}1" && break; test $i = 90 && break;
-    i=$(expr $i + 1)
-    sleep .01 2>/dev/null || sleep 1
-  done
-  test $i = 90 && fail=1
+  wait_for_dev_to_appear_ ${dev}1
 
   case $fs_type in
-    fat32) mkfs_cmd='mkfs.vfat -F 32';;
-    hfs*) mkfs_cmd='mkfs.hfs';;
+    fat32) mkfs_cmd='mkfs.vfat -F 32'; fsck='fsck.vfat -v';;
+    hfs*) mkfs_cmd='mkfs.hfs';         fsck=fsck.hfs;;
     *) error "internal error: unhandled fs type: $fs_type";;
   esac
 
@@ -98,18 +69,42 @@ for fs_type in hfs+ fat32; do
 
   # NOTE: shrinking is the only type of resizing that works.
   # resize that file system to be one cylinder (8MiB) smaller
-  parted -s $dev resize 1 $start $new_end > out 2> err || fail=1
+  fs-resize ${dev}1 0 $new_end > out 2>&1 || fail=1
   # expect no output
-  compare out /dev/null || fail=1
-  compare err exp-warning || fail=1
+  compare /dev/null out || fail=1
 
-  # print partition table
-  parted -m -s $dev u s p > out 2>&1 || fail=1
+  # This is known to segfault with fsck.hfs from
+  # Fedora 16's hfsplus-tools-332.14-12.fc15.x86_64.
+  # You can build a working version from
+  # git://cavan.codon.org.uk/hfsplus-tools.git
 
-  # compare against expected output
-  sed -n 3p out > k && mv k out || fail=1
-  printf "1:$start:$new_end:530082s:$fs_type:primary:$ms;\n" > exp || fail=1
-  compare out exp || fail=1
+  # Skip the fsck.hfs test unless it understands the -v option.
+  skip=0
+  case $fs_type in
+    hfs*) $fsck -v || { warn_ skipping $fsck test; skip=1; } ;; esac
+
+  if test $skip = 0; then
+    $fsck ${dev}1 > out || fail=1
+    cat out
+    # Oops.  Currently, fsck.hfs reports this:
+    # Executing fsck_hfs (version 540.1-Linux).
+    # ** Checking non-journaled HFS Plus Volume.
+    #    The volume name is untitled
+    # ** Checking extents overflow file.
+    # ** Checking catalog file.
+    # ** Checking multi-linked files.
+    # ** Checking catalog hierarchy.
+    # ** Checking volume bitmap.
+    #    Volume bitmap needs minor repair for orphaned blocks
+    # ** Checking volume information.
+    #    Invalid volume free block count
+    #    (It should be 67189 instead of 65197)
+    #    Volume header needs minor repair
+    # (2, 0)
+    # FIXME: This means the HFS resizing code is wrong.
+
+    # FIXME: parse "out" for FS size and verify that it's the new, smaller size
+  fi
 
   # Remove the partition explicitly, so that mklabel doesn't evoke a warning.
   parted -s $dev rm 1 || fail=1
@@ -117,7 +112,7 @@ for fs_type in hfs+ fat32; do
   # Create a clean partition table for the next iteration.
   parted -s $dev mklabel gpt > out 2>&1 || fail=1
   # expect no output
-  compare out /dev/null || fail=1
+  compare /dev/null out || fail=1
 
 done
 

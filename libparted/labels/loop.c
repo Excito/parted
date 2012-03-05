@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2000, 2007-2010 Free Software Foundation, Inc.
+    Copyright (C) 1999-2000, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ error:
 static PedDisk*
 loop_alloc (const PedDevice* dev)
 {
-	PED_ASSERT (dev != NULL, return 0);
+	PED_ASSERT (dev != NULL);
 
 	if (dev->length < 256)
 		return NULL;
@@ -92,7 +92,7 @@ loop_duplicate (const PedDisk* disk)
 static void
 loop_free (PedDisk* disk)
 {
-	PED_ASSERT (disk != NULL, return);
+	PED_ASSERT (disk != NULL);
 
 	_ped_disk_free (disk);
 }
@@ -106,7 +106,7 @@ loop_read (PedDisk* disk)
 	PedPartition*		part;
 	PedConstraint*		constraint_any;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 	dev = disk->dev;
 	constraint_any = ped_constraint_any (dev);
 
@@ -203,6 +203,8 @@ loop_partition_duplicate (const PedPartition* part)
 
 	result = ped_partition_new (part->disk, part->type, part->fs_type,
 				    part->geom.start, part->geom.end);
+	if (result == NULL)
+		return NULL;
 	result->num = part->num;
 	return result;
 }

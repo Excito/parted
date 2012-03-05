@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2007, 2009-2010 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -50,33 +50,8 @@ ntfs_probe (PedGeometry* geom)
 		return NULL;
 }
 
-#ifndef DISCOVER_ONLY
-static int
-ntfs_clobber (PedGeometry* geom)
-{
-	char	buf[512];
-
-	memset (buf, 0, 512);
-	return ped_geometry_write (geom, buf, 0, 1);
-}
-#endif /* !DISCOVER_ONLY */
-
 static PedFileSystemOps ntfs_ops = {
 	probe:		ntfs_probe,
-#ifndef DISCOVER_ONLY
-	clobber:	ntfs_clobber,
-#else
-	clobber:	NULL,
-#endif
-	open:		NULL,
-	create:		NULL,
-	close:		NULL,
-	check:		NULL,
-	copy:		NULL,
-	resize:		NULL,
-	get_create_constraint:	NULL,
-	get_resize_constraint:	NULL,
-	get_copy_constraint:	NULL
 };
 
 static PedFileSystemType ntfs_type = {

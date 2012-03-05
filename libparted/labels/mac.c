@@ -1,7 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2002, 2004, 2007-2010 Free Software Foundation,
-    Inc.
+    Copyright (C) 2000, 2002, 2004, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -201,7 +200,7 @@ _rawpart_check_signature (MacRawPartition* raw_part)
 static int
 mac_probe (const PedDevice * dev)
 {
-	PED_ASSERT (dev != NULL, return 0);
+	PED_ASSERT (dev != NULL);
 
         if (dev->sector_size < sizeof (MacRawDisk))
                 return 0;
@@ -270,7 +269,7 @@ mac_alloc (const PedDevice* dev)
 	PedDisk*		disk;
 	MacDiskData*		mac_disk_data;
 
-	PED_ASSERT (dev != NULL, return NULL);
+	PED_ASSERT (dev != NULL);
 
 #ifndef DISCOVER_ONLY
 	if (dev->length < 256) {
@@ -328,7 +327,7 @@ mac_duplicate (const PedDisk* disk)
 	PedSector first_part_map_sector = old_mac_data->ghost_size;
 	PedPartition *partition_map
 	  = ped_disk_get_partition_by_sector (new_disk, first_part_map_sector);
-	PED_ASSERT (partition_map != NULL, return 0);
+	PED_ASSERT (partition_map != NULL);
 
 	/* ped_disk_remove_partition may be used only to delete a "normal"
 	   partition.  Trying to delete at least "freespace" or "metadata"
@@ -336,7 +335,7 @@ mac_duplicate (const PedDisk* disk)
 	   ped_disk_remove_partition, since it calls _disk_push_update_mode,
 	   which destroys all "freespace" and "metadata" partitions, and
 	   depends on that destruction not freeing its PART parameter.  */
-	PED_ASSERT (partition_map->type == PED_PARTITION_NORMAL, return 0);
+	PED_ASSERT (partition_map->type == PED_PARTITION_NORMAL);
 	ped_disk_remove_partition (new_disk, partition_map);
 
 	/* ugly, but C is ugly :p */
@@ -407,7 +406,7 @@ _rawpart_is_driver (const MacRawPartition* raw_part)
 	return 1;
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 _rawpart_has_driver (const MacRawPartition* raw_part, MacDiskData* mac_disk_data)
 {
 	MacDeviceDriver *driverlist;
@@ -705,8 +704,7 @@ _disk_analyse_ghost_size (PedDisk* disk)
 		if (_rawpart_check_signature (buf)
 		    && !_rawpart_is_void (buf)) {
 			mac_disk_data->ghost_size = i;
-			PED_ASSERT (i <= disk->dev->sector_size / 512, break);
-			found = 1;
+			found = (i <= disk->dev->sector_size / 512);
 			break;
 		}
 	}
@@ -729,10 +727,9 @@ mac_read (PedDisk* disk)
 	PedPartition*		part;
 	int			num;
 	PedSector		ghost_size;
-	PedConstraint*		constraint_exact;
 	int			last_part_entry_num = 0;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	mac_disk_data = disk->disk_specific;
 	mac_disk_data->part_map_entry_num = 0;		/* 0 == none */
@@ -796,10 +793,14 @@ mac_read (PedDisk* disk)
 			goto error_delete_all;
 		part->num = num;
 		part->fs_type = ped_file_system_probe (&part->geom);
-		constraint_exact = ped_constraint_exact (&part->geom);
-		if (!ped_disk_add_partition (disk, part, constraint_exact))
+		PedConstraint *constraint_exact
+			= ped_constraint_exact (&part->geom);
+		if (constraint_exact == NULL)
 			goto error_delete_all;
+		bool ok = ped_disk_add_partition (disk, part, constraint_exact);
 		ped_constraint_destroy (constraint_exact);
+		if (!ok)
+			goto error_delete_all;
 
 		if (_rawpart_is_partition_map (raw_part)) {
 			if (mac_disk_data->part_map_entry_num
@@ -910,7 +911,7 @@ _generate_raw_part (PedDisk* disk, PedPartition* part,
 	MacPartitionData*	mac_part_data;
 	PedSector		block_size = disk->dev->sector_size / 512;
 
-	PED_ASSERT (part->num > 0, goto error);
+	PED_ASSERT (part->num > 0);
 
 	mac_disk_data = disk->disk_specific;
 	mac_part_data = part->disk_specific;
@@ -968,7 +969,7 @@ _generate_raw_freespace_part (PedDisk* disk, PedGeometry* geom, int num,
 	MacDiskData*		mac_disk_data = disk->disk_specific;
 	PedSector		block_size = disk->dev->sector_size / 512;
 
-	PED_ASSERT (num > 0, goto error);
+	PED_ASSERT (num > 0);
 
 	MacRawPartition *part_map_entry = get_pme (part_map, num, disk);
 
@@ -1000,7 +1001,7 @@ _generate_empty_part (PedDisk* disk, int num, MacRawPartition* part_map)
 {
 	MacDiskData*		mac_disk_data = disk->disk_specific;
 
-	PED_ASSERT (num > 0, return 0);
+	PED_ASSERT (num > 0);
 
 	MacRawPartition *part_map_entry = get_pme (part_map, num, disk);
 	part_map_entry->signature = PED_CPU_TO_BE16 (MAC_PARTITION_MAGIC_2);
@@ -1012,7 +1013,7 @@ _generate_empty_part (PedDisk* disk, int num, MacRawPartition* part_map)
 }
 
 /* returns the first empty entry in the partition map */
-static int
+static int _GL_ATTRIBUTE_PURE
 _get_first_empty_part_entry (PedDisk* disk, MacRawPartition* part_map)
 {
 	MacDiskData*	mac_disk_data = disk->disk_specific;
@@ -1059,10 +1060,10 @@ mac_write (PedDisk* disk)
 	PedPartition*		part;
 	int			num;
 
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (disk->disk_specific != NULL, return 0);
-	PED_ASSERT (disk->dev != NULL, return 0);
-	PED_ASSERT (!disk->update_mode, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (disk->disk_specific != NULL);
+	PED_ASSERT (disk->dev != NULL);
+	PED_ASSERT (!disk->update_mode);
 
 	mac_disk_data = disk->disk_specific;
 
@@ -1182,7 +1183,7 @@ mac_partition_duplicate (const PedPartition* part)
 static void
 mac_partition_destroy (PedPartition* part)
 {
-	PED_ASSERT (part != NULL, return);
+	PED_ASSERT (part != NULL);
 
 	if (ped_partition_is_active (part))
 		free (part->disk_specific);
@@ -1225,8 +1226,8 @@ mac_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 {
 	MacPartitionData*	mac_data;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk_specific != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 
 	mac_data = part->disk_specific;
 
@@ -1290,13 +1291,13 @@ mac_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 	}
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 mac_partition_get_flag (const PedPartition* part, PedPartitionFlag flag)
 {
 	MacPartitionData*	mac_data;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk_specific != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 
 	mac_data = part->disk_specific;
 	switch (flag) {
@@ -1343,8 +1344,8 @@ mac_partition_set_name (PedPartition* part, const char* name)
 	MacPartitionData*	mac_data;
 	int			i;
 
-	PED_ASSERT (part != NULL, return);
-	PED_ASSERT (part->disk_specific != NULL, return);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 	mac_data = part->disk_specific;
 
 #ifndef DISCOVER_ONLY
@@ -1367,13 +1368,13 @@ mac_partition_set_name (PedPartition* part, const char* name)
 		mac_data->volume_name [i] = 0;
 }
 
-static const char*
+static const char* _GL_ATTRIBUTE_PURE
 mac_partition_get_name (const PedPartition* part)
 {
 	MacPartitionData*	mac_data;
 
-	PED_ASSERT (part != NULL, return NULL);
-	PED_ASSERT (part->disk_specific != NULL, return NULL);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 	mac_data = part->disk_specific;
 
 	return mac_data->volume_name;
@@ -1411,7 +1412,7 @@ _primary_constraint (PedDisk* disk)
 static int
 mac_partition_align (PedPartition* part, const PedConstraint* constraint)
 {
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (part != NULL);
 
 	if (_ped_partition_attempt_align (part, constraint,
 					  _primary_constraint (part->disk)))
@@ -1434,8 +1435,8 @@ mac_partition_enumerate (PedPartition* part)
 	int			i;
 	int			max_part_count;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
 
 	disk = part->disk;
 	mac_disk_data = (MacDiskData*) disk->disk_specific;
@@ -1470,7 +1471,7 @@ _disk_count_partitions (PedDisk* disk)
 	PedPartition*		part = NULL;
 	PedPartition*		last = NULL;
 
-	PED_ASSERT (disk->update_mode, return 0);
+	PED_ASSERT (disk->update_mode);
 
 	mac_disk_data->active_part_entry_count = 0;
 	mac_disk_data->free_part_entry_count = 0;
@@ -1509,7 +1510,7 @@ add_metadata_part (PedDisk* disk, PedSector start, PedSector end)
 	PedPartition*		new_part;
 	PedConstraint*		constraint_any = ped_constraint_any (disk->dev);
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	new_part = ped_partition_new (disk, PED_PARTITION_METADATA, NULL,
 				      start, end);
@@ -1531,9 +1532,9 @@ error:
 static int
 mac_alloc_metadata (PedDisk* disk)
 {
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (disk->disk_specific != NULL, return 0);
-	PED_ASSERT (disk->dev != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (disk->disk_specific != NULL);
+	PED_ASSERT (disk->dev != NULL);
 
 	if (!add_metadata_part (disk, 0, disk->dev->sector_size / 512 - 1))
 		return 0;
@@ -1606,8 +1607,8 @@ static PedDiskType mac_disk_type = {
 void
 ped_disk_mac_init ()
 {
-	PED_ASSERT (sizeof (MacRawPartition) == 512, return);
-	PED_ASSERT (sizeof (MacRawDisk) == 512, return);
+	PED_ASSERT (sizeof (MacRawPartition) == 512);
+	PED_ASSERT (sizeof (MacRawDisk) == 512);
 
 	ped_disk_type_register (&mac_disk_type);
 }

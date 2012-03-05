@@ -1,7 +1,7 @@
 #!/bin/sh
 # do not infloop in loop_clobber
 
-# Copyright (C) 2009-2010 Free Software Foundation, Inc.
+# Copyright (C) 2009-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,17 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+( mkswap -V ) >/dev/null 2>&1 || skip_ "no mkswap program"
 
 N=1M
 dev=loop-file
-fail=0
 dd if=/dev/null of=$dev bs=1 seek=$N || fail=1
 
 mkswap $dev || fail=1
@@ -35,6 +30,6 @@ mkswap $dev || fail=1
 # create a dos partition table
 parted -s $dev mklabel msdos > out 2>&1 || fail=1
 
-compare out /dev/null || fail=1
+compare /dev/null out || fail=1
 
 Exit $fail

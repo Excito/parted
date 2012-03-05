@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000-2001, 2007-2010 Free Software Foundation, Inc.
+    Copyright (C) 2000-2001, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -140,47 +140,22 @@ pc98_check_magic (const PC98RawTable *part_table)
 static int
 pc98_check_ipl_signature (const PC98RawTable *part_table)
 {
-	return !memcmp (part_table->boot_code + 4, "IPL1", 4);
-}
-
-static int
-check_partition_consistency (const PedDevice* dev,
-	       		     const PC98RawPartition* raw_part)
-{
-	if (raw_part->ipl_sect >= dev->hw_geom.sectors
-	   || raw_part->sector >= dev->hw_geom.sectors
-	   || raw_part->end_sector >= dev->hw_geom.sectors
-	   || raw_part->ipl_head >= dev->hw_geom.heads
-	   || raw_part->head >= dev->hw_geom.heads
-	   || raw_part->end_head >= dev->hw_geom.heads
-	   || PED_LE16_TO_CPU(raw_part->ipl_cyl) >= dev->hw_geom.cylinders
-	   || PED_LE16_TO_CPU(raw_part->cyl) >= dev->hw_geom.cylinders
-	   || PED_LE16_TO_CPU(raw_part->end_cyl) >= dev->hw_geom.cylinders
-	   || PED_LE16_TO_CPU(raw_part->cyl)
-	   	> PED_LE16_TO_CPU(raw_part->end_cyl)
-#if 0
-	   || !chs_to_sector(dev, PED_LE16_TO_CPU(raw_part->ipl_cyl),
-			     raw_part->ipl_head, raw_part->ipl_sect)
-	   || !chs_to_sector(dev, PED_LE16_TO_CPU(raw_part->cyl),
-			     raw_part->head, raw_part->sector)
-	   || !chs_to_sector(dev, PED_LE16_TO_CPU(raw_part->end_cyl),
-			     raw_part->end_head, raw_part->end_sector)
-#endif
-	   || PED_LE16_TO_CPU(raw_part->end_cyl)
-	  		< PED_LE16_TO_CPU(raw_part->cyl))
+	if (memcmp (part_table->boot_code + 4, "IPL1", 4) == 0)
+		return 1;
+	else if (memcmp (part_table->boot_code + 4, "Linux 98", 8) == 0)
+		return 1;
+	else if (memcmp (part_table->boot_code + 4, "GRUB/98 ", 8) == 0)
+		return 1;
+	else
 		return 0;
-
-	return 1;
 }
 
 static int
 pc98_probe (const PedDevice *dev)
 {
 	PC98RawTable		part_table;
-	int			empty;
-	const PC98RawPartition*	p;
 
-	PED_ASSERT (dev != NULL, return 0);
+	PED_ASSERT (dev != NULL);
 
         if (dev->sector_size != 512)
                 return 0;
@@ -192,36 +167,14 @@ pc98_probe (const PedDevice *dev)
 	if (!pc98_check_magic (&part_table))
 		return 0;
 
-	/* check consistency */
-	empty = 1;
-	for (p = part_table.partitions;
-	     p < part_table.partitions + MAX_PART_COUNT;
-	     p++)
-	{
-		if (p->mid == 0 && p->sid == 0)
-			continue;
-		empty = 0;
-		if (!check_partition_consistency (dev, p))
-			return 0;
-	}
-
-	/* check boot loader */
-	if (pc98_check_ipl_signature (&part_table))
-		return 1;
-	else if (part_table.boot_code[0])	/* invalid boot loader */
-		return 0;
-
-	/* Not to mistake msdos disk map for PC-9800's empty disk map  */
-	if (empty)
-		return 0;
-
-	return 1;
+	/* check for boot loader signatures */
+	return pc98_check_ipl_signature (&part_table);
 }
 
 static PedDisk*
 pc98_alloc (const PedDevice* dev)
 {
-	PED_ASSERT (dev != NULL, return 0);
+	PED_ASSERT (dev != NULL);
 
 	return _ped_disk_alloc (dev, &pc98_disk_type);
 }
@@ -235,15 +188,15 @@ pc98_duplicate (const PedDisk* disk)
 static void
 pc98_free (PedDisk* disk)
 {
-	PED_ASSERT (disk != NULL, return);
+	PED_ASSERT (disk != NULL);
 
 	_ped_disk_free (disk);
 }
 
-static PedSector
+static PedSector _GL_ATTRIBUTE_PURE
 chs_to_sector (const PedDevice* dev, int c, int h, int s)
 {
-	PED_ASSERT (dev != NULL, return 0);
+	PED_ASSERT (dev != NULL);
 	return (c * dev->hw_geom.heads + h) * dev->hw_geom.sectors + s;
 }
 
@@ -252,10 +205,10 @@ sector_to_chs (const PedDevice* dev, PedSector sector, int* c, int* h, int* s)
 {
 	PedSector cyl_size;
 
-	PED_ASSERT (dev != NULL, return);
-	PED_ASSERT (c != NULL, return);
-	PED_ASSERT (h != NULL, return);
-	PED_ASSERT (s != NULL, return);
+	PED_ASSERT (dev != NULL);
+	PED_ASSERT (c != NULL);
+	PED_ASSERT (h != NULL);
+	PED_ASSERT (s != NULL);
 
 	cyl_size = dev->hw_geom.heads * dev->hw_geom.sectors;
 
@@ -264,21 +217,21 @@ sector_to_chs (const PedDevice* dev, PedSector sector, int* c, int* h, int* s)
 	*s = (sector) % cyl_size % dev->hw_geom.sectors;
 }
 
-static PedSector
+static PedSector _GL_ATTRIBUTE_PURE
 legacy_start (const PedDisk* disk, const PC98RawPartition* raw_part)
 {
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (raw_part != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (raw_part != NULL);
 
 	return chs_to_sector (disk->dev, PED_LE16_TO_CPU(raw_part->cyl),
 			      raw_part->head, raw_part->sector);
 }
 
-static PedSector
+static PedSector _GL_ATTRIBUTE_PURE
 legacy_end (const PedDisk* disk, const PC98RawPartition* raw_part)
 {
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (raw_part != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (raw_part != NULL);
 
 	if (raw_part->end_head == 0 && raw_part->end_sector == 0) {
 		return chs_to_sector (disk->dev,
@@ -317,8 +270,8 @@ read_table (PedDisk* disk)
 	PC98RawTable		table;
 	PedConstraint*		constraint_any;
 
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (disk->dev != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (disk->dev != NULL);
 
 	constraint_any = ped_constraint_any (disk->dev);
 
@@ -353,7 +306,7 @@ read_table (PedDisk* disk)
 		if (!part)
 			goto error;
 		pc98_data = part->disk_specific;
-		PED_ASSERT (pc98_data != NULL, goto error);
+		PED_ASSERT (pc98_data != NULL);
 
 		pc98_data->system = (raw_part->mid << 8) | raw_part->sid;
 		pc98_data->boot = GET_BIT(raw_part->mid, 7);
@@ -402,8 +355,8 @@ error:
 static int
 pc98_read (PedDisk* disk)
 {
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (disk->dev != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (disk->dev != NULL);
 
 	ped_disk_delete_all (disk);
 	return read_table (disk);
@@ -417,9 +370,9 @@ fill_raw_part (PC98RawPartition* raw_part, const PedPartition* part)
 	int			c, h, s;
 	const char*		name;
 
-	PED_ASSERT (raw_part != NULL, return 0);
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk_specific != NULL, return 0);
+	PED_ASSERT (raw_part != NULL);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 
 	pc98_data = part->disk_specific;
 	raw_part->mid = (pc98_data->system >> 8) & 0xFF;
@@ -430,8 +383,8 @@ fill_raw_part (PC98RawPartition* raw_part, const PedPartition* part)
 
 	memset (raw_part->name, ' ', sizeof(raw_part->name));
 	name = ped_partition_get_name (part);
-	PED_ASSERT (name != NULL, return 0);
-	PED_ASSERT (strlen (name) <= 16, return 0);
+	PED_ASSERT (name != NULL);
+	PED_ASSERT (strlen (name) <= 16);
 	if (!strlen (name) && part->fs_type)
 		name = part->fs_type->name;
 	memcpy (raw_part->name, name, strlen (name));
@@ -482,8 +435,8 @@ pc98_write (const PedDisk* disk)
 	PedPartition*		part;
 	int			i;
 
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (disk->dev != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (disk->dev != NULL);
 
 	void *s0;
 	if (!ptt_read_sectors (disk->dev, 0, 2, &s0))
@@ -541,7 +494,6 @@ pc98_partition_new (
 	}
 	return part;
 
-	free (pc98_data);
 error_free_part:
 	free (part);
 error:
@@ -573,7 +525,7 @@ pc98_partition_duplicate (const PedPartition* part)
 static void
 pc98_partition_destroy (PedPartition* part)
 {
-	PED_ASSERT (part != NULL, return);
+	PED_ASSERT (part != NULL);
 
 	if (ped_partition_is_active (part))
 		free (part->disk_specific);
@@ -619,8 +571,8 @@ pc98_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 {
 	PC98PartitionData*		pc98_data;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk_specific != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 
 	pc98_data = part->disk_specific;
 
@@ -638,13 +590,13 @@ pc98_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 	}
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 pc98_partition_get_flag (const PedPartition* part, PedPartitionFlag flag)
 {
 	PC98PartitionData*	pc98_data;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk_specific != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 
 	pc98_data = part->disk_specific;
 	switch (flag) {
@@ -679,8 +631,8 @@ pc98_partition_set_name (PedPartition* part, const char* name)
 	PC98PartitionData*	pc98_data;
 	int			i;
 
-	PED_ASSERT (part != NULL, return);
-	PED_ASSERT (part->disk_specific != NULL, return);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 	pc98_data = part->disk_specific;
 
 	strncpy (pc98_data->name, name, 16);
@@ -689,13 +641,13 @@ pc98_partition_set_name (PedPartition* part, const char* name)
 		pc98_data->name [i] = 0;
 }
 
-static const char*
+static const char* _GL_ATTRIBUTE_PURE
 pc98_partition_get_name (const PedPartition* part)
 {
 	PC98PartitionData*	pc98_data;
 
-	PED_ASSERT (part != NULL, return NULL);
-	PED_ASSERT (part->disk_specific != NULL, return NULL);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk_specific != NULL);
 	pc98_data = part->disk_specific;
 
 	return pc98_data->name;
@@ -736,7 +688,7 @@ _primary_constraint (PedDisk* disk)
 static int
 pc98_partition_align (PedPartition* part, const PedConstraint* constraint)
 {
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (part != NULL);
 
 	if (_ped_partition_attempt_align (part, constraint,
 					  _primary_constraint (part->disk)))
@@ -765,14 +717,14 @@ next_primary (PedDisk* disk)
 static int
 pc98_partition_enumerate (PedPartition* part)
 {
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
 
 	/* don't re-number a partition */
 	if (part->num != -1)
 		return 1;
 
-	PED_ASSERT (ped_partition_is_active (part), return 0);
+	PED_ASSERT (ped_partition_is_active (part));
 
 	part->num = next_primary (part->disk);
 	if (!part->num) {
@@ -792,8 +744,8 @@ pc98_alloc_metadata (PedDisk* disk)
 	PedConstraint*		constraint_any = NULL;
 	PedSector		cyl_size;
 
-	PED_ASSERT (disk != NULL, goto error);
-	PED_ASSERT (disk->dev != NULL, goto error);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (disk->dev != NULL);
 
 	constraint_any = ped_constraint_any (disk->dev);
 
@@ -854,7 +806,7 @@ static PedDiskType pc98_disk_type = {
 void
 ped_disk_pc98_init ()
 {
-	PED_ASSERT (sizeof (PC98RawTable) == 512 * 2, return);
+	PED_ASSERT (sizeof (PC98RawTable) == 512 * 2);
 	ped_disk_type_register (&pc98_disk_type);
 }
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 # Exercise the exclusive, single-bit flags.
 
-# Copyright (C) 2010 Free Software Foundation, Inc.
+# Copyright (C) 2010-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,52 +16,58 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-: ${abs_top_srcdir=$(cd .. && pwd)}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 ss=$sector_size_
-
-fail=0
 dev=dev-file
 
-# Extract all msdos flag names from the texinfo documentation.
-msdos_flags=$(sed -n '/^@node set/,/^@node/p' "$abs_top_srcdir/doc/parted.texi" \
-  | perl -00 -ne '/^\@item (\w+).*MS-DOS/s and print lc($1), "\n"')
+extract_flags()
+{
+  perl -nle '/^1:2048s:4095s:2048s::(?:P1)?:(.+);$/ and print $1' "$@"
+}
 
-n_sectors=5000
-dd if=/dev/null of=$dev bs=$ss seek=$n_sectors || fail=1
+for table_type in msdos gpt; do
 
-parted -s $dev mklabel msdos \
-  mkpart pri ext2 $((1*2048))s $((2*2048-1))s \
-    > out 2> err || fail=1
-compare out /dev/null || fail=1
+  # Extract flag names of type $table_type from the texinfo documentation.
+  case $table_type in
+      msdos) search_term=MS-DOS; pri_or_name=pri;;
+      gpt)   search_term=GPT;    pri_or_name=P1;;
+  esac
+  flags=$(sed -n '/^@node set/,/^@node/p' \
+                    "$abs_top_srcdir/doc/parted.texi" \
+                | perl -00 -ne \
+                    '/^\@item (\w+).*'"$search_term"'/s and print lc($1), "\n"')
 
-for mode in on_only on_and_off ; do
-  for flag in $msdos_flags; do
+  n_sectors=5000
+  dd if=/dev/null of=$dev bs=$ss seek=$n_sectors || fail=1
 
-    # Exclude the supplemental flags.
-    # These are not boolean, like the others.
-    case $flag in boot|lba|hidden) continue;; esac
-    echo $flag > exp || fail=1
+  parted -s $dev mklabel $table_type \
+    mkpart $pri_or_name ext2 $((1*2048))s $((2*2048-1))s \
+      > out 2> err || fail=1
+  compare /dev/null out || fail=1
 
-    # Turn on each flag, one at a time.
-    parted -m -s $dev set 1 $flag on u s print > raw 2> err || fail=1
-    perl -nle '/^1:2048s:4095s:2048s:::(\w+);$/ and print $1' raw > out
-    compare out exp || fail=1
-    compare err /dev/null || fail=1
+  for mode in on_only on_and_off ; do
+    for flag in $flags; do
 
-    if test $mode = on_and_off; then
-      # Turn it off
-      : > exp
-      parted -m -s $dev set 1 $flag off u s print > raw 2> err || fail=1
-      perl -nle '/^1:2048s:4095s:2048s:::.*;$/ and print $1' raw > out
-      compare err /dev/null || fail=1
-    fi
+      # Exclude the supplemental flags.
+      # These are not boolean, like the others.
+      case $flag in boot|lba|hidden) continue;; esac
+
+      # Turn on each flag, one at a time.
+      parted -m -s $dev set 1 $flag on u s print > raw 2> err || fail=1
+      extract_flags raw > out
+      grep -F "$flag" out \
+        || { warn_ "$ME: flag not turned on: $(cat out)"; fail=1; }
+      compare /dev/null err || fail=1
+
+      if test $mode = on_and_off; then
+        # Turn it off
+        parted -m -s $dev set 1 $flag off u s print > raw 2> err || fail=1
+        extract_flags raw > out
+        grep -F "$flag" out \
+          && { warn_ "$ME: flag not turned off: $(cat out)"; fail=1; }
+        compare /dev/null err || fail=1
+      fi
+    done
   done
 done
 

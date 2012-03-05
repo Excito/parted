@@ -1,6 +1,6 @@
 #!/bin/sh
 # very basic GPT table
-# Copyright (C) 2008-2010 Free Software Foundation, Inc.
+# Copyright (C) 2008-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,19 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 
 dev=loop-file
 nb=512
 n_sectors=$(expr $nb '*' 512 / $sector_size_)
-
-fail=0
 
 # create zeroed device
 dd if=/dev/zero bs=512 count=$nb of=$dev || fail=1
@@ -43,7 +35,7 @@ parted -m -s $dev unit s print > t 2>&1 || fail=1
 sed "s,.*/$dev:,$dev:," t > out || fail=1
 
 # check for expected output
-printf "BYT;\n$dev:${n_sectors}s:file:$sector_size_:$sector_size_:gpt:;\n" \
+printf "BYT;\n$dev:${n_sectors}s:file:$sector_size_:$sector_size_:gpt::;\n" \
   > exp || fail=1
 compare exp out || fail=1
 

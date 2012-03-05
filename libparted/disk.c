@@ -1,7 +1,6 @@
  /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2003, 2005, 2007-2010 Free Software Foundation,
-    Inc.
+    Copyright (C) 1999-2003, 2005, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -68,9 +67,9 @@ static PedDiskType*	disk_types = NULL;
 void
 ped_disk_type_register (PedDiskType* disk_type)
 {
-	PED_ASSERT (disk_type != NULL, return);
-	PED_ASSERT (disk_type->ops != NULL, return);
-	PED_ASSERT (disk_type->name != NULL, return);
+	PED_ASSERT (disk_type != NULL);
+	PED_ASSERT (disk_type->ops != NULL);
+	PED_ASSERT (disk_type->name != NULL);
 
         disk_type->next = disk_types;
         disk_types =  disk_type;
@@ -82,13 +81,13 @@ ped_disk_type_unregister (PedDiskType* disk_type)
 	PedDiskType*	walk;
 	PedDiskType*	last = NULL;
 
-	PED_ASSERT (disk_types != NULL, return);
-	PED_ASSERT (disk_type != NULL, return);
+	PED_ASSERT (disk_types != NULL);
+	PED_ASSERT (disk_type != NULL);
 
 	for (walk = disk_types; walk && walk != disk_type;
                 last = walk, walk = walk->next);
 
-	PED_ASSERT (walk != NULL, return);
+	PED_ASSERT (walk != NULL);
 	if (last)
 		((struct _PedDiskType*) last)->next = disk_type->next;
 	else
@@ -120,7 +119,7 @@ ped_disk_type_get (const char* name)
 {
 	PedDiskType*	walk = NULL;
 
-	PED_ASSERT (name != NULL, return NULL);
+	PED_ASSERT (name != NULL);
 
 	for (walk = ped_disk_type_get_next (NULL); walk;
 	     walk = ped_disk_type_get_next (walk))
@@ -140,7 +139,7 @@ ped_disk_probe (PedDevice* dev)
 {
         PedDiskType* walk = NULL;
 
-        PED_ASSERT (dev != NULL, return NULL);
+        PED_ASSERT (dev != NULL);
 
         if (!ped_device_open (dev))
                 return NULL;
@@ -182,7 +181,7 @@ ped_disk_new (PedDevice* dev)
 	PedDiskType*	type;
 	PedDisk*	disk;
 
-	PED_ASSERT (dev != NULL, return NULL);
+	PED_ASSERT (dev != NULL);
 
 	if (!ped_device_open (dev))
 		goto error;
@@ -252,11 +251,10 @@ ped_disk_duplicate (const PedDisk* old_disk)
 	PedDisk*	new_disk;
 	PedPartition*	old_part;
 
-	PED_ASSERT (old_disk != NULL, return NULL);
-	PED_ASSERT (!old_disk->update_mode, return NULL);
-	PED_ASSERT (old_disk->type->ops->duplicate != NULL, return NULL);
-	PED_ASSERT (old_disk->type->ops->partition_duplicate != NULL,
-		    return NULL);
+	PED_ASSERT (old_disk != NULL);
+	PED_ASSERT (!old_disk->update_mode);
+	PED_ASSERT (old_disk->type->ops->duplicate != NULL);
+	PED_ASSERT (old_disk->type->ops->partition_duplicate != NULL);
 
 	new_disk = old_disk->type->ops->duplicate (old_disk);
 	if (!new_disk)
@@ -288,7 +286,7 @@ error:
 
 /* Given a partition table type NAME, e.g., "gpt", return its PedDiskType
    handle.  If no known type has a name matching NAME, return NULL.  */
-static PedDiskType const *
+static PedDiskType const * _GL_ATTRIBUTE_PURE
 find_disk_type (char const *name)
 {
   PedDiskType const *t;
@@ -310,13 +308,13 @@ find_disk_type (char const *name)
 int
 ped_disk_clobber (PedDevice* dev)
 {
-	PED_ASSERT (dev != NULL, goto error);
+	PED_ASSERT (dev != NULL);
 
 	if (!ped_device_open (dev))
 		goto error;
 
         PedDiskType const *gpt = find_disk_type ("gpt");
-	PED_ASSERT (gpt != NULL, goto error);
+	PED_ASSERT (gpt != NULL);
 
         /* If there is a GPT table, don't clobber the protective MBR.  */
         bool is_gpt = gpt->ops->probe (dev);
@@ -370,19 +368,19 @@ ped_disk_new_fresh (PedDevice* dev, const PedDiskType* type)
 {
 	PedDisk*	disk;
 
-	PED_ASSERT (dev != NULL, return NULL);
-	PED_ASSERT (type != NULL, return NULL);
-	PED_ASSERT (type->ops->alloc != NULL, return NULL);
+	PED_ASSERT (dev != NULL);
+	PED_ASSERT (type != NULL);
+	PED_ASSERT (type->ops->alloc != NULL);
 	PedCHSGeometry*	bios_geom = &dev->bios_geom;
-	PED_ASSERT (bios_geom->sectors != 0, return NULL);
-	PED_ASSERT (bios_geom->heads != 0, return NULL);
+	PED_ASSERT (bios_geom->sectors != 0);
+	PED_ASSERT (bios_geom->heads != 0);
 
 	disk = type->ops->alloc (dev);
 	if (!disk)
        		goto error;
         if (!_disk_pop_update_mode (disk))
                 goto error_destroy_disk;
-	PED_ASSERT (disk->update_mode == 0, ignored);
+	PED_ASSERT (disk->update_mode == 0);
 
 	disk->needs_clobber = 1;
 	return disk;
@@ -430,8 +428,8 @@ _ped_disk_free (PedDisk* disk)
 void
 ped_disk_destroy (PedDisk* disk)
 {
-	PED_ASSERT (disk != NULL, return);
-	PED_ASSERT (!disk->update_mode, return);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (!disk->update_mode);
 
 	disk->type->ops->free (disk);
 }
@@ -452,7 +450,7 @@ ped_disk_destroy (PedDisk* disk)
 int
 ped_disk_commit_to_os (PedDisk* disk)
 {
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	if (!ped_device_open (disk->dev))
 		goto error;
@@ -476,8 +474,8 @@ error:
 int
 ped_disk_commit_to_dev (PedDisk* disk)
 {
-	PED_ASSERT (disk != NULL, goto error);
-	PED_ASSERT (!disk->update_mode, goto error);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (!disk->update_mode);
 
 	if (!disk->type->ops->write) {
 		ped_exception_throw (
@@ -558,7 +556,7 @@ error:
 int
 ped_partition_is_busy (const PedPartition* part)
 {
-	PED_ASSERT (part != NULL, return 1);
+	PED_ASSERT (part != NULL);
 
 	return ped_architecture->disk_ops->partition_is_busy (part);
 }
@@ -570,7 +568,7 @@ ped_partition_is_busy (const PedPartition* part)
 char*
 ped_partition_get_path (const PedPartition* part)
 {
-	PED_ASSERT (part != NULL, return NULL);
+	PED_ASSERT (part != NULL);
 
 	return ped_architecture->disk_ops->partition_get_path (part);
 }
@@ -599,7 +597,7 @@ ped_disk_check (const PedDisk* disk)
 {
 	PedPartition*	walk;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	for (walk = disk->part_list; walk;
 	     walk = ped_disk_next_partition (disk, walk)) {
@@ -668,7 +666,7 @@ ped_disk_get_primary_partition_count (const PedDisk* disk)
 	PedPartition*	walk;
 	int		count = 0;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	for (walk = disk->part_list; walk;
 	     walk = ped_disk_next_partition (disk, walk)) {
@@ -689,7 +687,7 @@ ped_disk_get_last_partition_num (const PedDisk* disk)
 	PedPartition*	walk;
 	int		highest = -1;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	for (walk = disk->part_list; walk;
 	     walk = ped_disk_next_partition (disk, walk)) {
@@ -708,8 +706,8 @@ ped_disk_get_last_partition_num (const PedDisk* disk)
 bool
 ped_disk_get_max_supported_partition_count(const PedDisk* disk, int* supported)
 {
-	PED_ASSERT(disk != NULL, return -1);
-	PED_ASSERT(disk->type->ops->get_max_supported_partition_count != NULL, return -1);
+	PED_ASSERT(disk != NULL);
+	PED_ASSERT(disk->type->ops->get_max_supported_partition_count != NULL);
 
 	return disk->type->ops->get_max_supported_partition_count(disk, supported);
 }
@@ -743,9 +741,8 @@ ped_disk_get_partition_alignment(const PedDisk *disk)
 int
 ped_disk_get_max_primary_partition_count (const PedDisk* disk)
 {
-	PED_ASSERT (disk->type != NULL, return 0);
-	PED_ASSERT (disk->type->ops->get_max_primary_partition_count != NULL,
-		    return 0);
+	PED_ASSERT (disk->type != NULL);
+	PED_ASSERT (disk->type->ops->get_max_primary_partition_count != NULL);
 
 	return disk->type->ops->get_max_primary_partition_count (disk);
 }
@@ -765,7 +762,7 @@ ped_disk_set_flag(PedDisk *disk, PedDiskFlag flag, int state)
 {
         int ret;
 
-        PED_ASSERT (disk != NULL, return 0);
+        PED_ASSERT (disk != NULL);
 
         PedDiskOps *ops = disk->type->ops;
 
@@ -797,7 +794,7 @@ ped_disk_set_flag(PedDisk *disk, PedDiskFlag flag, int state)
 int
 ped_disk_get_flag(const PedDisk *disk, PedDiskFlag flag)
 {
-        PED_ASSERT (disk != NULL, return 0);
+        PED_ASSERT (disk != NULL);
 
         PedDiskOps *ops = disk->type->ops;
 
@@ -815,7 +812,7 @@ ped_disk_get_flag(const PedDisk *disk, PedDiskFlag flag)
 int
 ped_disk_is_flag_available(const PedDisk *disk, PedDiskFlag flag)
 {
-        PED_ASSERT (disk != NULL, return 0);
+        PED_ASSERT (disk != NULL);
 
         PedDiskOps *ops = disk->type->ops;
 
@@ -839,7 +836,8 @@ ped_disk_flag_get_name(PedDiskFlag flag)
         switch (flag) {
         case PED_DISK_CYLINDER_ALIGNMENT:
                 return N_("cylinder_alignment");
-
+        case PED_DISK_GPT_PMBR_BOOT:
+                return N_("pmbr_boot");
         default:
                 ped_exception_throw (
                         PED_EXCEPTION_BUG,
@@ -911,13 +909,13 @@ _partition_align (PedPartition* part, const PedConstraint* constraint)
 {
 	const PedDiskType*	disk_type;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->num != -1, return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->num != -1);
+	PED_ASSERT (part->disk != NULL);
 	disk_type = part->disk->type;
-	PED_ASSERT (disk_type != NULL, return 0);
-	PED_ASSERT (disk_type->ops->partition_align != NULL, return 0);
-	PED_ASSERT (part->disk->update_mode, return 0);
+	PED_ASSERT (disk_type != NULL);
+	PED_ASSERT (disk_type->ops->partition_align != NULL);
+	PED_ASSERT (part->disk->update_mode);
 
 	return disk_type->ops->partition_align (part, constraint);
 }
@@ -927,11 +925,11 @@ _partition_enumerate (PedPartition* part)
 {
 	const PedDiskType*	disk_type;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
 	disk_type = part->disk->type;
-	PED_ASSERT (disk_type != NULL, return 0);
-	PED_ASSERT (disk_type->ops->partition_enumerate != NULL, return 0);
+	PED_ASSERT (disk_type != NULL);
+	PED_ASSERT (disk_type->ops->partition_enumerate != NULL);
 
 	return disk_type->ops->partition_enumerate (part);
 }
@@ -947,7 +945,7 @@ ped_disk_enumerate_partitions (PedDisk* disk)
 	int		i;
 	int		end;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 /* first "sort" already-numbered partitions.  (e.g. if a logical partition
  * is removed, then all logical partitions that were number higher MUST be
@@ -980,7 +978,7 @@ _disk_remove_metadata (PedDisk* disk)
 	PedPartition*	walk = NULL;
 	PedPartition*	next;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	next = ped_disk_next_partition (disk, walk);
 
@@ -1000,7 +998,7 @@ _disk_remove_metadata (PedDisk* disk)
 static int
 _disk_alloc_metadata (PedDisk* disk)
 {
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	if (!disk->update_mode)
 		_disk_remove_metadata (disk);
@@ -1147,7 +1145,7 @@ _disk_push_update_mode (PedDisk* disk)
 static int
 _disk_pop_update_mode (PedDisk* disk)
 {
-	PED_ASSERT (disk->update_mode, return 0);
+	PED_ASSERT (disk->update_mode);
 
 	if (disk->update_mode == 1) {
 	/* re-allocate metadata BEFORE leaving update mode, to prevent infinite
@@ -1189,7 +1187,7 @@ _ped_partition_alloc (const PedDisk* disk, PedPartitionType type,
 {
 	PedPartition*	part;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	part = (PedPartition*) ped_malloc (sizeof (PedPartition));
 	if (!part)
@@ -1271,8 +1269,8 @@ ped_partition_new (const PedDisk* disk, PedPartitionType type,
 	int		supports_extended;
 	PedPartition*	part;
 
-	PED_ASSERT (disk != NULL, return NULL);
-	PED_ASSERT (disk->type->ops->partition_new != NULL, return NULL);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (disk->type->ops->partition_new != NULL);
 
 	supports_extended = ped_disk_type_check_feature (disk->type,
 			    	PED_DISK_TYPE_EXTENDED);
@@ -1314,9 +1312,9 @@ error:
 void
 ped_partition_destroy (PedPartition* part)
 {
-	PED_ASSERT (part != NULL, return);
-	PED_ASSERT (part->disk != NULL, return);
-	PED_ASSERT (part->disk->type->ops->partition_new != NULL, return);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
+	PED_ASSERT (part->disk->type->ops->partition_new != NULL);
 
 	part->disk->type->ops->partition_destroy (part);
 }
@@ -1331,7 +1329,7 @@ ped_partition_destroy (PedPartition* part)
 int
 ped_partition_is_active (const PedPartition* part)
 {
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (part != NULL);
 
 	return !(part->type & PED_PARTITION_FREESPACE
 		 || part->type & PED_PARTITION_METADATA);
@@ -1360,13 +1358,13 @@ ped_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 {
 	PedDiskOps*	ops;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
-	PED_ASSERT (ped_partition_is_active (part), return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
+	PED_ASSERT (ped_partition_is_active (part));
 
 	ops = part->disk->type->ops;
-	PED_ASSERT (ops->partition_set_flag != NULL, return 0);
-	PED_ASSERT (ops->partition_is_flag_available != NULL, return 0);
+	PED_ASSERT (ops->partition_set_flag != NULL);
+	PED_ASSERT (ops->partition_is_flag_available != NULL);
 
 	if (!ops->partition_is_flag_available (part, flag)) {
 		ped_exception_throw (
@@ -1391,11 +1389,10 @@ ped_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 int
 ped_partition_get_flag (const PedPartition* part, PedPartitionFlag flag)
 {
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
-	PED_ASSERT (part->disk->type->ops->partition_get_flag != NULL,
-		    return 0);
-	PED_ASSERT (ped_partition_is_active (part), return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
+	PED_ASSERT (part->disk->type->ops->partition_get_flag != NULL);
+	PED_ASSERT (ped_partition_is_active (part));
 
 	return part->disk->type->ops->partition_get_flag (part, flag);
 }
@@ -1409,11 +1406,10 @@ int
 ped_partition_is_flag_available (const PedPartition* part,
 	       			 PedPartitionFlag flag)
 {
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
-	PED_ASSERT (part->disk->type->ops->partition_is_flag_available != NULL,
-		    return 0);
-	PED_ASSERT (ped_partition_is_active (part), return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
+	PED_ASSERT (part->disk->type->ops->partition_is_flag_available != NULL);
+	PED_ASSERT (ped_partition_is_active (part));
 
 	return part->disk->type->ops->partition_is_flag_available (part, flag);
 }
@@ -1431,13 +1427,13 @@ ped_partition_set_system (PedPartition* part, const PedFileSystemType* fs_type)
 {
 	const PedDiskType*	disk_type;
 
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (ped_partition_is_active (part), return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (ped_partition_is_active (part));
+	PED_ASSERT (part->disk != NULL);
 	disk_type = part->disk->type;
-	PED_ASSERT (disk_type != NULL, return 0);
-	PED_ASSERT (disk_type->ops != NULL, return 0);
-	PED_ASSERT (disk_type->ops->partition_set_system != NULL, return 0);
+	PED_ASSERT (disk_type != NULL);
+	PED_ASSERT (disk_type->ops != NULL);
+	PED_ASSERT (disk_type->ops->partition_set_system != NULL);
 
 	return disk_type->ops->partition_set_system (part, fs_type);
 }
@@ -1475,16 +1471,15 @@ _assert_partition_name_feature (const PedDiskType* disk_type)
 int
 ped_partition_set_name (PedPartition* part, const char* name)
 {
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk != NULL, return 0);
-	PED_ASSERT (ped_partition_is_active (part), return 0);
-	PED_ASSERT (name != NULL, return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
+	PED_ASSERT (ped_partition_is_active (part));
+	PED_ASSERT (name != NULL);
 
 	if (!_assert_partition_name_feature (part->disk->type))
 		return 0;
 
-	PED_ASSERT (part->disk->type->ops->partition_set_name != NULL,
-		    return 0);
+	PED_ASSERT (part->disk->type->ops->partition_set_name != NULL);
 	part->disk->type->ops->partition_set_name (part, name);
 	return 1;
 }
@@ -1499,15 +1494,14 @@ ped_partition_set_name (PedPartition* part, const char* name)
 const char*
 ped_partition_get_name (const PedPartition* part)
 {
-	PED_ASSERT (part != NULL, return NULL);
-	PED_ASSERT (part->disk != NULL, return 0);
-	PED_ASSERT (ped_partition_is_active (part), return 0);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk != NULL);
+	PED_ASSERT (ped_partition_is_active (part));
 
 	if (!_assert_partition_name_feature (part->disk->type))
 		return NULL;
 
-	PED_ASSERT (part->disk->type->ops->partition_get_name != NULL,
-		    return NULL);
+	PED_ASSERT (part->disk->type->ops->partition_get_name != NULL);
 	return part->disk->type->ops->partition_get_name (part);
 }
 
@@ -1524,7 +1518,7 @@ ped_disk_extended_partition (const PedDisk* disk)
 {
 	PedPartition*		walk;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	for (walk = disk->part_list; walk; walk = walk->next) {
 		if (walk->type == PED_PARTITION_EXTENDED)
@@ -1545,7 +1539,7 @@ ped_disk_extended_partition (const PedDisk* disk)
 PedPartition*
 ped_disk_next_partition (const PedDisk* disk, const PedPartition* part)
 {
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	if (!part)
 		return disk->part_list;
@@ -1561,16 +1555,16 @@ ped_disk_next_partition (const PedDisk* disk, const PedPartition* part)
 /** @} */
 
 #ifdef DEBUG
-static int
+static int _GL_ATTRIBUTE_PURE
 _disk_check_sanity (PedDisk* disk)
 {
 	PedPartition*	walk;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	for (walk = disk->part_list; walk; walk = walk->next) {
-		PED_ASSERT (!(walk->type & PED_PARTITION_LOGICAL), return 0);
-		PED_ASSERT (!walk->prev || walk->prev->next == walk, return 0);
+		PED_ASSERT (!(walk->type & PED_PARTITION_LOGICAL));
+		PED_ASSERT (!walk->prev || walk->prev->next == walk);
 	}
 
 	if (!ped_disk_extended_partition (disk))
@@ -1578,9 +1572,9 @@ _disk_check_sanity (PedDisk* disk)
 
 	for (walk = ped_disk_extended_partition (disk)->part_list; walk;
 	     walk = walk->next) {
-		PED_ASSERT (walk->type & PED_PARTITION_LOGICAL, return 0);
+		PED_ASSERT (walk->type & PED_PARTITION_LOGICAL);
 		if (walk->prev)
-			PED_ASSERT (walk->prev->next == walk, return 0);
+			PED_ASSERT (walk->prev->next == walk);
 	}
 	return 1;
 }
@@ -1596,7 +1590,7 @@ ped_disk_get_partition (const PedDisk* disk, int num)
 {
 	PedPartition*	walk;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	for (walk = disk->part_list; walk;
 	     walk = ped_disk_next_partition (disk, walk)) {
@@ -1617,7 +1611,7 @@ ped_disk_get_partition_by_sector (const PedDisk* disk, PedSector sect)
 {
 	PedPartition*	walk;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	for (walk = disk->part_list; walk;
 	     walk = ped_disk_next_partition (disk, walk)) {
@@ -1657,9 +1651,9 @@ ped_disk_max_partition_start_sector (const PedDisk* disk)
 static int
 _disk_raw_insert_before (PedDisk* disk, PedPartition* loc, PedPartition* part)
 {
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (loc != NULL, return 0);
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (loc != NULL);
+	PED_ASSERT (part != NULL);
 
 	part->prev = loc->prev;
 	part->next = loc;
@@ -1679,9 +1673,9 @@ _disk_raw_insert_before (PedDisk* disk, PedPartition* loc, PedPartition* part)
 static int
 _disk_raw_insert_after (PedDisk* disk, PedPartition* loc, PedPartition* part)
 {
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (loc != NULL, return 0);
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (loc != NULL);
+	PED_ASSERT (part != NULL);
 
 	part->prev = loc;
 	part->next = loc->next;
@@ -1695,8 +1689,8 @@ _disk_raw_insert_after (PedDisk* disk, PedPartition* loc, PedPartition* part)
 static int
 _disk_raw_remove (PedDisk* disk, PedPartition* part)
 {
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (part != NULL);
 
 	if (part->prev) {
 		part->prev->next = part->next;
@@ -1726,7 +1720,7 @@ _disk_raw_add (PedDisk* disk, PedPartition* part)
 	PedPartition*	last;
 	PedPartition*	ext_part;
 
-	PED_ASSERT (disk->update_mode, return 0);
+	PED_ASSERT (disk->update_mode);
 
 	ext_part = ped_disk_extended_partition (disk);
 
@@ -1763,14 +1757,14 @@ _partition_get_overlap_constraint (PedPartition* part, PedGeometry* geom)
 	PedPartition*	walk;
 	PedGeometry	free_space;
 
-	PED_ASSERT (part->disk->update_mode, return NULL);
-	PED_ASSERT (part->geom.dev == geom->dev, return NULL);
+	PED_ASSERT (part->disk->update_mode);
+	PED_ASSERT (part->geom.dev == geom->dev);
 
 	if (part->type & PED_PARTITION_LOGICAL) {
 		PedPartition* ext_part;
 
 		ext_part = ped_disk_extended_partition (part->disk);
-		PED_ASSERT (ext_part != NULL, return NULL);
+		PED_ASSERT (ext_part != NULL);
 
 		min_start = ext_part->geom.start;
 		max_end = ext_part->geom.end;
@@ -1814,13 +1808,13 @@ _partition_get_overlap_constraint (PedPartition* part, PedGeometry* geom)
  * Note: overlap with an extended partition is also allowed, provided that
  * \p geom lies completely inside the extended partition.
  */
-static int
+static int _GL_ATTRIBUTE_PURE
 _disk_check_part_overlaps (PedDisk* disk, PedPartition* part)
 {
 	PedPartition*	walk;
 
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (part != NULL);
 
 	for (walk = ped_disk_next_partition (disk, NULL); walk;
 	     walk = ped_disk_next_partition (disk, walk)) {
@@ -1850,11 +1844,11 @@ _partition_check_basic_sanity (PedDisk* disk, PedPartition* part)
 {
 	PedPartition*	ext_part = ped_disk_extended_partition (disk);
 
-	PED_ASSERT (part->disk == disk, return 0);
+	PED_ASSERT (part->disk == disk);
 
-	PED_ASSERT (part->geom.start >= 0, return 0);
-	PED_ASSERT (part->geom.end < disk->dev->length, return 0);
-	PED_ASSERT (part->geom.start <= part->geom.end, return 0);
+	PED_ASSERT (part->geom.start >= 0);
+	PED_ASSERT (part->geom.end < disk->dev->length);
+	PED_ASSERT (part->geom.start <= part->geom.end);
 
 	if (!ped_disk_type_check_feature (disk->type, PED_DISK_TYPE_EXTENDED)
 	    && (part->type == PED_PARTITION_EXTENDED
@@ -1899,10 +1893,10 @@ _check_extended_partition (PedDisk* disk, PedPartition* part)
 	PedPartition*		walk;
 	PedPartition*		ext_part;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 	ext_part = ped_disk_extended_partition (disk);
 	if (!ext_part) ext_part = part;
-	PED_ASSERT (ext_part != NULL, return 0);
+	PED_ASSERT (ext_part != NULL);
 
 	if (part != ext_part) {
 		ped_exception_throw (
@@ -1931,7 +1925,7 @@ _check_partition (PedDisk* disk, PedPartition* part)
 {
 	PedPartition*	ext_part = ped_disk_extended_partition (disk);
 
-	PED_ASSERT (part->geom.start <= part->geom.end, return 0);
+	PED_ASSERT (part->geom.start <= part->geom.end);
 
 	if (part->type == PED_PARTITION_EXTENDED) {
 		if (!_check_extended_partition (disk, part))
@@ -1993,8 +1987,8 @@ ped_disk_add_partition (PedDisk* disk, PedPartition* part,
 	PedConstraint*	overlap_constraint = NULL;
 	PedConstraint*	constraints = NULL;
 
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (part != NULL);
 
 	if (!_partition_check_basic_sanity (disk, part))
 		return 0;
@@ -2061,12 +2055,12 @@ error:
 int
 ped_disk_remove_partition (PedDisk* disk, PedPartition* part)
 {
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (part != NULL);
 
 	if (!_disk_push_update_mode (disk))
 		return 0;
-	PED_ASSERT (part->part_list == NULL, ignored);
+	PED_ASSERT (part->part_list == NULL);
 	_disk_raw_remove (disk, part);
 	if (!_disk_pop_update_mode (disk))
 		return 0;
@@ -2085,8 +2079,8 @@ ped_disk_delete_all_logical (PedDisk* disk);
 int
 ped_disk_delete_partition (PedDisk* disk, PedPartition* part)
 {
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (part != NULL);
 
 	if (!_disk_push_update_mode (disk))
 		return 0;
@@ -2107,9 +2101,9 @@ ped_disk_delete_all_logical (PedDisk* disk)
 	PedPartition*		next;
 	PedPartition*		ext_part;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 	ext_part = ped_disk_extended_partition (disk);
-	PED_ASSERT (ext_part != NULL, return 0);
+	PED_ASSERT (ext_part != NULL);
 
 	for (walk = ext_part->part_list; walk; walk = next) {
 		next = walk->next;
@@ -2131,7 +2125,7 @@ ped_disk_delete_all (PedDisk* disk)
 	PedPartition*		walk;
 	PedPartition*		next;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	if (!_disk_push_update_mode (disk))
 		return 0;
@@ -2173,12 +2167,13 @@ ped_disk_set_partition_geom (PedDisk* disk, PedPartition* part,
 	PedGeometry	old_geom;
 	PedGeometry	new_geom;
 
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (part != NULL, return 0);
-	PED_ASSERT (part->disk == disk, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (part != NULL);
+	PED_ASSERT (part->disk == disk);
 
 	old_geom = part->geom;
-	ped_geometry_init (&new_geom, part->geom.dev, start, end - start + 1);
+	if (!ped_geometry_init (&new_geom, part->geom.dev, start, end - start + 1))
+		return 0;
 
 	if (!_disk_push_update_mode (disk))
 		return 0;
@@ -2238,11 +2233,11 @@ ped_disk_maximize_partition (PedDisk* disk, PedPartition* part,
 	PedPartition*	ext_part = ped_disk_extended_partition (disk);
 	PedConstraint*	constraint_any;
 
-	PED_ASSERT (disk != NULL, return 0);
-	PED_ASSERT (part != NULL, return 0);
+	PED_ASSERT (disk != NULL);
+	PED_ASSERT (part != NULL);
 
 	if (part->type & PED_PARTITION_LOGICAL) {
-		PED_ASSERT (ext_part != NULL, return 0);
+		PED_ASSERT (ext_part != NULL);
 		global_min_start = ext_part->geom.start;
 		global_max_end = ext_part->geom.end;
 	} else {
@@ -2296,9 +2291,9 @@ ped_disk_get_max_partition_geometry (PedDisk* disk, PedPartition* part,
 	PedGeometry*	max_geom;
 	PedConstraint*	constraint_exact;
 
-	PED_ASSERT(disk != NULL, return NULL);
-	PED_ASSERT(part != NULL, return NULL);
-	PED_ASSERT(ped_partition_is_active (part), return NULL);
+	PED_ASSERT(disk != NULL);
+	PED_ASSERT(part != NULL);
+	PED_ASSERT(ped_partition_is_active (part));
 
 	old_geom = part->geom;
 	if (!ped_disk_maximize_partition (disk, part, constraint))
@@ -2313,8 +2308,7 @@ ped_disk_get_max_partition_geometry (PedDisk* disk, PedPartition* part,
 	/* this assertion should never fail, because the old
 	 * geometry was valid
 	 */
-	PED_ASSERT (ped_geometry_test_equal (&part->geom, &old_geom),
-		    return NULL);
+	PED_ASSERT (ped_geometry_test_equal (&part->geom, &old_geom));
 
 	return max_geom;
 }
@@ -2336,7 +2330,7 @@ ped_disk_minimize_extended_partition (PedDisk* disk)
 	PedConstraint*		constraint;
 	int			status;
 
-	PED_ASSERT (disk != NULL, return 0);
+	PED_ASSERT (disk != NULL);
 
 	ext_part = ped_disk_extended_partition (disk);
 	if (!ext_part)
@@ -2443,6 +2437,8 @@ ped_partition_flag_get_name (PedPartitionFlag flag)
                 return N_("atvrecv");
         case PED_PARTITION_DIAG:
                 return N_("diag");
+        case PED_PARTITION_LEGACY_BOOT:
+                return N_("legacy_boot");
 
 	default:
 		ped_exception_throw (
@@ -2493,7 +2489,7 @@ ped_partition_flag_get_by_name (const char* name)
 static void
 ped_partition_print (const PedPartition* part)
 {
-	PED_ASSERT (part != NULL, return);
+	PED_ASSERT (part != NULL);
 
 	printf ("  %-10s %02d  (%d->%d)\n",
 		ped_partition_type_get_name (part->type),
@@ -2517,7 +2513,7 @@ ped_disk_print (const PedDisk* disk)
 {
 	PedPartition*	part;
 
-	PED_ASSERT (disk != NULL, return);
+	PED_ASSERT (disk != NULL);
 
 	for (part = disk->part_list; part;
 	     part = ped_disk_next_partition (disk, part))

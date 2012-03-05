@@ -1,7 +1,7 @@
 #!/bin/sh
 # corrupt a GPT table; ensure parted takes notice
 
-# Copyright (C) 2009-2010 Free Software Foundation, Inc.
+# Copyright (C) 2009-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,20 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 
 dev=loop-file
 
 ss=$sector_size_
 n_sectors=5000
 
-fail=0
 dd if=/dev/null of=$dev bs=$ss seek=$n_sectors || fail=1
 
 # create gpt label
@@ -41,7 +34,7 @@ parted -m -s $dev unit s print > t 2>&1 || fail=1
 sed "s,.*/$dev:,$dev:," t > out || fail=1
 
 # check for expected output
-printf "BYT;\n$dev:${n_sectors}s:file:$sector_size_:$sector_size_:gpt:;\n" \
+printf "BYT;\n$dev:${n_sectors}s:file:$sector_size_:$sector_size_:gpt::;\n" \
   > exp || fail=1
 compare exp out || fail=1
 
@@ -97,7 +90,7 @@ parted -m -s $dev u s print > out 2>&1 || fail=1
 
 # check for expected output
 printf "BYT;\nfile\n1:2048s:4095s:2048s::foo:;\n" > exp || fail=1
-sed "s/.*gpt:;/file/" out > k && mv k out || fail=1
+sed "s/.*gpt::;/file/" out > k && mv k out || fail=1
 compare exp out || fail=1
 
 Exit $fail

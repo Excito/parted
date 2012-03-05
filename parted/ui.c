@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999-2002, 2006-2010 Free Software Foundation, Inc.
+    Copyright (C) 1999-2002, 2006-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -340,7 +340,7 @@ sa_sigint_handler (int signum, siginfo_t* info, void *ucontext)
 static void
 sa_sigsegv_handler (int signum, siginfo_t* info, void* ucontext)
 {
-        printf (bug_msg, VERSION);
+        fprintf (stderr, bug_msg, VERSION);
         _dump_history ();
 
         if (!info)
@@ -353,7 +353,7 @@ sa_sigsegv_handler (int signum, siginfo_t* info, void* ucontext)
                 case SEGV_MAPERR:
                         fputs(_("\nError: SEGV_MAPERR (Address not mapped "
                                 "to object)\n"), stdout);
-                        PED_ASSERT(0, break); /* Force a backtrace */
+                        PED_ASSERT(0); /* Force a backtrace */
                         break;
 
                 case SEGV_ACCERR:
@@ -364,7 +364,7 @@ sa_sigsegv_handler (int signum, siginfo_t* info, void* ucontext)
                 default:
                         fputs(_("\nError: A general SIGSEGV signal was "
                                 "encountered.\n"), stdout);
-                        PED_ASSERT(0, break); /* Force a backtrace */
+                        PED_ASSERT(0); /* Force a backtrace */
                         break;
         }
 
@@ -375,7 +375,7 @@ sa_sigsegv_handler (int signum, siginfo_t* info, void* ucontext)
 static void
 sa_sigfpe_handler (int signum, siginfo_t* info, void* ucontext)
 {
-        printf (bug_msg, VERSION);
+        fprintf (stderr, bug_msg, VERSION);
         _dump_history ();
 
         if (!info)
@@ -439,7 +439,7 @@ sa_sigfpe_handler (int signum, siginfo_t* info, void* ucontext)
 static void
 sa_sigill_handler (int signum, siginfo_t* info, void* ucontext)
 {
-        printf (bug_msg, VERSION);
+        fprintf (stderr, bug_msg, VERSION);
         _dump_history ();
 
         if (!info)
@@ -592,7 +592,7 @@ _readline (const char* prompt, const StrList* possibilities)
         return line;
 }
 
-static PedExceptionOption
+static PedExceptionOption _GL_ATTRIBUTE_PURE
 option_get_next (PedExceptionOption options, PedExceptionOption current)
 {
         PedExceptionOption    i;
@@ -617,7 +617,7 @@ _print_exception_text (PedException* ex)
         wipe_line ();
 
         if (ex->type == PED_EXCEPTION_BUG) {
-                printf (bug_msg, VERSION);
+                fprintf (stderr, bug_msg, VERSION);
                 text = str_list_create ("\n", ex->message, "\n\n", NULL);
         } else {
                 text = str_list_create (
@@ -625,7 +625,7 @@ _print_exception_text (PedException* ex)
                            ": ", ex->message, "\n", NULL);
         }
 
-        str_list_print_wrap (text, screen_width (), 0, 0);
+        str_list_print_wrap (text, screen_width (), 0, 0, stderr);
         str_list_destroy (text);
 }
 
@@ -672,7 +672,7 @@ command_line_pop_word ()
         char*       result;
         StrList*    next;
 
-        PED_ASSERT (command_line != NULL, return NULL);
+        PED_ASSERT (command_line != NULL);
 
         result = str_list_convert_node (command_line);
         next = command_line->next;
@@ -704,7 +704,7 @@ command_line_get_word_count ()
         return str_list_length (command_line);
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 _str_is_spaces (const char* str)
 {
         while (isspace (*str))
@@ -785,8 +785,7 @@ _construct_prompt (const char* head, const char* def,
         char*    prompt = strdup (head);
 
         if (def && possibilities)
-                PED_ASSERT (str_list_match_any (possibilities, def),
-                            return NULL);
+                PED_ASSERT (str_list_match_any (possibilities, def));
 
         if (possibilities && str_list_length (possibilities) < 8) {
                 const StrList*    walk;
@@ -925,7 +924,7 @@ command_line_get_integer (const char* prompt, int* value)
 
 int
 command_line_get_sector (const char* prompt, PedDevice* dev, PedSector* value,
-                         PedGeometry** range)
+                         PedGeometry** range, char** raw_input)
 {
         char*    def_str;
         char*    input;
@@ -947,6 +946,7 @@ command_line_get_sector (const char* prompt, PedDevice* dev, PedSector* value,
                 }
 
                 free (def_str);
+                free (input);
                 return 1;
         }
 
@@ -960,7 +960,10 @@ command_line_get_sector (const char* prompt, PedDevice* dev, PedSector* value,
 
         valid = ped_unit_parse (input, dev, value, range);
 
-        free (input);
+        if (raw_input)
+            *raw_input = input;
+        else
+            free (input);
         return valid;
 }
 
@@ -1083,6 +1086,7 @@ command_line_get_fs_type (const char* prompt, const PedFileSystemType*(* value))
                 ped_exception_throw (PED_EXCEPTION_ERROR, PED_EXCEPTION_CANCEL,
                                      _("Unknown file system type \"%s\"."),
                                      fs_type_name);
+                free (fs_type_name);
                 return 0;
         }
 
@@ -1107,8 +1111,37 @@ command_line_get_disk_type (const char* prompt, const PedDiskType*(* value))
 
         *value = ped_disk_type_get (disk_type_name);
         free (disk_type_name);
-        PED_ASSERT (*value != NULL, return 0);
+        PED_ASSERT (*value != NULL);
         return 1;
+}
+
+int
+command_line_get_disk_flag (const char* prompt, const PedDisk* disk,
+                            PedDiskFlag* flag)
+{
+        StrList*            opts = NULL;
+        PedPartitionFlag    walk = 0;
+        char*               flag_name;
+
+        while ( (walk = ped_disk_flag_next (walk)) ) {
+                if (ped_disk_is_flag_available (disk, walk)) {
+                        const char*        walk_name;
+
+                        walk_name = ped_disk_flag_get_name (walk);
+                        opts = str_list_append (opts, walk_name);
+                        opts = str_list_append_unique (opts, _(walk_name));
+                }
+        }
+
+        flag_name = command_line_get_word (prompt, NULL, opts, 1);
+        str_list_destroy (opts);
+
+        if (flag_name) {
+                *flag = ped_disk_flag_get_by_name (flag_name);
+                free (flag_name);
+                return 1;
+        } else
+                return 0;
 }
 
 int
@@ -1540,7 +1573,7 @@ interactive_mode (PedDevice** dev, Command* cmd_list[])
         print_using_dev (*dev);
 
         list = str_list_create (_(banner_msg), NULL);
-        str_list_print_wrap (list, screen_width (), 0, 0);
+        str_list_print_wrap (list, screen_width (), 0, 0, stdout);
         str_list_destroy (list);
 
         while (1) {

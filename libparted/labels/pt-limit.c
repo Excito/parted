@@ -1,4 +1,4 @@
-/* ANSI-C code produced by gperf version 3.0.3 */
+/* ANSI-C code produced by gperf version 3.0.4 */
 /* Command-line: gperf -C -N pt_limit_lookup -n -t -s 6 -k '*' --language=ANSI-C pt-limit.gperf  */
 
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
@@ -108,7 +108,7 @@ hash (register const char *str, register unsigned int len)
 #ifdef __GNUC__
 __inline
 static
-#ifdef __GNUC_STDC_INLINE__
+#if defined __GNUC_STDC_INLINE__ || defined __GNUC_GNU_INLINE__
 __attribute__ ((__gnu_inline__))
 #endif
 #endif
@@ -120,8 +120,8 @@ pt_limit_lookup (register const char *str, register unsigned int len)
 #line 18 "pt-limit.gperf"
       {"sun",128ULL*UINT32_MAX,UINT32_MAX},
       {""}, {""}, {""}, {""},
-#line 22 "pt-limit.gperf"
-      {"loop",UINT32_MAX,UINT32_MAX},
+#line 23 "pt-limit.gperf"
+      {"loop",UINT64_MAX,UINT64_MAX},
       {""}, {""}, {""}, {""},
 #line 10 "pt-limit.gperf"
       {"gpt",UINT64_MAX,UINT64_MAX},
@@ -132,7 +132,7 @@ pt_limit_lookup (register const char *str, register unsigned int len)
 #line 8 "pt-limit.gperf"
       {"dasd",UINT32_MAX,UINT32_MAX},
       {""}, {""}, {""}, {""},
-#line 26 "pt-limit.gperf"
+#line 27 "pt-limit.gperf"
       {"amiga",UINT32_MAX,UINT32_MAX},
       {""}, {""}, {""}, {""},
 #line 9 "pt-limit.gperf"
@@ -144,7 +144,7 @@ pt_limit_lookup (register const char *str, register unsigned int len)
 #line 20 "pt-limit.gperf"
       {"bsd",UINT32_MAX,UINT32_MAX},
       {""}, {""}, {""}, {""},
-#line 23 "pt-limit.gperf"
+#line 24 "pt-limit.gperf"
       {"pc98",UINT32_MAX,UINT32_MAX}
     };
 

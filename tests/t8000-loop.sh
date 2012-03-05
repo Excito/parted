@@ -1,7 +1,7 @@
 #!/bin/sh
 # Test usage of loop devices
 
-# Copyright (C) 2008-2010 Free Software Foundation, Inc.
+# Copyright (C) 2008-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,35 +16,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-if test "$VERBOSE" = yes; then
-  set -x
-  parted --version
-fi
-
-: ${srcdir=.}
-. $srcdir/t-lib.sh
+. "${srcdir=.}/init.sh"; path_prepend_ ../parted
 
 require_root_
 lvm_init_root_dir_
 
 d1= f1=
-cleanup_()
+cleanup_fn_()
 {
   test -n "$d1" && losetup -d "$d1"
   rm -f "$f1"
 }
 
 f1=$(pwd)/1; d1=$(loop_setup_ "$f1") \
-  || skip_test_ "is this partition mounted with 'nodev'?"
+  || skip_ "is this partition mounted with 'nodev'?"
 
-fail=0
+require_partitionable_loop_device_ $d1
 
 # Expect this to succeed.
 parted -s $d1 mklabel msdos > err 2>&1 || fail=1
-compare err /dev/null || fail=1     # expect no output
+compare /dev/null err || fail=1     # expect no output
 
 # Create a partition
 parted -s $d1 mkpart primary 1 10 > err 2>&1 || fail=1
-compare err /dev/null || fail=1     # expect no output
+compare /dev/null err || fail=1     # expect no output
 
 Exit $fail

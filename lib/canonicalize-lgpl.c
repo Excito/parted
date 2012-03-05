@@ -1,5 +1,5 @@
 /* Return the canonical absolute name of a given file.
-   Copyright (C) 1996-2010 Free Software Foundation, Inc.
+   Copyright (C) 1996-2012 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    This program is free software: you can redistribute it and/or modify
@@ -16,6 +16,7 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #ifndef _LIBC
+# define _GL_USE_STDLIB_ALLOC 1
 # include <config.h>
 #endif
 
@@ -51,6 +52,12 @@
 # include "pathmax.h"
 # include "malloca.h"
 # if HAVE_GETCWD
+#  if IN_RELOCWRAPPER
+    /* When building the relocatable program wrapper, use the system's getcwd
+       function, not the gnulib override, otherwise we would get a link error.
+     */
+#   undef getcwd
+#  endif
 #  ifdef VMS
     /* We want the directory in Unix syntax, not in VMS syntax.  */
 #   define __getcwd(buf, max) getcwd (buf, max, 0)
@@ -77,10 +84,10 @@
 
 #if !FUNC_REALPATH_WORKS || defined _LIBC
 /* Return the canonical absolute name of file NAME.  A canonical name
-   does not contain any `.', `..' components nor any repeated path
+   does not contain any ".", ".." components nor any repeated path
    separators ('/') or symlinks.  All path components must exist.  If
    RESOLVED is null, the result is malloc'd; otherwise, if the
-   canonical name is PATH_MAX chars or more, returns null with `errno'
+   canonical name is PATH_MAX chars or more, returns null with 'errno'
    set to ENAMETOOLONG; if the name fits in fewer than PATH_MAX chars,
    returns the name in RESOLVED.  If the name cannot be resolved and
    RESOLVED is non-NULL, it contains the path of the first component
@@ -118,7 +125,7 @@ __realpath (const char *name, char *resolved)
 #else
   path_max = pathconf (name, _PC_PATH_MAX);
   if (path_max <= 0)
-    path_max = 1024;
+    path_max = 8192;
 #endif
 
   if (resolved == NULL)
@@ -149,8 +156,12 @@ __realpath (const char *name, char *resolved)
     {
       rpath[0] = '/';
       dest = rpath + 1;
-      if (DOUBLE_SLASH_IS_DISTINCT_ROOT && name[1] == '/')
-        *dest++ = '/';
+      if (DOUBLE_SLASH_IS_DISTINCT_ROOT)
+        {
+          if (name[1] == '/' && name[2] != '/')
+            *dest++ = '/';
+          *dest = '\0';
+        }
     }
 
   for (start = end = name; *start; start = end)
@@ -180,7 +191,7 @@ __realpath (const char *name, char *resolved)
           if (dest > rpath + 1)
             while ((--dest)[-1] != '/');
           if (DOUBLE_SLASH_IS_DISTINCT_ROOT && dest == rpath + 1
-              && *dest == '/')
+              && *dest == '/' && dest[1] != '/')
             dest++;
         }
       else
@@ -291,8 +302,12 @@ __realpath (const char *name, char *resolved)
               if (buf[0] == '/')
                 {
                   dest = rpath + 1;     /* It's an absolute symlink */
-                  if (DOUBLE_SLASH_IS_DISTINCT_ROOT && buf[1] == '/')
-                    *dest++ = '/';
+                  if (DOUBLE_SLASH_IS_DISTINCT_ROOT)
+                    {
+                      if (buf[1] == '/' && buf[2] != '/')
+                        *dest++ = '/';
+                      *dest = '\0';
+                    }
                 }
               else
                 {
@@ -301,7 +316,7 @@ __realpath (const char *name, char *resolved)
                   if (dest > rpath + 1)
                     while ((--dest)[-1] != '/');
                   if (DOUBLE_SLASH_IS_DISTINCT_ROOT && dest == rpath + 1
-                      && *dest == '/')
+                      && *dest == '/' && dest[1] != '/')
                     dest++;
                 }
             }
@@ -314,7 +329,8 @@ __realpath (const char *name, char *resolved)
     }
   if (dest > rpath + 1 && dest[-1] == '/')
     --dest;
-  if (DOUBLE_SLASH_IS_DISTINCT_ROOT && dest == rpath + 1 && *dest == '/')
+  if (DOUBLE_SLASH_IS_DISTINCT_ROOT && dest == rpath + 1
+      && *dest == '/' && dest[1] != '/')
     dest++;
   *dest = '\0';
 

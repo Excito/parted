@@ -1,5 +1,5 @@
 dnl GNU Parted - a library and front end for manipulation hard disk partitions
-dnl Copyright (C) 1998-2002, 2005-2010 Free Software Foundation, Inc.
+dnl Copyright (C) 1998-2002, 2005-2012 Free Software Foundation, Inc.
 dnl
 dnl This file may be modified and/or distributed without restriction.
 
@@ -10,7 +10,7 @@ AC_INIT([GNU parted], m4_esyscmd([build-aux/git-version-gen .version]),
 # When the most recent signed tag is v1.8.8.1,
 # the above might set e.g., PACKAGE_VERSION='1.8.8.1.1-0bfc'
 
-AC_CONFIG_SRCDIR([include/parted/parted.h])
+AC_CONFIG_SRCDIR([include/parted/parted.in.h])
 
 AC_CONFIG_HEADERS([lib/config.h:lib/config.h.in])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -52,7 +52,7 @@ AC_SUBST([LT_CURRENT])
 AC_SUBST([LT_REVISION])
 AC_SUBST([LT_AGE])
 
-AM_INIT_AUTOMAKE([1.11 dist-xz color-tests parallel-tests])
+AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz color-tests parallel-tests])
 AM_SILENT_RULES([yes]) # make --enable-silent-rules the default.
 
 AC_CANONICAL_HOST
@@ -117,15 +117,6 @@ if test "$enable_discover_only" = yes \
 	)
 fi
 
-AC_ARG_ENABLE([fs],
-	[  --enable-fs             include filesystem support [default=yes]], ,
-	enable_fs=yes
-)
-if test "$enable_fs" = yes; then
-	AC_DEFINE([ENABLE_FS], [1],
-		  [Include file system support.  i.e. libparted/fs_...])
-fi
-
 AC_ARG_ENABLE([debug],
 	[  --enable-debug          compile in assertions [default=yes]], ,
 	enable_debug=yes
@@ -156,11 +147,6 @@ if test "$enable_pc98" = yes; then
 		  [Include PC98 partition tables.  (Sometimes excluded to avoid
 		   collisions with msdos partition tables])
 fi
-
-AC_ARG_ENABLE([Werror],
-	[  --enable-Werror         build with gcc -Werror [default=yes]], ,
-	enable_Werror=yes
-)
 
 AC_ARG_ENABLE([hfs-extract-fs],
 	[  --enable-hfs-extract-fs Extract special HFS files for debugging [default=no]], ,
@@ -224,7 +210,6 @@ if test "$gl_gcc_warnings" = yes; then
   nw="$nw -Wpadded"                 # Our structs are not padded
   nw="$nw -Wredundant-decls"        # openat.h declares e.g., mkdirat
   nw="$nw -Wlogical-op"             # any use of fwrite provokes this
-  nw="$nw -Wformat-nonliteral"      # who.c and pinky.c strftime uses
   nw="$nw -Wvla"                    # warnings in gettext.h
   nw="$nw -Wnested-externs"         # use of XARGMATCH/verify_function__
   nw="$nw -Wswitch-enum"            # Too many warnings for now
@@ -256,6 +241,7 @@ if test "$gl_gcc_warnings" = yes; then
   gl_WARN_ADD([-Wno-pointer-sign])     # Too many warnings for now
   gl_WARN_ADD([-Wno-unused-parameter]) # Too many warnings for now
   gl_WARN_ADD([-Wno-unused-macros]) # Too many warnings for now
+  gl_WARN_ADD([-Wno-format-nonliteral])
 
   # FIXME: investigate these
   gl_WARN_ADD([-Wno-jump-misses-init])
@@ -293,7 +279,8 @@ off_t is less than 8 bytes.  Using llseek syscall, and disabling shared
 libraries.)
 	AM_DISABLE_SHARED
 fi
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
+LT_INIT
 
 AM_GNU_GETTEXT_VERSION([0.18])
 AM_GNU_GETTEXT([external])
@@ -310,10 +297,13 @@ fi
 
 dnl Check for libdl, if we are doing dynamic loading
 DL_LIBS=""
+AC_SUBST([DYNAMIC_LOADING])
+DYNAMIC_LOADING=no
 if test "$enable_dynamic_loading" = yes; then
 	AC_CHECK_LIB([dl], [dlopen],
 		DL_LIBS="-ldl"
 		PARTED_LIBS="$PARTED_LIBS -ldl"
+		DYNAMIC_LOADING=yes
 		AC_DEFINE([DYNAMIC_LOADING], [1], [Lazy linking to fs libs]),
 		AC_MSG_ERROR(
 			[-ldl not found!  Try using --disable-dynamic-loading]
@@ -326,15 +316,12 @@ dnl Check for libuuid
 UUID_LIBS=""
 AC_CHECK_LIB([uuid], [uuid_generate], [UUID_LIBS="-luuid"],
 	[AC_MSG_ERROR(dnl
-[GNU Parted requires libuuid - a part of the e2fsprogs package (but
-sometimes distributed separately in uuid-devel or similar)
+[GNU Parted requires libuuid - a part of the util-linux-ng package (but
+usually distributed separately in libuuid-devel, uuid-dev or similar)
 This can probably be found on your distribution's CD or FTP site or at:
-         http://web.mit.edu/tytso/www/linux/e2fsprogs.html
-Note: if you are using precompiled packages you will also need the development
-package as well (which may be called e2fsprogs-devel or something similar).
-If you compile e2fsprogs yourself then you need to do 'make install' and
-'make install-libs'.])]
-)
+    http://userweb.kernel.org/~kzak/util-linux-ng/
+Note: originally, libuuid was part of the e2fsprogs package.  Later, it
+moved to util-linux-ng-2.16, and that package is now the preferred source.])])
 AC_SUBST([UUID_LIBS])
 
 dnl Check for libdevmapper
@@ -519,6 +506,7 @@ If you can't find one try:
 )
 
 AC_CHECK_HEADERS([getopt.h])
+AC_CHECK_HEADERS([linux/ext2_fs.h])
 
 dnl required for libparted/llseek.c  (TODO: make linux-x86 only)
 if test "$OS" = linux; then
@@ -559,7 +547,6 @@ AC_CHECK_HEADER([execinfo.h], [
 ])
 
 AM_CONDITIONAL([COMPILE_FOR_S390], [test "$host_cpu" = s390 || test "$host_cpu" = s390x])
-AM_CONDITIONAL([BUILD_LINUX], [test "$OS" = linux])
 
 dnl check for "check", unit testing library/header
 PKG_CHECK_MODULES([CHECK], [check >= 0.9.3], have_check=yes, have_check=no)
@@ -592,12 +579,6 @@ fi
 
 AC_CHECK_FUNCS([canonicalize_file_name])
 
-# CFLAGS="$CFLAGS -W -Wall -Wno-unused -Wno-switch -Wno-format"
-
-if test "$enable_Werror" = yes; then
-	CFLAGS="$CFLAGS -Werror"
-fi
-
 DATE=$(date '+%d %b %Y %H:%M')
 USER=$(whoami)
 HOST=$(hostname)
@@ -624,16 +605,6 @@ include/parted/Makefile
 libparted/Makefile
 libparted/labels/Makefile
 libparted/fs/Makefile
-libparted/fs/amiga/Makefile
-libparted/fs/ext2/Makefile
-libparted/fs/fat/Makefile
-libparted/fs/hfs/Makefile
-libparted/fs/jfs/Makefile
-libparted/fs/linux_swap/Makefile
-libparted/fs/ntfs/Makefile
-libparted/fs/reiserfs/Makefile
-libparted/fs/ufs/Makefile
-libparted/fs/xfs/Makefile
 libparted/tests/Makefile
 libparted.pc
 parted/Makefile
@@ -642,7 +613,6 @@ doc/Makefile
 doc/C/Makefile
 doc/pt_BR/Makefile
 debug/Makefile
-debug/clearfat/Makefile
 debug/test/Makefile
 tests/Makefile
 po/Makefile.in

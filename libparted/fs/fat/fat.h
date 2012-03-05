@@ -1,7 +1,6 @@
 /*
     libparted
-    Copyright (C) 1998-2001, 2007, 2009-2010 Free Software Foundation,
-    Inc.
+    Copyright (C) 1998-2001, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -51,15 +50,22 @@ typedef enum _FatType		FatType;
 typedef struct _FatSpecific	FatSpecific;
 typedef struct _FatDirEntry	FatDirEntry;
 
-/* FIXME: YUCKY */
-#include "table.h"
 #include "bootsector.h"
-#include "context.h"
-#include "fatio.h"
-#include "traverse.h"
-#include "calc.h"
 #include "count.h"
-#include "clstdup.h"
+
+struct _FatTable {
+	void*		table;
+	FatCluster	size;
+	int		raw_size;
+
+	FatType		fat_type;
+	FatCluster	cluster_count;
+	FatCluster	free_cluster_count;
+	FatCluster	bad_cluster_count;
+
+	FatCluster	last_alloc;
+};
+typedef struct _FatTable	FatTable;
 
 struct __attribute__ ((packed)) _FatDirEntry {
 	char		name[8];
@@ -150,10 +156,7 @@ extern void fat_print (const PedFileSystem* fs);
 extern PedFileSystem* fat_alloc (const PedGeometry* geom);
 extern void fat_free (PedFileSystem* fs);
 extern int fat_alloc_buffers (PedFileSystem* fs);
-extern void fat_free_buffers (PedFileSystem* fs);
 
 extern int fat_resize (PedFileSystem* fs, PedGeometry* geom, PedTimer* timer);
-
-extern int fat_set_frag_sectors (PedFileSystem* fs, PedSector frag_sectors);
 
 #endif /* FAT_H_INCLUDED */

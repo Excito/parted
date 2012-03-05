@@ -1,7 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2001-2002, 2005, 2007-2010 Free Software Foundation,
-    Inc.
+    Copyright (C) 2001-2002, 2005, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -61,31 +60,13 @@ typedef struct _DVHPartData {
 
 static PedDiskType dvh_disk_type;
 
-/* FIXME: factor out this function: copied from aix.c, with changes to
-   the description, and an added sector number argument.
-   Read sector, SECTOR_NUM (which has length DEV->sector_size) into malloc'd
-   storage.  If the read fails, free the memory and return zero without
-   modifying *BUF.  Otherwise, set *BUF to the new buffer and return 1.  */
-static int
-read_sector (const PedDevice *dev, PedSector sector_num, char **buf)
-{
-	char *b = ped_malloc (dev->sector_size);
-	PED_ASSERT (b != NULL, return 0);
-	if (!ped_device_read (dev, b, sector_num, 1)) {
-		free (b);
-		return 0;
-	}
-	*buf = b;
-	return 1;
-}
-
 static int
 dvh_probe (const PedDevice *dev)
 {
 	struct volume_header *vh;
 
-	char *label;
-	if (!read_sector (dev, 0, &label))
+	void *label;
+	if (!ptt_read_sector (dev, 0, &label))
 		return 0;
 
 	vh = (struct volume_header *) label;
@@ -147,7 +128,7 @@ dvh_duplicate (const PedDisk* disk)
 	DVHDiskData*	new_dvh_disk_data;
 	DVHDiskData*	old_dvh_disk_data = disk->disk_specific;
 
-	PED_ASSERT (old_dvh_disk_data != NULL, goto error);
+	PED_ASSERT (old_dvh_disk_data != NULL);
 
 	new_disk = ped_disk_new_fresh (disk->dev, &dvh_disk_type);
 	if (!new_disk)
@@ -175,7 +156,7 @@ dvh_free (PedDisk* disk)
 }
 
 /* two's complement 32-bit checksum */
-static uint32_t
+static uint32_t _GL_ATTRIBUTE_PURE
 _checksum (const uint32_t* base, size_t size)
 {
 	uint32_t	sum = 0;
@@ -310,12 +291,12 @@ dvh_read (PedDisk* disk)
 	int			write_back = 0;
 #endif
 
-	PED_ASSERT (dvh_disk_data != NULL, return 0);
+	PED_ASSERT (dvh_disk_data != NULL);
 
 	ped_disk_delete_all (disk);
 
-	char *s0;
-	if (!read_sector (disk->dev, 0, &s0))
+	void *s0;
+	if (!ptt_read_sector (disk->dev, 0, &s0))
 		return 0;
 	memcpy (&vh, s0, sizeof vh);
 	free (s0);
@@ -330,7 +311,7 @@ dvh_read (PedDisk* disk)
 			return 0;
 	}
 
-	PED_ASSERT (PED_BE32_TO_CPU (vh.vh_magic) == VHMAGIC, return 0);
+	PED_ASSERT (PED_BE32_TO_CPU (vh.vh_magic) == VHMAGIC);
 
 	dvh_disk_data->dev_params = vh.vh_dp;
 	strncpy (boot_name, vh.vh_bootfile, BFNAMESIZE);
@@ -430,7 +411,7 @@ _generate_partition (PedPartition* part, struct partition_table* pt)
 	DVHPartData*	dvh_part_data = part->disk_specific;
 
 	/* Assert not a bootfile */
-	PED_ASSERT ((part->type & PED_PARTITION_LOGICAL) == 0, return);
+	PED_ASSERT ((part->type & PED_PARTITION_LOGICAL) == 0);
 
 	pt->pt_nblks = PED_CPU_TO_BE32 (part->geom.length);
 	pt->pt_firstlbn = PED_CPU_TO_BE32 (part->geom.start);
@@ -443,7 +424,7 @@ _generate_boot_file (PedPartition* part, struct volume_directory* vd)
 	DVHPartData*	dvh_part_data = part->disk_specific;
 
 	/* Assert it's a bootfile */
-	PED_ASSERT ((part->type & PED_PARTITION_LOGICAL) != 0, return);
+	PED_ASSERT ((part->type & PED_PARTITION_LOGICAL) != 0);
 
 	vd->vd_nbytes = PED_CPU_TO_BE32 (dvh_part_data->real_file_size);
 	vd->vd_lbn = PED_CPU_TO_BE32 (part->geom.start);
@@ -459,7 +440,7 @@ dvh_write (const PedDisk* disk)
 	struct volume_header	vh;
 	int			i;
 
-	PED_ASSERT (dvh_disk_data != NULL, return 0);
+	PED_ASSERT (dvh_disk_data != NULL);
 
 	_flush_stale_flags (disk);
 
@@ -588,7 +569,7 @@ static void
 dvh_partition_destroy (PedPartition* part)
 {
 	if (ped_partition_is_active (part)) {
-		PED_ASSERT (part->disk_specific != NULL, return);
+		PED_ASSERT (part->disk_specific != NULL);
 		free (part->disk_specific);
 	}
 	_ped_partition_free (part);
@@ -675,7 +656,7 @@ dvh_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 	return 1;
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 dvh_partition_get_flag (const PedPartition* part, PedPartitionFlag flag)
 {
 	DVHDiskData* dvh_disk_data = part->disk->disk_specific;
@@ -772,7 +753,7 @@ _get_primary_constraint (PedDisk* disk)
 static int
 dvh_partition_align (PedPartition* part, const PedConstraint* constraint)
 {
-        PED_ASSERT (part != NULL, return 0);
+        PED_ASSERT (part != NULL);
 
 	if (_ped_partition_attempt_align (
 			part, constraint,
@@ -809,7 +790,7 @@ dvh_partition_enumerate (PedPartition* part)
 				return 1;
 			}
 		}
-		PED_ASSERT (0, return 0);
+		PED_ASSERT (0);
 	} else if (part->type & PED_PARTITION_EXTENDED) {
 		/* Volheader */
 		part->num = PNUM_VOLHDR + 1;
@@ -853,7 +834,7 @@ dvh_alloc_metadata (PedDisk* disk)
 	PedPartition* part;
 	PedPartition* extended_part;
 	PedPartitionType metadata_type;
-	PED_ASSERT(disk != NULL, return 0);
+	PED_ASSERT(disk != NULL);
 
 	/* We don't need to "protect" the start of the disk from the volume
 	 * header.
@@ -902,7 +883,7 @@ static PedDiskType dvh_disk_type = {
 void
 ped_disk_dvh_init ()
 {
-	PED_ASSERT (sizeof (struct volume_header) == 512, return);
+	PED_ASSERT (sizeof (struct volume_header) == 512);
 
 	ped_disk_type_register (&dvh_disk_type);
 }

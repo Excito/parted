@@ -1,27 +1,41 @@
 # Put test-related bits that are parted-specific here.
-# This file is sourced from near the end of t-lib.sh.
+# This file is sourced from the testing framework.
 sector_size_=${PARTED_SECTOR_SIZE:-512}
 
-scsi_debug_lock_file_="$abs_srcdir/scsi_debug.lock"
+scsi_debug_lock_dir_="$abs_srcdir/scsi_debug.lock"
 
 require_scsi_debug_module_()
 {
+  require_udevadm_settle_
   # check for scsi_debug module
   modprobe -n scsi_debug ||
-    skip_test_ "you lack the scsi_debug kernel module"
+    skip_ "you lack the scsi_debug kernel module"
 }
 
 scsi_debug_modprobe_succeeded_=
-cleanup_eval_="$cleanup_eval_; scsi_debug_cleanup_"
+
+# Always run this cleanup function.
+cleanup_final_() { scsi_debug_cleanup_; }
+
 scsi_debug_cleanup_()
 {
-  rm -f $scsi_debug_lock_file_
-  test -z "$scsi_debug_modprobe_succeeded_" && return
-
-  # We have to insist.  Otherwise, a single rmmod usually fails to remove it,
-  # due either to "Resource temporarily unavailable" or to
-  # "Module scsi_debug is in use".
-  for i in 1 2 3; do rmmod scsi_debug && break; sleep .2 || sleep 1; done
+  # This function must always release the lock.
+  # If modprobe succeeded, it must be sure to run rmmod.
+  if test -n "$scsi_debug_modprobe_succeeded_"; then
+    # We have to insist.  Otherwise, a single rmmod usually fails to remove it,
+    # due either to "Resource temporarily unavailable" or to
+    # "Module scsi_debug is in use".
+    i=0
+    udevadm settle
+    while [ $i -lt 10 ] ; do
+      rmmod scsi_debug \
+	&& { test "$VERBOSE" = yes && warn_ $ME_ rmmod scsi_debug...; break; }
+      sleep .2 || sleep 1
+      i=$((i + 1))
+    done
+    udevadm settle
+  fi
+  rm -fr $scsi_debug_lock_dir_
 }
 
 # Helper function: wait 2s (via .1s increments) for FILE to appear.
@@ -44,11 +58,35 @@ wait_for_dev_to_appear_()
 scsi_debug_acquire_lock_()
 {
   local retries=20
-  local lock_timeout_seconds=120
-  lockfile -1 -r $retries -l $lock_timeout_seconds $scsi_debug_lock_file_
+  local lock_timeout_stale_seconds=120
+
+  # If it was created more than $lock_timeout_stale_seconds ago, remove it.
+  # FIXME: implement this
+
+  local i=0
+  local incr=1
+  while :; do
+    mkdir "$scsi_debug_lock_dir_" && return 0
+    sleep .1 2>/dev/null || { sleep 1; incr=10; }
+    i=$(expr $i + $incr); test $i = $(expr $retries \* 10) && break
+  done
+
+  warn_ "$ME_: failed to acquire lock: $scsi_debug_lock_dir_"
+  return 1
 }
 
-print_sd_names_() { (cd /sys/block && printf '%s\n' sd*); }
+# If there is a scsi_debug device, print the corresponding "sdN" and return 0.
+# Otherwise, return 1.
+new_sdX_()
+{
+  local m; m=$(grep -lw scsi_debug /sys/block/sd*/device/model) || return 1
+
+  # Remove the /sys/block/ prefix, and then the /device/model suffix.
+  m=${m#/sys/block/}
+  m=${m%/device/model}
+  echo "$m"
+  return 0
+}
 
 # Create a device using the scsi_debug module with the options passed to
 # this function as arguments.  Upon success, print the name of the new device.
@@ -58,9 +96,11 @@ scsi_debug_setup_()
 
   # It is not trivial to determine the name of the device we're creating.
   # Record the names of all /sys/block/sd* devices *before* probing:
-  print_sd_names_ > before
-  modprobe scsi_debug "$@" || { rm -f before; return 1; }
+  touch stamp
+  modprobe scsi_debug "$@" || { rm -f stamp; return 1; }
   scsi_debug_modprobe_succeeded_=1
+  test "$VERBOSE" = yes \
+    && warn_ $ME_ modprobe scsi_debug succeeded
 
   # Wait up to 2s (via .1s increments) for the list of devices to change.
   # Sleeping for a fraction of a second requires GNU sleep, so fall
@@ -68,22 +108,17 @@ scsi_debug_setup_()
   # FIXME-portability: using "cmp - ..." probably requires GNU cmp.
   local incr=1
   local i=0
-  while print_sd_names_ | cmp -s - before; do
+  local new_dev
+  while :; do
+    new_dev=$(new_sdX_) && break
     sleep .1 2>/dev/null || { sleep 1; incr=10; }
     i=$(expr $i + $incr); test $i = 20 && break
   done
 
-  # Record the names of all /sys/block/sd* devices *after* probe+wait.
-  print_sd_names_ > after
-
-  # Determine which device names (if any) are new.
-  # There could be more than one new device, and there have been a removal.
-  local new_dev=$(comm -13 before after)
-  rm -f before after
   case $new_dev in
     sd[a-z]) ;;
     sd[a-z][a-z]) ;;
-    *) return 1 ;;
+    *) warn_ $ME_ unexpected device name: $new_dev; return 1 ;;
   esac
   local t=/dev/$new_dev
   wait_for_dev_to_appear_ $t
@@ -94,7 +129,7 @@ scsi_debug_setup_()
 require_512_byte_sector_size_()
 {
   test $sector_size_ = 512 \
-      || skip_test_ FS test with sector size != 512
+      || skip_ FS test with sector size != 512
 }
 
 peek_()
@@ -132,7 +167,8 @@ gpt_corrupt_primary_table_()
   case $ss in *[^0-9]*) echo "$0: invalid sector size: $ss">&2; return 1;; esac
 
   # get the first byte of the name
-  local orig_pte_name_byte=$(peek_ $dev $(gpt1_pte_name_offset_ $ss)) || return 1
+  local orig_pte_name_byte
+  orig_pte_name_byte=$(peek_ $dev $(gpt1_pte_name_offset_ $ss)) || return 1
 
   local new_byte
   test x"$orig_pte_name_byte" = xA && new_byte=B || new_byte=A
@@ -154,4 +190,4 @@ gpt_restore_primary_table_()
   poke_ $dev $(gpt1_pte_name_offset_ $ss) "$orig_byte" || return 1
 }
 
-. $srcdir/t-lvm.sh
+. "$abs_top_srcdir/tests/t-lvm.sh"

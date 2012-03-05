@@ -7,14 +7,14 @@
 @c %**end of header
 
 @ifinfo
-This file documents the use of GNU Parted, a program for creating,
-resizing, checking and copy partitions and file systems on them.
+This file documents the use of GNU Parted, a program for creating
+and manipulating partition tables.
 @end ifinfo
 
 @ifnottex @c texi2pdf don't understand copying and insertcopying ???
 @c modifications must also be done in the titlepage
 @copying
-Copyright @copyright{} 1999-2010 Free Software Foundation, Inc.
+Copyright @copyright{} 1999-2012 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -46,7 +46,7 @@ Free Documentation License''.
 @c @vskip 0pt plus 1filll
 
 @c modifications must also be done in the copying block
-Copyright @copyright{} 1999-2009 Free Software Foundation, Inc.
+Copyright @copyright{} 1999-2011 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -65,9 +65,8 @@ Free Documentation License''.
 @insertcopying
 @end ifhtml
 
-This document describes the use of GNU Parted, a program for creating,
-destroying, resizing, checking and copying hard drive partitions, and
-the file systems on them.
+This file documents the use of GNU Parted, a program for creating
+and manipulating partition tables.
 
 This document applies roughly to version @strong{@value{VERSION}} of GNU Parted.
 
@@ -96,8 +95,6 @@ edited by Leslie P. Polzer in 2006.
 * Supported Platforms::         Where you can use GNU Parted
 * License::                     What you may and may not do with GNU Parted
 * Compiling::                   How to build GNU Parted
-* Static binaries::             How to get and use a static version of GNU
-                                Parted
 @end menu
 
 @node Overview
@@ -109,26 +106,16 @@ edited by Leslie P. Polzer in 2006.
 @cindex reporting bugs
 @cindex contacting developers
 
-GNU Parted is a program for creating, destroying, resizing, checking
-and copying partitions, and the file systems on them.
-
-This is useful for creating space for new operating systems, for
-reorganizing disk usage, for copying data between hard disks and for
-``disk imaging'' --- replicating an installation on another computer.
+GNU Parted is a program for creating and manipulating partition tables.
 
 This documentation is written with the assumption that the reader
-has some understanding of partitioning and file systems.  If you want to
-learn more about these, the upcoming GNU Storage Guide is recommended
-reading.
+has some understanding of partitioning and file systems.
 
 GNU Parted was designed to minimize the chance of data loss.  For
 example, it was designed to avoid data loss during interruptions (like
 power failure) and performs many safety checks.  However, there could
 be bugs in GNU Parted, so you should back up your important files before
 running Parted.
-Also note that reiserfs support relies on libreiserfs, which does not
-fulfil the aforementioned requirement.  The same holds for any external
-tools like @kbd{ntfsresize}.
 
 The GNU Parted homepage is @uref{http://www.gnu.org/software/parted}.  The
 library and frontend themselves can be downloaded from
@@ -207,7 +194,6 @@ reiserfs support.  libreiserfs is new, and hasn't been widely tested yet.
 
 Hopefully, this list will grow a lot.  If you do not have one of these
 platforms, then you can use a rescue disk and a static binary of GNU Parted.
-@xref{Static binaries}.
 
 @table @asis
 @item GNU/Linux
@@ -215,11 +201,6 @@ Linux versions 2.0 and up, on Alpha, x86 PCs, PC98, Macintosh PowerPC, Sun hardw
 
 @item GNU/Hurd
 @end table
-
-GNU libc 2.1 or higher is required.  You can probably use older versions
-by using the @samp{--disable-nls} option. @xref{Compiling, Building GNU
-Parted}. (Note: I think we have now dropped this requirement.  TODO:
-check if libc 2.0 works!)
 
 @node License
 @section Terms of distribution for GNU Parted
@@ -269,9 +250,6 @@ if some libraries will be available.  It has a small overhead (mainly
 linking with libdl), so it may be useful to disable it on bootdisks if
 you don't need the flexibility.
 
-@item --disable-fs
-disable all file system support
-
 @item --disable-nls
 turns off native language support.  This is useful for use with old
 versions of glibc, or a trimmed down version of glibc suitable for
@@ -281,9 +259,6 @@ rescue disks.
 turns off shared libraries.  This may be necessary for use with old
 versions of GNU libc, if you get a compile error about a ``spilled
 register''.  Also useful for boot/rescue disks.
-
-@item --disable-Werror
-ignore warning messages in compilation
 
 @item --enable-discover-only
 support only reading/probing (reduces size considerably)
@@ -296,77 +271,10 @@ disable writing (for debugging)
 
 @end table
 
-@node Static binaries
-@section Using static binaries of GNU Parted
-@cindex static binary
-@cindex unsupported platforms
-@cindex resizing root device
-
 @subsection Introduction
-If you want to run GNU Parted on a machine without GNU/Linux installed, or you
-want to resize a root or boot partition, you will need to use a boot disk.
-
-Special boot disk images for GNU Parted used to be available, but with the
-emergence of a plethora of rescue disks and Live CDs that all
-include GNU Parted this is no longer necessary.
-However, please note that these disks often ship with out-of-date
-versions of Parted.  To compensate for this a static binary
-of the latest GNU Parted version is available, which you can use thus:
-
-@c There should be instructions for CD and USB here.
-
-@subsection Creating the Parted disk
-@enumerate
-@item Boot your system
-
-@item Download @file{parted-static-VERSION.tgz} from @uref{ftp://ftp.gnu.org/gnu/parted/static}
-@item Unpack the tarball, resulting in a file called ``parted.static".
-
-@item Insert a floppy.
-
-@item Do a low-level format on it (on GNU/Linux this can be achieved with
-      the tool ``fdformat" from the ``util-linux" package.
-      This is basically a sanity check because floppy disks often
-      contain bad blocks.
-
-@item Create a file system. Example:
-
-@example
-$ @kbd{parted /dev/fd0 mklabel loop mkpartfs ext2 0 1.4}
-@end example
-
-@item Mount the floppy disk, e.g.,
-
-@example
-$ @kbd{mount -t ext2 /dev/fd0 /mnt/floppy}
-@end example
-
-@item Copy @file{parted.static} to the floppy, e.g.,
-
-@example
-$ @kbd{cp parted.static /mnt/floppy}
-@end example
-
-@item Unmount the floppy, e.g.,
-
-@example
-$ @kbd{umount /mnt/floppy}
-@end example
-@end enumerate
-
-@subsection Using the Parted disk
-@enumerate
-@item Choose a rescue disk that suits you.
-
-@item Boot off your rescue disk.  Mount the disk you copied Parted onto.
-
-@item Run Parted.  For example,
-
-@example
-# @kbd{cd /mnt/floppy}
-# @kbd{./parted-static}
-@end example
-@end enumerate
+If you want to run GNU Parted on a machine without GNU/Linux installed,
+or you want to modify a root or boot partition, use GParted Live:
+@uref{http://gparted.sourceforge.net/livecd.php}.
 
 @node    Using Parted
 @chapter Using Parted
@@ -409,7 +317,7 @@ In command line mode, this is followed by one or more commands.  For
 example:
 
 @example
-# @kbd{parted /dev/sda resize 1 52Mb 104Mb mkfs 2 fat16}
+# @kbd{parted /dev/sda mklabel gpt mkpart P1 ext3 1MiB 8MiB }
 @end example
 
 @noindent Options (like @kbd{--help}) can only be specified on the
@@ -419,12 +327,12 @@ In interactive mode, commands are entered one at a time at a prompt, and
 modify the disk immediately.  For example:
 
 @example
-(parted) @kbd{resize 1 52.0005Mb 104.5Mb}
-(parted) @kbd{mkfs 2 fat16}
+(parted) @kbd{mklabel gpt}
+(parted) @kbd{mkpart P1 ext3 1MiB 8MiB }
 @end example
 
 @noindent Unambiguous abbreviations are allowed.  For example, you can
-type ``p'' instead of ``print'', and ``resi'' instead of ``resize''.
+type ``p'' instead of ``print'', and ``u'' instead of ``units''.
 Commands can be typed either in English, or your native language (if
 your language has been translated).  This may create ambiguities.
 Commands are case-insensitive.
@@ -433,39 +341,31 @@ Numbers indicating partition locations can be whole numbers or decimals.
 The suffix selects the unit, which may be one of those described in
 @ref{unit}, except CHS and compact.  If no suffix is given, then the default
 unit is assumed.  Negative numbers count back from the end of the disk,
-with ``-1s'' indicating the end of the disk.  Parted will compute sensible
+with ``-1s'' indicating the sector at the end of the disk.
+Parted will compute sensible
 ranges for the locations you specify (e.g. a range of +/- 500 MB when you
 specify the location in ``G''). Use the sector unit ``s'' to specify exact
-locations.
+locations.  With parted-2.4 and newer,
+IEC binary units like ``MiB'', ``GiB'', ``TiB'', etc., specify
+exact locations as well.
+See @xref{IEC binary units}.
 
 If you don't give a parameter to a command, Parted will prompt you for it.
 For example:
 
 @example
-(parted) @kbd{resize 1}
-Start? @kbd{0Gb}
-End? @kbd{40Gb}
+(parted) @kbd{mklabel}
+New disk label type? @kbd{gpt}
 @end example
 
 Parted will always warn you before doing something that is potentially
 dangerous, unless the command is one of those that is inherently
-dangerous (viz., rm, mklabel and mkfs).  For example, if you attempt to
-shrink a partition ``too much'' (i.e., by more than the free space
-available), Parted will automatically reduce the shrinkage so that the
-partition is the smallest it can be without losing data.  If this size is
-significantly different from the size requested, Parted will warn you.
+dangerous (viz., rm, mklabel and mkpart).
 Since many partitioning systems have complicated constraints, Parted will
 usually do something slightly different to what you asked.  (For example,
 create a partition starting at 10.352Mb, not 10.4Mb)
 If the calculated values differ too much, Parted will ask you for
 confirmation.
-
-Currently ext3 filesystem functionality does not work. To manage ext3 type
-filesystems use tools like resize2fs or mke2fs.  Note that the currently
-supported ext2 filesystem will be deprecated once ext3 support is finalized.
-Further note that ext3 support will have limited functionality that is yet
-to be defined.  Use tools like resize2fs (8) and mke2fs (8) to manage these
-types of filesystems.
 
 
 @node Invoking Parted
@@ -515,24 +415,22 @@ GNU Parted provides the following commands:
 
 @menu
 * align-check::
-* check::
-* cp::
+* disk_set::
 * help::
 * mklabel::
-* mkfs::
 * mkpart::
-* mkpartfs::
-* move::
 * name::
 * print::
 * quit::
 * rescue::
-* resize::
 * rm::
 * select::
 * set::
 * unit::
 @end menu
+
+Note that after version 2.4, the following commands were removed:
+check, cp, mkfs, mkpartfs, move, resize.
 
 @node align-check
 @subsection align-check
@@ -561,61 +459,34 @@ Example:
 
 @end deffn
 
-@node check
-@subsection check
-@cindex check, command description
-@cindex command description, check
+@node disk_set
+@subsection disk_set
+@cindex disk_set, command description
+@cindex command description, disk_set
 
-@deffn Command check @var{number}
+@deffn Command disk_set @var{flag} @var{state}
 
-Checks if the file system on partition @var{number} has
-any errors.
+Changes a flag on the disk.  A flag can be either ``on'' or ``off''.
+Some or all of these flags will be available, depending on what disk
+label you are using:
 
-Example:
+@table @samp
 
-@example
-(parted) @kbd{check 1}
-@end example
-
-Check the file system on partition 1.
-@end deffn
-
-@node cp
-@subsection cp
-@cindex cp, command description
-@cindex command description, cp
-
-@deffn Command cp [@var{from-device}] @var{from-number} @var{to-number}
-
-Copies the file system on the partition @var{from-number} to partition
-@var{to-number}, deleting the original contents of the destination
+@item pmbr_boot
+(GPT) - this flag enables the boot flag on the GPT's protective MBR
 partition.
 
-An optional device parameter, @var{from-device} can be given, which
-specifies which device the source partition is on.
+@end table
 
-Supported file systems:
-@itemize @bullet
-@item ext2
-(provided the destination partition is larger than the source partition)
-
-@item fat16, fat32
-@item linux-swap
-(equivalent to mkswap on destination partition)
-@item reiserfs (if libreiserfs is installed)
-
-@end itemize
-
-Example:
+The disk's flags are displayed by the print command on the "Disk Flags:"
+line.  They are also output as the last field of the disk information
+in machine mode.
 
 @example
-(parted) @kbd{cp /dev/hdb 2 3}
+(parted) @kbd{disk_set pmbr_boot on}
 @end example
 
-@c FIXME: this doesn't format right.
-Copy partition 2 of @file{/dev/hdb} (i.e., @file{/dev/hdb2}) to partition
-on 3, on the device Parted was loaded with, destroying the original
-contents of partition 3.
+Set the PMBR's boot flag.
 @end deffn
 
 @node help
@@ -630,10 +501,10 @@ Prints general help, or help on @var{command}.
 Example:
 
 @example
-(parted) @kbd{help resize}
+(parted) @kbd{help mklabel}
 @end example
 
-Print help for the resize command.
+Print help for the mklabel command.
 @end deffn
 
 @node mklabel
@@ -671,33 +542,6 @@ Example:
 
 Create an MS-DOS disk label.  This is still the most common disk label for
 PCs.
-@end deffn
-
-@node mkfs
-@subsection mkfs
-@cindex mkfs, command description
-@cindex command description, mkfs
-
-@deffn Command mkfs @var{number} @var{fs-type}
-
-Makes a file system @var{fs-type} on partition @var{number}, destroying
-all data that resides on that partition.
-
-Supported file systems:
-@itemize @bullet
-@item ext2
-@item fat16, fat32
-@item linux-swap
-@item reiserfs (if libreiserfs is installed)
-@end itemize
-
-Example:
-
-@example
-(parted) @kbd{mkfs 2 fat32}
-@end example
-
-Make a @var{fat32} file system on partition 2.
 @end deffn
 
 @node mkpart
@@ -742,79 +586,6 @@ Example:
 Create a logical partition that will contain an ext2 file system.  The
 partition will start at the beginning of the disk, and end 692.1
 megabytes into the disk.
-
-@end deffn
-
-@node mkpartfs
-@subsection mkpartfs
-@cindex mkpartfs, command description
-@cindex command description, mkpartfs
-
-@deffn Command mkpartfs @var{part-type} @var{fs-type} @var{start} @var{end}
-
-Creates a new partition of type @var{part-type} with a new file system
-of type @var{fs-type} on it.  The new partition will start @var{start}
-megabytes, and end @var{end} megabytes from the beginning of the disk.
-Do not use this command to recover a deleted partition (use mkpart
-instead).  Using this command is discouraged.  Instead use mkpart
-to create an empty partition, and then use external tools like mke2fs (8)
-to create the filesystem.
-
-@var{part-type} is one of: primary, extended, logical.  Extended and logical
-are only used for msdos and dvh disk labels.
-
-@var{fs-type} must be one of these supported file systems:
-@itemize @bullet
-@item ext2
-@item fat16, fat32
-@item linux-swap
-@item reiserfs (if libreiserfs is installed)
-@end itemize
-
-Example:
-
-@example
-(parted) @kbd{mkpartfs logical ext2 440 670}
-@end example
-
-Make a logical partition and write an ext2 file system, starting 440
-megabytes and ending 670 megabytes from the beginning of the disk.
-@end deffn
-
-@node move
-@subsection move
-@cindex move, command description
-@cindex command description, move
-
-@deffn Command move @var{number} @var{start} @var{end}
-
-Moves partition on the disk, by moving its beginning to @var{start}.
-You can't move a partition so that the old and new positions overlap.
-That is, you can only move partitions into free space.  If you want
-to resize a partition in-place, use @command{resize}.
-
-Move never changes the partition number.
-
-Supported file systems:
-@itemize @bullet
-@item ext2
-(provided the destination partition is larger than the source partition)
-
-@item fat16, fat32
-
-@item linux-swap
-
-@item reiserfs (if libreiserfs is installed)
-@end itemize
-
-Example:
-
-@example
-(parted) move 2 150M 500M
-@end example
-
-Move the partition numbered 2 so that it begins 150 megabytes from the start of
-the disk, and ends 500 megabytes from the start.
 
 @end deffn
 
@@ -943,45 +714,6 @@ It's back!  :)
 
 @end deffn
 
-@node resize
-@subsection resize
-@cindex resize, command description
-@cindex command description, resize
-
-@deffn Command resize @var{number} @var{start} @var{end}
-
-Resizes the partition with number @var{number}.  The partition will start
-@var{start} from the beginning of the disk, and end @var{end} from the
-beginning of the disk.  resize never changes the partition number.  Extended
-partitions can be resized only so long as the new extended partition
-completely contains all logical partitions.
-
-Note that Parted can manipulate partitions whether or not they have been
-defragmented, so you do not need to defragment the disk before
-using Parted.
-
-Supported file systems:
-@itemize @bullet
-@item ext2 -- restriction: the new @var{start} must be the same as
-the old @var{start}.
-@item fat16, fat32
-@item hfs, hfs+, hfsx -- restriction: the new @var{start} must be the same as
-the old @var{start} and the new @var{end} must be smaller than the old
-@var{end}.
-@item linux-swap
-@item reiserfs (if libreiserfs is installed)
-@end itemize
-
-Example:
-
-@example
-(parted) @kbd{resize 3 200M 850M}
-@end example
-
-Resize partition 3, so that it begins 200 megabytes and ends 850
-megabytes from the beginning of the disk.
-@end deffn
-
 @node rm
 @subsection rm
 @cindex rm, command description
@@ -991,7 +723,7 @@ megabytes from the beginning of the disk.
 @deffn Command rm @var{number}
 
 Removes the partition with number @var{number}.  If you accidently delete
-a partition with this command, use mkpart (@emph{not} mkpartfs) to
+a partition with this command, use mkpart to
 recover it.  Also, you can use the gpart program (@pxref{Related information})
 to recover damaged disk labels.
 
@@ -1048,6 +780,10 @@ depending on what disk label you are using:
 @item bios_grub
 (GPT) - Enable this to record that the selected partition is a
 GRUB BIOS partition.
+
+@item legacy_boot
+(GPT) - this flag is used to tell special purpose software that the GPT
+partition may be bootable.
 
 @item boot
 (Mac, MS-DOS, PC98) - should be enabled if you want to boot off the
@@ -1126,6 +862,18 @@ sector (n bytes depending on the sector size, often 512)
 @item B
 byte
 
+@item KiB
+kibibyte (1024 bytes)
+
+@item MiB
+mebibyte (1048576 bytes)
+
+@item GiB
+gibibyte (1073741824 bytes)
+
+@item TiB
+tebibyte (1099511627776 bytes)
+
 @item kB
 kilobyte (1000 bytes)
 
@@ -1159,14 +907,27 @@ which case this unit apply instead of the default unit for this
 particular number, but CHS and cylinder units are not supported as
 a suffix.  If no suffix is given, then the default unit is assumed.
 Parted will compute sensible ranges for the locations you specify
-(e.g. a range of +/- 500 MB when you specify the location in ``G'')
+(e.g. a range of +/- 500 MB when you specify the location in ``G'',
+and a range of +/- 500 KB when you specify the location in ``M'')
 and will select the nearest location in this range from the one you
 wrote that satisfies constraints from both the operation, the
 filesystem being worked on, the disk label, other partitions and so
 on.  Use the sector unit ``s'' to specify exact locations (if they
 do not satisfy all constraints, Parted will ask you for the nearest
 solution).  Note that negative numbers count back from the end of
-the disk, with ``-1s'' pointing to the end of the disk.
+the disk, with ``-1s'' pointing to the last sector of the disk.
+
+@anchor{IEC binary units}
+Note that as of parted-2.4, when you specify start and/or end values
+using IEC binary units like ``MiB'', ``GiB'', ``TiB'', etc., parted
+treats those values as exact, and equivalent to the same number
+specified in bytes (i.e., with the ``B'' suffix), in that it provides
+@emph{no} ``helpful'' range of sloppiness.  Contrast that with
+a partition start request of ``4GB'', which may actually resolve to
+some sector up to 500MB before or after that point.
+Thus, when creating a partition, you should prefer to specify
+units of bytes (``B''), sectors (``s''), or IEC binary units like ``MiB'',
+but not ``MB'', ``GB'', etc.
 
 Example:
 
@@ -1242,6 +1003,9 @@ software
 * GNU Free Documentation License::  License for copying this manual
 @end menu
 
+@node GNU Free Documentation License
+@appendixsec GNU Free Documentation License
+@cindex FDL, GNU Free Documentation License
 @include fdl.texi
 
 @node History

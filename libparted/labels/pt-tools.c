@@ -1,5 +1,5 @@
 /* partition table tools
-   Copyright (C) 2008-2010 Free Software Foundation, Inc.
+   Copyright (C) 2008-2012 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ static char zero[16 * 1024];
 int
 ptt_write_sector (PedDisk const *disk, void const *buf, size_t buflen)
 {
-  PED_ASSERT (buflen <= disk->dev->sector_size, return 0);
+  PED_ASSERT (buflen <= disk->dev->sector_size);
   /* Allocate a big enough buffer for ped_device_write.  */
   char *s0 = ped_malloc (disk->dev->sector_size);
   if (s0 == NULL)
@@ -65,7 +65,7 @@ ptt_read_sectors (PedDevice const *dev, PedSector start_sector,
 		  PedSector n_sectors, void **buf)
 {
   char *b = ped_malloc (n_sectors * dev->sector_size);
-  PED_ASSERT (b != NULL, return 0);
+  PED_ASSERT (b != NULL);
   if (!ped_device_read (dev, b, start_sector, n_sectors)) {
     free (b);
     return 0;
@@ -88,7 +88,7 @@ ptt_read_sector (PedDevice const *dev, PedSector sector_num, void **buf)
 int
 ptt_clear_sectors (PedDevice *dev, PedSector start, PedSector n)
 {
-  PED_ASSERT (dev->sector_size <= sizeof zero, return 0);
+  PED_ASSERT (dev->sector_size <= sizeof zero);
   PedSector n_z_sectors = sizeof zero / dev->sector_size;
   PedSector n_full = n / n_z_sectors;
   PedSector i;
@@ -101,6 +101,14 @@ ptt_clear_sectors (PedDevice *dev, PedSector start, PedSector n)
   PedSector rem = n - n_z_sectors * i;
   return (rem == 0
           ? 1 : ped_device_write (dev, zero, start + n_z_sectors * i, rem));
+}
+
+/* Zero N sectors of GEOM->dev, starting with GEOM->start + START.
+   Return nonzero to indicate success, zero otherwise.  */
+int
+ptt_geom_clear_sectors (PedGeometry *geom, PedSector start, PedSector n)
+{
+  return ptt_clear_sectors (geom->dev, geom->start + start, n);
 }
 
 #include "pt-limit.c"
