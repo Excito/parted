@@ -1,7 +1,7 @@
 #!/bin/sh
 # partitioning (parted -s DEV mklabel) a busy disk must fail.
 
-# Copyright (C) 2007-2011 Free Software Foundation, Inc.
+# Copyright (C) 2007-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ scsi_debug_setup_ sector_size=$ss dev_size_mb=90 > dev-name ||
 dev=$(cat dev-name)
 
 parted -s "$dev" mklabel msdos mkpart primary fat32 1 40 > out 2>&1 || fail=1
-compare out /dev/null || fail=1
+compare /dev/null out || fail=1
 mkfs.vfat ${dev}1 || skip_ "mkfs.vfat failed"
 
 mount_point="`pwd`/mnt"
@@ -50,12 +50,12 @@ parted -s "$dev" mklabel msdos > out 2>&1; test $? = 1 || fail=1
 
 # create expected output file
 echo "Error: Partition(s) on $dev are being used." > exp
-compare out exp || fail=1
+compare exp out || fail=1
 
 # Adding a partition must succeed, even though another
 # on this same device is mounted (active).
 parted -s "$dev" mkpart primary fat32 41 85 > out 2>&1 || fail=1
-compare out /dev/null || fail=1
+compare /dev/null out || fail=1
 parted -s "$dev" u s print
 
 # ==================================================
@@ -74,10 +74,10 @@ EOF
 
 # Transform the actual output, removing ^M   ...^M.
 # normalize the actual output
-mv out o2 && sed -e 's,   *,,;s, $,,;s/^.*Warning/Warning/' \
+mv out o2 && sed -e 's,   *,,g;s, $,,;s/^.*Warning/Warning/' \
                  -e 's,^.*/lt-parted: ,parted: ,' o2 > out
 
 # check for expected failure diagnostic
-compare out exp || fail=1
+compare exp out || fail=1
 
 Exit $fail

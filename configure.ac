@@ -1,5 +1,5 @@
 dnl GNU Parted - a library and front end for manipulation hard disk partitions
-dnl Copyright (C) 1998-2002, 2005-2011 Free Software Foundation, Inc.
+dnl Copyright (C) 1998-2002, 2005-2012 Free Software Foundation, Inc.
 dnl
 dnl This file may be modified and/or distributed without restriction.
 
@@ -10,7 +10,7 @@ AC_INIT([GNU parted], m4_esyscmd([build-aux/git-version-gen .version]),
 # When the most recent signed tag is v1.8.8.1,
 # the above might set e.g., PACKAGE_VERSION='1.8.8.1.1-0bfc'
 
-AC_CONFIG_SRCDIR([include/parted/parted.h])
+AC_CONFIG_SRCDIR([include/parted/parted.in.h])
 
 AC_CONFIG_HEADERS([lib/config.h:lib/config.h.in])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -52,7 +52,7 @@ AC_SUBST([LT_CURRENT])
 AC_SUBST([LT_REVISION])
 AC_SUBST([LT_AGE])
 
-AM_INIT_AUTOMAKE([1.11 dist-xz color-tests parallel-tests])
+AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz color-tests parallel-tests])
 AM_SILENT_RULES([yes]) # make --enable-silent-rules the default.
 
 AC_CANONICAL_HOST
@@ -210,7 +210,6 @@ if test "$gl_gcc_warnings" = yes; then
   nw="$nw -Wpadded"                 # Our structs are not padded
   nw="$nw -Wredundant-decls"        # openat.h declares e.g., mkdirat
   nw="$nw -Wlogical-op"             # any use of fwrite provokes this
-  nw="$nw -Wformat-nonliteral"      # who.c and pinky.c strftime uses
   nw="$nw -Wvla"                    # warnings in gettext.h
   nw="$nw -Wnested-externs"         # use of XARGMATCH/verify_function__
   nw="$nw -Wswitch-enum"            # Too many warnings for now
@@ -242,6 +241,7 @@ if test "$gl_gcc_warnings" = yes; then
   gl_WARN_ADD([-Wno-pointer-sign])     # Too many warnings for now
   gl_WARN_ADD([-Wno-unused-parameter]) # Too many warnings for now
   gl_WARN_ADD([-Wno-unused-macros]) # Too many warnings for now
+  gl_WARN_ADD([-Wno-format-nonliteral])
 
   # FIXME: investigate these
   gl_WARN_ADD([-Wno-jump-misses-init])
@@ -279,7 +279,8 @@ off_t is less than 8 bytes.  Using llseek syscall, and disabling shared
 libraries.)
 	AM_DISABLE_SHARED
 fi
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
+LT_INIT
 
 AM_GNU_GETTEXT_VERSION([0.18])
 AM_GNU_GETTEXT([external])
@@ -546,7 +547,6 @@ AC_CHECK_HEADER([execinfo.h], [
 ])
 
 AM_CONDITIONAL([COMPILE_FOR_S390], [test "$host_cpu" = s390 || test "$host_cpu" = s390x])
-AM_CONDITIONAL([BUILD_LINUX], [test "$OS" = linux])
 
 dnl check for "check", unit testing library/header
 PKG_CHECK_MODULES([CHECK], [check >= 0.9.3], have_check=yes, have_check=no)
@@ -605,17 +605,6 @@ include/parted/Makefile
 libparted/Makefile
 libparted/labels/Makefile
 libparted/fs/Makefile
-libparted/fs/amiga/Makefile
-libparted/fs/ext2/Makefile
-libparted/fs/fat/Makefile
-libparted/fs/hfs/Makefile
-libparted/fs/jfs/Makefile
-libparted/fs/linux_swap/Makefile
-libparted/fs/ntfs/Makefile
-libparted/fs/reiserfs/Makefile
-libparted/fs/ufs/Makefile
-libparted/fs/xfs/Makefile
-libparted/fs/nilfs2/Makefile
 libparted/tests/Makefile
 libparted.pc
 parted/Makefile

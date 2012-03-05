@@ -1,6 +1,6 @@
 #!/bin/sh
 # very basic GPT table
-# Copyright (C) 2008-2011 Free Software Foundation, Inc.
+# Copyright (C) 2008-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ parted -m -s $dev unit s print > t 2>&1 || fail=1
 sed "s,.*/$dev:,$dev:," t > out || fail=1
 
 # check for expected output
-printf "BYT;\n$dev:${n_sectors}s:file:$sector_size_:$sector_size_:gpt:;\n" \
+printf "BYT;\n$dev:${n_sectors}s:file:$sector_size_:$sector_size_:gpt::;\n" \
   > exp || fail=1
 compare exp out || fail=1
 

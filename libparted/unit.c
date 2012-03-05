@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2005, 2007, 2009-2011 Free Software Foundation, Inc.
+    Copyright (C) 2005, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@
 #include <config.h>
 #include <parted/parted.h>
 #include <parted/debug.h>
+#include <parted/unit.h>
 
 #include <ctype.h>
 #include <stdio.h>
@@ -101,7 +102,7 @@ ped_unit_set_default (PedUnit unit)
 /**
  * \brief Get the current default unit.
  */
-PedUnit
+PedUnit _GL_ATTRIBUTE_PURE
 ped_unit_get_default ()
 {
 	return default_unit;
@@ -334,7 +335,7 @@ strip_string (char* str)
 
 /* Find non-number suffix.  Eg: find_suffix("32Mb") returns a pointer to
  * "Mb". */
-static char*
+static char* _GL_ATTRIBUTE_PURE
 find_suffix (const char* str)
 {
 	while (str[0] != 0 && (isdigit (str[0]) || strchr(",.-", str[0])))
@@ -353,7 +354,7 @@ remove_punct (char* str)
 	}
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 is_chs (const char* str)
 {
 	int punct_count = 0;
@@ -531,9 +532,15 @@ ped_unit_parse_custom (const char* str, const PedDevice* dev, PedUnit unit,
 				_("Invalid number."));
 		goto error_free_copy;
 	}
+        if (num > 0 && num < 1) {
+            ped_exception_throw (
+                    PED_EXCEPTION_ERROR, PED_EXCEPTION_CANCEL,
+                    _("Use a smaller unit instead of a value < 1"));
+            goto error_free_copy;
+        }
 
 	unit_size = ped_unit_get_size (dev, unit);
-	radius = ped_div_round_up (unit_size, dev->sector_size) - 1;
+	radius = (ped_div_round_up (unit_size, dev->sector_size) / 2) - 1;
 	if (radius < 0)
 		radius = 0;
 	/* If the user specifies units in a power of 2, e.g., 4MiB, as in

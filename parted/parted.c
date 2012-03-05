@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999-2003, 2005-2011 Free Software Foundation, Inc.
+    Copyright (C) 1999-2003, 2005-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -53,6 +53,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <limits.h>
+#include "c-ctype.h"
+#include "c-strcase.h"
 #include "xalloc.h"
 
 #ifdef ENABLE_MTRACE
@@ -202,7 +204,7 @@ _timer_handler (PedTimer* timer, void* context)
                 if (timer->state_name)
                         printf ("%s... ", timer->state_name);
                 printf (_("%0.f%%\t(time left %.2d:%.2d)"),
-                        100.0 * timer->frac,
+                        (double) (100.0f * timer->frac),
                         (int) (tcontext->predicted_time_left / 60),
                         (int) (tcontext->predicted_time_left % 60));
 
@@ -425,13 +427,6 @@ snap_to_boundaries (PedGeometry* new_geom, PedGeometry* old_geom,
         ped_geometry_set (new_geom, start, end - start + 1);
 }
 
-/* This functions constructs a constraint from the following information:
- *      start, is_start_exact, end, is_end_exact.
- *
- * If is_start_exact == 1, then the constraint requires start be as given in
- * "start".  Otherwise, the constraint does not set any requirements on the
- * start.
- */
 static PedConstraint*
 constraint_from_start_end (PedDevice* dev, PedGeometry* range_start,
                            PedGeometry* range_end)
@@ -530,6 +525,78 @@ error:
         return 0;
 }
 
+/* Strip blanks from the end of string STR, in place.  */
+void _strip_trailing_spaces(char *str)
+{
+        if (!str)
+                return;
+        size_t i = strlen(str);
+        while (i && c_isblank(str[--i]))
+                str[i]='\0';
+}
+
+/* Return true, if str ends with [kMGTPEZY]iB, i.e. IEC units.  */
+static bool
+_string_ends_with_iec_unit(const char *str)
+{
+        /* 3 characters for the IEC unit and at least 1 digit */
+        if (!str || strlen(str) < 4)
+                return false;
+
+        char const *p = str + strlen(str) - 3;
+        return strchr ("kMGTPEZY", *p) && c_strcasecmp (p+1, "iB") == 0;
+}
+
+/* Return true if str ends with explicit unit identifier.
+ * Do not parse the unit, just check if the unit is specified.
+ * This function expects trailing spaces to be already stripped.
+ */
+static bool
+_string_has_unit_suffix(const char *str)
+{
+        /* At least 1 digit and 1 character to meet the condition */
+        if (!str || strlen(str) < 2)
+                return false;
+
+        if (!isdigit(str[strlen(str) - 1]))
+                return true;
+
+        return false;
+}
+
+/* If the selected unit is one of kiB, MiB, GiB or TiB and the partition is not
+ * only 1 sector long, then adjust the end so that it is one sector before the
+ * given position. Also adjust range_end accordingly. Thus next partition can
+ * start immediately after this one.
+ *
+ * To be called after end sector is read from the user.
+ *
+ * https://lists.gnu.org/archive/html/bug-parted/2011-10/msg00009.html
+ */
+static void
+_adjust_end_if_iec (PedSector* start, PedSector* end,
+                    PedGeometry* range_end, char* end_input)
+{
+        PED_ASSERT(start);
+        PED_ASSERT(end);
+        PED_ASSERT(range_end);
+
+        /* 1s partition - do not move the end */
+        if (*start == *end)
+                return;
+
+        _strip_trailing_spaces(end_input);
+        PedUnit unit = ped_unit_get_default();
+        if (_string_ends_with_iec_unit(end_input) ||
+            (!_string_has_unit_suffix(end_input) &&
+             ((unit == PED_UNIT_KIBIBYTE) || (unit == PED_UNIT_MEBIBYTE) ||
+              (unit == PED_UNIT_GIBIBYTE) || (unit == PED_UNIT_TEBIBYTE)))) {
+                *end -= 1;
+                range_end->start -= 1;
+                range_end->end -= 1;
+        }
+}
+
 static int
 do_mkpart (PedDevice** dev)
 {
@@ -591,10 +658,14 @@ do_mkpart (PedDevice** dev)
         }
         free (peek_word);
 
-        if (!command_line_get_sector (_("Start?"), *dev, &start, &range_start))
+        if (!command_line_get_sector (_("Start?"), *dev, &start, &range_start, NULL))
                 goto error_destroy_disk;
-        if (!command_line_get_sector (_("End?"), *dev, &end, &range_end))
+        char *end_input;
+        if (!command_line_get_sector (_("End?"), *dev, &end, &range_end, &end_input))
                 goto error_destroy_disk;
+
+        _adjust_end_if_iec(&start, &end, range_end, end_input);
+        free(end_input);
 
         /* processing starts here */
         part = ped_partition_new (disk, part_type, fs_type, start, end);
@@ -658,10 +729,14 @@ do_mkpart (PedDevice** dev)
                                 (opt_script_mode
                                  ? PED_EXCEPTION_CANCEL
                                  : PED_EXCEPTION_YES_NO),
-                                _("You requested a partition from %s to %s.\n"
+                                _("You requested a partition from %s to %s "
+                                  "(sectors %llu..%llu).\n"
                                   "The closest location we can manage is "
-                                  "%s to %s.%s"),
-                                start_usr, end_usr, start_sol, end_sol,
+                                  "%s to %s (sectors %llu..%llu).%s"),
+                                start_usr, end_usr,
+                                start, end,
+                                start_sol, end_sol,
+                                part->geom.start, part->geom.end,
                                 (opt_script_mode ? ""
                                  : _("\nIs this still acceptable to you?"))))
                         {
@@ -785,44 +860,63 @@ error:
 }
 
 static char*
-partition_print_flags (PedPartition* part)
+partition_print_flags (PedPartition const *part)
 {
-        PedPartitionFlag        flag;
-        int                     first_flag;
-        const char*             name;
-        char*                   res = ped_malloc(1);
-        void*                   _res = res;
+  char *res = xstrdup ("");
+  if (!part)
+    return res;
 
-        *res = '\0';
-
-        first_flag = 1;
-        for (flag = ped_partition_flag_next (0); flag;
-             flag = ped_partition_flag_next (flag)) {
-                if (ped_partition_get_flag (part, flag)) {
-                        if (first_flag)
-                                first_flag = 0;
-                        else {
-                                _res = res;
-                                ped_realloc (&_res, strlen (res) + 1 + 2);
-                                res = _res;
-                                strncat (res, ", ", 2);
-                        }
-
-                        name = _(ped_partition_flag_get_name (flag));
-                        _res = res;
-                        ped_realloc (&_res, strlen (res) + 1 + strlen (name));
-                        res = _res;
-                        strcat(res, name);
-                }
+  PedPartitionFlag flag;
+  size_t res_buf_len = 1;
+  char const *sep = "";
+  for (flag = ped_partition_flag_next (0); flag;
+       flag = ped_partition_flag_next (flag))
+    {
+      if (ped_partition_get_flag (part, flag))
+        {
+          const char *name = _(ped_partition_flag_get_name (flag));
+          size_t new_len = res_buf_len + strlen (sep) + strlen (name);
+          res = xrealloc (res, new_len);
+          stpcpy (stpcpy (res + res_buf_len - 1, sep), name);
+          res_buf_len = new_len;
+          sep = ", ";
         }
+    }
 
-        return res;
+  return res;
 }
 
 static int
 partition_print (PedPartition* part)
 {
         return 1;
+}
+
+static char*
+disk_print_flags (PedDisk const *disk)
+{
+  char *res = xstrdup ("");
+  if (!disk)
+    return res;
+
+  PedDiskFlag flag;
+  size_t res_buf_len = 1;
+  char const *sep = "";
+  for (flag = ped_disk_flag_next (0); flag;
+       flag = ped_disk_flag_next (flag))
+    {
+      if (ped_disk_get_flag (disk, flag))
+        {
+          const char *name = _(ped_disk_flag_get_name (flag));
+          size_t new_len = res_buf_len + strlen (sep) + strlen (name);
+          res = xrealloc (res, new_len);
+          stpcpy (stpcpy (res + res_buf_len - 1, sep), name);
+          res_buf_len = new_len;
+          sep = ", ";
+        }
+    }
+
+  return res;
 }
 
 static void
@@ -853,7 +947,7 @@ _print_disk_info (const PedDevice *dev, const PedDisk *disk)
                                          "cpqarray", "file", "ataraid", "i2o",
                                          "ubd", "dasd", "viodasd", "sx8", "dm",
                                          "xvd", "sd/mmc", "virtblk", "aoe",
-                                         "md"};
+                                         "md", "loopback"};
 
         char* start = ped_unit_format (dev, 0);
         PedUnit default_unit = ped_unit_get_default ();
@@ -862,6 +956,7 @@ _print_disk_info (const PedDevice *dev, const PedDisk *disk)
                                        default_unit == PED_UNIT_CYLINDER));
 
         const char* pt_name = disk ? disk->type->name : "unknown";
+        char *disk_flags = disk_print_flags (disk);
 
         if (opt_machine_mode) {
             switch (default_unit) {
@@ -873,10 +968,10 @@ _print_disk_info (const PedDevice *dev, const PedDisk *disk)
                                         break;
 
             }
-            printf ("%s:%s:%s:%lld:%lld:%s:%s;\n",
+            printf ("%s:%s:%s:%lld:%lld:%s:%s:%s;\n",
                     dev->path, end, transport[dev->type],
                     dev->sector_size, dev->phys_sector_size,
-                    pt_name, dev->model);
+                    pt_name, dev->model, disk_flags);
         } else {
             printf (_("Model: %s (%s)\n"),
                     dev->model, transport[dev->type]);
@@ -894,7 +989,9 @@ _print_disk_info (const PedDevice *dev, const PedDisk *disk)
 
         if (!opt_machine_mode) {
             printf (_("Partition Table: %s\n"), pt_name);
+            printf (_("Disk Flags: %s\n"), disk_flags);
         }
+        free (disk_flags);
 }
 
 static int
@@ -915,6 +1012,7 @@ do_print (PedDevice** dev)
         const char*     name;
         char*           tmp;
         wchar_t*        table_rendered;
+        int ok = 1; /* default to success */
 
         peek_word = command_line_peek_word ();
         if (peek_word) {
@@ -940,8 +1038,18 @@ do_print (PedDevice** dev)
                 free (peek_word);
         }
 
-        if (!has_devices_arg && !has_list_arg)
+        if (!has_devices_arg && !has_list_arg) {
                 disk = ped_disk_new (*dev);
+                /* Returning NULL here is an indication of failure, when in
+                   script mode.  Otherwise (interactive mode) it may indicate
+                   a real error, but it may also indicate that the user
+                   declined when asked to perform some operation.  FIXME:
+                   what this really needs is an API change, but a reliable
+                   exit code is less important in interactive mode.  */
+                if (disk == NULL && opt_script_mode)
+                        ok = 0;
+        }
+
         if (disk &&
             ped_disk_is_flag_available(disk, PED_DISK_CYLINDER_ALIGNMENT))
                 if (!ped_disk_set_flag(disk, PED_DISK_CYLINDER_ALIGNMENT,
@@ -1085,7 +1193,6 @@ do_print (PedDevice** dev)
                     //PED_ASSERT (row.cols == caption.cols)
                     table_add_row_from_strlist (table, row);
                     str_list_destroy (row);
-                    free (tmp);
                     free (start);
                     free (end);
                     free (size);
@@ -1154,13 +1261,13 @@ do_print (PedDevice** dev)
 
         ped_disk_destroy (disk);
 
-        return 1;
+        return ok;
 
 error_destroy_disk:
         ped_disk_destroy (disk);
         return 0;
 nopt:
-        return 1;
+        return ok;
 }
 
 static int
@@ -1339,9 +1446,9 @@ do_rescue (PedDevice** dev)
         if (!disk)
                 goto error;
 
-        if (!command_line_get_sector (_("Start?"), *dev, &start, NULL))
+        if (!command_line_get_sector (_("Start?"), *dev, &start, NULL, NULL))
                 goto error_destroy_disk;
-        if (!command_line_get_sector (_("End?"), *dev, &end, NULL))
+        if (!command_line_get_sector (_("End?"), *dev, &end, NULL, NULL))
                 goto error_destroy_disk;
 
         fuzz = PED_MAX (PED_MIN ((end - start) / 10, MEGABYTE_SECTORS(*dev)),
@@ -1475,6 +1582,43 @@ error:
 }
 
 static int
+do_disk_set (PedDevice** dev)
+{
+    PedDisk*    disk;
+    PedDiskFlag flag;
+    int         state;
+
+    disk = ped_disk_new (*dev);
+    if (!disk)
+        goto error;
+
+    if (!command_line_get_disk_flag (_("Flag to Invert?"), disk, &flag))
+        goto error_destroy_disk;
+    state = (ped_disk_get_flag (disk, flag) == 0 ? 1 : 0);
+
+    if (!is_toggle_mode) {
+        if (!command_line_get_state (_("New state?"), &state))
+            goto error_destroy_disk;
+    }
+
+    if (!ped_disk_set_flag (disk, flag, state))
+        goto error_destroy_disk;
+    if (!ped_disk_commit (disk))
+        goto error_destroy_disk;
+    ped_disk_destroy (disk);
+
+    if ((*dev)->type != PED_DEVICE_FILE)
+        disk_is_modified = 1;
+
+    return 1;
+
+error_destroy_disk:
+    ped_disk_destroy (disk);
+error:
+    return 0;
+}
+
+static int
 do_set (PedDevice** dev)
 {
         PedDisk*                disk;
@@ -1512,6 +1656,18 @@ error_destroy_disk:
         ped_disk_destroy (disk);
 error:
         return 0;
+}
+
+static int
+do_disk_toggle (PedDevice **dev)
+{
+    int result;
+
+    is_toggle_mode = 1;
+    result = do_disk_set (dev);
+    is_toggle_mode = 0;
+
+    return result;
 }
 
 static int
@@ -1751,6 +1907,23 @@ NULL),
         str_list_create (_(device_msg), NULL), 1));
 
 command_register (commands, command_create (
+        str_list_create_unique ("disk_set", _("disk_set"), NULL),
+        do_disk_set,
+        str_list_create (
+_("disk_set FLAG STATE                      change the FLAG on selected device"),
+NULL),
+        str_list_create (flag_msg, _(state_msg), NULL), 1));
+
+command_register (commands, command_create (
+        str_list_create_unique ("disk_toggle", _("disk_toggle"), NULL),
+        do_disk_toggle,
+        str_list_create (
+_("disk_toggle [FLAG]                       toggle the state of FLAG on "
+"selected device"),
+NULL),
+        str_list_create (flag_msg, NULL), 1));
+
+command_register (commands, command_create (
 		str_list_create_unique ("set", _("set"), NULL),
 		do_set,
 		str_list_create (
@@ -1933,8 +2106,8 @@ if (!opt_script_mode)
 
 #ifdef HAVE_GETUID
         if (getuid() != 0 && !opt_script_mode) {
-            puts (_("WARNING: You are not superuser.  Watch out for "
-                    "permissions."));
+            fputs (_("WARNING: You are not superuser.  Watch out for "
+                     "permissions.\n"), stderr);
         }
 #endif
 

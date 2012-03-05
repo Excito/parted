@@ -2,7 +2,7 @@
 # This Makefile fragment tries to be general-purpose enough to be
 # used by many projects via the gnulib maintainer-makefile module.
 
-## Copyright (C) 2001-2011 Free Software Foundation, Inc.
+## Copyright (C) 2001-2012 Free Software Foundation, Inc.
 ##
 ## This program is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -21,8 +21,12 @@
 # ME := $(word $(words $(MAKEFILE_LIST)),$(MAKEFILE_LIST))
 ME := maint.mk
 
-# Override this in cfg.mk if you use a non-standard build-aux directory.
-build_aux ?= $(srcdir)/build-aux
+# Diagnostic for continued use of deprecated variable.
+# Remove in 2013
+ifneq ($(build_aux),)
+ $(error "$(ME): \
+set $$(_build-aux) relative to $$(srcdir) instead of $$(build_aux)")
+endif
 
 # Do not save the original name or timestamp in the .tar.gz file.
 # Use --rsyncable if available.
@@ -34,7 +38,7 @@ GZIP_ENV = '--no-name --best $(gzip_rsyncable)'
 GIT = git
 VC = $(GIT)
 
-VC_LIST = $(build_aux)/vc-list-files -C $(srcdir)
+VC_LIST = $(srcdir)/$(_build-aux)/vc-list-files -C $(srcdir)
 
 # You can override this variable in cfg.mk to set your own regexp
 # matching files to ignore.
@@ -122,7 +126,7 @@ export LC_ALL = C
 
 _cfg_mk := $(shell test -f $(srcdir)/cfg.mk && echo '$(srcdir)/cfg.mk')
 
-# Collect the names of rules starting with `sc_'.
+# Collect the names of rules starting with 'sc_'.
 syntax-check-rules := $(sort $(shell sed -n 's/^\(sc_[a-zA-Z0-9_-]*\):.*/\1/p' \
 			$(srcdir)/$(ME) $(_cfg_mk)))
 .PHONY: $(syntax-check-rules)
@@ -217,15 +221,6 @@ define _sc_say_and_exit
    { printf '%s\n' "$(ME): $$msg" 1>&2; exit 1; };
 endef
 
-# _sc_search_regexp used to be named _prohibit_regexp.  However,
-# upgrading to the new definition and leaving the old name undefined
-# would usually convert each custom rule using $(_prohibit_regexp)
-# (usually defined in cfg.mk) into a no-op.  This definition ensures
-# that people know right away if they're still using the old name.
-# FIXME: remove in 2012.
-_prohibit_regexp = \
-  $(error '*** you need to s/_prohibit_regexp/_sc_search_regexp/, and adapt')
-
 define _sc_search_regexp
    dummy=; : so we do not need a semicolon before each use;		\
 									\
@@ -274,24 +269,24 @@ define _sc_search_regexp
 endef
 
 sc_avoid_if_before_free:
-	@$(build_aux)/useless-if-before-free				\
+	@$(srcdir)/$(_build-aux)/useless-if-before-free			\
 		$(useless_free_options)					\
 	    $$($(VC_LIST_EXCEPT) | grep -v useless-if-before-free) &&	\
 	  { echo '$(ME): found useless "if" before "free" above' 1>&2;	\
 	    exit 1; } || :
 
 sc_cast_of_argument_to_free:
-	@prohibit='\<free *\( *\(' halt='don'\''t cast free argument'	\
+	@prohibit='\<free *\( *\(' halt="don't cast free argument"	\
 	  $(_sc_search_regexp)
 
 sc_cast_of_x_alloc_return_value:
 	@prohibit='\*\) *x(m|c|re)alloc\>'				\
-	halt='don'\''t cast x*alloc return value'			\
+	halt="don't cast x*alloc return value"				\
 	  $(_sc_search_regexp)
 
 sc_cast_of_alloca_return_value:
 	@prohibit='\*\) *alloca\>'					\
-	halt='don'\''t cast alloca return value'			\
+	halt="don't cast alloca return value"				\
 	  $(_sc_search_regexp)
 
 sc_space_tab:
@@ -299,7 +294,7 @@ sc_space_tab:
 	halt='found SPACE-TAB sequence; remove the SPACE'		\
 	  $(_sc_search_regexp)
 
-# Don't use *scanf or the old ato* functions in `real' code.
+# Don't use *scanf or the old ato* functions in "real" code.
 # They provide no error checking mechanism.
 # Instead, use strto* functions.
 sc_prohibit_atoi_atof:
@@ -331,15 +326,15 @@ sc_prohibit_magic_number_exit:
 	  $(_sc_search_regexp)
 
 # Using EXIT_SUCCESS as the first argument to error is misleading,
-# since when that parameter is 0, error does not exit.  Use `0' instead.
+# since when that parameter is 0, error does not exit.  Use '0' instead.
 sc_error_exit_success:
 	@prohibit='error *\(EXIT_SUCCESS,'				\
 	in_vc_files='\.[chly]$$'					\
 	halt='found error (EXIT_SUCCESS'				\
 	 $(_sc_search_regexp)
 
-# `FATAL:' should be fully upper-cased in error messages
-# `WARNING:' should be fully upper-cased, or fully lower-cased
+# "FATAL:" should be fully upper-cased in error messages
+# "WARNING:" should be fully upper-cased, or fully lower-cased
 sc_error_message_warn_fatal:
 	@grep -nEA2 '[^rp]error *\(' $$($(VC_LIST_EXCEPT))		\
 	    | grep -E '"Warning|"Fatal|"fatal' &&			\
@@ -405,11 +400,11 @@ sc_prohibit_HAVE_MBRTOWC:
 	  $(_sc_search_regexp)
 
 # To use this "command" macro, you must first define two shell variables:
-# h: the header, enclosed in <> or ""
+# h: the header name, with no enclosing <> or ""
 # re: a regular expression that matches IFF something provided by $h is used.
 define _sc_header_without_use
   dummy=; : so we do not need a semicolon before each use;		\
-  h_esc=`echo "$$h"|sed 's/\./\\\\./g'`;				\
+  h_esc=`echo '[<"]'"$$h"'[">]'|sed 's/\./\\\\./g'`;			\
   if $(VC_LIST_EXCEPT) | grep -l '\.c$$' > /dev/null; then		\
     files=$$(grep -l '^# *include '"$$h_esc"				\
 	     $$($(VC_LIST_EXCEPT) | grep '\.c$$')) &&			\
@@ -422,42 +417,42 @@ endef
 
 # Prohibit the inclusion of assert.h without an actual use of assert.
 sc_prohibit_assert_without_use:
-	@h='<assert.h>' re='\<assert *\(' $(_sc_header_without_use)
+	@h='assert.h' re='\<assert *\(' $(_sc_header_without_use)
 
 # Prohibit the inclusion of close-stream.h without an actual use.
 sc_prohibit_close_stream_without_use:
-	@h='"close-stream.h"' re='\<close_stream *\(' $(_sc_header_without_use)
+	@h='close-stream.h' re='\<close_stream *\(' $(_sc_header_without_use)
 
 # Prohibit the inclusion of getopt.h without an actual use.
 sc_prohibit_getopt_without_use:
-	@h='<getopt.h>' re='\<getopt(_long)? *\(' $(_sc_header_without_use)
+	@h='getopt.h' re='\<getopt(_long)? *\(' $(_sc_header_without_use)
 
 # Don't include quotearg.h unless you use one of its functions.
 sc_prohibit_quotearg_without_use:
-	@h='"quotearg.h"' re='\<quotearg(_[^ ]+)? *\(' $(_sc_header_without_use)
+	@h='quotearg.h' re='\<quotearg(_[^ ]+)? *\(' $(_sc_header_without_use)
 
 # Don't include quote.h unless you use one of its functions.
 sc_prohibit_quote_without_use:
-	@h='"quote.h"' re='\<quote(_n)? *\(' $(_sc_header_without_use)
+	@h='quote.h' re='\<quote(_n)? *\(' $(_sc_header_without_use)
 
 # Don't include this header unless you use one of its functions.
 sc_prohibit_long_options_without_use:
-	@h='"long-options.h"' re='\<parse_long_options *\(' \
+	@h='long-options.h' re='\<parse_long_options *\(' \
 	  $(_sc_header_without_use)
 
 # Don't include this header unless you use one of its functions.
 sc_prohibit_inttostr_without_use:
-	@h='"inttostr.h"' re='\<(off|[iu]max|uint)tostr *\(' \
+	@h='inttostr.h' re='\<(off|[iu]max|uint)tostr *\(' \
 	  $(_sc_header_without_use)
 
 # Don't include this header unless you use one of its functions.
 sc_prohibit_ignore_value_without_use:
-	@h='"ignore-value.h"' re='\<ignore_(value|ptr) *\(' \
+	@h='ignore-value.h' re='\<ignore_(value|ptr) *\(' \
 	  $(_sc_header_without_use)
 
 # Don't include this header unless you use one of its functions.
 sc_prohibit_error_without_use:
-	@h='"error.h"' \
+	@h='error.h' \
 	re='\<error(_at_line|_print_progname|_one_per_line|_message_count)? *\('\
 	  $(_sc_header_without_use)
 
@@ -480,7 +475,7 @@ sc_prohibit_error_without_use:
 _xa1 = x(((2n?)?re|char|n(re|m)|[cmz])alloc|alloc_(oversized|die)|(mem|str)dup)
 _xa2 = X([CZ]|N?M)ALLOC
 sc_prohibit_xalloc_without_use:
-	@h='"xalloc.h"' \
+	@h='xalloc.h' \
 	re='\<($(_xa1)|$(_xa2)) *\('\
 	  $(_sc_header_without_use)
 
@@ -491,36 +486,46 @@ clear|delete|free|get_(first|next)|insert|lookup|print_statistics|reset_tuning
 _hash_fn = \<($(_hash_re)) *\(
 _hash_struct = (struct )?\<[Hh]ash_(table|tuning)\>
 sc_prohibit_hash_without_use:
-	@h='"hash.h"' \
+	@h='hash.h' \
 	re='$(_hash_fn)|$(_hash_struct)'\
 	  $(_sc_header_without_use)
 
+sc_prohibit_cloexec_without_use:
+	@h='cloexec.h' re='\<(set_cloexec_flag|dup_cloexec) *\(' \
+	  $(_sc_header_without_use)
+
+sc_prohibit_posixver_without_use:
+	@h='posixver.h' re='\<posix2_version *\(' $(_sc_header_without_use)
+
+sc_prohibit_same_without_use:
+	@h='same.h' re='\<same_name *\(' $(_sc_header_without_use)
+
 sc_prohibit_hash_pjw_without_use:
-	@h='"hash-pjw.h"' \
-	re='\<hash_pjw *\(' \
+	@h='hash-pjw.h' \
+	re='\<hash_pjw\>' \
 	  $(_sc_header_without_use)
 
 sc_prohibit_safe_read_without_use:
-	@h='"safe-read.h"' re='(\<SAFE_READ_ERROR\>|\<safe_read *\()' \
+	@h='safe-read.h' re='(\<SAFE_READ_ERROR\>|\<safe_read *\()' \
 	  $(_sc_header_without_use)
 
 sc_prohibit_argmatch_without_use:
-	@h='"argmatch.h"' \
-	re='(\<(ARRAY_CARDINALITY|X?ARGMATCH(|_TO_ARGUMENT|_VERIFY))\>|\<argmatch(_exit_fn|_(in)?valid) *\()' \
+	@h='argmatch.h' \
+	re='(\<(ARRAY_CARDINALITY|X?ARGMATCH(|_TO_ARGUMENT|_VERIFY))\>|\<(invalid_arg|argmatch(_exit_fn|_(in)?valid)?) *\()' \
 	  $(_sc_header_without_use)
 
 sc_prohibit_canonicalize_without_use:
-	@h='"canonicalize.h"' \
-	re='CAN_(EXISTING|ALL_BUT_LAST|MISSING)|canonicalize_(mode_t|filename_mode)' \
+	@h='canonicalize.h' \
+	re='CAN_(EXISTING|ALL_BUT_LAST|MISSING)|canonicalize_(mode_t|filename_mode|file_name)' \
 	  $(_sc_header_without_use)
 
 sc_prohibit_root_dev_ino_without_use:
-	@h='"root-dev-ino.h"' \
+	@h='root-dev-ino.h' \
 	re='(\<ROOT_DEV_INO_(CHECK|WARN)\>|\<get_root_dev_ino *\()' \
 	  $(_sc_header_without_use)
 
 sc_prohibit_openat_without_use:
-	@h='"openat.h"' \
+	@h='openat.h' \
 	re='\<(openat_(permissive|needs_fchdir|(save|restore)_fail)|l?(stat|ch(own|mod))at|(euid)?accessat)\>' \
 	  $(_sc_header_without_use)
 
@@ -528,7 +533,7 @@ sc_prohibit_openat_without_use:
 ctype_re = isalnum|isalpha|isascii|isblank|iscntrl|isdigit|isgraph|islower\
 |isprint|ispunct|isspace|isupper|isxdigit|tolower|toupper
 sc_prohibit_c_ctype_without_use:
-	@h='[<"]c-ctype.h[">]' re='\<c_($(ctype_re)) *\(' \
+	@h='c-ctype.h' re='\<c_($(ctype_re)) *\(' \
 	  $(_sc_header_without_use)
 
 _empty =
@@ -564,50 +569,72 @@ _sig_syms_re = $(subst $(_sp),|,$(strip $(_sig_names) $(_sig_types_and_consts)))
 
 # Prohibit the inclusion of signal.h without an actual use.
 sc_prohibit_signal_without_use:
-	@h='<signal.h>'							\
+	@h='signal.h'							\
 	re='\<($(_sig_function_re)) *\(|\<($(_sig_syms_re))\>'		\
 	  $(_sc_header_without_use)
 
 # Don't include stdio--.h unless you use one of its functions.
 sc_prohibit_stdio--_without_use:
-	@h='"stdio--.h"' re='\<((f(re)?|p)open|tmpfile) *\('	\
+	@h='stdio--.h' re='\<((f(re)?|p)open|tmpfile) *\('		\
 	  $(_sc_header_without_use)
 
 # Don't include stdio-safer.h unless you use one of its functions.
 sc_prohibit_stdio-safer_without_use:
-	@h='"stdio-safer.h"' re='\<((f(re)?|p)open|tmpfile)_safer *\('	\
+	@h='stdio-safer.h' re='\<((f(re)?|p)open|tmpfile)_safer *\('	\
 	  $(_sc_header_without_use)
 
 # Prohibit the inclusion of strings.h without a sensible use.
 # Using the likes of bcmp, bcopy, bzero, index or rindex is not sensible.
 sc_prohibit_strings_without_use:
-	@h='<strings.h>'						\
+	@h='strings.h'							\
 	re='\<(strn?casecmp|ffs(ll)?)\>'				\
 	  $(_sc_header_without_use)
 
 # Get the list of symbol names with this:
-# perl -lne '/^# *define (\w+)\(/ and print $1' lib/intprops.h|grep -v '^s'|fmt
+# perl -lne '/^# *define ([A-Z]\w+)\(/ and print $1' lib/intprops.h|fmt
 _intprops_names =							\
   TYPE_IS_INTEGER TYPE_TWOS_COMPLEMENT TYPE_ONES_COMPLEMENT		\
   TYPE_SIGNED_MAGNITUDE TYPE_SIGNED TYPE_MINIMUM TYPE_MAXIMUM		\
-  INT_STRLEN_BOUND INT_BUFSIZE_BOUND
+  INT_BITS_STRLEN_BOUND INT_STRLEN_BOUND INT_BUFSIZE_BOUND		\
+  INT_ADD_RANGE_OVERFLOW INT_SUBTRACT_RANGE_OVERFLOW			\
+  INT_NEGATE_RANGE_OVERFLOW INT_MULTIPLY_RANGE_OVERFLOW			\
+  INT_DIVIDE_RANGE_OVERFLOW INT_REMAINDER_RANGE_OVERFLOW		\
+  INT_LEFT_SHIFT_RANGE_OVERFLOW INT_ADD_OVERFLOW INT_SUBTRACT_OVERFLOW	\
+  INT_NEGATE_OVERFLOW INT_MULTIPLY_OVERFLOW INT_DIVIDE_OVERFLOW		\
+  INT_REMAINDER_OVERFLOW INT_LEFT_SHIFT_OVERFLOW
 _intprops_syms_re = $(subst $(_sp),|,$(strip $(_intprops_names)))
 # Prohibit the inclusion of intprops.h without an actual use.
 sc_prohibit_intprops_without_use:
-	@h='"intprops.h"'						\
+	@h='intprops.h'							\
 	re='\<($(_intprops_syms_re)) *\('				\
 	  $(_sc_header_without_use)
 
 _stddef_syms_re = NULL|offsetof|ptrdiff_t|size_t|wchar_t
 # Prohibit the inclusion of stddef.h without an actual use.
 sc_prohibit_stddef_without_use:
-	@h='<stddef.h>'							\
-	re='\<($(_stddef_syms_re)) *\('					\
+	@h='stddef.h'							\
+	re='\<($(_stddef_syms_re))\>'					\
+	  $(_sc_header_without_use)
+
+_de1 = dirfd|(close|(fd)?open|read|rewind|seek|tell)dir(64)?(_r)?
+_de2 = (versionsort|struct dirent|getdirentries|alphasort|scandir(at)?)(64)?
+_de3 = MAXNAMLEN|DIR|ino_t|d_ino|d_fileno|d_namlen
+_dirent_syms_re = $(_de1)|$(_de2)|$(_de3)
+# Prohibit the inclusion of dirent.h without an actual use.
+sc_prohibit_dirent_without_use:
+	@h='dirent.h'							\
+	re='\<($(_dirent_syms_re))\>'					\
+	  $(_sc_header_without_use)
+
+# Prohibit the inclusion of verify.h without an actual use.
+sc_prohibit_verify_without_use:
+	@h='verify.h'							\
+	re='\<(verify(true|expr)?|static_assert) *\('			\
 	  $(_sc_header_without_use)
 
 # Don't include xfreopen.h unless you use one of its functions.
 sc_prohibit_xfreopen_without_use:
-	@h='"xfreopen.h"' re='\<xfreopen *\(' $(_sc_header_without_use)
+	@h='xfreopen.h' re='\<xfreopen *\(' $(_sc_header_without_use)
 
 sc_obsolete_symbols:
 	@prohibit='\<(HAVE''_FCNTL_H|O''_NDELAY)\>'			\
@@ -674,11 +701,16 @@ sc_two_space_separator_in_usage:
 	halt='help2man requires at least two spaces between an option and its description'\
 	  $(_sc_search_regexp)
 
+# A regexp matching function names like "error" that may be used
+# to emit translatable messages.
+_gl_translatable_diag_func_re ?= error
+
 # Look for diagnostics that aren't marked for translation.
 # This won't find any for which error's format string is on a separate line.
 sc_unmarked_diagnostics:
 	@grep -nE							\
-	    '\<error *\([^"]*"[^"]*[a-z]{3}' $$($(VC_LIST_EXCEPT))	\
+	    '\<$(_gl_translatable_diag_func_re) *\([^"]*"[^"]*[a-z]{3}' \
+		$$($(VC_LIST_EXCEPT))					\
 	  | grep -Ev '(_|ngettext ?)\(' &&				\
 	  { echo '$(ME): found unmarked diagnostic(s)' 1>&2;		\
 	    exit 1; } || :
@@ -722,10 +754,13 @@ gl_other_headers_ ?= \
 
 # Perl -lne code to extract "significant" cpp-defined symbols from a
 # gnulib header file, eliminating a few common false-positives.
+# The exempted names below are defined only conditionally in gnulib,
+# and hence sometimes must/may be defined in application code.
 gl_extract_significant_defines_ = \
   /^\# *define ([^_ (][^ (]*)(\s*\(|\s+\w+)/\
     && $$2 !~ /(?:rpl_|_used_without_)/\
-    && $$1 !~ /^(?:NSIG|ATTRIBUTE_NORETURN)$$/\
+    && $$1 !~ /^(?:NSIG|ENODATA)$$/\
+    && $$1 !~ /^(?:SA_RESETHAND|SA_RESTART)$$/\
     and print $$1
 
 # Create a list of regular expressions matching the names
@@ -734,10 +769,10 @@ define def_sym_regex
 	gen_h=$(gl_generated_headers_);					\
 	(cd $(gnulib_dir)/lib;						\
 	  for f in *.in.h $(gl_other_headers_); do			\
-	    perl -lne '$(gl_extract_significant_defines_)' $$f;		\
+	    test -f $$f							\
+	      && perl -lne '$(gl_extract_significant_defines_)' $$f;	\
 	  done;								\
 	) | sort -u							\
-	  | grep -Ev '^ATTRIBUTE_NORETURN'				\
 	  | sed 's/^/^ *# *(define|undef)  */;s/$$/\\>/'
 endef
 
@@ -803,7 +838,7 @@ sc_prohibit_cvs_keyword:
 #
 # This is a perl script that is expected to be the single-quoted argument
 # to a command-line "-le".  The remaining arguments are file names.
-# Print the name of each file that ends in exactly one newline byte.
+# Print the name of each file that does not end in exactly one newline byte.
 # I.e., warn if there are blank lines (2 or more newlines), or if the
 # last byte is not a newline.  However, currently we don't complain
 # about any file that contains exactly one byte.
@@ -980,8 +1015,8 @@ update-NEWS-hash: NEWS
 # setting this to ' && !/PRAGMA_SYSTEM_HEADER/'.
 _makefile_at_at_check_exceptions ?=
 sc_makefile_at_at_check:
-	@perl -ne '/\@[A-Z_0-9]+\@/'					\
-          -e ' && !/([A-Z_0-9]+)\s+=.*\@\1\@$$/'			\
+	@perl -ne '/\@\w+\@/'						\
+          -e ' && !/(\w+)\s+=.*\@\1\@$$/'				\
           -e ''$(_makefile_at_at_check_exceptions)			\
 	  -e 'and (print "$$ARGV:$$.: $$_"), $$m=1; END {exit !$$m}'	\
 	    $$($(VC_LIST_EXCEPT) | grep -E '(^|/)(Makefile\.am|[^/]+\.mk)$$') \
@@ -1043,24 +1078,28 @@ sc_po_check:
 
 # Sometimes it is useful to change the PATH environment variable
 # in Makefiles.  When doing so, it's better not to use the Unix-centric
-# path separator of `:', but rather the automake-provided `$(PATH_SEPARATOR)'.
-msg = '$(ME): Do not use `:'\'' above; use $$(PATH_SEPARATOR) instead'
+# path separator of ':', but rather the automake-provided '$(PATH_SEPARATOR)'.
+msg = '$(ME): Do not use ":" above; use $$(PATH_SEPARATOR) instead'
 sc_makefile_path_separator_check:
 	@prohibit='PATH[=].*:'						\
 	in_vc_files='akefile|\.mk$$'					\
 	halt=$(msg)							\
 	  $(_sc_search_regexp)
 
-# Check that `make alpha' will not fail at the end of the process.
+# Check that 'make alpha' will not fail at the end of the process,
+# i.e., when pkg-M.N.tar.xz already exists (either in "." or in ../release)
+# and is read-only.
 writable-files:
-	if test -d $(release_archive_dir); then :; else			\
-	  for file in $(distdir).tar.gz					\
-		      $(release_archive_dir)/$(distdir).tar.gz; do	\
-	    test -e $$file || continue;					\
-	    test -w $$file						\
-	      || { echo ERROR: $$file is not writable; fail=1; };	\
+	if test -d $(release_archive_dir); then				\
+	  for file in $(DIST_ARCHIVES); do				\
+	    for p in ./ $(release_archive_dir)/; do			\
+	      test -e $$p$$file || continue;				\
+	      test -w $$p$$file						\
+		|| { echo ERROR: $$p$$file is not writable; fail=1; };	\
+	    done;							\
 	  done;								\
 	  test "$$fail" && exit 1 || : ;				\
+	else :;								\
 	fi
 
 v_etc_file = $(gnulib_dir)/lib/version-etc.c
@@ -1091,6 +1130,7 @@ sc_copyright_check:
 # the other init.sh-using tests also get it right.
 _hv_file ?= $(srcdir)/tests/help-version
 _hv_regex_weak ?= ^ *\. .*/init\.sh"
+# Fix syntax-highlighters "
 _hv_regex_strong ?= ^ *\. "\$${srcdir=\.}/init\.sh"
 sc_cross_check_PATH_usage_in_tests:
 	@if test -f $(_hv_file); then					\
@@ -1108,6 +1148,16 @@ sc_cross_check_PATH_usage_in_tests:
 		1>&2; exit 1; } || :;					\
 	fi
 
+# BRE regex of file contents to identify a test script.
+_test_script_regex ?= \<init\.sh\>
+
+# In tests, use "compare expected actual", not the reverse.
+sc_prohibit_reversed_compare_failure:
+	@prohibit='\<compare [^ ]+ ([^ ]*exp|/dev/null)'		\
+	containing='$(_test_script_regex)'				\
+	halt='reversed compare arguments'				\
+	  $(_sc_search_regexp)
+
 # #if HAVE_... will evaluate to false for any non numeric string.
 # That would be flagged by using -Wundef, however gnulib currently
 # tests many undefined macros, and so we can't enable that option.
@@ -1116,6 +1166,14 @@ sc_Wundef_boolean:
 	@prohibit='^#define.*(yes|no|true|false)$$'			\
 	in_files='$(CONFIG_INCLUDE)'					\
 	halt='Use 0 or 1 for macro values'				\
+	  $(_sc_search_regexp)
+
+# Even if you use pathmax.h to guarantee that PATH_MAX is defined, it might
+# not be constant, or might overflow a stack.  In general, use PATH_MAX as
+# a limit, not an array or alloca size.
+sc_prohibit_path_max_allocation:
+	@prohibit='(\balloca *\([^)]*|\[[^]]*)PATH_MAX'			\
+	halt='Avoid stack allocations of size PATH_MAX'			\
 	  $(_sc_search_regexp)
 
 sc_vulnerable_makefile_CVE-2009-4029:
@@ -1146,9 +1204,9 @@ bootstrap-tools ?= autoconf,automake,gnulib
 # If it's not already specified, derive the GPG key ID from
 # the signed tag we've just applied to mark this release.
 gpg_key_ID ?= \
-  $$(git cat-file tag v$(VERSION) > .ann-sig \
-     && gpgv .ann-sig - < /dev/null 2>&1 \
-	  | sed -n '/.*key ID \([0-9A-F]*\)/s//\1/p'; rm -f .ann-sig)
+  $$(git cat-file tag v$(VERSION) \
+     | gpgv --status-fd 1 --keyring /dev/null - - 2>/dev/null \
+     | sed -n '/^\[GNUPG:\] ERRSIG /{s///;s/ .*//p;q}')
 
 translation_project_ ?= coordinator@translationproject.org
 
@@ -1167,7 +1225,7 @@ else
 endif
 
 announcement: NEWS ChangeLog $(rel-files)
-	@$(build_aux)/announce-gen					\
+	@$(srcdir)/$(_build-aux)/announce-gen				\
 	    --mail-headers='$(announcement_mail_headers_)'		\
 	    --release-type=$(RELEASE_TYPE)				\
 	    --package=$(PACKAGE)					\
@@ -1191,7 +1249,7 @@ upload_dest_dir_ ?= $(PACKAGE)
 emit_upload_commands:
 	@echo =====================================
 	@echo =====================================
-	@echo "$(build_aux)/gnupload $(GNUPLOADFLAGS) \\"
+	@echo "$(srcdir)/$(_build-aux)/gnupload $(GNUPLOADFLAGS) \\"
 	@echo "    --to $(gnu_rel_host):$(upload_dest_dir_) \\"
 	@echo "  $(rel-files)"
 	@echo '# send the ~/announce-$(my_distdir) e-mail'
@@ -1199,9 +1257,9 @@ emit_upload_commands:
 	@echo =====================================
 
 define emit-commit-log
-  printf '%s\n' 'post-release administrivia' '' \
-    '* NEWS: Add header line for next release.' \
-    '* .prev-version: Record previous version.' \
+  printf '%s\n' 'maint: post-release administrivia' ''			\
+    '* NEWS: Add header line for next release.'				\
+    '* .prev-version: Record previous version.'				\
     '* cfg.mk (old_NEWS_hash): Auto-update.'
 endef
 
@@ -1286,7 +1344,7 @@ web-manual:
 	@test -z "$(manual_title)" \
 	  && { echo define manual_title in cfg.mk 1>&2; exit 1; } || :
 	@cd '$(srcdir)/doc'; \
-	  $(SHELL) ../build-aux/gendocs.sh $(gendocs_options_) \
+	  $(SHELL) ../$(_build-aux)/gendocs.sh $(gendocs_options_) \
 	     -o '$(abs_builddir)/doc/manual' \
 	     --email $(PACKAGE_BUGREPORT) $(PACKAGE) \
 	    "$(PACKAGE_NAME) - $(manual_title)"
@@ -1351,7 +1409,7 @@ update-copyright-env ?=
 update-copyright:
 	grep -l -w Copyright                                             \
 	  $$(export VC_LIST_EXCEPT_DEFAULT=COPYING && $(VC_LIST_EXCEPT)) \
-	  | $(update-copyright-env) xargs $(build_aux)/$@
+	  | $(update-copyright-env) xargs $(srcdir)/$(_build-aux)/$@
 
 # This tight_scope test is skipped with a warning if $(_gl_TS_headers) is not
 # overridden and $(_gl_TS_dir)/Makefile.am does not mention noinst_HEADERS.
@@ -1362,7 +1420,8 @@ _gl_TS_dir ?= src
 
 ALL_RECURSIVE_TARGETS += sc_tight_scope
 sc_tight_scope: tight-scope.mk
-	@if ! grep '^ *export _gl_TS_headers *=' $(srcdir)/cfg.mk	\
+	@fail=0;							\
+	if ! grep '^ *export _gl_TS_headers *=' $(srcdir)/cfg.mk	\
 		> /dev/null						\
 	   && ! grep -w noinst_HEADERS $(srcdir)/$(_gl_TS_dir)/Makefile.am \
 		> /dev/null 2>&1; then					\
@@ -1374,33 +1433,34 @@ sc_tight_scope: tight-scope.mk
 		-f $(abs_top_builddir)/$<				\
 	      _gl_tight_scope						\
 		|| fail=1;						\
-	fi
-	@rm -f $<
+	fi;								\
+	rm -f $<;							\
+	exit $$fail
 
 tight-scope.mk: $(ME)
 	@rm -f $@ $@-t
-	@perl -ne '/^# TS-start/.../^# TS-end/ and print' $(ME) > $@-t
+	@perl -ne '/^# TS-start/.../^# TS-end/ and print' $(srcdir)/$(ME) > $@-t
 	@chmod a=r $@-t && mv $@-t $@
 
 ifeq (a,b)
 # TS-start
 
 # Most functions should have static scope.
-# Any that don't must be marked with `extern', but `main'
-# and `usage' are exceptions: they're always extern, but
-# do not need to be marked.  Symbols matching `__.*' are
+# Any that don't must be marked with 'extern', but 'main'
+# and 'usage' are exceptions: they're always extern, but
+# do not need to be marked.  Symbols matching '__.*' are
 # reserved by the compiler, so are automatically excluded below.
 _gl_TS_unmarked_extern_functions ?= main usage
-_gl_TS_function_match ?= /^(?:$(_gl_TS_extern)) +.*?(\S+) +\(/
+_gl_TS_function_match ?= /^(?:$(_gl_TS_extern)) +.*?(\S+) *\(/
 
 # If your project uses a macro like "XTERN", then put
 # the following in cfg.mk to override this default:
 # export _gl_TS_extern = extern|XTERN
 _gl_TS_extern ?= extern
 
-# The second nm|grep checks for file-scope variables with `extern' scope.
+# The second nm|grep checks for file-scope variables with 'extern' scope.
 # Without gnulib's progname module, you might put program_name here.
-# Symbols matching `__.*' are reserved by the compiler,
+# Symbols matching '__.*' are reserved by the compiler,
 # so are automatically excluded below.
 _gl_TS_unmarked_extern_vars ?=
 

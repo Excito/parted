@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1998-2001, 2005, 2007, 2009-2011 Free Software Foundation,
+    Copyright (C) 1998-2001, 2005, 2007, 2009-2012 Free Software Foundation,
     Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -55,12 +55,29 @@ extern int ped_geometry_set (PedGeometry* geom, PedSector start,
 extern int ped_geometry_set_start (PedGeometry* geom, PedSector start);
 extern int ped_geometry_set_end (PedGeometry* geom, PedSector end);
 extern int ped_geometry_test_overlap (const PedGeometry* a,
-	       			      const PedGeometry* b);
+				      const PedGeometry* b)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 extern int ped_geometry_test_inside (const PedGeometry* a,
-				     const PedGeometry* b);
-extern int ped_geometry_test_equal (const PedGeometry* a, const PedGeometry* b);
+				     const PedGeometry* b)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
+extern int ped_geometry_test_equal (const PedGeometry* a, const PedGeometry* b)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 extern int ped_geometry_test_sector_inside (const PedGeometry* geom,
-	       				    PedSector sect);
+					    PedSector sect)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern int ped_geometry_read (const PedGeometry* geom, void* buffer,
 			      PedSector offset, PedSector count);
@@ -78,7 +95,11 @@ extern int ped_geometry_sync_fast (PedGeometry* geom);
 /* returns -1 if "sector" is not within dest's space. */
 extern PedSector ped_geometry_map (const PedGeometry* dst,
 				   const PedGeometry* src,
-				   PedSector sector);
+				   PedSector sector)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 #endif /* PED_GEOM_H_INCLUDED */
 

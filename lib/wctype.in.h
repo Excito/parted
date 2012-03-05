@@ -1,8 +1,6 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* A substitute for ISO C99 <wctype.h>, for platforms that lack it.
 
-   Copyright (C) 2006-2011 Free Software Foundation, Inc.
+   Copyright (C) 2006-2012 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,8 +13,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software Foundation,
-   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   along with this program; if not, see <http://www.gnu.org/licenses/>.  */
 
 /* Written by Bruno Haible and Paul Eggert.  */
 
@@ -81,6 +78,18 @@
 #  define WEOF -1
 # endif
 #else
+/* MSVC defines wint_t as 'unsigned short' in <crtdefs.h>.
+   This is too small: ISO C 99 section 7.24.1.(2) says that wint_t must be
+   "unchanged by default argument promotions".  Override it.  */
+# if defined _MSC_VER
+#  if !GNULIB_defined_wint_t
+#   include <crtdefs.h>
+typedef unsigned int rpl_wint_t;
+#   undef wint_t
+#   define wint_t rpl_wint_t
+#   define GNULIB_defined_wint_t 1
+#  endif
+# endif
 # ifndef WEOF
 #  define WEOF ((wint_t) -1)
 # endif
@@ -130,6 +139,10 @@
 #    define iswspace rpl_iswspace
 #    define iswupper rpl_iswupper
 #    define iswxdigit rpl_iswxdigit
+#   endif
+#  endif
+#  if @REPLACE_TOWLOWER@
+#   if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #    define towlower rpl_towlower
 #    define towupper rpl_towupper
 #   endif
@@ -273,7 +286,7 @@ iswxdigit
 }
 
 static inline wint_t
-#  if @REPLACE_ISWCNTRL@
+#  if @REPLACE_TOWLOWER@
 rpl_towlower
 #  else
 towlower
@@ -284,7 +297,7 @@ towlower
 }
 
 static inline wint_t
-#  if @REPLACE_ISWCNTRL@
+#  if @REPLACE_TOWLOWER@
 rpl_towupper
 #  else
 towupper
@@ -431,7 +444,7 @@ _GL_WARN_ON_USE (iswctype, "iswctype is unportable - "
 # endif
 #endif
 
-#if @REPLACE_ISWCNTRL@ || defined __MINGW32__
+#if @REPLACE_TOWLOWER@ || defined __MINGW32__
 _GL_CXXALIAS_RPL (towlower, wint_t, (wint_t wc));
 _GL_CXXALIAS_RPL (towupper, wint_t, (wint_t wc));
 #else

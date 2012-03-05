@@ -1,7 +1,7 @@
 #!/bin/sh
 # Ensure that a whole-disk FAT partition is detected.
 
-# Copyright (C) 2010-2011 Free Software Foundation, Inc.
+# Copyright (C) 2010-2012 Free Software Foundation, Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,6 +27,6 @@ mkfs.vfat -F 16 $dev_file || skip_ "mkfs.vfat failed"
 
 parted -m -s $dev_file u s print > out 2>&1 || fail=1
 grep '^1:' out > k; mv k out
-compare out exp || fail=1
+compare exp out || fail=1
 
 Exit $fail

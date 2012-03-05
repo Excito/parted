@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2001, 2004-2005, 2007-2011 Free Software Foundation,
+    Copyright (C) 1999-2001, 2004-2005, 2007-2012 Free Software Foundation,
     Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -103,7 +103,7 @@ static const char MBR_BOOT_CODE[] = {
  * (i.e. 1022 is sometimes used to indicate "use LBA").
  */
 #define MAX_CHS_CYLINDER	1021
-#define MAX_TOTAL_PART		16
+#define MAX_TOTAL_PART		64
 
 typedef struct _DosRawPartition		DosRawPartition;
 typedef struct _DosRawTable		DosRawTable;
@@ -403,7 +403,7 @@ chs_get_sector (const RawCHS* chs)
 	return (chs->sector & 0x3f) - 1;
 }
 
-static PedSector
+static PedSector _GL_ATTRIBUTE_PURE
 chs_to_sector (const PedDevice* dev, const PedCHSGeometry *bios_geom,
 	       const RawCHS* chs)
 {
@@ -452,7 +452,7 @@ sector_to_chs (const PedDevice* dev, const PedCHSGeometry* bios_geom,
 	chs->sector = real_s + 1 + (real_c >> 8 << 6);
 }
 
-static PedSector
+static PedSector _GL_ATTRIBUTE_PURE
 legacy_start (const PedDisk* disk, const PedCHSGeometry* bios_geom,
 	      const DosRawPartition* raw_part)
 {
@@ -462,7 +462,7 @@ legacy_start (const PedDisk* disk, const PedCHSGeometry* bios_geom,
 	return chs_to_sector (disk->dev, bios_geom, &raw_part->chs_start);
 }
 
-static PedSector
+static PedSector _GL_ATTRIBUTE_PURE
 legacy_end (const PedDisk* disk, const PedCHSGeometry* bios_geom,
 	    const DosRawPartition* raw_part)
 {
@@ -472,7 +472,7 @@ legacy_end (const PedDisk* disk, const PedCHSGeometry* bios_geom,
 	return chs_to_sector (disk->dev, bios_geom, &raw_part->chs_end);
 }
 
-static PedSector
+static PedSector _GL_ATTRIBUTE_PURE
 linear_start (const PedDisk* disk, const DosRawPartition* raw_part,
 	      PedSector offset)
 {
@@ -482,7 +482,7 @@ linear_start (const PedDisk* disk, const DosRawPartition* raw_part,
 	return offset + PED_LE32_TO_CPU (raw_part->start);
 }
 
-static PedSector
+static PedSector _GL_ATTRIBUTE_PURE
 linear_end (const PedDisk* disk, const DosRawPartition* raw_part,
 	    PedSector offset)
 {
@@ -494,7 +494,7 @@ linear_end (const PedDisk* disk, const DosRawPartition* raw_part,
 }
 
 #ifndef DISCOVER_ONLY
-static int
+static int _GL_ATTRIBUTE_PURE
 partition_check_bios_geometry (PedPartition* part, PedCHSGeometry* bios_geom)
 {
 	PedSector		leg_start, leg_end;
@@ -520,7 +520,7 @@ partition_check_bios_geometry (PedPartition* part, PedCHSGeometry* bios_geom)
 	return 1;
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 disk_check_bios_geometry (const PedDisk* disk, PedCHSGeometry* bios_geom)
 {
 	PedPartition* part = NULL;
@@ -835,7 +835,7 @@ disk_probe_bios_geometry (const PedDisk* disk, PedCHSGeometry* bios_geom)
 }
 #endif /* !DISCOVER_ONLY */
 
-static int
+static int _GL_ATTRIBUTE_PURE
 raw_part_is_extended (const DosRawPartition* raw_part)
 {
 	PED_ASSERT (raw_part != NULL);
@@ -853,7 +853,7 @@ raw_part_is_extended (const DosRawPartition* raw_part)
 	return 0;
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 raw_part_is_hidden (const DosRawPartition* raw_part)
 {
 	PED_ASSERT (raw_part != NULL);
@@ -875,7 +875,7 @@ raw_part_is_hidden (const DosRawPartition* raw_part)
 	return 0;
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 raw_part_is_lba (const DosRawPartition* raw_part)
 {
 	PED_ASSERT (raw_part != NULL);
@@ -1560,7 +1560,7 @@ msdos_partition_set_flag (PedPartition* part,
 	}
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 msdos_partition_get_flag (const PedPartition* part, PedPartitionFlag flag)
 {
 	DosPartitionData*	dos_data;
@@ -2398,17 +2398,22 @@ next_primary (const PedDisk* disk)
 		if (!ped_disk_get_partition (disk, i))
 			return i;
 	}
-	return 0;
+	return -1;
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 next_logical (const PedDisk* disk)
 {
 	int	i;
-	for (i=5; 1; i++) {
+	for (i=5; i<=MAX_TOTAL_PART; i++) {
 		if (!ped_disk_get_partition (disk, i))
 			return i;
 	}
+	ped_exception_throw (
+		PED_EXCEPTION_ERROR, PED_EXCEPTION_CANCEL,
+		_("cannot create any more partitions"),
+		disk->dev->path);
+	return -1;
 }
 
 static int
@@ -2427,7 +2432,8 @@ msdos_partition_enumerate (PedPartition* part)
 		part->num = next_logical (part->disk);
 	else
 		part->num = next_primary (part->disk);
-
+	if (part->num == -1)
+		return 0;
 	return 1;
 }
 

@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2002, 2007-2011 Free Software Foundation, Inc.
+    Copyright (C) 1999-2002, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,9 +36,11 @@ enum _PedDiskFlag {
            This flag is available for msdos and sun disklabels (for sun labels
            it only controls the aligning of the end of the partition) */
         PED_DISK_CYLINDER_ALIGNMENT=1,
+        /* This flag controls whether the boot flag of a GPT PMBR is set */
+        PED_DISK_GPT_PMBR_BOOT=2,
 };
 #define PED_DISK_FIRST_FLAG             PED_DISK_CYLINDER_ALIGNMENT
-#define PED_DISK_LAST_FLAG              PED_DISK_CYLINDER_ALIGNMENT
+#define PED_DISK_LAST_FLAG              PED_DISK_GPT_PMBR_BOOT
 
 /**
  * Partition types
@@ -269,10 +271,25 @@ struct _PedDiskArchOps {
 extern void ped_disk_type_register (PedDiskType* type);
 extern void ped_disk_type_unregister (PedDiskType* type);
 
-extern PedDiskType* ped_disk_type_get_next (PedDiskType const *type);
-extern PedDiskType* ped_disk_type_get (const char* name);
+extern PedDiskType* ped_disk_type_get_next (PedDiskType const *type)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
+extern PedDiskType* ped_disk_type_get (const char* name)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 extern int ped_disk_type_check_feature (const PedDiskType* disk_type,
-                                        PedDiskTypeFeature feature);
+                                        PedDiskTypeFeature feature)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern PedDiskType* ped_disk_probe (PedDevice* dev);
 extern int ped_disk_clobber (PedDevice* dev);
@@ -287,8 +304,18 @@ extern int ped_disk_commit_to_os (PedDisk* disk);
 extern int ped_disk_check (const PedDisk* disk);
 extern void ped_disk_print (const PedDisk* disk);
 
-extern int ped_disk_get_primary_partition_count (const PedDisk* disk);
-extern int ped_disk_get_last_partition_num (const PedDisk* disk);
+extern int ped_disk_get_primary_partition_count (const PedDisk* disk)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
+extern int ped_disk_get_last_partition_num (const PedDisk* disk)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 extern int ped_disk_get_max_primary_partition_count (const PedDisk* disk);
 extern bool ped_disk_get_max_supported_partition_count(const PedDisk* disk,
                                                        int* supported);
@@ -300,7 +327,11 @@ extern int ped_disk_is_flag_available(const PedDisk *disk, PedDiskFlag flag);
 
 extern const char *ped_disk_flag_get_name(PedDiskFlag flag);
 extern PedDiskFlag ped_disk_flag_get_by_name(const char *name);
-extern PedDiskFlag ped_disk_flag_next(PedDiskFlag flag);
+extern PedDiskFlag ped_disk_flag_next(PedDiskFlag flag)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__const__))
+#endif
+;
 
 /** @} */
 
@@ -316,7 +347,11 @@ extern PedPartition* ped_partition_new (const PedDisk* disk,
                                         PedSector start,
                                         PedSector end);
 extern void ped_partition_destroy (PedPartition* part);
-extern int ped_partition_is_active (const PedPartition* part);
+extern int ped_partition_is_active (const PedPartition* part)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 extern int ped_partition_set_flag (PedPartition* part, PedPartitionFlag flag,
                                    int state);
 extern int ped_partition_get_flag (const PedPartition* part,
@@ -330,10 +365,20 @@ extern const char* ped_partition_get_name (const PedPartition* part);
 extern int ped_partition_is_busy (const PedPartition* part);
 extern char* ped_partition_get_path (const PedPartition* part);
 
-extern const char* ped_partition_type_get_name (PedPartitionType part_type);
+extern const char* ped_partition_type_get_name (PedPartitionType part_type)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__const__))
+#endif
+;
 extern const char* ped_partition_flag_get_name (PedPartitionFlag flag);
 extern PedPartitionFlag ped_partition_flag_get_by_name (const char* name);
-extern PedPartitionFlag ped_partition_flag_next (PedPartitionFlag flag);
+extern PedPartitionFlag ped_partition_flag_next (PedPartitionFlag flag)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__const__))
+#endif
+;
 
 /** @} */
 
@@ -357,11 +402,31 @@ extern PedGeometry* ped_disk_get_max_partition_geometry (PedDisk* disk,
 extern int ped_disk_minimize_extended_partition (PedDisk* disk);
 
 extern PedPartition* ped_disk_next_partition (const PedDisk* disk,
-                                              const PedPartition* part);
-extern PedPartition* ped_disk_get_partition (const PedDisk* disk, int num);
+                                              const PedPartition* part)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
+extern PedPartition* ped_disk_get_partition (const PedDisk* disk, int num)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 extern PedPartition* ped_disk_get_partition_by_sector (const PedDisk* disk,
-                                                       PedSector sect);
-extern PedPartition* ped_disk_extended_partition (const PedDisk* disk);
+                                                       PedSector sect)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
+extern PedPartition* ped_disk_extended_partition (const PedDisk* disk)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern PedSector ped_disk_max_partition_length (const PedDisk *disk);
 extern PedSector ped_disk_max_partition_start_sector (const PedDisk *disk);

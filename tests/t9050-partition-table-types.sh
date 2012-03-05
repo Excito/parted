@@ -3,7 +3,7 @@
 # I.e., write a partition table of type T, and then overwrite it
 # with one of type V, for every permutation of T and V.
 
-# Copyright (C) 2011 Free Software Foundation, Inc.
+# Copyright (C) 2011-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ dd if=/dev/null of=f bs=1 seek=30M || framework_failure_
 for i in $types; do
   for j in $types; do
     echo $i:$j
-    case $i in mkswap) mkswap f >/dev/null 2>&1 || fail=1;;
+    case $i in mkswap) mkswap f || fail=1;;
       *) parted -s f mklabel $i || fail=1;; esac
     case $j in mkswap) continue;; esac
     parted -s f mklabel $j || fail=1

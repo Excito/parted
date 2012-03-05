@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2001, 2007, 2009-2011 Free Software Foundation, Inc.
+    Copyright (C) 1999-2001, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,6 +25,12 @@
 extern "C" {
 #endif
 
+#if __GNUC__ >= 4 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1)
+# define __attribute(arg) __attribute__ (arg)
+#else
+# define __attribute(arg)
+#endif
+
 #include <parted/constraint.h>
 #include <parted/device.h>
 #include <parted/disk.h>
@@ -37,11 +43,14 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 
-extern const char* ped_get_version ();
+extern const char *ped_get_version ()
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__const__))
+#endif
+;
 
 extern void* ped_malloc (size_t size);
 extern void* ped_calloc (size_t size);
-extern int ped_realloc (void** ptr, size_t size);
 extern void free (void* ptr);
 
 #ifdef __cplusplus

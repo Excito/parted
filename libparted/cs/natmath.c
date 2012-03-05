@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2007-2011 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -196,7 +196,7 @@ ped_alignment_duplicate (const PedAlignment* align)
  * 	gcd = greatest common divisor of a and b
  * 	gcd = x*a + y*b
  */
-static EuclidTriple
+static EuclidTriple _GL_ATTRIBUTE_PURE
 extended_euclid (int a, int b)
 {
 	EuclidTriple	result;
@@ -340,7 +340,7 @@ ped_alignment_intersect (const PedAlignment* a, const PedAlignment* b)
 /* This function returns the sector closest to "sector" that lies inside
  * geom and satisfies the alignment constraint.
  */
-static PedSector
+static PedSector _GL_ATTRIBUTE_PURE
 _closest_inside_geometry (const PedAlignment* align, const PedGeometry* geom,
 			  PedSector sector)
 {

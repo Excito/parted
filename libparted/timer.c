@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2001, 2007, 2009-2011 Free Software Foundation, Inc.
+    Copyright (C) 2001, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -127,8 +127,8 @@ ped_timer_new_nested (PedTimer* parent, float nest_frac)
 	if (!parent)
 		return NULL;
 
-	PED_ASSERT (nest_frac >= 0.0);
-	PED_ASSERT (nest_frac <= 1.0);
+	PED_ASSERT (nest_frac >= 0.0f);
+	PED_ASSERT (nest_frac <= 1.0f);
 
 	context = (NestedContext*) ped_malloc (sizeof (NestedContext));
 	if (!context)

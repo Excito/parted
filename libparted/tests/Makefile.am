@@ -1,5 +1,5 @@
 # This file is part of GNU Parted
-# Copyright (C) 1999-2001, 2007-2011 Free Software Foundation, Inc.
+# Copyright (C) 1999-2001, 2007-2012 Free Software Foundation, Inc.
 #
 # This file may be modified and/or distributed without restriction.
 
@@ -15,14 +15,13 @@ LDADD = \
 AM_CPPFLAGS = \
   $(CHECK_CFLAGS) \
   -I$(top_srcdir)/lib \
+  -I$(top_builddir)/include \
   -I$(top_srcdir)/include
 
 label_SOURCES = common.h common.c label.c
 disk_SOURCES  = common.h common.c disk.c
 zerolen_SOURCES = common.h common.c zerolen.c
 symlink_SOURCES = common.h common.c symlink.c
-
-MAINTAINERCLEANFILES = Makefile.in
 
 # Arrange to symlink to tests/init.sh.
 CLEANFILES = init.sh

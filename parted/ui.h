@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999-2001, 2007-2011 Free Software Foundation, Inc.
+    Copyright (C) 1999-2001, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ extern void command_line_push_word (const char* word);
 extern char* command_line_pop_word ();
 extern char* command_line_peek_word ();
 extern void command_line_flush ();
-extern int command_line_get_word_count ();
+extern int command_line_get_word_count () _GL_ATTRIBUTE_PURE;
 extern void command_line_prompt_words (const char* prompt, const char* def,
 				       const StrList* possibilities,
 				       int multi_word);
@@ -52,7 +52,7 @@ extern char* command_line_get_word (const char* prompt, const char* def,
 				    int multi_word);
 extern int command_line_get_integer (const char* prompt, int* value);
 extern int command_line_get_sector (const char* prompt, PedDevice* dev,
-				    PedSector* value, PedGeometry** range);
+				    PedSector* value, PedGeometry** range, char** raw_input);
 extern int command_line_get_state (const char* prompt, int* value);
 extern int command_line_get_device (const char* prompt, PedDevice** value);
 extern int command_line_get_disk (const char* prompt, PedDisk** value)
@@ -63,6 +63,9 @@ extern int command_line_get_fs_type (const char* prompt,
 				     const PedFileSystemType*(* value));
 extern int command_line_get_disk_type (const char* prompt,
 				       const PedDiskType*(* value));
+extern int command_line_get_disk_flag (const char* prompt,
+				       const PedDisk* disk,
+				       PedDiskFlag* flag);
 extern int command_line_get_part_flag (const char* prompt,
 				       const PedPartition* part,
 				       PedPartitionFlag* flag);
@@ -77,7 +80,7 @@ extern int command_line_get_align_type (const char *prompt,
 extern int command_line_is_integer ();
 extern int command_line_is_sector ();
 
-extern void help_msg ();
+extern void help_msg () __attribute__((__noreturn__));
 
 extern void print_using_dev (PedDevice* dev);
 

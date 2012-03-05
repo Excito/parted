@@ -1,7 +1,7 @@
 #!/bin/sh
 # Exercise the exclusive, single-bit flags.
 
-# Copyright (C) 2010-2011 Free Software Foundation, Inc.
+# Copyright (C) 2010-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ for table_type in msdos gpt; do
   parted -s $dev mklabel $table_type \
     mkpart $pri_or_name ext2 $((1*2048))s $((2*2048-1))s \
       > out 2> err || fail=1
-  compare out /dev/null || fail=1
+  compare /dev/null out || fail=1
 
   for mode in on_only on_and_off ; do
     for flag in $flags; do
@@ -57,7 +57,7 @@ for table_type in msdos gpt; do
       extract_flags raw > out
       grep -F "$flag" out \
         || { warn_ "$ME: flag not turned on: $(cat out)"; fail=1; }
-      compare err /dev/null || fail=1
+      compare /dev/null err || fail=1
 
       if test $mode = on_and_off; then
         # Turn it off
@@ -65,7 +65,7 @@ for table_type in msdos gpt; do
         extract_flags raw > out
         grep -F "$flag" out \
           && { warn_ "$ME: flag not turned off: $(cat out)"; fail=1; }
-        compare err /dev/null || fail=1
+        compare /dev/null err || fail=1
       fi
     done
   done

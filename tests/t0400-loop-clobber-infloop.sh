@@ -1,7 +1,7 @@
 #!/bin/sh
 # do not infloop in loop_clobber
 
-# Copyright (C) 2009-2011 Free Software Foundation, Inc.
+# Copyright (C) 2009-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,6 +30,6 @@ mkswap $dev || fail=1
 # create a dos partition table
 parted -s $dev mklabel msdos > out 2>&1 || fail=1
 
-compare out /dev/null || fail=1
+compare /dev/null out || fail=1
 
 Exit $fail

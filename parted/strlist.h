@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999-2001, 2007, 2009-2011 Free Software Foundation, Inc.
+    Copyright (C) 1999-2001, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -53,13 +53,13 @@ extern StrList* str_list_join (StrList* a, StrList* b);
 extern char* str_list_convert (const StrList* list);
 extern char* str_list_convert_node (const StrList* list);
 
-extern void str_list_print (const StrList* list);
+extern void str_list_print (const StrList* list, FILE *fp);
 extern void str_list_print_wrap (const StrList* list, int line_length,
-				 int offset, int indent);
+				 int offset, int indent, FILE *fp);
 extern int str_list_match_any (const StrList* list, const char* str);
 extern int str_list_match_node (const StrList* list, const char* str);
 extern StrList* str_list_match (const StrList* list, const char* str);
 
-extern int str_list_length (const StrList* list);
+extern int str_list_length (const StrList* list) _GL_ATTRIBUTE_PURE;
 
 #endif /* STRLIST_H_INCLUDED */

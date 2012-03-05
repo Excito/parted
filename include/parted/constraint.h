@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1998-2000, 2007, 2009-2011 Free Software Foundation, Inc.
+    Copyright (C) 1998-2000, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -85,7 +85,11 @@ ped_constraint_solve_nearest (
 
 extern int
 ped_constraint_is_solution (const PedConstraint* constraint,
-			    const PedGeometry* geom);
+			    const PedGeometry* geom)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern PedConstraint*
 ped_constraint_any (const PedDevice* dev);

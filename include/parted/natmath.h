@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2007-2011 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -58,10 +58,30 @@ struct _PedAlignment {
 	PedSector	grain_size;
 };
 
-extern PedSector ped_round_up_to (PedSector sector, PedSector grain_size);
-extern PedSector ped_round_down_to (PedSector sector, PedSector grain_size);
-extern PedSector ped_round_to_nearest (PedSector sector, PedSector grain_size);
-extern PedSector ped_greatest_common_divisor (PedSector a, PedSector b);
+extern PedSector ped_round_up_to (PedSector sector, PedSector grain_size)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__const__))
+#endif
+;
+extern PedSector ped_round_down_to (PedSector sector, PedSector grain_size)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__const__))
+#endif
+;
+extern PedSector ped_round_to_nearest (PedSector sector, PedSector grain_size)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__const__))
+#endif
+;
+extern PedSector ped_greatest_common_divisor (PedSector a, PedSector b)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern int ped_alignment_init (PedAlignment* align, PedSector offset,
 			       PedSector grain_size);
@@ -73,17 +93,33 @@ extern PedAlignment* ped_alignment_intersect (const PedAlignment* a,
 
 extern PedSector
 ped_alignment_align_up (const PedAlignment* align, const PedGeometry* geom,
-			PedSector sector);
+			PedSector sector)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 extern PedSector
 ped_alignment_align_down (const PedAlignment* align, const PedGeometry* geom,
-			  PedSector sector);
+			  PedSector sector)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 extern PedSector
 ped_alignment_align_nearest (const PedAlignment* align, const PedGeometry* geom,
-			     PedSector sector);
+			     PedSector sector)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern int
 ped_alignment_is_aligned (const PedAlignment* align, const PedGeometry* geom,
-			  PedSector sector);
+			  PedSector sector)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern const PedAlignment* ped_alignment_any;
 extern const PedAlignment* ped_alignment_none;

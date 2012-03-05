@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000, 2002, 2004, 2007-2011 Free Software Foundation, Inc.
+    Copyright (C) 2000, 2002, 2004, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -406,7 +406,7 @@ _rawpart_is_driver (const MacRawPartition* raw_part)
 	return 1;
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 _rawpart_has_driver (const MacRawPartition* raw_part, MacDiskData* mac_disk_data)
 {
 	MacDeviceDriver *driverlist;
@@ -704,8 +704,7 @@ _disk_analyse_ghost_size (PedDisk* disk)
 		if (_rawpart_check_signature (buf)
 		    && !_rawpart_is_void (buf)) {
 			mac_disk_data->ghost_size = i;
-			PED_ASSERT (i <= disk->dev->sector_size / 512);
-			found = 1;
+			found = (i <= disk->dev->sector_size / 512);
 			break;
 		}
 	}
@@ -1014,7 +1013,7 @@ _generate_empty_part (PedDisk* disk, int num, MacRawPartition* part_map)
 }
 
 /* returns the first empty entry in the partition map */
-static int
+static int _GL_ATTRIBUTE_PURE
 _get_first_empty_part_entry (PedDisk* disk, MacRawPartition* part_map)
 {
 	MacDiskData*	mac_disk_data = disk->disk_specific;
@@ -1292,7 +1291,7 @@ mac_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 	}
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 mac_partition_get_flag (const PedPartition* part, PedPartitionFlag flag)
 {
 	MacPartitionData*	mac_data;
@@ -1369,7 +1368,7 @@ mac_partition_set_name (PedPartition* part, const char* name)
 		mac_data->volume_name [i] = 0;
 }
 
-static const char*
+static const char* _GL_ATTRIBUTE_PURE
 mac_partition_get_name (const PedPartition* part)
 {
 	MacPartitionData*	mac_data;

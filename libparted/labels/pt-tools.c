@@ -1,5 +1,5 @@
 /* partition table tools
-   Copyright (C) 2008-2011 Free Software Foundation, Inc.
+   Copyright (C) 2008-2012 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -101,6 +101,14 @@ ptt_clear_sectors (PedDevice *dev, PedSector start, PedSector n)
   PedSector rem = n - n_z_sectors * i;
   return (rem == 0
           ? 1 : ped_device_write (dev, zero, start + n_z_sectors * i, rem));
+}
+
+/* Zero N sectors of GEOM->dev, starting with GEOM->start + START.
+   Return nonzero to indicate success, zero otherwise.  */
+int
+ptt_geom_clear_sectors (PedGeometry *geom, PedSector start, PedSector n)
+{
+  return ptt_clear_sectors (geom->dev, geom->start + start, n);
 }
 
 #include "pt-limit.c"

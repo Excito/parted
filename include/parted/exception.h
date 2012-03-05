@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2000, 2007, 2009-2011 Free Software Foundation, Inc.
+    Copyright (C) 1999-2000, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -83,11 +83,26 @@ typedef PedExceptionOption (PedExceptionHandler) (PedException* ex);
 
 extern int ped_exception;	/* set to true if there's an exception */
 
-extern char* ped_exception_get_type_string (PedExceptionType ex_type);
-extern char* ped_exception_get_option_string (PedExceptionOption ex_opt);
+extern char* ped_exception_get_type_string (PedExceptionType ex_type)
+    
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__const__))
+#endif
+;
+extern char* ped_exception_get_option_string (PedExceptionOption ex_opt)
+    
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern void ped_exception_set_handler (PedExceptionHandler* handler);
-extern PedExceptionHandler *ped_exception_get_handler(void);
+extern PedExceptionHandler *ped_exception_get_handler(void)
+    
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern PedExceptionOption ped_exception_default_handler (PedException* ex);
 

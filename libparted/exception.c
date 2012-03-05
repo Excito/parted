@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2000, 2007-2011 Free Software Foundation, Inc.
+    Copyright (C) 1999-2000, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@
 
 #include <parted/parted.h>
 #include <parted/debug.h>
+#include <parted/exception.h>
 
 #define N_(String) String
 #if ENABLE_NLS
@@ -103,7 +104,7 @@ ped_exception_get_type_string (PedExceptionType ex_type)
 
 /* FIXME: move this out to the prospective math.c */
 /* FIXME: this can probably be done more efficiently */
-static int
+static int _GL_ATTRIBUTE_PURE
 ped_log2 (int n)
 {
 	int x;

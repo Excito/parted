@@ -1,6 +1,7 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1998 - 2001, 2005, 2007-2008 Free Software Foundation, Inc.
+    Copyright (C) 1998-2001, 2005, 2007-2008, 2011-2012 Free Software
+    Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -29,7 +30,6 @@
 /** We can address 2^63 sectors */
 typedef long long PedSector;
 
-/** \deprecated Removal from API planned */
 typedef enum {
         PED_DEVICE_UNKNOWN      = 0,
         PED_DEVICE_SCSI         = 1,
@@ -48,7 +48,8 @@ typedef enum {
         PED_DEVICE_SDMMC        = 14,
         PED_DEVICE_VIRTBLK      = 15,
         PED_DEVICE_AOE          = 16,
-        PED_DEVICE_MD           = 17
+        PED_DEVICE_MD           = 17,
+        PED_DEVICE_LOOP         = 18
 } PedDeviceType;
 
 typedef struct _PedDevice PedDevice;
@@ -74,8 +75,7 @@ struct _PedDevice {
                                              (manufacturer, model) */
         char*           path;           /**< device /dev entry */
 
-        PedDeviceType   type;           /**< SCSI, IDE, etc.
-                                             \deprecated \sa PedDeviceType */
+        PedDeviceType   type;           /**< SCSI, IDE, etc. \sa PedDeviceType */
         long long       sector_size;            /**< logical sector size */
         long long       phys_sector_size;       /**< physical sector size */
         PedSector       length;                 /**< device length (LBA) */
@@ -128,7 +128,11 @@ extern void ped_device_probe_all ();
 extern void ped_device_free_all ();
 
 extern PedDevice* ped_device_get (const char* name);
-extern PedDevice* ped_device_get_next (const PedDevice* dev);
+extern PedDevice* ped_device_get_next (const PedDevice* dev)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 extern int ped_device_is_busy (PedDevice* dev);
 extern int ped_device_open (PedDevice* dev);
 extern int ped_device_close (PedDevice* dev);

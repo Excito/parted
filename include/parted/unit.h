@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2005, 2007, 2009-2011 Free Software Foundation, Inc.
+    Copyright (C) 2005, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -65,8 +65,21 @@ typedef enum {
 #define PED_UNIT_LAST PED_UNIT_TEBIBYTE
 
 extern long long ped_unit_get_size (const PedDevice* dev, PedUnit unit);
-extern const char* ped_unit_get_name (PedUnit unit);
-extern PedUnit ped_unit_get_by_name (const char* unit_name);
+extern const char *ped_unit_get_name (PedUnit unit)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__const__))
+#endif
+;
+extern PedUnit ped_unit_get_by_name (const char* unit_name)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern void ped_unit_set_default (PedUnit unit);
 extern PedUnit ped_unit_get_default ();

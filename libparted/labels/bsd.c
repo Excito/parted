@@ -1,7 +1,7 @@
 /* -*- Mode: c; tab-width: 8; indent-tabs-mode: nil; c-basic-offset: 8 -*-
 
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2000-2001, 2007-2011 Free Software Foundation, Inc.
+    Copyright (C) 2000-2001, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -494,7 +494,7 @@ bsd_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 	return 0;
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 bsd_partition_get_flag (const PedPartition* part, PedPartitionFlag flag)
 {
 	BSDPartitionData*		bsd_data;

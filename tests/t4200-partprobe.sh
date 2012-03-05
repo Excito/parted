@@ -1,7 +1,7 @@
 #!/bin/sh
 # partprobe must not examine more than 16 partitions
 
-# Copyright (C) 2008-2011 Free Software Foundation, Inc.
+# Copyright (C) 2008-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ dvhtool -d $dev --unix-to-vh d data || fail=1
 
 # Here's sample output from the parted...print command below:
 # BYT;
-# /dev/sdd:128880s:scsi:512:512:dvh: Flash Disk;
+# /dev/sdd:128880s:scsi:512:512:dvh: Flash Disk:;
 # 9:0s:4095s:4096s:::;
 # 17:4s:11s:8s::data:;
 
@@ -44,8 +44,8 @@ grep "^17:.*::data:;\$" out || fail=1
 # Parted 1.8.9 and earlier would mistakenly try to access partition #17.
 # ensure that partprobe succeeds and produces no output"
 partprobe -s $dev > out 2>err || fail=1
-compare err /dev/null || fail=1
+compare /dev/null err || fail=1
 echo "$dev: dvh partitions 9 <17>" > exp || fail=1
-compare out exp || fail=1
+compare exp out || fail=1
 
 Exit $fail

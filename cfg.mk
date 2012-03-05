@@ -1,5 +1,5 @@
 # Customize maint.mk                           -*- makefile -*-
-# Copyright (C) 2003-2011 Free Software Foundation, Inc.
+# Copyright (C) 2003-2012 Free Software Foundation, Inc.
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,18 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# Use alpha.gnu.org for alpha and beta releases.
-# Use ftp.gnu.org for stable releases.
-gnu_ftp_host-alpha = alpha.gnu.org
-gnu_ftp_host-beta = alpha.gnu.org
-gnu_ftp_host-stable = ftp.gnu.org
-gnu_rel_host = $(gnu_ftp_host-$(RELEASE_TYPE))
-
-url_dir_list = \
-  ftp://$(gnu_rel_host)/gnu/parted
+# Use the direct link.  This is guaranteed to work immediately, while
+# it can take a while for the faster mirror links to become usable.
+url_dir_list = http://ftp.gnu.org/gnu/$(PACKAGE)
 
 # Used in maint.mk's web-manual rule
 manual_title = Parted User's Manual
+
+# Use the direct link.  This is guaranteed to work immediately, while
+# it can take a while for the faster mirror links to become usable.
+url_dir_list = http://ftp.gnu.org/gnu/$(PACKAGE)
 
 # Tests not to run as part of "make distcheck".
 # Exclude changelog-check here so that there's less churn in ChangeLog
@@ -44,7 +42,7 @@ local-checks-to-skip = \
 # Now that we have better (check.mk) tests, make this the default.
 export VERBOSE = yes
 
-old_NEWS_hash = 31d7ac1051f7d5678928cb459b7abd5f
+old_NEWS_hash = 04810d10a532cf2e75d602ddda0d64b1
 
 include $(srcdir)/dist-check.mk
 
@@ -68,3 +66,6 @@ exclude_file_name_regexp--sc_cross_check_PATH_usage_in_tests = \
 
 exclude_file_name_regexp--sc_prohibit_always-defined_macros = \
   ^parted/(strlist|table)\.h$$
+
+exclude_file_name_regexp--sc_prohibit_path_max_allocation = \
+  ^libparted/arch/beos\.c$$

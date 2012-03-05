@@ -1,6 +1,6 @@
 /*
     util.h -- amiga partition table headers.
-    Copyright (C) 1998-2000, 2007, 2009-2011 Free Software Foundation, Inc.
+    Copyright (C) 1998-2000, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -66,4 +66,4 @@ struct AmigaIds {
 
 struct AmigaIds * _amiga_add_id (uint32_t id, struct AmigaIds *ids);
 void _amiga_free_ids (struct AmigaIds *ids);
-int _amiga_id_in_list (uint32_t id, struct AmigaIds *ids);
+int _amiga_id_in_list (uint32_t id, struct AmigaIds *ids) _GL_ATTRIBUTE_PURE;

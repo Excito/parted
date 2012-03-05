@@ -1,7 +1,7 @@
 #!/bin/sh
 # operate on a very small (1-sector) "disk"
 
-# Copyright (C) 2009-2011 Free Software Foundation, Inc.
+# Copyright (C) 2009-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ for opt in '' -s; do
   # When run as root, there are just curses-related control chars. Remove them.
   sed 's/^.\{1,12\}$//;/^$/d' out > k && mv k out \
       || fail=1
-  compare out /dev/null || fail=1
+  compare /dev/null out || fail=1
 
   parted -s $dev p || fail=1
   rm -f $dev

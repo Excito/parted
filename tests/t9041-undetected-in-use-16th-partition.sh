@@ -1,7 +1,7 @@
 #!/bin/sh
 # Ensure that parted knows when N'th (N>=16) partition is mounted
 
-# Copyright (C) 2010-2011 Free Software Foundation, Inc.
+# Copyright (C) 2010-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ scsi_debug_setup_ sector_size=$ss dev_size_mb=$n_MiB > dev-name ||
 scsi_dev=$(cat dev-name)
 
 n=$((n_MiB * sectors_per_MiB))
-printf "BYT;\n$scsi_dev:${n}s:scsi:$ss:$ss:gpt:Linux scsi_debug;\n" \
+printf "BYT;\n$scsi_dev:${n}s:scsi:$ss:$ss:gpt:Linux scsi_debug:;\n" \
   > exp || fail=1
 
 parted -s $scsi_dev mklabel gpt || fail=1
@@ -66,7 +66,7 @@ $AWK "BEGIN {d = $t_final - $t0; n = $n_partitions; st = 60 < d;"\
     || fail=1
 
 parted -m -s $scsi_dev u s p > out || fail=1
-compare out exp || fail=1
+compare exp out || fail=1
 
 wait_for_dev_to_appear_ ${scsi_dev}16 || fail_ ${scsi_dev}16 did not appear
 
@@ -92,7 +92,7 @@ for part_dev in $partitions; do
     > exp-error || framework_failure_
 
   # expect error
-  compare out exp-error || fail=1
+  compare exp-error out || fail=1
 
 done
 

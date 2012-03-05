@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2001, 2006-2007, 2009-2011 Free Software Foundation,
+    Copyright (C) 1999-2001, 2006-2007, 2009-2012 Free Software Foundation,
     Inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -86,15 +86,31 @@ extern void ped_file_system_alias_unregister (PedFileSystemType* type,
 
 extern PedFileSystemType* ped_file_system_type_get (const char* name);
 extern PedFileSystemType*
-ped_file_system_type_get_next (const PedFileSystemType* fs_type);
+ped_file_system_type_get_next (const PedFileSystemType* fs_type)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern PedFileSystemAlias*
-ped_file_system_alias_get_next (const PedFileSystemAlias* fs_alias);
+ped_file_system_alias_get_next (const PedFileSystemAlias* fs_alias)
+ 
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 extern PedFileSystemType* ped_file_system_probe (PedGeometry* geom);
 extern PedGeometry* ped_file_system_probe_specific (
 			const PedFileSystemType* fs_type,
 			PedGeometry* geom);
+
+PedFileSystem *ped_file_system_open (PedGeometry *geom);
+int ped_file_system_close (PedFileSystem *fs);
+int ped_file_system_resize (PedFileSystem *fs, PedGeometry *geom,
+			    PedTimer *timer);
+PedConstraint *ped_file_system_get_resize_constraint (const PedFileSystem *fs);
 
 #endif /* PED_FILESYS_H_INCLUDED */
 

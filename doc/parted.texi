@@ -14,7 +14,7 @@ and manipulating partition tables.
 @ifnottex @c texi2pdf don't understand copying and insertcopying ???
 @c modifications must also be done in the titlepage
 @copying
-Copyright @copyright{} 1999-2011 Free Software Foundation, Inc.
+Copyright @copyright{} 1999-2012 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -415,6 +415,7 @@ GNU Parted provides the following commands:
 
 @menu
 * align-check::
+* disk_set::
 * help::
 * mklabel::
 * mkpart::
@@ -456,6 +457,36 @@ Example:
 1 aligned
 @end example
 
+@end deffn
+
+@node disk_set
+@subsection disk_set
+@cindex disk_set, command description
+@cindex command description, disk_set
+
+@deffn Command disk_set @var{flag} @var{state}
+
+Changes a flag on the disk.  A flag can be either ``on'' or ``off''.
+Some or all of these flags will be available, depending on what disk
+label you are using:
+
+@table @samp
+
+@item pmbr_boot
+(GPT) - this flag enables the boot flag on the GPT's protective MBR
+partition.
+
+@end table
+
+The disk's flags are displayed by the print command on the "Disk Flags:"
+line.  They are also output as the last field of the disk information
+in machine mode.
+
+@example
+(parted) @kbd{disk_set pmbr_boot on}
+@end example
+
+Set the PMBR's boot flag.
 @end deffn
 
 @node help
@@ -972,6 +1003,9 @@ software
 * GNU Free Documentation License::  License for copying this manual
 @end menu
 
+@node GNU Free Documentation License
+@appendixsec GNU Free Documentation License
+@cindex FDL, GNU Free Documentation License
 @include fdl.texi
 
 @node History

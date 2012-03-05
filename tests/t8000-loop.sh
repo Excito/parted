@@ -1,7 +1,7 @@
 #!/bin/sh
 # Test usage of loop devices
 
-# Copyright (C) 2008-2011 Free Software Foundation, Inc.
+# Copyright (C) 2008-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -31,12 +31,14 @@ cleanup_fn_()
 f1=$(pwd)/1; d1=$(loop_setup_ "$f1") \
   || skip_ "is this partition mounted with 'nodev'?"
 
+require_partitionable_loop_device_ $d1
+
 # Expect this to succeed.
 parted -s $d1 mklabel msdos > err 2>&1 || fail=1
-compare err /dev/null || fail=1     # expect no output
+compare /dev/null err || fail=1     # expect no output
 
 # Create a partition
 parted -s $d1 mkpart primary 1 10 > err 2>&1 || fail=1
-compare err /dev/null || fail=1     # expect no output
+compare /dev/null err || fail=1     # expect no output
 
 Exit $fail

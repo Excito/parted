@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 2001-2002, 2005, 2007-2011 Free Software Foundation, Inc.
+    Copyright (C) 2001-2002, 2005, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -60,31 +60,13 @@ typedef struct _DVHPartData {
 
 static PedDiskType dvh_disk_type;
 
-/* FIXME: factor out this function: copied from aix.c, with changes to
-   the description, and an added sector number argument.
-   Read sector, SECTOR_NUM (which has length DEV->sector_size) into malloc'd
-   storage.  If the read fails, free the memory and return zero without
-   modifying *BUF.  Otherwise, set *BUF to the new buffer and return 1.  */
-static int
-read_sector (const PedDevice *dev, PedSector sector_num, char **buf)
-{
-	char *b = ped_malloc (dev->sector_size);
-	PED_ASSERT (b != NULL);
-	if (!ped_device_read (dev, b, sector_num, 1)) {
-		free (b);
-		return 0;
-	}
-	*buf = b;
-	return 1;
-}
-
 static int
 dvh_probe (const PedDevice *dev)
 {
 	struct volume_header *vh;
 
-	char *label;
-	if (!read_sector (dev, 0, &label))
+	void *label;
+	if (!ptt_read_sector (dev, 0, &label))
 		return 0;
 
 	vh = (struct volume_header *) label;
@@ -174,7 +156,7 @@ dvh_free (PedDisk* disk)
 }
 
 /* two's complement 32-bit checksum */
-static uint32_t
+static uint32_t _GL_ATTRIBUTE_PURE
 _checksum (const uint32_t* base, size_t size)
 {
 	uint32_t	sum = 0;
@@ -313,8 +295,8 @@ dvh_read (PedDisk* disk)
 
 	ped_disk_delete_all (disk);
 
-	char *s0;
-	if (!read_sector (disk->dev, 0, &s0))
+	void *s0;
+	if (!ptt_read_sector (disk->dev, 0, &s0))
 		return 0;
 	memcpy (&vh, s0, sizeof vh);
 	free (s0);
@@ -674,7 +656,7 @@ dvh_partition_set_flag (PedPartition* part, PedPartitionFlag flag, int state)
 	return 1;
 }
 
-static int
+static int _GL_ATTRIBUTE_PURE
 dvh_partition_get_flag (const PedPartition* part, PedPartitionFlag flag)
 {
 	DVHDiskData* dvh_disk_data = part->disk->disk_specific;

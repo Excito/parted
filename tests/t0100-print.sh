@@ -1,6 +1,6 @@
 #!/bin/sh
 # the most basic 'print' test
-# Copyright (C) 2007, 2009-2011 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2009-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ Model:  (file)
 Disk .../$dev: 8s
 Sector size (logical/physical): ${ss}B/${ss}B
 Partition Table: msdos
+Disk Flags:
 
 Number  Start  End  Size  Type  File system  Flags
 
@@ -46,13 +47,14 @@ msdos_magic='\125\252'
 { dd if=/dev/zero  bs=510 count=1; printf "$msdos_magic"
   dd if=/dev/zero bs=$(expr 8 '*' $ss - 510) count=1; } > $dev || fail=1
 
-# print the empty table' \
+# print the empty table
 parted -s $dev unit s print >out 2>&1 || fail=1
 
-# prepare actual and expected output' \
+# prepare actual and expected output
+sed 's/ $//' out > k && mv k out || fail=1 # Remove trailing blank.
 mv out o2 && sed "s,^Disk .*/$dev:,Disk .../$dev:," o2 > out || fail=1
 
 # check for expected output
-compare out exp || fail=1
+compare exp out || fail=1
 
 Exit $fail

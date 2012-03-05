@@ -1,7 +1,7 @@
 #!/bin/sh
 # verify that partition maxima-querying functions work
 
-# Copyright (C) 2009-2011 Free Software Foundation, Inc.
+# Copyright (C) 2009-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ for t in msdos gpt dvh sun mac bsd amiga loop pc98; do
     print-max $dev > out 2>&1 || fail=1
     printf '%s\n' "max len: $max_len" \
 	"max start sector: $max_start" > exp || fail=1
-    compare out exp || fail=1
+    compare exp out || fail=1
 done
 
 Exit $fail

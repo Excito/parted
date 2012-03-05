@@ -22,7 +22,7 @@
 This file documents the use of GNU Parted, a program for creating,
 resising, checking and copy partitions, and file systems on them.
 
-Copyright 1999-2002, 2009-2011 Free Software Foundation, Inc.
+Copyright 1999-2002, 2009-2012 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -2790,6 +2790,9 @@ por outros usuários no futuro...
 * GNU Free Documentation License::  Licença para copiar esse manual
 @end menu
 
+@node GNU Free Documentation License
+@appendixsec GNU Free Documentation License
+@cindex FDL, GNU Free Documentation License
 @include fdl.texi
 
 @c FDL: FDL 4.I suggests a HISTORY section be included in

@@ -1,6 +1,6 @@
  /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2003, 2005, 2007-2011 Free Software Foundation, Inc.
+    Copyright (C) 1999-2003, 2005, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -286,7 +286,7 @@ error:
 
 /* Given a partition table type NAME, e.g., "gpt", return its PedDiskType
    handle.  If no known type has a name matching NAME, return NULL.  */
-static PedDiskType const *
+static PedDiskType const * _GL_ATTRIBUTE_PURE
 find_disk_type (char const *name)
 {
   PedDiskType const *t;
@@ -836,7 +836,8 @@ ped_disk_flag_get_name(PedDiskFlag flag)
         switch (flag) {
         case PED_DISK_CYLINDER_ALIGNMENT:
                 return N_("cylinder_alignment");
-
+        case PED_DISK_GPT_PMBR_BOOT:
+                return N_("pmbr_boot");
         default:
                 ped_exception_throw (
                         PED_EXCEPTION_BUG,
@@ -1554,7 +1555,7 @@ ped_disk_next_partition (const PedDisk* disk, const PedPartition* part)
 /** @} */
 
 #ifdef DEBUG
-static int
+static int _GL_ATTRIBUTE_PURE
 _disk_check_sanity (PedDisk* disk)
 {
 	PedPartition*	walk;
@@ -1807,7 +1808,7 @@ _partition_get_overlap_constraint (PedPartition* part, PedGeometry* geom)
  * Note: overlap with an extended partition is also allowed, provided that
  * \p geom lies completely inside the extended partition.
  */
-static int
+static int _GL_ATTRIBUTE_PURE
 _disk_check_part_overlaps (PedDisk* disk, PedPartition* part)
 {
 	PedPartition*	walk;
@@ -2171,7 +2172,8 @@ ped_disk_set_partition_geom (PedDisk* disk, PedPartition* part,
 	PED_ASSERT (part->disk == disk);
 
 	old_geom = part->geom;
-	ped_geometry_init (&new_geom, part->geom.dev, start, end - start + 1);
+	if (!ped_geometry_init (&new_geom, part->geom.dev, start, end - start + 1))
+		return 0;
 
 	if (!_disk_push_update_mode (disk))
 		return 0;

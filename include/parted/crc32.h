@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1998-2000, 2007, 2009-2011 Free Software Foundation, Inc.
+    Copyright (C) 1998-2000, 2007, 2009-2012 Free Software Foundation, Inc.
 
     crc32.h
 
@@ -29,6 +29,10 @@
  */
 
 extern uint32_t __efi_crc32 (const void *buf, unsigned long len,
-			     uint32_t seed);
+			     uint32_t seed)
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 96)
+  __attribute ((__pure__))
+#endif
+;
 
 #endif /* _CRC32_H */

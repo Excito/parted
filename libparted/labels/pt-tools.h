@@ -1,5 +1,5 @@
 /* libparted - a library for manipulating disk partitions
-   Copyright (C) 2008-2011 Free Software Foundation, Inc.
+   Copyright (C) 2008-2012 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@ int ptt_read_sector (PedDevice const *dev, PedSector sector_num, void **buf);
 int ptt_read_sectors (PedDevice const *dev, PedSector start_sector,
 		      PedSector n_sectors, void **buf);
 int ptt_clear_sectors (PedDevice *dev, PedSector start, PedSector count);
+int ptt_geom_clear_sectors (PedGeometry *geom, PedSector start,
+			    PedSector count);
 int ptt_partition_max_start_len (char const *label_type,
                 const PedPartition *part);
 

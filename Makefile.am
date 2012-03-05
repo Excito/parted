@@ -1,5 +1,5 @@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = po lib libparted parted partprobe include doc debug tests
+SUBDIRS = po lib include libparted parted partprobe doc debug tests
 
 EXTRA_DIST =				\
   .version				\
@@ -28,7 +28,15 @@ parted.spec: parted.spec.in
 	mv $@-tmp $@
 MAINTAINERCLEANFILES = parted.spec
 
-distcheck-hook:
+.PHONY: root-check
+root-check:
+	sudo sh -c '$(MAKE) check; t=$$?; chown -R $(USER) .; exit $$t'
+
+# Not everyone who runs "make distcheck" will want to or even
+# be able to run the root tests.  If you want to skip them,
+# run make like this: "make distcheck root-check="
+root_check ?= root-check
+distcheck-hook: $(root_check)
 	$(MAKE) my-distcheck
 
 ### ABI Checking scripts ###

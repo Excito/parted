@@ -1,6 +1,6 @@
 /*
     parted - a frontend to libparted
-    Copyright (C) 1999-2001, 2007, 2009-2011 Free Software Foundation, Inc.
+    Copyright (C) 1999-2001, 2007, 2009-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@
 
 #define MIN(a,b)	( (a<b)?  a : b )
 
-int
+static int _GL_ATTRIBUTE_PURE
 wchar_strlen (const wchar_t* str)
 {
 #ifdef ENABLE_NLS
@@ -53,7 +53,7 @@ wchar_strlen (const wchar_t* str)
 #endif
 }
 
-wchar_t*
+static wchar_t * _GL_ATTRIBUTE_PURE
 wchar_strchr (const wchar_t* str, char ch)
 {
 #ifdef ENABLE_NLS
@@ -63,7 +63,7 @@ wchar_strchr (const wchar_t* str, char ch)
 #endif
 }
 
-int
+static int _GL_ATTRIBUTE_PURE
 wchar_strcasecmp (const wchar_t* a, const wchar_t* b)
 {
 #ifdef ENABLE_NLS
@@ -73,7 +73,7 @@ wchar_strcasecmp (const wchar_t* a, const wchar_t* b)
 #endif
 }
 
-int
+static int _GL_ATTRIBUTE_PURE
 wchar_strncasecmp (const wchar_t* a, const wchar_t* b, size_t n)
 {
 #ifdef ENABLE_NLS
@@ -83,7 +83,7 @@ wchar_strncasecmp (const wchar_t* a, const wchar_t* b, size_t n)
 #endif
 }
 
-wchar_t*
+static wchar_t * _GL_ATTRIBUTE_PURE
 wchar_strdup (const wchar_t* str)
 {
 #ifdef ENABLE_NLS
@@ -119,7 +119,7 @@ gettext_to_wchar (const char* str)
 	return result;
 
 error:
-	printf ("Error during translation: %s\n", strerror (errno));
+	fprintf (stderr, "Error during translation: %s\n", strerror (errno));
 	exit (EXIT_FAILURE);
 }
 
@@ -168,7 +168,7 @@ wchar_to_str (const wchar_t* str, size_t count)
 	return result;
 
 error:
-	printf ("Error during translation: %s\n", strerror (errno));
+	fprintf (stderr, "Error during translation: %s\n", strerror (errno));
 	exit (EXIT_FAILURE);
 }
 
@@ -188,10 +188,10 @@ wchar_to_str (const wchar_t* str, size_t count)
 #endif /* !ENABLE_NLS */
 
 static void
-print_wchar (const wchar_t* str, size_t count)
+print_wchar (const wchar_t* str, size_t count, FILE *fp)
 {
 	char*	tmp = wchar_to_str (str, count);
-	printf ("%s", tmp);
+	fprintf (fp, "%s", tmp);
 	free (tmp);
 }
 
@@ -373,13 +373,13 @@ str_list_convert (const StrList* list)
 }
 
 void
-str_list_print (const StrList* list)
+str_list_print (const StrList* list, FILE *fp)
 {
 	const StrList*	walk;
 
 	for (walk=list; walk; walk=walk->next) {
 		if (walk->str)
-			print_wchar (walk->str, 0);
+                        print_wchar (walk->str, 0, fp);
 	}
 }
 
@@ -430,7 +430,7 @@ is_space (wchar_t c)
 
 void
 str_list_print_wrap (const StrList* list, int line_length, int offset,
-		     int indent)
+		     int indent, FILE *fp)
 {
 	const StrList*	walk;
 	const wchar_t*	str;
@@ -481,19 +481,19 @@ str_list_print_wrap (const StrList* list, int line_length, int offset,
 			     cut_right++);
 
 			if (cut_left > 0)
-				print_wchar (str, cut_left + 1);
+				print_wchar (str, cut_left + 1, fp);
 
 			str += cut_right;
 			str_len -= cut_right;
 			line_left = line_length - indent;
 
 			if (walk->next || *str)
-				printf ("\n%*s", indent, "");
+				fprintf (fp, "\n%*s", indent, "");
 			else if (line_break)
-				putchar ('\n');
+				fputc ('\n', fp);
 		}
 
-		print_wchar (str, 0);
+		print_wchar (str, 0, fp);
 		line_left -= wchar_strlen (str);
 	}
 }

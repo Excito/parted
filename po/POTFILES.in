@@ -1,5 +1,5 @@
 # libparted
-# Copyright (C) 1999-2001, 2006-2011 Free Software Foundation, Inc.
+# Copyright (C) 1999-2001, 2006-2012 Free Software Foundation, Inc.
 # This file may be modified and/or copied without restriction.
 
 # list of files containing translatable strings
@@ -52,6 +52,25 @@ libparted/fs/fat/fat.c
 libparted/fs/fat/bootsector.c
 libparted/fs/linux_swap/linux_swap.c
 libparted/fs/hfs/probe.c
+
+libparted/fs/r/fat/bootsector.c
+libparted/fs/r/fat/calc.c
+libparted/fs/r/fat/context.c
+libparted/fs/r/fat/count.c
+libparted/fs/r/fat/fat.c
+libparted/fs/r/fat/resize.c
+libparted/fs/r/fat/table.c
+libparted/fs/r/filesys.c
+libparted/fs/r/hfs/advfs.c
+libparted/fs/r/hfs/advfs_plus.c
+libparted/fs/r/hfs/cache.c
+libparted/fs/r/hfs/file.c
+libparted/fs/r/hfs/file_plus.c
+libparted/fs/r/hfs/hfs.c
+libparted/fs/r/hfs/journal.c
+libparted/fs/r/hfs/probe.c
+libparted/fs/r/hfs/reloc.c
+libparted/fs/r/hfs/reloc_plus.c
 
 # parted
 parted/parted.c

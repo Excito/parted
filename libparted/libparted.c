@@ -1,6 +1,6 @@
 /*
     libparted - a library for manipulating disk partitions
-    Copyright (C) 1999-2001, 2007-2011 Free Software Foundation, Inc.
+    Copyright (C) 1999-2001, 2007-2012 Free Software Foundation, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -232,21 +232,6 @@ ped_malloc (size_t size)
 	}
 
 	return mem;
-}
-
-int
-ped_realloc (void** old, size_t size)
-{
-	void*		mem;
-
-	mem = (void*) realloc (*old, size);
-	if (!mem) {
-		ped_exception_throw (PED_EXCEPTION_FATAL, PED_EXCEPTION_CANCEL,
-				     _("Out of memory."));
-		return 0;
-	}
-	*old = mem;
-	return 1;
 }
 
 

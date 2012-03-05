@@ -1,5 +1,124 @@
 GNU parted NEWS                                    -*- outline -*-
 
+* Noteworthy changes in release 3.1 (2012-03-02) [stable]
+
+** New features
+
+  parted now supports up to 64 msdos partitions (was 16).  The partition
+  table format imposes no limit (it's simply a linked list), so we may
+  raise it further, if needed.
+
+  parted has improved support for partitionable loopback devices
+
+  parted provides a new library, libparted-fs-resize, for resizing
+  HFS+ and FAT file systems.  This is the subset of the FS-manipulation
+  functionality removed in parted-3.0 for which we have found no free
+  alternative.  That library provides only these entry points:
+    ped_file_system_close
+    ped_file_system_get_resize_constraint
+    ped_file_system_open
+    ped_file_system_resize
+  so when using it you must also link with libparted.
+
+** Bug fixes
+
+  libparted: avoid an invalid free when creating many partitions in
+  a GPT partition table.  [bug introduced in parted-1.9.0]
+
+  The msdos partition table claimed a maximum partition count of 16
+  but would allow you to go beyond that.  This resulted in the kernel
+  not being informed of those partitions.  Corrected to enforce the
+  limit.
+
+  parted now exits nonzero for certain failures already diagnosed as "Error".
+  For example, before this change, parted would exit successfully in spite
+  of "Error: ...unrecognised disk label" and "Error:... both GPT primary
+  and backup partition tables are corrupted".
+
+  libparted: given a GPT table with a partition table array of length, say 9,
+  (usually, there are at least 128 entries) and when run in interactive mode
+  with the backup header not at the end of the device where it belongs, parted
+  would offer to fix it by moving the backup header to the end.  If you
+  accepted, parted could corrupt both headers, truncating their on-disk
+  PTE arrays.  Now, parted handles this case.
+
+  libparted: gpt_disk_duplicate now copies the flags over to the new
+  disk object. Previously the flags would be undefined.
+
+  libparted can now read partition tables with a number of partition
+  array entries that is different from the default of 128.  Before,
+  it would fail to recognize them and could even read beyond the end
+  of a heap-allocated buffer.
+
+  libparted: no longer aborts (failed assertion) due to a nilfs2_probe bug
+  [bug introduced in parted-2.4 with the addition of nilfs2 support]
+
+  libparted: no longer aborts when reading a truncated GPT-formatted device
+  [bug present at least as far back as RHEL4's parted-1.6.19]
+
+  libparted: works with a two-component linux kernel version number like 3.0
+  [bug present since the beginning]
+
+  libparted: strengthen the pc98 test so that it is much less likely to
+  cause an MSDOS partition table to be mistakenly identified as pc98.
+  [bug present since the beginning]
+
+  libparted no longer gets a failed assertion when probing a partition
+  with an HFS or HFS+ signature, but with invalid ->total_blocks and/or
+  ->block_size values.
+
+  parted now uses ext_range device sysfs attribute to determine maximum number
+  of partitions the device can hold.  With this change, parted now correctly
+  informs kernel about new partitions on partitionable MD RAID devices.
+
+  libparted: creating a new partition table on a device with an existing
+  mac partition table could result in a failed assertion.
+
+** Changes in behavior
+
+  Floppy drives are no longer scanned on linux: they cannot be partitioned
+  anyhow, and some users have a misconfigured BIOS that claims to have a
+  floppy when they don't, and scanning gets hung up.
+
+  parted: the mkpart command has changed semantics with regard to specifying
+  the end of the partition.  If the end is specified using units of MiB, GiB,
+  etc., parted subtracts one sector from the specified value.  With this
+  change, it is now possible to create partitions like 1MiB-2MiB, 2MiB-3MiB
+  and so on.
+
+  Device-mapper devices ( LVM, dmraid ) no longer insert a 'p' between the
+  base device name and the partition number unless the last character of
+  the base device name is a digit.  This brings parted into compliance with
+  the partition naming of kpartx and "linux since the dawn of time", but
+  differs from the way that dmraid 1.0.0-rc16-3 operates.  A patch to
+  correct dmraid has been submitted to ataraid-list@redhat.com.  Without
+  this patch, parted and dmraid will both create duplicate partition devices
+  named /dev/mapper/foo1 and /dev/mapper/foop1.
+
+  Add the ability to set the boot flag on the GPT PMBR. This is needed
+  for some BIOS systems that refuse to boot from GPT unless this is set.
+  disk_set and disk_toggle commands can be used to set the pmbr_boot
+  flag on the disk.
+
+  The flag is also displayed in a new line, 'Disk Flags:' like this:
+
+    Model:  (file)
+    Disk /home/bcl/disk.img: 4295MB
+    Sector size (logical/physical): 512B/512B
+    Partition Table: gpt
+    Disk Flags: pmbr_boot
+
+  Using -m the flags are added after the model name field:
+
+    /root/disk.img:4295MB:file:512:512:gpt::pmbr_boot;
+
+** Build-related
+
+  "make dist" no longer builds .tar.gz files.
+  xz is portable enough and in wide-enough use that distributing
+  only .tar.xz files is enough.
+
+
 * Noteworthy changes in release 3.0 (2011-05-30) [stable]
 
 ** Bug fixes
@@ -579,7 +698,7 @@ GNU parted NEWS                                    -*- outline -*-
 
 ========================================================================
 
-Copyright (C) 2001-2011 Free Software Foundation, Inc.
+Copyright (C) 2001-2012 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or

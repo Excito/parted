@@ -1,7 +1,7 @@
 #!/bin/sh
 # Ensure that a simple command using -s succeeds with no prompt
 
-# Copyright (C) 2007, 2009-2011 Free Software Foundation, Inc.
+# Copyright (C) 2007, 2009-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ dd if=/dev/null of=$dev bs=1 seek=$N 2> /dev/null || fail=1
 
 # run parted -s FILE mklabel msdos
 parted -s $dev mklabel msdos > out 2>&1 || fail=1
-compare out /dev/null || fail=1
+compare /dev/null out || fail=1
 
 # ----------------------------------------------
 # Now, ensure that a simple mklabel command succeeds.
@@ -49,7 +49,7 @@ parted $dev mklabel msdos > out 2>&1 || fail=1
 emit_superuser_warning > exp || fail=1
 
 # check its "interactive" output
-compare out exp || fail=1
+compare exp out || fail=1
 
 # create interactive input
 printf 'y\n' > in || fail=1
@@ -61,7 +61,7 @@ parted ---pretend-input-tty $dev mklabel msdos < in > out 2>&1 || fail=1
 # Transform the actual output, to avoid spurious differences when
 # $PWD contains a symlink-to-dir.  Also, remove the ^M      ...^M bogosity.
 # normalize the actual output
-mv out o2 && sed -e "s,on /.*/$dev,on DEVICE,;s,   *,,;s, $,," \
+mv out o2 && sed -e "s,on /.*/$dev,on DEVICE,;s,   *,,g;s, $,," \
                       -e "s,^.*/lt-parted: ,parted: ," o2 > out
 
 # Create expected output file.
@@ -73,6 +73,6 @@ Yes/No? y
 EOF
 
 # check its output -- slightly different here, due to prompts
-compare out exp || fail=1
+compare exp out || fail=1
 
 Exit $fail

@@ -1,7 +1,7 @@
 #!/bin/sh
 # Ensure that palo and prep types work properly.
 
-# Copyright (C) 2010-2011 Free Software Foundation, Inc.
+# Copyright (C) 2010-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -39,6 +39,6 @@ parted -m -s $dev mklabel msdos \
 
 grep -E '^1:2048s:4095s:2048s:::p...;$' out > k; mv k out
 
-compare out exp || fail=1
+compare exp out || fail=1
 
 Exit $fail

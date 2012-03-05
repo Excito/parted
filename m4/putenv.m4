@@ -1,5 +1,5 @@
-# putenv.m4 serial 17
-dnl Copyright (C) 2002-2011 Free Software Foundation, Inc.
+# putenv.m4 serial 18
+dnl Copyright (C) 2002-2012 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -36,6 +36,5 @@ AC_DEFUN([gl_FUNC_PUTENV],
    ])
   if test $gl_cv_func_svid_putenv = no; then
     REPLACE_PUTENV=1
-    AC_LIBOBJ([putenv])
   fi
 ])

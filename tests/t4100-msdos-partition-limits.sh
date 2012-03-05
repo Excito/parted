@@ -1,7 +1,7 @@
 #!/bin/sh
 # enforce limits on partition start sector and length
 
-# Copyright (C) 2008-2011 Free Software Foundation, Inc.
+# Copyright (C) 2008-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ do_mkpart $n $end || fail=1
 parted -s $dev unit s p > out 2>&1 || fail=1
 sed -n "/^  *1  *$n/s/  */ /gp" out|sed "s/  *\$//" > k && mv k out || fail=1
 echo " 1 ${n}s ${end}s 4294967295s primary" > exp || fail=1
-compare out exp || fail=1
+compare exp out || fail=1
 
 # a partition length of exactly 2^32 sectors provokes failure.
 do_mkpart $n $(echo $n+2^32-1|bc) > err 2>&1
@@ -95,7 +95,7 @@ bad_part_length()
 
 # check for new diagnostic
 bad_part_length 4294967296 > exp || fail=1
-compare err exp || fail=1
+compare exp err || fail=1
 
 # a partition length of 2^32+1 sectors must provoke failure.
 do_mkpart $n $(echo $n+2^32|bc) > err 2>&1
@@ -103,7 +103,7 @@ test $? = 1 || fail=1
 
 # check for new diagnostic
 bad_part_length 4294967297 > exp || fail=1
-compare err exp || fail=1
+compare exp err || fail=1
 
 # =========================================================
 # Now consider partition starting sector numbers.
@@ -116,9 +116,10 @@ do_mkpart_start_and_len $(echo 2^32-1|bc) 1000 || fail=1
 
 cat > exp <<EOF
 Model:  (file)
-Disk: 4294970342s
+Disk $dev: 4294970342s
 Sector size (logical/physical): ${ss}B/${ss}B
 Partition Table: $table_type
+Disk Flags:
 
 Number  Start        End          Size   Type     File system  Flags
  1      4294967295s  4294968294s  1000s  primary
@@ -127,8 +128,9 @@ EOF
 
 # print the result
 parted -s $dev unit s p > out 2>&1 || fail=1
-sed "s/Disk .*:/Disk:/;s/ *$//" out > k && mv k out  || fail=1
-compare out exp || fail=1
+sed "s/^Disk .*\($dev: [0-9][0-9]*s\)$/Disk \1/;s/ *$//" out > k \
+    && mv k out || fail=1
+compare exp out || fail=1
 
 # a partition start sector number of 2^32 must fail
 do_mkpart_start_and_len $(echo 2^32|bc) 1000 > err 2>&1
@@ -136,7 +138,7 @@ test $? = 1 || fail=1
 
 # check for new diagnostic
 bad_start_sector 4294967296 > exp || fail=1
-compare err exp || fail=1
+compare exp err || fail=1
 
 # a partition start sector number of 2^32+1 must fail, too.
 do_mkpart_start_and_len $(echo 2^32+1|bc) 1000 > err 2>&1
@@ -144,7 +146,7 @@ test $? = 1 || fail=1
 
 # check for new diagnostic
 bad_start_sector 4294967297 > exp || fail=1
-compare err exp || fail=1
+compare exp err || fail=1
 
 done
 

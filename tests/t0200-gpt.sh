@@ -1,7 +1,7 @@
 #!/bin/sh
 # Ensure that printing a GPT partition table does not modify it.
 
-# Copyright (C) 2009-2011 Free Software Foundation, Inc.
+# Copyright (C) 2009-2012 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ dd if=/dev/null of=$dev bs=1 seek=$N || framework_failure
 # create a GPT partition table
 parted -s $dev mklabel gpt > out 2>&1 || fail=1
 # expect no output
-compare out /dev/null || fail=1
+compare /dev/null out || fail=1
 
 # save a copy of the original primary GPT table
 dd if=$dev of=before count=1 skip=1 || fail=1
@@ -38,7 +38,7 @@ printf x >> $dev || fail=1
 parted -m -s $dev u s p > out 2> err || fail=1
 # don't bother comparing stdout
 # expect no stderr
-compare err /dev/null || fail=1
+compare /dev/null err || fail=1
 
 # extract the primary GPT table again
 dd if=$dev of=after count=1 skip=1 || fail=1
