@@ -8,7 +8,7 @@ Vcs-Git: git://git.debian.org/git/parted/debian/parted.git
 Vcs-Browser: http://git.debian.org/?p=parted/debian/parted.git
 Homepage: http://www.gnu.org/software/parted
 Build-Depends:
- debhelper (>= 8.1.3),
+ debhelper (>= 8),
  quilt,
  libncurses-dev | libncurses5-dev,
  libreadline-dev | libreadline6-dev,
