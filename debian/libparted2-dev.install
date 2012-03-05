@@ -1,0 +1,5 @@
+debian/tmp/usr/lib/libparted.a
+debian/tmp/usr/lib/libparted.so
+debian/tmp/usr/lib/pkgconfig
+debian/tmp/usr/include
+

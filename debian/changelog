@@ -1,3 +1,10 @@
+parted (3.1-0ex1) unstable; urgency=low
+
+  * New upstream release
+  * dropping udeb and adding libparted-fs-resize package
+
+ -- Carl Fürstenberg <carl@excito.com>  Mon, 05 Mar 2012 16:15:51 +0100
+
 parted (2.3-9) UNRELEASED; urgency=low
 
   * Add build-arch and build-indep targets to debian/rules.

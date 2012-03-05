@@ -1,6 +1,16 @@
-/control
-/libparted0-dev.files
-/libparted0-i18n.files
-/libparted0debian1.files
-/libparted0debian1.files.in
-/libparted0debian1.lintian-overrides
+#Generated files
+*.debhelper.log
+*.debhelper
+*.substvars
+files
+
+# package directories
+libparted2
+libparted2-dbg
+libparted2-dev
+libparted2-i18n
+libparted-fs-resize0
+parted
+parted-doc
+tmp
+
