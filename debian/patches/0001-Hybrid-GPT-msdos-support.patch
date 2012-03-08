@@ -1,0 +1,346 @@
+From: =?UTF-8?q?Carl=20F=C3=BCrstenberg?= <carl@excito.com>
+Date: Thu, 8 Mar 2012 16:26:37 +0100
+Subject: Hybrid GPT/msdos support
+
+---
+ libparted/labels/gpt.c |  241 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 files changed, 236 insertions(+), 5 deletions(-)
+
+diff --git a/libparted/labels/gpt.c b/libparted/labels/gpt.c
+index 84bdc12..24b0921 100644
+--- a/libparted/labels/gpt.c
++++ b/libparted/labels/gpt.c
+@@ -286,6 +286,7 @@ typedef struct _GPTPartitionData
+ } GPTPartitionData;
+ 
+ static PedDiskType gpt_disk_type;
++static PedDiskType gpt_sync_mbr_disk_type;
+ 
+ static inline uint32_t
+ pth_get_size (const PedDevice *dev)
+@@ -454,8 +455,50 @@ _pmbr_is_valid (const LegacyMBR_t *mbr)
+   return 0;
+ }
+ 
++/* checks if device has a hybrid protective MBR partition table
++ *
++ * If the 1st partition has type 0xEE that spans the entire
++ * size of the disk from sector 1 to the last sector
++ * (or 2 TiB, whichever is smaller), we consider it 'normal' GPT.
++ * Otherwise it is synced GPT with hybridized pMBR.
++ */
++static inline int
++_has_hybrid_pmbr (const PedDevice *dev)
++{
++  int has_hybrid_pmbr = 1;
++
++  PED_ASSERT (dev != NULL);
++
++  void *label;
++  if (!ptt_read_sector (dev, 0, &label))
++    return 0;
++
++  LegacyMBR_t mbr;
++  memcpy(&mbr, label, sizeof(mbr));
++
++  if (mbr.Signature != PED_CPU_TO_LE16 (MSDOS_MBR_SIGNATURE)) {
++    free(label);
++    return 0;
++  }
++
++  uint32_t efi_gpt_expected_size;
++  if ((dev->length - 1ULL) > 0xFFFFFFFFULL)
++    efi_gpt_expected_size = 0xFFFFFFFF;
++  else
++    efi_gpt_expected_size = dev->length - 1UL;
++
++  if ((mbr.PartitionRecord[0].OSType == EFI_PMBR_OSTYPE_EFI) &&
++      (mbr.PartitionRecord[0].StartingLBA == PED_CPU_TO_LE32(1)) &&
++      (mbr.PartitionRecord[0].SizeInLBA == PED_CPU_TO_LE32(efi_gpt_expected_size)))
++        /* pMBR is not hybrid */
++        has_hybrid_pmbr = 0;
++
++  free(label);
++  return has_hybrid_pmbr;
++}
++
+ static int
+-gpt_probe (const PedDevice *dev)
++_gpt_probe_generic(const PedDevice *dev)
+ {
+   GuidPartitionTableHeader_t *gpt = NULL;
+   int gpt_sig_found = 0;
+@@ -508,6 +551,19 @@ gpt_probe (const PedDevice *dev)
+   return ok;
+ }
+ 
++static int
++gpt_probe (const PedDevice *dev)
++{
++  return _gpt_probe_generic(dev) && !_has_hybrid_pmbr(dev);
++}
++
++
++static int
++gpt_sync_mbr_probe (const PedDevice *dev)
++{
++  return _gpt_probe_generic(dev) && _has_hybrid_pmbr(dev);
++}
++
+ static PedDisk *
+ gpt_alloc (const PedDevice *dev)
+ {
+@@ -546,6 +602,36 @@ error:
+ }
+ 
+ static PedDisk *
++gpt_sync_mbr_alloc (const PedDevice *dev)
++{
++  PedDisk *disk;
++  GPTDiskData *gpt_disk_data;
++  PedSector data_start, data_end;
++
++  disk = _ped_disk_alloc ((PedDevice *) dev, &gpt_sync_mbr_disk_type);
++  if (!disk)
++    goto error;
++  disk->disk_specific = gpt_disk_data = ped_malloc (sizeof (GPTDiskData));
++  if (!disk->disk_specific)
++    goto error_free_disk;
++
++  data_start = 2 + GPT_DEFAULT_PARTITION_ENTRY_ARRAY_SIZE / dev->sector_size;
++  data_end = dev->length - 2
++    - GPT_DEFAULT_PARTITION_ENTRY_ARRAY_SIZE / dev->sector_size;
++  ped_geometry_init (&gpt_disk_data->data_area, dev, data_start,
++                     data_end - data_start + 1);
++  gpt_disk_data->entry_count = GPT_DEFAULT_PARTITION_ENTRIES;
++  uuid_generate ((unsigned char *) &gpt_disk_data->uuid);
++  swap_uuid_and_efi_guid ((unsigned char *) (&gpt_disk_data->uuid));
++  return disk;
++
++error_free_disk:
++  free (disk);
++error:
++  return NULL;
++}
++
++static PedDisk *
+ gpt_duplicate (const PedDisk *disk)
+ {
+   PedDisk *new_disk;
+@@ -930,7 +1016,7 @@ gpt_read (PedDisk *disk)
+ 
+   /* motivation: let the user decide about the pmbr... during
+      ped_disk_probe(), they probably didn't get a choice... */
+-  if (!gpt_probe (disk->dev))
++  if (!gpt_probe (disk->dev) && !gpt_sync_mbr_probe(disk->dev))
+     goto error;
+ 
+   GuidPartitionTableHeader_t *gpt = NULL;
+@@ -1087,11 +1173,59 @@ error:
+   return 0;
+ }
+ 
++
++static inline unsigned char
++_part_to_ostype (PedPartition* part)
++{
++    if (part->fs_type) {
++        if (strncmp (part->fs_type->name, "fat", 3) == 0) return 0xc;
++        if (strncmp (part->fs_type->name, "ntfs", 4) == 0) return 0x7;
++        if (strncmp (part->fs_type->name, "hfs", 3) == 0) return 0xaf;
++        if (strstr (part->fs_type->name, "swap")) return 0x82;
++    }
++    return 0x83; // Everything else is Linux
++}
++
++static inline PedPartition*
++_find_first_part (const PedDisk* disk)
++{
++    PedPartition *retval = NULL, *part = NULL;
++    uint64_t lowest_end = 0xffffffffffffffff;
++    while (part = ped_disk_next_partition (disk, part)) {
++        if (part->geom.start == 0 || part->type == PED_PARTITION_METADATA
++                || part->type == PED_PARTITION_FREESPACE)
++            continue;
++        if (part->geom.end < lowest_end) {
++            retval = part;
++            lowest_end = part->geom.end;
++        }
++    }
++    return retval;
++}
++
++static inline uint32_t
++_part_32bitmax (uint64_t in)
++{
++    if (in > 0xFFFFFFFFULL)
++        return 0xFFFFFFFF;
++    else
++        return (uint32_t)in;
++}
++
++
+ #ifndef DISCOVER_ONLY
+ /* Write the protective MBR (to keep DOS happy) */
+ static int
+-_write_pmbr (PedDevice *dev, bool pmbr_boot)
++_write_pmbr (const PedDisk *disk, bool pmbr_boot)
+ {
++    PedDevice * dev = disk->dev;
++
++    /* need sync GPT -> hybrid pMBR ? */
++    int sync_pmbr = !strcmp(disk->type->name, "gpt_sync_mbr") ? 1 : 0;
++
++    int i, pmbr_id, first_entry = 0, last_entry = 3;
++    PedPartition *part = NULL, *esp;
++
+   /* The UEFI spec is not clear about what to do with the following
+      elements of the Protective MBR (pmbr): BootCode (0-440B),
+      UniqueMBRSignature (440B-444B) and Unknown (444B-446B).
+@@ -1105,6 +1239,8 @@ _write_pmbr (PedDevice *dev, bool pmbr_boot)
+   memset (pmbr->PartitionRecord, 0, sizeof pmbr->PartitionRecord);
+ 
+   pmbr->Signature = PED_CPU_TO_LE16 (MSDOS_MBR_SIGNATURE);
++
++  if (!sync_pmbr) {
+   pmbr->PartitionRecord[0].OSType = EFI_PMBR_OSTYPE_EFI;
+   pmbr->PartitionRecord[0].StartSector = 1;
+   pmbr->PartitionRecord[0].EndHead = 0xFE;
+@@ -1117,7 +1253,60 @@ _write_pmbr (PedDevice *dev, bool pmbr_boot)
+     pmbr->PartitionRecord[0].SizeInLBA = PED_CPU_TO_LE32 (dev->length - 1UL);
+   if (pmbr_boot)
+     pmbr->PartitionRecord[0].BootIndicator = 0x80;
+-
++  } else {
++  /* Search for an EFI System Partition */
++  esp = _find_first_part(disk);
++  if (!esp || !esp->fs_type || strncmp (esp->fs_type->name, "fat", 3) != 0)
++      esp = NULL;
++
++  pmbr_id = 3;
++  if (esp) {
++      pmbr_id = 0;
++      first_entry = 1;
++      last_entry = 4;
++  }
++
++  /* Write a pseudo-PMBR so Linux is happy */
++  pmbr->PartitionRecord[pmbr_id].OSType      = EFI_PMBR_OSTYPE_EFI;
++  pmbr->PartitionRecord[pmbr_id].StartSector = 1;
++  pmbr->PartitionRecord[pmbr_id].EndHead     = 0xFE;
++  pmbr->PartitionRecord[pmbr_id].EndSector   = 0xFF;
++  pmbr->PartitionRecord[pmbr_id].EndTrack    = 0xFF;
++  pmbr->PartitionRecord[pmbr_id].StartingLBA = PED_CPU_TO_LE32(1);
++  pmbr->PartitionRecord[pmbr_id].SizeInLBA = 1;
++  if (esp)
++      pmbr->PartitionRecord[pmbr_id].SizeInLBA = esp->geom.end - 1;
++
++  /* sync the first 3 GPT entries to MBR primary partitions */
++  for (i=first_entry; i < last_entry; i++) {
++      part = ped_disk_next_partition (disk, part);
++      if (part == NULL)
++          break;
++      /* we might get a starting garbage partition */
++      if (part->geom.start == 0 || part->type == PED_PARTITION_METADATA || part->type == PED_PARTITION_FREESPACE || part == esp) {
++          i--;
++          continue;
++      }
++
++      /* partition can not be represented by dos label - don't sync it */
++      if (part->geom.start > 0xFFFFFFFF ||
++          (part->geom.end - part->geom.start + 1) > 0xFFFFFFFF) {
++          continue;
++      }
++
++      pmbr->PartitionRecord[i].OSType      = _part_to_ostype(part);
++      pmbr->PartitionRecord[i].StartHead     = 0xFE;
++      pmbr->PartitionRecord[i].StartSector   = 0xFF;
++      pmbr->PartitionRecord[i].StartTrack    = 0xFF;
++      pmbr->PartitionRecord[i].EndHead     = 0xFE;
++      pmbr->PartitionRecord[i].EndSector   = 0xFF;
++      pmbr->PartitionRecord[i].EndTrack    = 0xFF;
++      pmbr->PartitionRecord[i].StartingLBA = _part_32bitmax(part->geom.start);
++      if(((GPTPartitionData*)part->disk_specific)->boot)
++          pmbr->PartitionRecord[i].BootIndicator = 0x80;
++      pmbr->PartitionRecord[i].SizeInLBA = _part_32bitmax(part->geom.end - part->geom.start + 1);
++  }
++  }
+   int write_ok = ped_device_write (dev, pmbr, GPT_PMBR_LBA,
+                                    GPT_PMBR_SECTORS);
+   free (s0);
+@@ -1237,7 +1426,7 @@ gpt_write (const PedDisk *disk)
+   ptes_crc = efi_crc32 (ptes, ptes_bytes);
+ 
+   /* Write protective MBR */
+-  if (!_write_pmbr (disk->dev, gpt_disk_data->pmbr_boot))
++  if (!_write_pmbr (disk, gpt_disk_data->pmbr_boot))
+     goto error_free_ptes;
+ 
+   /* Write PTH and PTEs */
+@@ -1857,6 +2046,38 @@ static PedDiskOps gpt_disk_ops =
+   PT_op_function_initializers (gpt)
+ };
+ 
++static PedDiskOps gpt_sync_mbr_disk_ops =
++{
++  clobber:                      NULL,
++  write:                        NULL_IF_DISCOVER_ONLY (gpt_write),
++
++  partition_set_name:           gpt_partition_set_name,
++  partition_get_name:           gpt_partition_get_name,
++
++  /* probe function redefined */
++  probe:                             gpt_sync_mbr_probe,
++  /* alloc function redefined */
++  alloc:                             gpt_sync_mbr_alloc,
++  duplicate:                         gpt_duplicate,
++  free:                              gpt_free,
++  read:                              gpt_read,
++  partition_new:                     gpt_partition_new,
++  partition_duplicate:               gpt_partition_duplicate,
++  partition_set_flag:                gpt_partition_set_flag,
++  partition_get_flag:                gpt_partition_get_flag,
++  partition_set_system:              gpt_partition_set_system,
++  partition_is_flag_available:       gpt_partition_is_flag_available,
++  partition_align:                   gpt_partition_align,
++  partition_destroy:                 gpt_partition_destroy,
++  partition_enumerate:               gpt_partition_enumerate,
++  alloc_metadata:                    gpt_alloc_metadata,
++  get_max_primary_partition_count:   gpt_get_max_primary_partition_count,
++  get_max_supported_partition_count: gpt_get_max_supported_partition_count,
++  partition_check:                   gpt_partition_check,
++  max_length:                        gpt_partition_max_length,
++  max_start_sector:                  gpt_partition_max_start_sector
++};
++
+ static PedDiskType gpt_disk_type =
+ {
+   next:		NULL,
+@@ -1865,16 +2086,26 @@ static PedDiskType gpt_disk_type =
+   features:	PED_DISK_TYPE_PARTITION_NAME
+ };
+ 
++static PedDiskType gpt_sync_mbr_disk_type =
++{
++  next:		NULL,
++  name:		"gpt_sync_mbr",
++  ops:		&gpt_sync_mbr_disk_ops,
++  features:	PED_DISK_TYPE_PARTITION_NAME
++};
++
+ void
+ ped_disk_gpt_init ()
+ {
+   ped_disk_type_register (&gpt_disk_type);
++  ped_disk_type_register (&gpt_sync_mbr_disk_type);
+ }
+ 
+ void
+ ped_disk_gpt_done ()
+ {
+   ped_disk_type_unregister (&gpt_disk_type);
++  ped_disk_type_unregister (&gpt_sync_mbr_disk_type);
+ }
+ 
+ verify (sizeof (GuidPartitionEntryAttributes_t) == 8);
+-- 
